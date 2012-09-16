@@ -20,3 +20,9 @@ Implementation details
 
 * Applcation should consist of 2 pages initially: one for selecting concepts and another for showings the results.
   * Select concepts page: user autocomplete for concept choosing, then show them as labels
+
+Platform and frameworks details
+===============================
+
+* Django as a back-end framework
+* Twitter Boostrap as a front-end framework
