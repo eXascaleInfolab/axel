@@ -18,8 +18,9 @@ Brief details
 Implementation details
 ======================
 
-* Applcation should consist of 2 pages initially: one for selecting concepts and another for showings the results.
+* Application should consist of 2 pages initially: one for selecting concepts and another for showings the results.
   * Select concepts page: user autocomplete for concept choosing, then show them as labels (we can also automatically suggest user the other possible relevant concepts as those that appear more often with the target ones)
+* Stemming - we should keep raw article text and stemmed (may be also with some characters removed, like +-/><, but keep basic punctuation). Stemming should possibly restore the normal form.
 
 Platform and frameworks details
 ===============================
