@@ -1,0 +1,74 @@
+[
+    {
+        "pk": 1,
+        "model": "articles.venue",
+        "fields": {
+            "name": "International Semantic Web Conference",
+            "acronym": "ISWC"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "articles.venue",
+        "fields": {
+            "name": "Extended Semantic Web Conference",
+            "acronym": "ESWC"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "articles.venue",
+        "fields": {
+            "name": "Special Interest Group on Information Retrieval",
+            "acronym": "SIGIR"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "articles.venue",
+        "fields": {
+            "name": "European Conference on Information Retrieval",
+            "acronym": "ECIR"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "articles.venue",
+        "fields": {
+            "name": "International Conference on Web Search and Data Mining",
+            "acronym": "WSDM"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "articles.venue",
+        "fields": {
+            "name": "World Wide Web Conference",
+            "acronym": "WWW"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "articles.venue",
+        "fields": {
+            "name": "Conference on Information and Knowledge Management",
+            "acronym": "CIKM"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "articles.venue",
+        "fields": {
+            "name": "Very Large Data Base Conference",
+            "acronym": "VLDB"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "articles.venue",
+        "fields": {
+            "name": "Special Interest Group on Management of Data",
+            "acronym": "SIGMOD"
+        }
+    }
+]
