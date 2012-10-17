@@ -13,4 +13,4 @@ python-daemon==1.6
 raven==2.0.6
 simplejson==2.6.2
 wsgiref==0.1.2
-Fabric==1.4.1
+Fabric==1.4.3
