@@ -1,0 +1,16 @@
+Django==1.4.1
+South==0.7.6
+distribute==0.6.28
+django-debug-toolbar==0.9.4
+django-indexer==0.3.0
+django-paging==0.2.4
+django-sentry==1.13.5
+django-templatetag-sugar==0.1
+eventlet==0.9.17
+greenlet==0.4.0
+lockfile==0.9.1
+python-daemon==1.6
+raven==2.0.6
+simplejson==2.6.2
+wsgiref==0.1.2
+Fabric==1.4.1
