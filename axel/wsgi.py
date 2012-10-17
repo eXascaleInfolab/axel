@@ -1,6 +1,4 @@
 """
-WSGI config for axel project.
-
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
 named ``application``. Django's ``runserver`` and ``runfcgi`` commands discover
@@ -13,9 +11,11 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
-import os
+from os import environ
+from os.path import basename, dirname
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "axel.settings")
+settings_module = basename(dirname(__file__)) + '.settings'
+environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
