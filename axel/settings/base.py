@@ -128,6 +128,7 @@ INSTALLED_APPS = (
 
     # Uncomment to enable South for database migrations:
     'south',
+    'haystack',
 
     # Uncomment to enable exception logging using Sentry; you also need
     # to set SENTRY_DSN below
