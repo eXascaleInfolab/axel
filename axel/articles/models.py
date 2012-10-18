@@ -1,24 +1,6 @@
 from django.db import models
 
 
-class Article(models.Model):
-    """Main article model"""
-    title = models.CharField(max_length=255)
-    abstract = models.TextField()
-    venue = models.ForeignKey(Venue)
-    year = models.IntegerField()
-    link = models.URLField()
-    citations = models.IntegerField()
-
-    class Meta:
-        """Meta info"""
-        ordering = ['-year']
-
-    def __unicode__(self):
-        """String representation"""
-        return "{0} {1}: {2}".format(self.venue, self.year, self.title)
-
-
 class Venue(models.Model):
     """Describes article venue"""
     name = models.CharField(max_length=255)
@@ -30,7 +12,36 @@ class Venue(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return self.name
+        return self.acronym
+
+
+def pdf_upload_to(instance, filename):
+    """
+    Determines where to upload a PDF
+    :type instance: Article
+    :type filename: str
+    """
+    filename = instance.title.lower().replace(' ', '_')+'.pdf'
+    return '/'.join((instance.venue.acronym, str(instance.year), filename))
+
+
+class Article(models.Model):
+    """Main article model"""
+    title = models.CharField(max_length=255)
+    abstract = models.TextField(null=True, blank=True)
+    venue = models.ForeignKey(Venue)
+    year = models.IntegerField()
+    link = models.URLField()
+    citations = models.IntegerField(default=0)
+    pdf = models.FileField(upload_to=pdf_upload_to)
+
+    class Meta:
+        """Meta info"""
+        ordering = ['-year']
+
+    def __unicode__(self):
+        """String representation"""
+        return "{0} {1}: {2}".format(self.venue, self.year, self.title)
 
 
 class Author(models.Model):
