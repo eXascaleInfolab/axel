@@ -11,6 +11,7 @@ DATABASES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+INTERNAL_IPS = ('',)
 # set up Django Debug Toolbar if installed
 try:
     import debug_toolbar
@@ -18,7 +19,8 @@ try:
     INSTALLED_APPS += ('debug_toolbar', )
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
-        'SHOW_TOOLBAR_CALLBACK': lambda *args, **kwargs: True
+        'SHOW_TOOLBAR_CALLBACK': lambda *args, **kwargs: True,
+        'SQL_COUNT_THRESHOLD': 100,
     }
 except ImportError:
     pass
