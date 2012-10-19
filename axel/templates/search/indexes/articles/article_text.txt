@@ -1,0 +1,6 @@
+
+{{ extracted.title|safe }}
+
+{{ extracted.abstract|safe }}
+
+{{ extracted.text|safe }}
