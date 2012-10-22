@@ -4,7 +4,7 @@ from django.db import models
 class Collocations(models.Model):
     """Main article model"""
     keywords = models.CharField(max_length=255)
-    count = models.IntegerField()
+    count = models.IntegerField(default=1)
 
     class Meta:
         """Meta info"""
