@@ -22,20 +22,19 @@ def pdf_upload_to(instance, filename):
     :type instance: Article
     :type filename: str
     """
-    filename = instance.title.lower().replace(' ', '_')+'.pdf'
     return '/'.join((instance.venue.acronym, str(instance.year), filename))
 
 
 class Article(models.Model):
     """Main article model"""
     title = models.CharField(max_length=255, null=True, blank=True)
-    abstract = models.TextField(null=True, blank=True)
+    abstract = models.TextField(default='')
     venue = models.ForeignKey(Venue)
     year = models.IntegerField()
     link = models.URLField()
     citations = models.IntegerField(default=0)
     pdf = models.FileField(upload_to=pdf_upload_to)
-    _stemmed_text = models.TextField(null=True, blank=True)
+    _stemmed_text = models.TextField(default='')
 
     class Meta:
         """Meta info"""
@@ -61,7 +60,7 @@ class Article(models.Model):
         # TODO: django 1.5 add update_fields attribute
         self.save_base(raw=True)
         # Do collocation processing after save
-        collocs = nlp.collocations(text)
+        collocs = nlp.collocations(text.lower())
         for name, score in collocs:
             colloc, created = Collocations.objects.get_or_create(keywords=name)
             if not created:
