@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 
 
 class Venue(models.Model):
@@ -34,6 +35,7 @@ class Article(models.Model):
     link = models.URLField()
     citations = models.IntegerField(default=0)
     pdf = models.FileField(upload_to=pdf_upload_to)
+    _stemmed_text = models.TextField(null=True, blank=True)
 
     class Meta:
         """Meta info"""
@@ -42,6 +44,29 @@ class Article(models.Model):
     def __unicode__(self):
         """String representation"""
         return "{0} {1}: {2}".format(self.venue, self.year, self.title)
+
+    @property
+    def stemmed_text(self):
+        """Just return inner field"""
+        return self._stemmed_text
+
+    @stemmed_text.setter
+    def stemmed_text(self, text):
+        """
+        Save without triggering signal. We don't want to trigger it here.
+        """
+        from axel.articles.utils import nlp
+        from axel.articles.stats.models import Collocations
+        self._stemmed_text = text
+        # TODO: django 1.5 add update_fields attribute
+        self.save_base(raw=True)
+        # Do collocation processing after save
+        collocs = nlp.collocations(text)
+        for name, score in collocs:
+            colloc, created = Collocations.objects.get_or_create(keywords=name)
+            if not created:
+                colloc.count = F('count') + 1
+                colloc.save()
 
 
 class Author(models.Model):
