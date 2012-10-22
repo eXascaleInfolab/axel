@@ -36,6 +36,33 @@ class PDFCleaner:
     _STRIP_EMPTY_TAGS=re.compile(r'<[a-z]+/>')
 
     @classmethod
+    def _extract_abstract(cls, contents):
+        """
+        Try to find abstract
+        :type contents: list
+        :param contents: list of strings
+        :return: extracted abstract, if any, index of abstract end
+        """
+        abs_start = 0
+        abs_end = 0
+        abstract = ''
+        for i, line in enumerate(contents[:20]):
+            if line.lower().startswith('abstract'):
+                abs_start = i
+                break
+        if abs_start:
+            # detect abstract end
+            for i, line in enumerate(contents[abs_start:abs_start+50]):
+                if line.lower() == 'introduction' or line.lower() == '1 introduction':
+                    abs_end = abs_start + i
+                    break
+            # fill the abstract if found
+        if abs_start and abs_end:
+            abstract = ' '.join(contents[abs_start:abs_end])[8:]
+
+        return abstract, abs_end
+
+    @classmethod
     def clean_pdf_data(cls, contents):
         """
         Cleans pdf contents extracted by Solr, tries to extract abstract and title.
@@ -58,26 +85,10 @@ class PDFCleaner:
         result_dict['title'] = contents[0].strip()
         del contents[0]
 
-
-        # try to find abstract
-        abs_start = 0
-        abs_end = 0
-        for i, line in enumerate(contents[:20]):
-            if line.lower().startswith('abstract'):
-                abs_start = i
-                break
-        if abs_start:
-            # detect abstract end
-            for i, line in enumerate(contents[abs_start:abs_start+50]):
-                if line.lower() == 'introduction' or line.lower() == '1 introduction':
-                    abs_end = abs_start + i
-                    break
-        # fill the abstract if found
-        if abs_start and abs_end:
-            result_dict['abstract'] = ' '.join(contents[abs_start:abs_end])[8:]
+        result_dict['abstract'], abs_end_index = cls._extract_abstract(contents)
 
         # remove abstract from rest of the pdf
-        contents = contents[abs_end:]
+        contents = contents[abs_end_index:]
         for i in range(len(contents)):
             if len(contents[i].split())<=2:
                 contents[i]+='\n'
