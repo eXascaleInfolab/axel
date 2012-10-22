@@ -4,6 +4,7 @@ from haystack import indexes
 from django.template import loader, Context
 
 from axel.articles.models import Article
+from axel.articles.utils import nlp
 from axel.articles.utils.pdfcleaner import PDFCleaner
 
 
@@ -20,6 +21,12 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     def index_queryset(self):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.filter(year__lte=datetime.datetime.now())
+
+    def should_update(self, instance, **kwargs):
+        """Check if we are in a raw mode"""
+        if kwargs.get('raw'):
+            return False
+        return True
 
     def prepare(self, obj):
         """
@@ -46,7 +53,13 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         # Now we'll finally perform the template processing to render the
         # text field with *all* of our metadata visible for templating:
         t = loader.select_template(('search/indexes/articles/article_text.txt', ))
-        data['text'] = t.render(Context({'object': obj,
+        full_text = t.render(Context({'object': obj,
                                          'extracted': result}))
+
+        # stem/lemmatize now
+        full_text = nlp.lemmatize(full_text)
+        obj.stemmed_text = full_text
+
+        data['text'] = full_text
         return data
 
