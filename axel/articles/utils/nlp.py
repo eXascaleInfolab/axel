@@ -23,8 +23,12 @@ _STOPWORDS = ['per', 'could', 'like', 'better', 'community', 'within', 'via',
 _STOPWORDS.extend(nltk.corpus.stopwords.words('english'))
 
 
-def collocations(text):
-    """Extract collocations from text"""
+def collocations(orig_text):
+    """
+    Extract collocations from text
+    :type orig_text: str
+    :rtype list
+    """
 
     def filter_punkt(word):
         return _PUNKT_RE.match(word)
@@ -32,7 +36,7 @@ def collocations(text):
     def filter_len(word):
         return len(word) < 3
 
-    tokens = nltk.wordpunct_tokenize(text)
+    tokens = nltk.wordpunct_tokenize(orig_text)
     text = nltk.Text(tokens)
     finder = BigramCollocationFinder.from_words(text)
     # remove collocation from 2 equal words
@@ -52,7 +56,7 @@ def collocations(text):
     filtered_collocs = [(int(score*word_d_n), name) for name, score in collocs
                         if int(score*word_d_n) > 2]
 
-    filtered_collocs = _generate_possible_ngrams(filtered_collocs)
+    filtered_collocs = _generate_possible_ngrams(filtered_collocs, orig_text)
 
     # join tuples
     filtered_collocs = [(score, (' '.join(coloc))) for score, coloc in filtered_collocs]
@@ -60,12 +64,13 @@ def collocations(text):
     return filtered_collocs
 
 
-def _generate_possible_ngrams(collocs):
+def _generate_possible_ngrams(collocs, text):
     """
     Recursively generate all possible n-grams from list of bigrams
     :param collocs: list of bigrams
     :type collocs: list
     """
+    #TODO: check if just finding colocation in text works ok
     collocs = collocs[:]
     possible_ngrams = []
     total_len = len(collocs)
@@ -80,9 +85,13 @@ def _generate_possible_ngrams(collocs):
                 continue
 
             inter = set(bigram_i).intersection(bigram_j)
+            inter_len = len(inter)
             if not inter:
                 continue
-            inter_len = len(inter)
+
+            # check intersection does not fully contains one of the n-grams
+            if inter_len == min((len(bigram_i), len(bigram_j))):
+                continue
 
             bigram_s, bigram_e = None, None
             if set(bigram_i[:inter_len])==inter and set(bigram_j[-inter_len:])==inter:
@@ -91,10 +100,13 @@ def _generate_possible_ngrams(collocs):
                 bigram_s, bigram_e = bigram_j, bigram_i
 
             if bigram_s and bigram_e:
-                min_score = min((score_i, score_j))
-                possible_ngrams.append((min_score, bigram_e+bigram_s[inter_len:]))
-                collocs[i] = (score_i-min_score, bigram_i)
-                collocs[j] = (score_j-min_score, bigram_j)
+                new_ngram = bigram_e+bigram_s[inter_len:]
+                # Check new colocation actually present in text
+                if ' '.join(new_ngram) in text:
+                    min_score = min((score_i, score_j))
+                    possible_ngrams.append((min_score, new_ngram))
+                    collocs[i] = (score_i-min_score, bigram_i)
+                    collocs[j] = (score_j-min_score, bigram_j)
 
     # remove zero-score old collocations
     collocs = [(score, bigram) for score, bigram in collocs if score != 0]
@@ -102,4 +114,4 @@ def _generate_possible_ngrams(collocs):
     if len(possible_ngrams) == len(collocs):
         return possible_ngrams
     else:
-        return _generate_possible_ngrams(possible_ngrams)
+        return _generate_possible_ngrams(possible_ngrams, text)
