@@ -54,6 +54,9 @@ def collocations(text):
 
     filtered_collocs = _generate_possible_ngrams(filtered_collocs)
 
+    # join tuples
+    filtered_collocs = [(score, (' '.join(coloc))) for score, coloc in filtered_collocs]
+
     return filtered_collocs
 
 
