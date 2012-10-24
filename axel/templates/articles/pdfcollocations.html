@@ -23,9 +23,12 @@
     {# display collocations #}
     {% if colocations %}
         <h3>Co-location list</h3>
-        <ul>
+        <ul class="unstyled">
         {% for score, colocation in colocations %}
-            <li><span class="label">{{ colocation }} {{ score }}</span></li>
+            <li>
+                {{ colocation }}
+                <span class="badge">{{ score }}</span>
+            </li>
         {% endfor %}
         </ul>
     {% endif %}
