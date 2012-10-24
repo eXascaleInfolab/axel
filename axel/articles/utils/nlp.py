@@ -49,7 +49,7 @@ def collocations(text):
 
     # Now do real filtration by frequency
     word_d_n = finder.word_fd.N()
-    filtered_collocs = [(name, int(score*word_d_n)) for name, score in collocs
+    filtered_collocs = [(int(score*word_d_n), name) for name, score in collocs
                         if int(score*word_d_n) > 2]
 
     filtered_collocs = _generate_possible_ngrams(filtered_collocs)
