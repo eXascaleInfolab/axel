@@ -53,8 +53,7 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         # Now we'll finally perform the template processing to render the
         # text field with *all* of our metadata visible for templating:
         t = loader.select_template(('search/indexes/articles/article_text.txt', ))
-        full_text = t.render(Context({'object': obj,
-                                         'extracted': result}))
+        full_text = t.render(Context({'object': obj, 'extracted': result}))
 
         # stem/lemmatize now
         full_text = nlp.lemmatize(full_text)
