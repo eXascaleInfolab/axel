@@ -14,4 +14,6 @@ class PDFCollocationsView(FormView):
         :type form: PDFUploadForm
         """
         collocs = form.get_collocations()
-        return self.render_to_response(self.get_context_data(form=form, collocations=collocs))
+        # order colocations
+        collocs.sort(key=lambda col: (len(col[1]),col[0]), reverse=True )
+        return self.render_to_response(self.get_context_data(form=form, colocations=collocs))
