@@ -28,5 +28,5 @@ class PDFUploadForm(forms.Form):
         with open(full_name) as pdf_obj:
             extracted_data = connections['default'].get_backend().extract_file_contents(pdf_obj)
         full_text = nlp.stem_text(extracted_data['contents'])['text']
-        collocs = nlp.collocations(full_text.lower())
+        collocs = nlp.collocations(full_text)
         return collocs

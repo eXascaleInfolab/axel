@@ -2,8 +2,8 @@
 import re
 import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.stem.porter import PorterStemmer
 from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
+from nltk.stem.porter import PorterStemmer
 from django.template import loader, Context
 
 from axel.articles.utils.pdfcleaner import PDFCleaner
@@ -14,7 +14,9 @@ def lemmatize_wordnet(text):
     lmtzr = WordNetLemmatizer()
     # split on whitespace
     result = []
-    for word in text.split():
+    for word in nltk.wordpunct_tokenize(text):
+        if word.istitle():
+            word = word.lower()
         result.append(lmtzr.lemmatize(word))
     return ' '.join(result)
 
@@ -23,12 +25,15 @@ def stem_porter(text):
     """Porter stemming of text"""
     stemmer = PorterStemmer()
     result = []
-    for word in text.split():
+    for word in nltk.wordpunct_tokenize(text):
+        if word.istitle():
+            word = word.lower()
         result.append(stemmer.stem(word))
     return ' '.join(result)
 
 
 _PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|0-9]+')
+_VOWEL_RE = re.compile(r'[aeiou]')
 
 _STOPWORDS = ['per', 'could', 'like', 'better', 'community', 'within', 'via',
               'around', 'seen', 'would', 'along', 'successful', 'may', 'without',
