@@ -121,6 +121,12 @@ def _generate_possible_ngrams(collocs, text):
 
 
 def stem_text(text, stem_func=lemmatize):
+    """
+    Stems text passed from text argument
+    :type text: str
+    :param stem_func: function that performs word stemming
+    :returns: dict containing the results, in form {'title':..., 'abstract':..., 'text':...}
+    """
     result = PDFCleaner.clean_pdf_data(text)
     t = loader.select_template(('search/indexes/articles/article_text.txt', ))
     full_text = t.render(Context({'extracted': result}))
