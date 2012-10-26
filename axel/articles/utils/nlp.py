@@ -2,13 +2,14 @@
 import re
 import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.stem.porter import PorterStemmer
 from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
 from django.template import loader, Context
 
 from axel.articles.utils.pdfcleaner import PDFCleaner
 
 
-def lemmatize(text):
+def lemmatize_wordnet(text):
     """Simple lemmatization"""
     lmtzr = WordNetLemmatizer()
     # split on whitespace
@@ -16,6 +17,16 @@ def lemmatize(text):
     for word in text.split():
         result.append(lmtzr.lemmatize(word))
     return ' '.join(result)
+
+
+def stem_porter(text):
+    """Porter stemming of text"""
+    stemmer = PorterStemmer()
+    result = []
+    for word in text.split():
+        result.append(stemmer.stem(word))
+    return ' '.join(result)
+
 
 _PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|0-9]+')
 
@@ -120,7 +131,7 @@ def _generate_possible_ngrams(collocs, text):
         return _generate_possible_ngrams(possible_ngrams, text)
 
 
-def stem_text(text, stem_func=lemmatize):
+def stem_text(text, stem_func=lemmatize_wordnet):
     """
     Stems text passed from text argument
     :type text: str
