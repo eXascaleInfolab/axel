@@ -67,10 +67,11 @@ def collocations(orig_text):
 def _generate_possible_ngrams(collocs, text):
     """
     Recursively generate all possible n-grams from list of bigrams
+    Score is needed because we want to know if n-1 gram is present in the text itself
+    or it is always part of n-gram.
     :param collocs: list of bigrams
     :type collocs: list
     """
-    #TODO: check if just finding colocation in text works ok
     collocs = collocs[:]
     possible_ngrams = []
     total_len = len(collocs)
