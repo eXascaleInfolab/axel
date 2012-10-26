@@ -8,28 +8,43 @@ from django.template import loader, Context
 
 from axel.articles.utils.pdfcleaner import PDFCleaner
 
+class Stemmer:
+    """Collection of stemmers"""
 
-def lemmatize_wordnet(text):
-    """Simple lemmatization"""
-    lmtzr = WordNetLemmatizer()
-    # split on whitespace
-    result = []
-    for word in nltk.wordpunct_tokenize(text):
-        if word.istitle():
-            word = word.lower()
-        result.append(lmtzr.lemmatize(word))
-    return ' '.join(result)
+    @classmethod
+    def stem_wordnet(cls, text):
+        """WordNet lemmatizer"""
+        lmtzr = WordNetLemmatizer()
+        # split on whitespace
+        result = []
+        for word in nltk.wordpunct_tokenize(text):
+            if word.istitle():
+                word = word.lower()
+            result.append(lmtzr.lemmatize(word))
+        return ' '.join(result)
 
 
-def stem_porter(text):
-    """Porter stemming of text"""
-    stemmer = PorterStemmer()
-    result = []
-    for word in nltk.wordpunct_tokenize(text):
-        if word.istitle():
-            word = word.lower()
-        result.append(stemmer.stem(word))
-    return ' '.join(result)
+    @classmethod
+    def stem_porter(cls, text):
+        """Porter stemmer"""
+        stemmer = PorterStemmer()
+        result = []
+        for word in nltk.wordpunct_tokenize(text):
+            if word.istitle():
+                word = word.lower()
+            result.append(stemmer.stem(word))
+        return ' '.join(result)
+
+    @classmethod
+    def get_method_names(cls):
+        """
+        :returns: list of tuples containing stem method name with descriptions
+        """
+        def is_stem_method(attrname, klass=cls, prefix='stem_'):
+            return attrname.startswith(prefix) and hasattr(getattr(klass, attrname), '__call__')
+        f_names = filter(is_stem_method, dir(cls))
+        f_names = [(f_name, getattr(cls, f_name).__doc__) for f_name in f_names]
+        return f_names
 
 
 _PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|0-9]+')
@@ -136,7 +151,7 @@ def _generate_possible_ngrams(collocs, text):
         return _generate_possible_ngrams(possible_ngrams, text)
 
 
-def stem_text(text, stem_func=lemmatize_wordnet):
+def stem_text(text, stem_func=Stemmer.stem_wordnet):
     """
     Stems text passed from text argument
     :type text: str
