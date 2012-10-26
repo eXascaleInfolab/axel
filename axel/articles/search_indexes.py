@@ -41,8 +41,10 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         # manually before calling extract_file_contents:
         obj.pdf.open()
         extracted_data = self._get_backend(None).extract_file_contents(obj.pdf.file)
-        result = PDFCleaner.clean_pdf_data(extracted_data['contents'])
         obj.pdf.close()
+        result = nlp.stem_text(extracted_data['contents'])
+        obj.stemmed_text = result['text']
+
         if result['abstract']:
             obj.abstract = result['abstract']
         if result['title']:
@@ -50,15 +52,6 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         # save raw because we don't want to trigger signal again
         obj.save_base(raw=True)
 
-        # Now we'll finally perform the template processing to render the
-        # text field with *all* of our metadata visible for templating:
-        t = loader.select_template(('search/indexes/articles/article_text.txt', ))
-        full_text = t.render(Context({'object': obj, 'extracted': result}))
-
-        # stem/lemmatize now
-        full_text = nlp.lemmatize(full_text)
-        obj.stemmed_text = full_text
-
-        data['text'] = full_text
+        data['text'] = result['text']
         return data
 

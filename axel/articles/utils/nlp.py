@@ -1,9 +1,11 @@
 """Utils to do text processing with NLTK"""
-from collections import defaultdict
 import re
 import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
+from django.template import loader, Context
+
+from axel.articles.utils.pdfcleaner import PDFCleaner
 
 
 def lemmatize(text):
@@ -116,3 +118,13 @@ def _generate_possible_ngrams(collocs, text):
         return possible_ngrams
     else:
         return _generate_possible_ngrams(possible_ngrams, text)
+
+
+def stem_text(text, stem_func=lemmatize):
+    result = PDFCleaner.clean_pdf_data(text)
+    t = loader.select_template(('search/indexes/articles/article_text.txt', ))
+    full_text = t.render(Context({'extracted': result}))
+    full_text = stem_func(full_text)
+    # override full text
+    result['text'] = full_text
+    return result
