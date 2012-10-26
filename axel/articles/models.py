@@ -61,7 +61,7 @@ class Article(models.Model):
         self.save_base(raw=True)
         # Do collocation processing after save
         collocs = nlp.collocations(text.lower())
-        for name, score in collocs:
+        for score, name in collocs:
             colloc, created = Collocations.objects.get_or_create(keywords=name)
             if not created:
                 colloc.count = F('count') + 1
