@@ -5,12 +5,16 @@
         <legend>PDF co-locations</legend>
         {% csrf_token %}
         {% for field in form %}
-            <div class="control-group">
+            <div class="control-group {% if field.errors %}error{% endif %}">
                 <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                 <div class="controls">
                     {{ field }}
+                    <span class="help-inline">
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                    </span>
                 </div>
-                {{ field.errors }}
             </div>
         {% endfor %}
         <div class="control-group">
