@@ -7,6 +7,7 @@ from nltk.stem.porter import PorterStemmer
 from django.template import loader, Context
 
 from axel.articles.utils.pdfcleaner import PDFCleaner
+from axel.libs.utils import print_timing
 
 class Stemmer:
     """Collection of stemmers"""
@@ -56,6 +57,7 @@ _STOPWORDS = ['per', 'could', 'like', 'better', 'community', 'within', 'via',
 _STOPWORDS.extend(nltk.corpus.stopwords.words('english'))
 
 
+@print_timing
 def collocations(orig_text):
     """
     Extract collocations from text
@@ -97,6 +99,7 @@ def collocations(orig_text):
     return filtered_collocs
 
 
+@print_timing
 def _generate_possible_ngrams(collocs, text):
     """
     Recursively generate all possible n-grams from list of bigrams
@@ -151,6 +154,7 @@ def _generate_possible_ngrams(collocs, text):
         return _generate_possible_ngrams(possible_ngrams, text)
 
 
+@print_timing
 def stem_text(text, stem_func=Stemmer.stem_wordnet):
     """
     Stems text passed from text argument
@@ -158,6 +162,7 @@ def stem_text(text, stem_func=Stemmer.stem_wordnet):
     :param stem_func: function that performs word stemming
     :returns: dict containing the results, in form {'title':..., 'abstract':..., 'text':...}
     """
+    import traceback
     result = PDFCleaner.clean_pdf_data(text)
     t = loader.select_template(('search/indexes/articles/article_text.txt', ))
     full_text = t.render(Context({'extracted': result}))

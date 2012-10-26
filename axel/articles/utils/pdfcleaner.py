@@ -4,6 +4,7 @@ import re
 from lxml import etree
 
 from django.utils.html import strip_tags
+from axel.libs.utils import print_timing
 
 
 class PDFCleaner:
@@ -60,6 +61,7 @@ class PDFCleaner:
         return abstract, abs_end
 
     @classmethod
+    @print_timing
     def clean_pdf_data(cls, contents):
         """
         Cleans pdf contents extracted by Solr, tries to extract abstract and title.
