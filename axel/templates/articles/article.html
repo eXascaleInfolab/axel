@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {# display collocations article list #}
+    <h3>{{ article.title }}</h3>
+    <ul class="unstyled">
+        {% for score, collocation in article.collocations %}
+            <li>
+                {{ collocation }}
+                <span class="badge">{{ score }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

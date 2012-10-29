@@ -1,5 +1,5 @@
 from django.views.generic.edit import FormView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from axel.articles.forms import PDFUploadForm
 from axel.articles.models import Article
@@ -16,8 +16,6 @@ class PDFCollocationsView(FormView):
         :type form: PDFUploadForm
         """
         collocs = form.get_collocations()
-        # order colocations
-        collocs.sort(key=lambda col: col[0], reverse=True)
         return self.render_to_response(self.get_context_data(form=form, colocations=collocs))
 
 
@@ -27,3 +25,10 @@ class ArticleList(ListView):
     context_object_name = 'articles'
     template_name = 'articles/article_list.html'
     paginate_by = 50
+
+
+class ArticleDetailView(DetailView):
+    """Display article details"""
+    model = Article
+    context_object_name = "article"
+    template_name = 'articles/article.html'

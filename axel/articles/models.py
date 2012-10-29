@@ -60,12 +60,20 @@ class Article(models.Model):
         # TODO: django 1.5 add update_fields attribute
         self.save_base(raw=True)
         # Do collocation processing after save
-        collocs = nlp.collocations(text.lower())
+        collocs = nlp.collocations(text)
         for score, name in collocs:
             colloc, created = Collocations.objects.get_or_create(keywords=name)
             if not created:
                 colloc.count = F('count') + 1
                 colloc.save()
+
+    @property
+    def collocations(self):
+        """Get co-locations from the saved stemmed text"""
+        from axel.articles.utils import nlp
+        colocs = nlp.collocations(self._stemmed_text)
+        colocs.sort(key=lambda col: col[0], reverse=True)
+        return colocs
 
 
 class Author(models.Model):

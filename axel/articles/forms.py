@@ -35,4 +35,6 @@ class PDFUploadForm(forms.Form):
             extracted_data = connections['default'].get_backend().extract_file_contents(pdf_obj)
         full_text = nlp.stem_text(extracted_data['contents'], stem_func=stem_func)['text']
         collocs = nlp.collocations(full_text)
+        # order colocations
+        collocs.sort(key=lambda col: col[0], reverse=True)
         return collocs

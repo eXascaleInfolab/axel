@@ -7,7 +7,7 @@
     <ul class="unstyled">
         {% for article in articles %}
             <li>
-                {{ article }}
+                <a href="{% url article_detail article.id %}">{{ article }}</a>
             </li>
         {% endfor %}
     </ul>
