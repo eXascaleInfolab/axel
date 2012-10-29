@@ -26,3 +26,4 @@ class ArticleList(ListView):
     model = Article
     context_object_name = 'articles'
     template_name = 'articles/article_list.html'
+    paginate_by = 50
