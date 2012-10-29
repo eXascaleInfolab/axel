@@ -1,6 +1,8 @@
 from django.views.generic.edit import FormView
+from django.views.generic import ListView
 
 from axel.articles.forms import PDFUploadForm
+from axel.articles.models import Article
 
 
 class PDFCollocationsView(FormView):
@@ -17,3 +19,10 @@ class PDFCollocationsView(FormView):
         # order colocations
         collocs.sort(key=lambda col: col[0], reverse=True)
         return self.render_to_response(self.get_context_data(form=form, colocations=collocs))
+
+
+class ArticleList(ListView):
+    """View to display paginated article list with available actions"""
+    model = Article
+    context_object_name = 'articles'
+    template_name = 'articles/article_list.html'

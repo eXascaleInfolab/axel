@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {# display collocations article list #}
+    <h3>Articles in the database</h3>
+    <ul class="unstyled">
+        {% for article in articles %}
+            <li>
+                {{ article }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
