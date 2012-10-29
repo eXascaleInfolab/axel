@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     # to set SENTRY_DSN below
     #'raven.contrib.django',
     'axel.articles',
+    'axel.stats'
     )
 
 # Get the SENTRY_DSN from your project settings page in Sentry (either self

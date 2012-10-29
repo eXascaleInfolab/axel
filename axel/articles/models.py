@@ -55,7 +55,7 @@ class Article(models.Model):
         Save without triggering signal. We don't want to trigger it here.
         """
         from axel.articles.utils import nlp
-        from axel.articles.stats.models import Collocations
+        from axel.stats.models import Collocations
         self._stemmed_text = text
         # TODO: django 1.5 add update_fields attribute
         self.save_base(raw=True)
