@@ -16,7 +16,7 @@ class PDFCollocationsView(FormView):
         :type form: PDFUploadForm
         """
         collocs = form.get_collocations()
-        return self.render_to_response(self.get_context_data(form=form, colocations=collocs))
+        return self.render_to_response(self.get_context_data(form=form, collocations=collocs))
 
 
 class ArticleList(ListView):
