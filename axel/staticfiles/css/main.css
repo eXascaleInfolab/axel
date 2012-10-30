@@ -1,0 +1,23 @@
+
+
+.label.label-white {
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    background-color: #EEE;
+    color: #555;
+    border: 1px solid #CCC;
+    padding-left: 6px;
+    padding-bottom: 3px;
+}
+
+
+#selected_concepts span.label {
+    margin-right: 5px;
+    font-size: 20px;
+    margin-bottom: 5px;
+    line-height: 25px;
+}
+
+#selected_concepts span.label button.close {
+    margin-left: 5px;
+    font-size: 29px;
+}
