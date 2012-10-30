@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
+from axel.articles.views import ConceptualSearchView
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'axel.views.home', name='home'),
     # url(r'^axel/', include('axel.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
@@ -14,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     (r'^search/', include('haystack.urls')),
     (r'^articles/', include('axel.articles.urls')),
+    url(r'^$', ConceptualSearchView.as_view(), name='main')
 )

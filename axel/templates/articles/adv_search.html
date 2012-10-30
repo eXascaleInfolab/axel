@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <h3>{% trans "Conceptual article filtering" %}</h3>
+    <form class="form-search" method="POST" action="">
+        <input type="text" data-provide="typeahead" data-source="" class="input-large search-query">
+        <button type="submit" class="btn">{% trans "Search" %}</button>
+    </form>
+{% endblock %}
