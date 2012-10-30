@@ -38,3 +38,9 @@ class PDFUploadForm(forms.Form):
         # order colocations
         collocs.sort(key=lambda col: col[0], reverse=True)
         return collocs
+
+
+class ConceptAutocompleteForm(forms.Form):
+    """Provide concept autocomplete field"""
+    query = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-xlarge search-query',
+                                                          'autocomplete': 'off'}))

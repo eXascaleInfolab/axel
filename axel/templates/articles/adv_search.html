@@ -3,8 +3,10 @@
 
 {% block content %}
     <h3>{% trans "Conceptual article filtering" %}</h3>
-    <form class="form-search" method="POST" action="">
-        <input type="text" data-provide="typeahead" data-source="" class="input-large search-query">
-        <button type="submit" class="btn">{% trans "Search" %}</button>
+    <form id="concept_form" class="form-search" method="GET" action="{% url concept_autocomplete %}">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field }}
+        {% endfor %}
     </form>
 {% endblock %}

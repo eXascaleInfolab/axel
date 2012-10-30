@@ -1,8 +1,11 @@
+from django.http import Http404
 from django.views.generic.edit import FormView
 from django.views.generic import ListView, DetailView, TemplateView
 
-from axel.articles.forms import PDFUploadForm
+from axel.articles.forms import PDFUploadForm, ConceptAutocompleteForm
 from axel.articles.models import Article
+from axel.libs.mixins import JSONResponseMixin
+from axel.stats.models import Collocations
 
 
 class PDFCollocationsView(FormView):
@@ -27,7 +30,7 @@ class ConceptualSearchView(TemplateView):
     def get_context_data(self, **kwargs):
         """Add form to context"""
         context = super(ConceptualSearchView, self).get_context_data(**kwargs)
-        context['form'] = ''
+        context['form'] = ConceptAutocompleteForm
         return context
 
 
@@ -44,3 +47,18 @@ class ArticleDetailView(DetailView):
     model = Article
     context_object_name = "article"
     template_name = 'articles/article.html'
+
+
+class ConceptAutocompleteView(JSONResponseMixin, TemplateView):
+    """View to retrieve autocomplete concept search results"""
+
+    def render_to_response(self, context):
+        form = ConceptAutocompleteForm(self.request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            # search concepts
+            results = Collocations.objects.filter(keywords__icontains=query)
+            results = [colloc.keywords+' '+str(colloc.count) for colloc in results]
+            context = {'results': results}
+            return JSONResponseMixin.render_to_response(self, context)
+        raise Http404
