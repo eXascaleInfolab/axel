@@ -1,11 +1,9 @@
 import datetime
 
 from haystack import indexes
-from django.template import loader, Context
 
 from axel.articles.models import Article
 from axel.articles.utils import nlp
-from axel.articles.utils.pdfcleaner import PDFCleaner
 
 
 class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
@@ -20,7 +18,7 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
 
     def index_queryset(self):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(year__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(year__lte=datetime.datetime.now().year)
 
     def should_update(self, instance, **kwargs):
         """Check if we are in a raw mode"""
