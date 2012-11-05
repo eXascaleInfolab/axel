@@ -76,6 +76,21 @@ class Article(models.Model):
         return colocs
 
 
+class ArticleCollocation(models.Model):
+    """Model contains collocation for each article and their count"""
+    keywords = models.CharField(max_length=255)
+    count = models.IntegerField()
+    article = models.ForeignKey(Article)
+
+    class Meta:
+        """Meta info"""
+        ordering = ['-count']
+
+    def __unicode__(self):
+        """String representation"""
+        return "{0}: {1}".format(self.article, self.keywords)
+
+
 class Author(models.Model):
     """Basic author model"""
     name = models.CharField(max_length=255)
