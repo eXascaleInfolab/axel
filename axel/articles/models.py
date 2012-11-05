@@ -27,7 +27,7 @@ def pdf_upload_to(instance, filename):
 
 class Article(models.Model):
     """Main article model"""
-    title = models.CharField(max_length=255, null=True, blank=True)
+    title = models.CharField(max_length=255, default='')
     abstract = models.TextField(default='')
     venue = models.ForeignKey(Venue)
     year = models.IntegerField()
