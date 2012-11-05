@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Collocations(models.Model):
-    """Main article model"""
+    """Aggregated collocation statistics model"""
     keywords = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
 
