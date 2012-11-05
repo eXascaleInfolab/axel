@@ -31,7 +31,7 @@ class Article(models.Model):
     abstract = models.TextField(default='')
     venue = models.ForeignKey(Venue)
     year = models.IntegerField()
-    link = models.URLField()
+    link = models.URLField(null=True)
     citations = models.IntegerField(default=0)
     pdf = models.FileField(upload_to=pdf_upload_to)
     _stemmed_text = models.TextField(default='')
@@ -39,6 +39,7 @@ class Article(models.Model):
     class Meta:
         """Meta info"""
         ordering = ['-year']
+        unique_together = ('title', 'year', 'venue')
 
     def __unicode__(self):
         """String representation"""
@@ -90,6 +91,7 @@ class ArticleCollocation(models.Model):
     class Meta:
         """Meta info"""
         ordering = ['-count']
+        unique_together = ('keywords', 'article')
 
     def __unicode__(self):
         """String representation"""
