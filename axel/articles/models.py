@@ -62,6 +62,11 @@ class Article(models.Model):
         # Do collocation processing after save
         collocs = nlp.collocations(text)
         for score, name in collocs:
+            acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
+                article=self, defaults={'score': score})
+            if not created:
+                acolloc.score = score
+                acolloc.save()
             colloc, created = Collocations.objects.get_or_create(keywords=name)
             if not created:
                 colloc.count = F('count') + 1
