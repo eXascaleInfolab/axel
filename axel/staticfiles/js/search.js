@@ -39,12 +39,13 @@ $(document).ready(function() {
 
     // setup show articles function
     $('#show_articles').on('click', function() {
-        var concepts = $('#selected_concepts').find('span.label:not(.hidden)').map(function() {
-            return $(this).text().slice(0, -1);
+        var concepts = $.map($('#selected_concepts').find('span.label:not(.hidden)'), function(item) {
+            $('#concept_form').find('div.search').append($('<input name="concepts" type="hidden" value="'+$(item).text().slice(0, -1)+'">'));
+            return $(item).text().slice(0, -1);
         });
-        $.post($(this).attr('data-url'), {'concepts': concepts}, function(data){
+        $.post($(this).attr('data-url'), $('#concept_form').serialize(), function(data){
             // show articles
             alert('lol');
-        })
+        });
     });
 });

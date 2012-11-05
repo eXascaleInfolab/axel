@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.views.decorators.http import require_POST
 from django.views.generic.edit import FormView
 from django.views.generic import ListView, DetailView, TemplateView
 
@@ -62,3 +63,11 @@ class ConceptAutocompleteView(JSONResponseMixin, TemplateView):
             context = {'results': results}
             return JSONResponseMixin.render_to_response(self, context)
         raise Http404
+
+
+@require_POST
+def filter_articles_view(request):
+    """View that shows filtered articles based on concepts"""
+    concepts = request.POST.getlist('concepts')
+    print concepts
+    raise Http404
