@@ -64,7 +64,7 @@ class Article(models.Model):
         collocs = nlp.collocations(text)
         for score, name in collocs:
             acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
-                article=self, defaults={'score': score})
+                article=self, defaults={'count': score})
             if not created:
                 acolloc.score = score
                 acolloc.save()
