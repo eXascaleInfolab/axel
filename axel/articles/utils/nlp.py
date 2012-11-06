@@ -61,7 +61,7 @@ _STOPWORDS.extend(nltk.corpus.stopwords.words('english'))
 def collocations(orig_text):
     """
     Extract collocations from text
-    :type orig_text: str
+    :type orig_text: unicode
     :rtype list
     """
 
