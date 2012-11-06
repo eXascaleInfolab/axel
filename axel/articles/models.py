@@ -50,7 +50,7 @@ class Article(models.Model):
     @property
     def collocations(self):
         """Get co-locations from the saved stemmed text"""
-        colocs = self.articlecollocation_set.values_list('count', 'keywords')
+        colocs = list(self.articlecollocation_set.values_list('count', 'keywords'))
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
 
