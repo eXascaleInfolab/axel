@@ -45,7 +45,7 @@ $(document).ready(function() {
         });
         $.post($(this).attr('data-url'), $('#concept_form').serialize(), function(data){
             // show articles
-            alert('lol');
+            $('#search_results').append(data);
         });
     });
 });

@@ -3,23 +3,34 @@
 
 {% block content %}
     <div class="row">
-        <h3>{% trans "Conceptual article filtering" %}</h3>
-        <form id="concept_form" class="form-search" method="GET" action="{% url concept_autocomplete %}">
-            {% csrf_token %}
-            {% for field in form %}
-                {{ field }}
-            {% endfor %}
-            <div class="hidden search">
+        <div class="span12">
+            <h3>{% trans "Conceptual article filtering" %}</h3>
+            <form id="concept_form" class="form-search" method="GET" action="{% url concept_autocomplete %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field }}
+                {% endfor %}
+                <div class="hidden search">
 
-            </div>
-        </form>
+                </div>
+            </form>
+        </div>
     </div>
-    <div id="selected_concepts" class="row">
-        <h4>Selected concepts</h4>
-        <span class="hidden label label-white"></span>
+    <div class="row">
+        <div class="span12" id="selected_concepts">
+            <h4>Selected concepts</h4>
+            <span class="hidden label label-white"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <br>
+            <button data-url="{% url filter_articles %}" id="show_articles" class="btn btn-primary btn-large">{% trans "Show articles" %}</button>
+        </div>
     </div>
     <div class="row">
         <br>
-        <button data-url="{% url filter_articles %}" id="show_articles" class="btn btn-primary btn-large">{% trans "Show articles" %}</button>
+        <div class="span12" id="search_results">
+        </div>
     </div>
 {% endblock %}

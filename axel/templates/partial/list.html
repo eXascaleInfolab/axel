@@ -1,0 +1,34 @@
+<ul class="unstyled">
+    {% for article in articles %}
+        <li>
+            <a href="{% url article_detail article.id %}">{{ article }}</a>
+        </li>
+    {% endfor %}
+</ul>
+{% if is_paginated %}
+    <div class="pagination">
+        <ul>
+            <li {% if not page_obj.has_previous %}class="disabled"{% endif %}>
+                <a href="?page={{ page_obj.previous_page_number }}">«</a>
+            </li>
+            {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page=1">1</a>
+                </li>
+                <li class="disabled"><a href="#">...</a></li>
+            {% endif %}
+            <li class="active">
+                <a href="#">{{ page_obj.number }}</a>
+            </li>
+            {% if page_obj.has_next %}
+                <li class="disabled"><a href="#">...</a></li>
+                <li>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                </li>
+            {% endif %}
+            <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
+                <a href="?page={{ page_obj.next_page_number }}">»</a>
+            </li>
+        </ul>
+    </div>
+{% endif %}
