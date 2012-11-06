@@ -137,6 +137,9 @@ INSTALLED_APPS = (
     'axel.stats'
     )
 
+# Set to false to register haystack signals in tests
+SOUTH_TESTS_MIGRATE = False
+
 # Get the SENTRY_DSN from your project settings page in Sentry (either self
 # hosted or on getsentry.com).
 SENTRY_DSN = ''
