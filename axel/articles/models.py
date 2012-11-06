@@ -1,5 +1,7 @@
 from django.db import models
 from django.db.models import F
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 class Venue(models.Model):
@@ -121,3 +123,15 @@ class ArticleAuthor(models.Model):
     def __unicode__(self):
         return "{0}: {1}".format(self.author, self.article)
 
+
+
+@receiver(pre_delete, sender=Article)
+def clean_collocations(sender, instance, **kwargs):
+    """
+    Reduce collocation count on delete
+    :type instance: Article
+    """
+    from axel.stats.models import Collocations
+    collocations = ArticleCollocation.objects.filter(article=instance).values_list('keywords',
+                                                                                    flat=True)
+    Collocations.objects.filter(keywords__in=collocations).update(count=(F('count') - 1))
