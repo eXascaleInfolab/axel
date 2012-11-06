@@ -50,8 +50,7 @@ class Article(models.Model):
     @property
     def collocations(self):
         """Get co-locations from the saved stemmed text"""
-        from axel.articles.utils import nlp
-        colocs = nlp.collocations(self.stemmed_text)
+        colocs = self.articlecollocation_set.values_list('count', 'keywords')
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
 
