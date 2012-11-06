@@ -4,6 +4,7 @@
 
     {# display collocations article list #}
     <h3>{{ article.title }}</h3>
+    <p class="lead">{{ article.abstract }}</p>
     <ul class="unstyled">
         {% for score, collocation in article.collocations %}
             <li>

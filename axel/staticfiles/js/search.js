@@ -28,11 +28,11 @@ $(document).ready(function() {
         highlighter: function (item) {
             var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
             // additionally parse score
-            item = item.replace(new RegExp('\\s(\\d+)$'), function ($1, match) {
-                return ' <span class="badge badge-success">' + match + '</span>'
-            });
-            return item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+            item = item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
                 return '<strong>' + match + '</strong>'
+            });
+            return item.replace(new RegExp('\\s(\\d+)$'), function ($1, match) {
+                return ' <span class="badge badge-success">' + match + '</span>'
             });
         }
     });
