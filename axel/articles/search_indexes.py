@@ -22,7 +22,7 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
 
     def should_update(self, instance, **kwargs):
         """Check if we are in a raw mode"""
-        if kwargs.get('raw'):
+        if kwargs.get('raw') and not kwargs.get('created'):
             return False
         return True
 

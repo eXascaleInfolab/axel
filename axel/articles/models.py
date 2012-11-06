@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import F
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 
 
@@ -36,7 +36,7 @@ class Article(models.Model):
     link = models.URLField(null=True)
     citations = models.IntegerField(default=0)
     pdf = models.FileField(upload_to=pdf_upload_to)
-    _stemmed_text = models.TextField(default='')
+    stemmed_text = models.TextField(default='')
 
     class Meta:
         """Meta info"""
@@ -48,38 +48,10 @@ class Article(models.Model):
         return "{0} {1}: {2}".format(self.venue, self.year, self.title)
 
     @property
-    def stemmed_text(self):
-        """Just return inner field"""
-        return self._stemmed_text
-
-    @stemmed_text.setter
-    def stemmed_text(self, text):
-        """
-        Save without triggering signal. We don't want to trigger it here.
-        """
-        from axel.articles.utils import nlp
-        from axel.stats.models import Collocations
-        self._stemmed_text = text
-        # TODO: django 1.5 add update_fields attribute
-        self.save_base(raw=True)
-        # Do collocation processing after save
-        collocs = nlp.collocations(text)
-        for score, name in collocs:
-            acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
-                article=self, defaults={'count': score})
-            if not created:
-                acolloc.score = score
-                acolloc.save()
-            colloc, created = Collocations.objects.get_or_create(keywords=name)
-            if not created:
-                colloc.count = F('count') + 1
-                colloc.save()
-
-    @property
     def collocations(self):
         """Get co-locations from the saved stemmed text"""
         from axel.articles.utils import nlp
-        colocs = nlp.collocations(self._stemmed_text)
+        colocs = nlp.collocations(self.stemmed_text)
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
 
@@ -135,3 +107,26 @@ def clean_collocations(sender, instance, **kwargs):
     collocations = ArticleCollocation.objects.filter(article=instance).values_list('keywords',
                                                                                     flat=True)
     Collocations.objects.filter(keywords__in=collocations).update(count=(F('count') - 1))
+
+
+@receiver(post_save, sender=Article)
+def create_collocations(sender, instance, created, **kwargs):
+    """
+    Add collocations on create
+    :type instance: Article
+    """
+    from axel.stats.models import Collocations
+    from axel.articles.utils import nlp
+    if instance.stemmed_text and not ArticleCollocation.objects.filter(article=instance).exists():
+        text = instance.stemmed_text
+        collocs = nlp.collocations(text)
+        for score, name in collocs:
+            acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
+                article=instance, defaults={'count': score})
+            if not created:
+                acolloc.score = score
+                acolloc.save()
+            colloc, created = Collocations.objects.get_or_create(keywords=name)
+            if not created:
+                colloc.count = F('count') + 1
+                colloc.save()
