@@ -48,4 +48,8 @@ $(document).ready(function() {
             $('#search_results').empty().append(data);
         });
     });
+
+    $(document).on('click', '#selected_concepts .label .close', function() {
+        $(this).parent().remove();
+    });
 });
