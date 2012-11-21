@@ -53,7 +53,7 @@ _VOWEL_RE = re.compile(r'[aeiou]')
 
 _STOPWORDS = ['per', 'could', 'like', 'better', 'community', 'within', 'via',
               'around', 'seen', 'would', 'along', 'successful', 'may', 'without',
-              'including', 'given', 'today', 'yield', 'towards']
+              'including', 'given', 'today', 'yield', 'towards', 'whether']
 _STOPWORDS.extend(nltk.corpus.stopwords.words('english'))
 
 
