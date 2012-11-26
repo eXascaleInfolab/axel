@@ -27,5 +27,5 @@ Platform and frameworks details
 
 * Django as a back-end framework
 * Twitter Boostrap as a front-end framework
-* Library for inverted index
+* Django haystack (Solr backend) for inverted index
 * Celery for background tasks
