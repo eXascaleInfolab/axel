@@ -232,3 +232,7 @@ if 'raven.contrib.django' in INSTALLED_APPS and SENTRY_DSN:
 else:
     # Use default Django logging setup
     LOGGING = BASE_LOGGING
+
+
+from axel.articles.utils.concepts_index import build_index
+build_index()
