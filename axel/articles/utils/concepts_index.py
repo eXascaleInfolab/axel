@@ -5,8 +5,6 @@ This file is imported from settings
 from collections import defaultdict
 
 from django.core.cache import cache
-from axel.stats.models import Collocations
-
 CONCEPT_PREFIX = 'concept:'
 WORDS_SET = 'keywords'
 
@@ -17,6 +15,7 @@ def build_index():
     Each concept will have a separate cache entry for the ease of update.
     Cache also
     """
+    from axel.stats.models import Collocations
     index = defaultdict(list)
     for id, concept in Collocations.objects.values_list('id', 'keywords'):
         for word in concept.split():
