@@ -5,9 +5,12 @@ This file is imported from settings
 from collections import defaultdict
 from django.core.cache import cache
 
+import sys
+
 
 CONCEPT_PREFIX = 'concept:'
 WORDS_SET = 'keywords'
+EXPIRE = sys.maxint
 
 
 def build_index():
@@ -22,9 +25,9 @@ def build_index():
         for word in concept.split():
             index[word].append(id)
     for key, values in index.iteritems():
-        cache.set(CONCEPT_PREFIX + key, values)
+        cache.set(CONCEPT_PREFIX + key, values, EXPIRE)
 
-    cache.set(WORDS_SET, set(index.keys()))
+    cache.set(WORDS_SET, set(index.keys()), EXPIRE)
 
 
 def update_index(c_id, keywords):
@@ -38,13 +41,13 @@ def update_index(c_id, keywords):
         index = cache.get(word)
         if index:
             index.append(c_id)
-            cache.set(CONCEPT_PREFIX + word, index)
+            cache.set(CONCEPT_PREFIX + word, index, EXPIRE)
         else:
             extra_words_set.add(word)
-            cache.set(CONCEPT_PREFIX + word, [c_id])
+            cache.set(CONCEPT_PREFIX + word, [c_id], EXPIRE)
 
     # If new words appeared - add them to global set
     if extra_words_set:
         global_set = cache.get(WORDS_SET)
         global_set.update(extra_words_set)
-        cache.set(WORDS_SET, global_set)
+        cache.set(WORDS_SET, global_set, EXPIRE)
