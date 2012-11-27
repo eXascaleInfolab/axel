@@ -20,6 +20,8 @@ if __name__ == "__main__":
 
     if settings_module is not None:
         environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
+    from axel.articles.utils.concepts_index import build_index
+    build_index()
 
     from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)
