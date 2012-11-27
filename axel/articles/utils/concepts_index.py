@@ -3,8 +3,9 @@ Building and maintaining index of words-concepts
 This file is imported from settings
 """
 from collections import defaultdict
-
 from django.core.cache import cache
+
+
 CONCEPT_PREFIX = 'concept:'
 WORDS_SET = 'keywords'
 
