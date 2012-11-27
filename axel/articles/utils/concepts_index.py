@@ -31,7 +31,7 @@ def update_index(c_id, keywords):
     """
     Update index
     :type c_id: int
-    :type keywords: str
+    :type keywords: unicode
     """
     extra_words_set = set()
     for word in keywords.split():
