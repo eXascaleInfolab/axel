@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block extra-head %}
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            new Highcharts.Chart({
+                chart:{
+                    renderTo:'container',
+                    type:'column',
+                    marginTop:40
+                },
+                title:{
+                    text:''
+                },
+                xAxis:{
+                    title:{
+                        text:'Concept frequency',
+                        style:{
+                            fontSize:'24px'
+                        }
+                    },
+                    labels:{
+                        style:{
+                            fontSize:'18px'
+                        },
+                        y:20
+                    }
+                },
+                yAxis:{
+                    title:{
+                        text:'Count',
+                        style:{
+                            fontSize:'24px'
+                        }
+                    },
+                    labels:{
+                        style:{
+                            fontSize:'18px'
+                        }
+                    }
+                },
+                tooltip:{
+                    formatter:function () {
+                        return '' +
+                                this.x + ': ' + this.y;
+                    }
+                },
+                plotOptions:{
+                    column:{
+                        pointPadding:0,
+                        borderWidth:0,
+                        groupPadding:0.1
+                    }
+                },
+                series:[
+                    {
+                        name:'Total distribution',
+                        data: {{ histogram_data }}
+                    }
+                ],
+                credits:false
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="span12">
+            <div id="container" style="min-width: 800px; height: 500px; margin: 0 auto"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <h3>Overall statistics:</h3>
+            <h4>Total unique words: {{ word_count }}</h4>
+            <h4>Total unique concepts: {{ concept_count }}</h4>
+        </div>
+    </div>
+{% endblock %}

@@ -13,7 +13,10 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-axel'
+        'LOCATION': 'unique-axel',
+        'OPTIONS': {
+            'MAX_ENTRIES': 100000
+        }
     }
 }
 
