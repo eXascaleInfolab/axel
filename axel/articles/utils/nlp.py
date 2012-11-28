@@ -1,4 +1,5 @@
 """Utils to do text processing with NLTK"""
+from collections import defaultdict
 import re
 import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -172,10 +173,33 @@ def stem_text(text, stem_func=Stemmer.stem_wordnet):
 
 
 @print_timing
-def split_sentence(text):
+def _split_sentences(text):
     """
     Splits text on sentences (collocated-parts) based on re
     :type text: unicode
     :rtype: list
     """
     return re.split(_PUNKT_RE, text)
+
+
+@print_timing
+def build_ngram_index(text):
+    """
+    Build n-grams from text up to max len in the db, *with actual counts*
+    :type text: unicode
+    :rtype: defaultdict
+    """
+
+    # First step - sentence split.
+    text = _split_sentences(text)
+
+    # Second step - ngram generation
+    all_ngrams = defaultdict(lambda: 0)
+    # TODO: add real value from db
+    max_db_size = 5
+    for n in range(2, max_db_size+1):
+        for sentence in text:
+            ngrams = nltk.ngrams(sentence.split(), n)
+            for ngram in ngrams:
+                all_ngrams[(' '.join(ngram))] += 1
+    return all_ngrams
