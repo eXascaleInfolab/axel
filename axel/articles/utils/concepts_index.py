@@ -13,12 +13,21 @@ WORDS_SET = 'keywords'
 EXPIRE = sys.maxint
 
 
+def get_global_word_set():
+    """Safely get global word set"""
+    if not cache.has_key(WORDS_SET):
+        build_index()
+    return cache.get(WORDS_SET)
+
+
 def build_index():
     """
     Building index and putting it to cache
     Each concept will have a separate cache entry for the ease of update.
     Cache also
     """
+    if cache.has_key(WORDS_SET):
+        return
     from axel.stats.models import Collocations
     index = defaultdict(list)
     for id, concept in Collocations.objects.values_list('id', 'keywords'):
@@ -36,6 +45,8 @@ def update_index(c_id, keywords):
     :type c_id: int
     :type keywords: unicode
     """
+    if not cache.has_key(WORDS_SET):
+        build_index()
     extra_words_set = set()
     for word in keywords.split():
         index = cache.get(word)
