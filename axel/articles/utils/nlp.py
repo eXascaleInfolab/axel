@@ -48,7 +48,7 @@ class Stemmer:
         return f_names
 
 
-_PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|0-9]+')
+_PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|]+')
 
 _STOPWORDS = ['per', 'could', 'like', 'better', 'community', 'within', 'via',
               'around', 'seen', 'would', 'along', 'successful', 'may', 'without',
