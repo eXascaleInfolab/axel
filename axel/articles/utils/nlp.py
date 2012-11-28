@@ -169,3 +169,13 @@ def stem_text(text, stem_func=Stemmer.stem_wordnet):
     # override full text
     result['text'] = full_text
     return result
+
+
+@print_timing
+def split_sentence(text):
+    """
+    Splits text on sentences (collocated-parts) based on re
+    :type text: unicode
+    :rtype: list
+    """
+    return re.split(_PUNKT_RE, text)
