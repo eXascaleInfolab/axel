@@ -14,7 +14,10 @@ EXPIRE = sys.maxint
 
 
 def get_global_word_set():
-    """Safely get global word set"""
+    """
+    Safely get global word set
+    :rtype: set
+    """
     if not cache.has_key(WORDS_SET):
         build_index()
     return cache.get(WORDS_SET)
