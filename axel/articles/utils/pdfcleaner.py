@@ -30,8 +30,9 @@ class PDFCleaner:
         0xFFFD: u''
     }
 
-    _NEW_LINE_REGEX = re.compile(r'-\n.*?<p>', re.S)
-    _STRIP_EMPTY_TAGS=re.compile(r'<[a-z]+/>')
+    _NEW_LINE_REGEX = re.compile(r'-\n</p>\n<p>')
+    _NEW_LINE_REGEX1 = re.compile(r'-\n')
+    _STRIP_EMPTY_TAGS=re.compile(r'<[a-z]+?/>')
 
     @classmethod
     def _extract_abstract(cls, contents):
@@ -71,6 +72,7 @@ class PDFCleaner:
         result_dict = {'text': '', 'abstract': '', 'title': ''}
         contents = contents.translate(cls._CHAR_REPLACEMENT)
         contents = cls._NEW_LINE_REGEX.sub('', contents)
+        contents = cls._NEW_LINE_REGEX1.sub('', contents)
         contents = cls._STRIP_EMPTY_TAGS.sub('', contents)
         # otherwise etree can't parse it
         contents = contents.replace('encoding="UTF-8"', '')
