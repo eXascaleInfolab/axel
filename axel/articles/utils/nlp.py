@@ -3,7 +3,7 @@ from collections import defaultdict
 import re
 import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
+from nltk.collocations import AbstractCollocationFinder
 from nltk.stem.porter import PorterStemmer
 from django.template import loader, Context
 
@@ -51,17 +51,17 @@ class Stemmer:
 
 _PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|]+')
 
-_STOPWORDS = ['per', 'could', 'like', 'better', 'community', 'within', 'via',
-              'around', 'seen', 'would', 'along', 'successful', 'may', 'without',
-              'including', 'given', 'today', 'yield', 'towards', 'whether']
-_STOPWORDS.extend(nltk.corpus.stopwords.words('english'))
+_STOPWORDS = {'per', 'could', 'like', 'better', 'community', 'within', 'via', 'around', 'seen',
+              'would', 'along', 'successful', 'may', 'without', 'including', 'given', 'today',
+              'yield', 'towards', 'whether'}
+_STOPWORDS.update(nltk.corpus.stopwords.words('english'))
 
 
 @print_timing
-def collocations(orig_text):
+def collocations(index):
     """
-    Extract collocations from text
-    :type orig_text: unicode
+    Extract collocations from n-gram index
+    :type index: dict
     :rtype list
     """
 
@@ -71,52 +71,49 @@ def collocations(orig_text):
     def filter_len(word):
         return len(word) < 3
 
-    tokens = nltk.wordpunct_tokenize(orig_text)
-    text = nltk.Text(tokens)
-    finder = BigramCollocationFinder.from_words(text)
+    # do filtration by frequency > 2
+    bigram_index = dict([(tuple(k.split()), v) for k, v in index.iteritems()
+                         if len(k.split()) == 2 and v > 2])
+
+    # Get abstract finder because we already have index
+    finder = AbstractCollocationFinder(None, bigram_index)
     # remove collocation from 2 equal words
     finder.apply_ngram_filter(lambda x, y: x == y)
-    # remove punctuation
+    # remove punctuation, len and stopwords
     finder.apply_word_filter(filter_punkt)
     finder.apply_word_filter(filter_len)
-    # Weird freq filter does not work properly :(
-    finder.apply_freq_filter(3)
-
     finder.apply_word_filter(lambda w: w in _STOPWORDS)
-    bigram_measures = BigramAssocMeasures()
-    collocs = finder.score_ngrams(bigram_measures.raw_freq)
 
-    # Now do real filtration by frequency
-    word_d_n = finder.word_fd.N()
-    filtered_collocs = [(int(score*word_d_n), name) for name, score in collocs
-                        if int(score*word_d_n) > 2]
+    filtered_collocs = finder.ngram_fd
 
-    filtered_collocs = _generate_possible_ngrams(filtered_collocs, orig_text)
+    # generate possible n-grams
+    filtered_collocs = _generate_possible_ngrams(filtered_collocs.items(), index)
 
     # join tuples
-    filtered_collocs = [(score, (' '.join(coloc))) for score, coloc in filtered_collocs]
+    filtered_collocs = [(score, (' '.join(colloc))) for colloc, score in filtered_collocs]
 
     return filtered_collocs
 
 
 @print_timing
-def _generate_possible_ngrams(collocs, text):
+def _generate_possible_ngrams(collocs, index):
     """
     Recursively generate all possible n-grams from list of bigrams
     Score is needed because we want to know if n-1 gram is present in the text itself
     or it is always part of n-gram.
-    :param collocs: list of bigrams
+    :param collocs: list of bigrams with scores
     :type collocs: list
+    :type index: dict
     """
     collocs = collocs[:]
     possible_ngrams = []
     total_len = len(collocs)
     for i in range(total_len):
-        score_i, bigram_i = collocs[i]
+        bigram_i, score_i = collocs[i]
         if not score_i:
             continue
         for j in range(i+1, total_len):
-            score_j, bigram_j = collocs[j]
+            bigram_j, score_j = collocs[j]
             # check score_j and score_i is ok
             if not score_j:
                 continue
@@ -139,19 +136,19 @@ def _generate_possible_ngrams(collocs, text):
             if bigram_s and bigram_e:
                 new_ngram = bigram_e+bigram_s[inter_len:]
                 # Check new colocation actually present in text
-                if ' '.join(new_ngram) in text:
-                    min_score = min((score_i, score_j))
-                    possible_ngrams.append((min_score, new_ngram))
-                    collocs[i] = (score_i-min_score, bigram_i)
-                    collocs[j] = (score_j-min_score, bigram_j)
+                if ' '.join(new_ngram) in index:
+                    min_score = index[' '.join(new_ngram)]
+                    possible_ngrams.append((new_ngram, min_score))
+                    collocs[i] = (bigram_i, score_i-min_score)
+                    collocs[j] = (bigram_j, score_j-min_score)
 
     # remove zero-score old collocations
-    collocs = [(score, bigram) for score, bigram in collocs if score != 0]
+    collocs = [(bigram, score) for bigram, score in collocs if score != 0]
     possible_ngrams.extend(collocs)
     if len(possible_ngrams) == len(collocs):
         return possible_ngrams
     else:
-        return _generate_possible_ngrams(possible_ngrams, text)
+        return _generate_possible_ngrams(possible_ngrams, index)
 
 
 @print_timing
