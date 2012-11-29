@@ -159,7 +159,6 @@ def stem_text(text, stem_func=Stemmer.stem_wordnet):
     :param stem_func: function that performs word stemming
     :returns: dict containing the results, in form {'title':..., 'abstract':..., 'text':...}
     """
-    import traceback
     result = PDFCleaner.clean_pdf_data(text)
     t = loader.select_template(('search/indexes/articles/article_text.txt', ))
     full_text = t.render(Context({'extracted': result}))
