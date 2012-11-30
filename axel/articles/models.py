@@ -1,7 +1,14 @@
+import json
 from django.db import models
 from django.db.models import F
 from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
+from haystack.query import SearchQuerySet
+import nltk
+
+from axel.articles.utils import nlp
+from axel.articles.utils.concepts_index import get_global_word_set
+from axel.stats.models import Collocations
 
 
 class Venue(models.Model):
@@ -37,6 +44,7 @@ class Article(models.Model):
     citations = models.IntegerField(default=0)
     pdf = models.FileField(upload_to=pdf_upload_to)
     stemmed_text = models.TextField(default='')
+    index = models.TextField(default='')
 
     class Meta:
         """Meta info"""
@@ -53,6 +61,17 @@ class Article(models.Model):
         colocs = list(self.articlecollocation_set.values_list('count', 'keywords'))
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
+
+    @property
+    def found_concepts(self):
+        """
+        Find already existing concepts for this article
+        :rtype dict
+        """
+        index = json.loads(self.index)
+        concept_set = Collocations.objects.values_list('keywords', flat=True)
+        intersection = set(concept_set).intersection(index.keys())
+        return dict([(c_name, index[c_name]) for c_name in intersection])
 
 
 class ArticleCollocation(models.Model):
@@ -95,7 +114,6 @@ class ArticleAuthor(models.Model):
         return "{0}: {1}".format(self.author, self.article)
 
 
-
 @receiver(pre_delete, sender=Article)
 def clean_collocations(sender, instance, **kwargs):
     """
@@ -116,10 +134,25 @@ def create_collocations(sender, instance, created, **kwargs):
     """
     from axel.stats.models import Collocations
     from axel.articles.utils import nlp
-    if instance.stemmed_text and not ArticleCollocation.objects.filter(article=instance).exists():
-        text = instance.stemmed_text
-        collocs = nlp.collocations(text)
-        for score, name in collocs:
+    if instance.index and not ArticleCollocation.objects.filter(article=instance).exists():
+        index = json.loads(instance.index)
+        # found collocs = found existing + found new
+        collocs = nlp.collocations(index)
+        # all existing collocs
+        all_collocs = set(Collocations.objects.values_list('keywords', flat=True))
+        # get all existing not found
+        old_collocs = all_collocs.difference(collocs.keys())
+        # get all new
+        new_collocs = set(collocs.keys()).difference(all_collocs)
+
+        # check for old collocations
+        for colloc in old_collocs:
+            if colloc in index:
+                ArticleCollocation.objects.get_or_create(keywords=colloc,
+                    article=instance, defaults={'count': index[colloc]})
+
+        # Create other collocations
+        for name, score in collocs.iteritems():
             acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
                 article=instance, defaults={'count': score})
             if not created:
@@ -129,3 +162,36 @@ def create_collocations(sender, instance, created, **kwargs):
             if not created:
                 colloc.count = F('count') + 1
                 colloc.save()
+
+        # Scan existing articles for new collocations
+        for colloc in new_collocs:
+            new_articles = SearchQuerySet().filter(content__exact=colloc)\
+                .exclude(id='articles.article.'+str(instance.id)).values_list('id', flat=True)
+            for article in Article.objects.filter(id__in=new_articles):
+                index = json.loads(article.index)
+                if colloc in index:
+                    ArticleCollocation.objects.create(keywords=colloc,
+                        article=article, count=index[colloc])
+
+
+#@receiver(post_save, sender=Article)
+#def create_acronyms(sender, instance, created, **kwargs):
+#    """
+#    Add acronyms and their disambiguations on create
+#    :type instance: Article
+#    """
+#    from axel.stats.models import Collocations
+#    from axel.articles.utils import nlp
+#    if instance.stemmed_text and not ArticleCollocation.objects.filter(article=instance).exists():
+#        text = instance.stemmed_text
+#        acronyms = nlp.acronyms(text)
+#        for abbr, name in collocs:
+#            acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
+#                article=instance, defaults={'count': score})
+#            if not created:
+#                acolloc.score = score
+#                acolloc.save()
+#            colloc, created = Collocations.objects.get_or_create(keywords=name)
+#            if not created:
+#                colloc.count = F('count') + 1
+#                colloc.save()
