@@ -90,7 +90,8 @@ def collocations(index):
     filtered_collocs = _generate_possible_ngrams(filtered_collocs, index)
 
     # join tuples
-    filtered_collocs = [(score, (' '.join(colloc))) for colloc, score in filtered_collocs.iteritems()]
+    filtered_collocs = dict([((' '.join(colloc), score)) for colloc, \
+                                                         score in filtered_collocs.iteritems()])
 
     return filtered_collocs
 
