@@ -4,10 +4,7 @@ from django.db.models import F
 from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 from haystack.query import SearchQuerySet
-import nltk
 
-from axel.articles.utils import nlp
-from axel.articles.utils.concepts_index import get_global_word_set
 from axel.stats.models import Collocations
 
 
@@ -127,7 +124,7 @@ def clean_collocations(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Article)
-def create_collocations(sender, instance, created, **kwargs):
+def create_collocations(instance):
     """
     Add collocations on create
     :type instance: Article
@@ -167,6 +164,7 @@ def create_collocations(sender, instance, created, **kwargs):
         for colloc in new_collocs:
             new_articles = SearchQuerySet().filter(content__exact=colloc)\
                 .exclude(id='articles.article.'+str(instance.id)).values_list('id', flat=True)
+            new_articles = [a_id.split('.')[-1] for a_id in new_articles]
             for article in Article.objects.filter(id__in=new_articles):
                 index = json.loads(article.index)
                 if colloc in index:
