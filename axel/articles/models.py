@@ -124,7 +124,7 @@ def clean_collocations(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Article)
-def create_collocations(instance):
+def create_collocations(sender, instance, **kwargs):
     """
     Add collocations on create
     :type instance: Article
