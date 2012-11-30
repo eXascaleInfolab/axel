@@ -42,6 +42,7 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         obj.pdf.close()
         result = nlp.stem_text(extracted_data['contents'])
         obj.stemmed_text = result['text']
+        obj.index = nlp.build_ngram_index(result['text'])
 
         if result['abstract']:
             obj.abstract = result['abstract']
