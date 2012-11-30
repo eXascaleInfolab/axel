@@ -87,10 +87,10 @@ def collocations(index):
     filtered_collocs = finder.ngram_fd
 
     # generate possible n-grams
-    filtered_collocs = _generate_possible_ngrams(filtered_collocs.items(), index)
+    filtered_collocs = _generate_possible_ngrams(filtered_collocs, index)
 
     # join tuples
-    filtered_collocs = [(score, (' '.join(colloc))) for colloc, score in filtered_collocs]
+    filtered_collocs = [(score, (' '.join(colloc))) for colloc, score in filtered_collocs.iteritems()]
 
     return filtered_collocs
 
@@ -101,19 +101,19 @@ def _generate_possible_ngrams(collocs, index):
     Recursively generate all possible n-grams from list of bigrams
     Score is needed because we want to know if n-1 gram is present in the text itself
     or it is always part of n-gram.
-    :param collocs: list of bigrams with scores
-    :type collocs: list
+    :param collocs: dict of bigrams with scores
+    :type collocs: dict
     :type index: dict
     """
-    collocs = collocs[:]
-    possible_ngrams = []
-    total_len = len(collocs)
+    collocs_items = collocs.items()
+    possible_ngrams = {}
+    total_len = len(collocs_items)
     for i in range(total_len):
-        bigram_i, score_i = collocs[i]
+        bigram_i, score_i = collocs_items[i]
         if not score_i:
             continue
         for j in range(i+1, total_len):
-            bigram_j, score_j = collocs[j]
+            bigram_j, score_j = collocs_items[j]
             # check score_j and score_i is ok
             if not score_j:
                 continue
@@ -136,15 +136,15 @@ def _generate_possible_ngrams(collocs, index):
             if bigram_s and bigram_e:
                 new_ngram = bigram_e+bigram_s[inter_len:]
                 # Check new colocation actually present in text
-                if ' '.join(new_ngram) in index:
+                if not (new_ngram in possible_ngrams or new_ngram in collocs) and ' '.join(new_ngram) in index :
                     min_score = index[' '.join(new_ngram)]
-                    possible_ngrams.append((new_ngram, min_score))
-                    collocs[i] = (bigram_i, score_i-min_score)
-                    collocs[j] = (bigram_j, score_j-min_score)
+                    possible_ngrams[new_ngram] = min_score
+                    collocs_items[i] = (bigram_i, score_i - min_score)
+                    collocs_items[j] = (bigram_j, score_j - min_score)
 
     # remove zero-score old collocations
-    collocs = [(bigram, score) for bigram, score in collocs if score != 0]
-    possible_ngrams.extend(collocs)
+    collocs = dict([(bigram, score) for bigram, score in collocs_items if score != 0])
+    possible_ngrams.update(collocs)
     if len(possible_ngrams) == len(collocs):
         return possible_ngrams
     else:
