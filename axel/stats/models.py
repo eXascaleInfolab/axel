@@ -9,6 +9,10 @@ class Collocations(models.Model):
     keywords = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
 
+    # boolean field to mark concept either correct or not,
+    # null when unknown
+    correct = models.NullBooleanField(blank=True)
+
     class Meta:
         """Meta info"""
         ordering = ['-count']
