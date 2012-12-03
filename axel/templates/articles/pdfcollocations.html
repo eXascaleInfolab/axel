@@ -28,7 +28,7 @@
     {% if collocations %}
         <h3>Collocation list</h3>
         <ul class="unstyled">
-        {% for score, collocation in collocations %}
+        {% for collocation, score in collocations %}
             <li>
                 {{ collocation }}
                 <span class="badge">{{ score }}</span>
