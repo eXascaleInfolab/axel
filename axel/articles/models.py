@@ -59,6 +59,50 @@ class Article(models.Model):
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
 
+    def create_collocations(self):
+        """Create collocation for the article"""
+        from axel.stats.models import Collocations
+        from axel.articles.utils import nlp
+        if self.index and not self.articlecollocation_set.exists():
+            index = json.loads(self.index)
+            # found collocs = found existing + found new
+            collocs = nlp.collocations(index)
+            # all existing collocs
+            all_collocs = set(Collocations.objects.values_list('keywords', flat=True))
+            # get all existing not found
+            old_collocs = all_collocs.difference(collocs.keys())
+            # get all new
+            new_collocs = set(collocs.keys()).difference(all_collocs)
+
+            # check for old collocations
+            for colloc in old_collocs:
+                if colloc in index:
+                    ArticleCollocation.objects.get_or_create(keywords=colloc,
+                        article=self, defaults={'count': index[colloc]})
+
+            # Create other collocations
+            for name, score in collocs.iteritems():
+                acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
+                    article=self, defaults={'count': score})
+                if not created:
+                    acolloc.score = score
+                    acolloc.save()
+                colloc, created = Collocations.objects.get_or_create(keywords=name)
+                if not created:
+                    colloc.count = F('count') + 1
+                    colloc.save()
+
+            # Scan existing articles for new collocations
+            for colloc in new_collocs:
+                new_articles = SearchQuerySet().filter(content__exact=colloc)\
+                .exclude(id='articles.article.'+str(self.id)).values_list('id', flat=True)
+                new_articles = [a_id.split('.')[-1] for a_id in new_articles]
+                for article in Article.objects.filter(id__in=new_articles):
+                    index = json.loads(article.index)
+                    if colloc in index:
+                        ArticleCollocation.objects.create(keywords=colloc,
+                            article=article, count=index[colloc])
+
 
 class ArticleCollocation(models.Model):
     """Model contains collocation for each article and their count"""
@@ -116,47 +160,7 @@ def create_collocations(sender, instance, **kwargs):
     Add collocations on create
     :type instance: Article
     """
-    from axel.stats.models import Collocations
-    from axel.articles.utils import nlp
-    if instance.index and not ArticleCollocation.objects.filter(article=instance).exists():
-        index = json.loads(instance.index)
-        # found collocs = found existing + found new
-        collocs = nlp.collocations(index)
-        # all existing collocs
-        all_collocs = set(Collocations.objects.values_list('keywords', flat=True))
-        # get all existing not found
-        old_collocs = all_collocs.difference(collocs.keys())
-        # get all new
-        new_collocs = set(collocs.keys()).difference(all_collocs)
-
-        # check for old collocations
-        for colloc in old_collocs:
-            if colloc in index:
-                ArticleCollocation.objects.get_or_create(keywords=colloc,
-                    article=instance, defaults={'count': index[colloc]})
-
-        # Create other collocations
-        for name, score in collocs.iteritems():
-            acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
-                article=instance, defaults={'count': score})
-            if not created:
-                acolloc.score = score
-                acolloc.save()
-            colloc, created = Collocations.objects.get_or_create(keywords=name)
-            if not created:
-                colloc.count = F('count') + 1
-                colloc.save()
-
-        # Scan existing articles for new collocations
-        for colloc in new_collocs:
-            new_articles = SearchQuerySet().filter(content__exact=colloc)\
-                .exclude(id='articles.article.'+str(instance.id)).values_list('id', flat=True)
-            new_articles = [a_id.split('.')[-1] for a_id in new_articles]
-            for article in Article.objects.filter(id__in=new_articles):
-                index = json.loads(article.index)
-                if colloc in index:
-                    ArticleCollocation.objects.create(keywords=colloc,
-                        article=article, count=index[colloc])
+    instance.create_collocations()
 
 
 #@receiver(post_save, sender=Article)
