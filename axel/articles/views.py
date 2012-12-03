@@ -1,5 +1,6 @@
-from django.http import Http404
-from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 from django.views.generic.edit import FormView
@@ -65,6 +66,16 @@ class ConceptAutocompleteView(JSONResponseMixin, TemplateView):
             context = {'results': results}
             return JSONResponseMixin.render_to_response(self, context)
         raise Http404
+
+
+@require_POST
+def article_rescan_view(request, article_id):
+    """Rescan article collocations and other things"""
+    article = get_object_or_404(Article, id=article_id)
+    article.articlecollocation_set.all().delete()
+    # re-populate collocation
+    article.create_collocations()
+    return HttpResponseRedirect(reverse('article_detail', args=[article_id]))
 
 
 @require_POST
