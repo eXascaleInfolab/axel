@@ -59,17 +59,6 @@ class Article(models.Model):
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
 
-    @property
-    def found_concepts(self):
-        """
-        Find already existing concepts for this article
-        :rtype dict
-        """
-        index = json.loads(self.index)
-        concept_set = Collocations.objects.values_list('keywords', flat=True)
-        intersection = set(concept_set).intersection(index.keys())
-        return dict([(c_name, index[c_name]) for c_name in intersection])
-
 
 class ArticleCollocation(models.Model):
     """Model contains collocation for each article and their count"""
@@ -111,16 +100,14 @@ class ArticleAuthor(models.Model):
         return "{0}: {1}".format(self.author, self.article)
 
 
-@receiver(pre_delete, sender=Article)
+@receiver(pre_delete, sender=ArticleCollocation)
 def clean_collocations(sender, instance, **kwargs):
     """
-    Reduce collocation count on delete
-    :type instance: Article
+    Reduce collocation count on delete for ArticleCollocation
+    :type instance: ArticleCollocation
     """
     from axel.stats.models import Collocations
-    collocations = ArticleCollocation.objects.filter(article=instance).values_list('keywords',
-                                                                                    flat=True)
-    Collocations.objects.filter(keywords__in=collocations).update(count=(F('count') - 1))
+    Collocations.objects.filter(keywords=instance.keywords).update(count=(F('count') - 1))
 
 
 @receiver(post_save, sender=Article)
