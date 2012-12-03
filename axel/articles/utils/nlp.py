@@ -139,9 +139,16 @@ def _generate_possible_ngrams(collocs, index):
                 # Check new colocation actually present in text
                 if not (new_ngram in possible_ngrams or new_ngram in collocs) and ' '.join(new_ngram) in index :
                     min_score = index[' '.join(new_ngram)]
+                    if min_score > min(score_i, score_j):
+                        continue
                     possible_ngrams[new_ngram] = min_score
-                    collocs_items[i] = (bigram_i, score_i - min_score)
+                    # need to update i since we are in the loop
+                    score_i = score_i - min_score
+                    collocs_items[i] = (bigram_i, score_i)
                     collocs_items[j] = (bigram_j, score_j - min_score)
+                    # break if we are exhausted
+                    if score_i == 0:
+                        break
 
     # remove zero-score old collocations
     collocs = dict([(bigram, score) for bigram, score in collocs_items if score != 0])
