@@ -36,7 +36,7 @@ class PDFUploadForm(forms.Form):
         full_text = nlp.stem_text(extracted_data['contents'], stem_func=stem_func)['text']
         collocs = nlp.collocations(nlp.build_ngram_index(full_text)).items()
         # order colocations
-        collocs.sort(reverse=True)
+        collocs.sort(key=lambda col: col[1], reverse=True)
         return collocs
 
 
