@@ -45,7 +45,13 @@ class ConceptIndexStats(TemplateView):
         context['histogram_data'] = str(counts.items()).replace('(', '[').replace(')', ']')
         context['word_count'] = len(global_word_set)
         context['concept_count'] = Collocations.objects.count()
+
+        word_counts = defaultdict(lambda: 0)
+        for collocation in Collocations.objects.values_list("keywords", flat=True):
+            word_counts[len(collocation.split())] += 1
+        context['col_word_len_hist'] = str(word_counts.items()).replace('(', '[').replace(')', ']')
         return context
+
 
 
 #@require_POST
