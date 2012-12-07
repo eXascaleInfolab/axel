@@ -129,12 +129,13 @@ INSTALLED_APPS = (
     # Uncomment to enable South for database migrations:
     'south',
     'haystack',
+    'test_collection',
 
     # Uncomment to enable exception logging using Sentry; you also need
     # to set SENTRY_DSN below
     #'raven.contrib.django',
     'axel.articles',
-    'axel.stats'
+    'axel.stats',
     )
 
 # Set to false to register haystack signals in tests
@@ -232,3 +233,6 @@ if 'raven.contrib.django' in INSTALLED_APPS and SENTRY_DSN:
 else:
     # Use default Django logging setup
     LOGGING = BASE_LOGGING
+
+
+TEST_COLLECTION_MODELS = ("axel.stats.models.Collocations",)

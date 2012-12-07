@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     (r'^search/', include('haystack.urls')),
     (r'^articles/', include('axel.articles.urls')),
     (r'^stats/', include('axel.stats.urls')),
+    (r'^testc/', include('test_collection.urls')),
     url(r'^$', ConceptualSearchView.as_view(), name='main')
 )
