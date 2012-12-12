@@ -83,8 +83,13 @@ class PDFCleaner:
         contents = strip_tags(contents).strip().split('\n')
         contents = [line for line in contents if line]
 
-        result_dict['title'] = contents[0].strip()
-        del contents[0]
+        title_start = 0
+        title = ''
+        while not len(title) > 5:
+            title_start += 1
+            title = contents[title_start].strip()
+        result_dict['title'] = title
+        del contents[0: title_start + 1]
 
         result_dict['abstract'], abs_end_index = cls._extract_abstract(contents)
 
