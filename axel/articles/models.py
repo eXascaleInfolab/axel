@@ -44,7 +44,6 @@ class Article(models.Model):
     class Meta:
         """Meta info"""
         ordering = ['-year']
-        unique_together = ('title', 'year', 'venue')
 
     def __unicode__(self):
         """String representation"""
@@ -96,16 +95,12 @@ class Article(models.Model):
                 if not created:
                     acolloc.score = score
                     acolloc.save()
-                colloc, created = self.CollocationModel.objects.get_or_create(keywords=name)
-                if not created:
-                    colloc.count = F('count') + 1
-                    colloc.save()
 
             # Scan existing articles for new collocations
             for colloc in new_collocs:
                 new_articles = SearchQuerySet().filter(content__exact=colloc)\
                 .exclude(id='articles.article.'+str(self.id)).values_list('id', flat=True)
-                new_articles = [a_id.split('.')[-1] for a_id in new_articles]
+                new_articles = set([a_id.split('.')[-1] for a_id in new_articles])
                 for article in Article.objects.filter(id__in=new_articles):
                     index = json.loads(article.index)
                     if colloc in index:
@@ -159,8 +154,21 @@ def clean_collocations(sender, instance, **kwargs):
     Reduce collocation count on delete for ArticleCollocation
     :type instance: ArticleCollocation
     """
-    from axel.stats.models import Collocations
-    Collocations.objects.filter(keywords=instance.keywords).update(count=(F('count') - 1))
+    instance.article.CollocationModel.objects.filter(keywords=instance.keywords).update(count=(F('count') - 1))
+
+
+@receiver(post_save, sender=ArticleCollocation)
+def update_global_collocations(sender, instance, created, **kwargs):
+    """
+    Increment collocation count on create for ArticleCollocation
+    :type instance: ArticleCollocation
+    """
+    if created:
+        colloc, created_local = instance.article.CollocationModel.objects.get_or_create(
+            keywords=instance.keywords)
+        if not created_local:
+            colloc.count = F('count') + 1
+            colloc.save()
 
 
 @receiver(post_save, sender=Article)
