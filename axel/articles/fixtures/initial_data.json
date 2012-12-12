@@ -70,5 +70,13 @@
             "name": "Special Interest Group on Management of Data",
             "acronym": "SIGMOD"
         }
+    },
+    {
+        "pk": 10,
+        "model": "articles.venue",
+        "fields": {
+            "name": "arXiv papers",
+            "acronym": "ARXIV"
+        }
     }
 ]
