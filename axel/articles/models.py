@@ -5,8 +5,6 @@ from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 from haystack.query import SearchQuerySet
 
-from axel.stats.models import Collocations
-
 
 class Venue(models.Model):
     """Describes article venue"""
@@ -59,16 +57,27 @@ class Article(models.Model):
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
 
+    @property
+    def CollocationModel(self):
+        """
+        Get correct collocation model according to the desired split
+        :rtype CommonCollocationInfo
+        """
+        from axel.stats.models import Collocations, SWCollocations
+        if self.venue.acronym == 'ARXIV':
+            return SWCollocations
+        else:
+            return Collocations
+
     def create_collocations(self):
         """Create collocation for the article"""
-        from axel.stats.models import Collocations
         from axel.articles.utils import nlp
         if self.index and not self.articlecollocation_set.exists():
             index = json.loads(self.index)
             # found collocs = found existing + found new
             collocs = nlp.collocations(index)
             # all existing collocs
-            all_collocs = set(Collocations.objects.values_list('keywords', flat=True))
+            all_collocs = set(self.CollocationModel.objects.values_list('keywords', flat=True))
             # get all existing not found
             old_collocs = all_collocs.difference(collocs.keys())
             # get all new
@@ -87,7 +96,7 @@ class Article(models.Model):
                 if not created:
                     acolloc.score = score
                     acolloc.save()
-                colloc, created = Collocations.objects.get_or_create(keywords=name)
+                colloc, created = self.CollocationModel.objects.get_or_create(keywords=name)
                 if not created:
                     colloc.count = F('count') + 1
                     colloc.save()
