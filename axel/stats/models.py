@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from axel.articles.utils.concepts_index import update_index
 
 
-class Collocations(models.Model):
+class CommonCollocationInfo(models.Model):
     """Aggregated collocation statistics model"""
     keywords = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
@@ -15,12 +15,23 @@ class Collocations(models.Model):
 
     class Meta:
         """Meta info"""
+        abstract = True
         ordering = ['-count']
 
     def __unicode__(self):
         """String representation"""
         return "{0}".format(self.keywords)
 
+
+class Collocations(CommonCollocationInfo):
+    """Aggregated collocation statistics model for Computer Science"""
+
+
+class SWCollocations(CommonCollocationInfo):
+    """
+    collocation for ScienceWISE
+    everything is the same except table name
+    """
 
 
 @receiver(post_save, sender=Collocations)

@@ -245,4 +245,4 @@ else:
     LOGGING = BASE_LOGGING
 
 
-TEST_COLLECTION_MODELS = ("axel.stats.models.Collocations",)
+TEST_COLLECTION_MODELS = ("axel.stats.models.Collocations", "axel.stats.models.SWCollocations")
