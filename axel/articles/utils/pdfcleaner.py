@@ -84,7 +84,7 @@ class PDFCleaner:
         contents = [line for line in contents if line]
 
         title_start = 0
-        title = ''
+        title = contents[title_start]
         while not len(title) > 5:
             title_start += 1
             title = contents[title_start].strip()
