@@ -53,7 +53,7 @@ _PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|]+')
 
 _STOPWORDS = {'per', 'could', 'like', 'better', 'community', 'within', 'via', 'around', 'seen',
               'would', 'along', 'successful', 'may', 'without', 'including', 'given', 'today',
-              'yield', 'towards', 'whether', 'among', 'also'}
+              'yield', 'towards', 'whether', 'among', 'also', 'though'}
 _STOPWORDS.update(nltk.corpus.stopwords.words('english'))
 
 
