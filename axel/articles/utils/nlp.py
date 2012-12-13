@@ -115,7 +115,7 @@ def _generate_possible_ngrams(collocs, index):
             continue
         for j in range(i+1, total_len):
             bigram_j, score_j = collocs_items[j]
-            # check score_j and score_i is ok
+            # check score_j and score_i are positive
             if not score_j:
                 continue
 
@@ -128,6 +128,7 @@ def _generate_possible_ngrams(collocs, index):
             if inter_len == min((len(bigram_i), len(bigram_j))):
                 continue
 
+            # determine how to merge n-grams
             bigram_s, bigram_e = None, None
             if set(bigram_i[:inter_len])==inter and set(bigram_j[-inter_len:])==inter:
                 bigram_s, bigram_e = bigram_i, bigram_j
