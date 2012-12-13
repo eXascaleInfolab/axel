@@ -151,8 +151,9 @@ def _generate_possible_ngrams(collocs, index):
                     if score_i == 0:
                         break
 
-    # remove zero-score old collocations
-    collocs = dict([(bigram, score) for bigram, score in collocs_items if score != 0])
+    # create new dict, we do not remove zero-score collocations here since we will use them to
+    # diff existing collocations
+    collocs = dict([(bigram, score) for bigram, score in collocs_items])
     possible_ngrams.update(collocs)
     if len(possible_ngrams) == len(collocs):
         return possible_ngrams

@@ -75,9 +75,9 @@ class Article(models.Model):
             index = json.loads(self.index)
             # found collocs = found existing + found new
             collocs = nlp.collocations(index)
-            # all existing collocs
+            # all previously existing collocs
             all_collocs = set(self.CollocationModel.objects.values_list('keywords', flat=True))
-            # get all existing not found
+            # get all existing not found, (those that have score <= 2)
             old_collocs = all_collocs.difference(collocs.keys())
             # get all new
             new_collocs = set(collocs.keys()).difference(all_collocs)
@@ -90,11 +90,12 @@ class Article(models.Model):
 
             # Create other collocations
             for name, score in collocs.iteritems():
-                acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
-                    article=self, defaults={'count': score})
-                if not created:
-                    acolloc.score = score
-                    acolloc.save()
+                if score > 0:
+                    acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
+                        article=self, defaults={'count': score})
+                    if not created:
+                        acolloc.score = score
+                        acolloc.save()
 
             # Scan existing articles for new collocations
             for colloc in new_collocs:
