@@ -22,3 +22,11 @@ def print_timing(func):
         return print_timing_wrapper
     else:
         return func
+
+
+def get_context(text, word):
+    """Get context from text"""
+    word_start = text.find(word)
+    context_start = max(word_start - 50, 0)
+    context_end = min(len(text), word_start + len(word) + 50)
+    return text[context_start:context_end]
