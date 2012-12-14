@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -30,6 +31,30 @@ class CommonCollocationInfo(models.Model):
         article =  ArticleCollocation.objects.filter(keywords=self.keywords)[0].article
         return get_context(article.stemmed_text, self.keywords).replace(self.keywords,
             '<span class="error">{0}</span>'.format(self.keywords))
+
+    @property
+    def all_contexts(self):
+        """Get all contexts for detailed view page"""
+        contexts = []
+        for text in  ArticleCollocation.objects.filter(keywords=self.keywords).values_list(
+            'article__stemmed_text', flat=True):
+            contexts.append(get_context(text, self.keywords).replace(self.keywords,
+                '<span class="error">{0}</span>'.format(self.keywords)))
+        return contexts
+
+    @property
+    def occur_distribution(self):
+        """
+        :rtype: str
+        :returns: histogram data in a string form suitable for highcharts
+        """
+        counts = defaultdict(lambda: 0)
+        for count in ArticleCollocation.objects.filter(keywords=self.keywords).values_list('count',
+                                flat=True):
+            counts[count] += 1
+
+        histogram_data = str(counts.items()).replace('(', '[').replace(')', ']')
+        return histogram_data
 
 
 class Collocations(CommonCollocationInfo):

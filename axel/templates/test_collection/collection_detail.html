@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block extra-head %}
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            new Highcharts.Chart({
+                chart:{
+                    renderTo:'occur_distribution',
+                    type:'column',
+                    marginTop:40
+                },
+                title:{
+                    text:''
+                },
+                xAxis:{
+                    title:{
+                        text:'Number of occurrences',
+                        style:{
+                            fontSize:'24px'
+                        }
+                    },
+                    labels:{
+                        style:{
+                            fontSize:'18px'
+                        },
+                        y:20
+                    }
+                },
+                yAxis:{
+                    title:{
+                        text:'Count',
+                        style:{
+                            fontSize:'24px'
+                        }
+                    },
+                    labels:{
+                        style:{
+                            fontSize:'18px'
+                        }
+                    }
+                },
+                tooltip:{
+                    formatter:function () {
+                        return '' +
+                                this.x + ': ' + this.y;
+                    }
+                },
+                plotOptions:{
+                    column:{
+                        pointPadding:0,
+                        borderWidth:0,
+                        groupPadding:0.1
+                    }
+                },
+                series:[
+                    {
+                        name:'Total distribution',
+                        data: {{ object.occur_distribution }}
+                    }
+                ],
+                credits:false
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h3>Model: {{ model_name }}, {{ object }}</h3>
+    <p>
+    {# full score formula #}
+    </p>
+    <div id="occur_distribution">
+    {# numbers of occurrences distribution #}
+    </div>
+    <div>
+        {# TODO: distribution of participation in other words #}
+    </div>
+
+    <h4>Contexts</h4>
+    <ul>
+        {% for context in object.all_contexts %}
+            <li>{{ context|safe }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
