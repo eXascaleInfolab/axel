@@ -1,0 +1,6 @@
+{% load url from future %}
+<a href="{% url "testcollection_model_detail" model_name object.id %}">{{ object }}</a>
+<span class="badge">{{ object.count }}</span>
+<div class="alert">
+    {{ object.context|safe }}
+</div>
