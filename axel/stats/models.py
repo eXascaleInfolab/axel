@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from axel.articles.models import ArticleCollocation
 from axel.articles.utils.concepts_index import update_index
+import axel.articles.utils.sw_indexes as sw
 from axel.libs.utils import get_context
 
 
@@ -41,6 +42,10 @@ class CommonCollocationInfo(models.Model):
             contexts.append(get_context(text, self.keywords).replace(self.keywords,
                 '<span class="error">{0}</span>'.format(self.keywords)))
         return contexts
+
+    @property
+    def partial_match_score(self):
+        return sw.get_concept_score(self.keywords)
 
     @property
     def occur_distribution(self):
