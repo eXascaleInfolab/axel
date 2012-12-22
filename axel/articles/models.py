@@ -1,6 +1,6 @@
 import json
 from django.db import models
-from django.db.models import F
+from django.db.models import F, Sum
 from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 from haystack.query import SearchQuerySet
@@ -77,13 +77,12 @@ class Article(models.Model):
             collocs = nlp.collocations(index)
             # all previously existing collocs
             all_collocs = set(self.CollocationModel.objects.values_list('keywords', flat=True))
-            # get all existing not found, (those that have score <= 2)
-            old_collocs = all_collocs.difference(collocs.keys())
             # get all new
             new_collocs = set(collocs.keys()).difference(all_collocs)
 
-            # check for old collocations
-            for colloc in old_collocs:
+            # get all existing not found, (those that have score <= 2)
+            # we do not need to check <=2 condition here, is should be automatically satisfied
+            for colloc in all_collocs.difference(collocs.keys()):
                 if colloc in index:
                     ArticleCollocation.objects.get_or_create(keywords=colloc,
                         article=self, defaults={'count': index[colloc]})
@@ -104,9 +103,26 @@ class Article(models.Model):
                 new_articles = set([a_id.split('.')[-1] for a_id in new_articles])
                 for article in Article.objects.filter(id__in=new_articles):
                     index = json.loads(article.index)
+                    # Check that collocation is in index and
+                    # second check that we don't already have bigger collocations
                     if colloc in index:
-                        ArticleCollocation.objects.create(keywords=colloc,
-                            article=article, count=index[colloc])
+                        correct_count = index[colloc] - int(article.articlecollocation_set.filter(
+                            keywords__contains=colloc).aggregate(count=Sum('count'))['count'] or 0)
+                        if correct_count > 0:
+                            if len(colloc.split()) > 2:
+                                smaller_collocs = nlp.build_ngram_index(colloc)
+                                del smaller_collocs[colloc]
+                                for s_colloc in smaller_collocs:
+                                    try:
+                                        ac = ArticleCollocation.objects.get(article=article,
+                                            keywords=s_colloc)
+                                    except ArticleCollocation.DoesNotExist:
+                                        pass
+                                    else:
+                                        ac.count -= correct_count
+                                        ac.save()
+                            ArticleCollocation.objects.create(keywords=colloc,
+                                article=article, count=correct_count)
 
 
 class ArticleCollocation(models.Model):
@@ -166,10 +182,15 @@ def update_global_collocations(sender, instance, created, **kwargs):
     """
     if created:
         colloc, created_local = instance.article.CollocationModel.objects.get_or_create(
-            keywords=instance.keywords)
+            keywords=instance.keywords, defaults={'count': instance.count})
         if not created_local:
-            colloc.count = F('count') + 1
+            colloc.count = F('count') + instance.count
             colloc.save()
+    else:
+        # Recalculate count otherwise
+        colloc = instance.article.CollocationModel.objects.get(keywords=instance.keywords)
+        colloc.count = sender.objects.filter(keywords=instance.keywords).aggregate(count=Sum('count'))['count']
+        colloc.save()
 
 
 @receiver(post_save, sender=Article)
