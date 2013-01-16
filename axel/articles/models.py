@@ -121,6 +121,9 @@ class Article(models.Model):
                                     else:
                                         ac.count -= correct_count
                                         ac.save()
+                                        # delete if we have reached zero
+                                        if ac.count == 0:
+                                            ac.delete()
                             ArticleCollocation.objects.create(keywords=colloc,
                                 article=article, count=correct_count)
 
@@ -171,8 +174,12 @@ def clean_collocations(sender, instance, **kwargs):
     Reduce collocation count on delete for ArticleCollocation
     :type instance: ArticleCollocation
     """
-    instance.article.CollocationModel.objects.filter(keywords=instance.keywords).update(count=(F(
-        'count') - instance.count))
+    colloc = instance.article.CollocationModel.objects.get(keywords=instance.keywords)
+    colloc.count -= instance.count
+    if colloc.count == 0:
+        colloc.delete()
+    else:
+        colloc.save()
 
 
 @receiver(post_save, sender=ArticleCollocation)
