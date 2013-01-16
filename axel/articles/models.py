@@ -171,7 +171,8 @@ def clean_collocations(sender, instance, **kwargs):
     Reduce collocation count on delete for ArticleCollocation
     :type instance: ArticleCollocation
     """
-    instance.article.CollocationModel.objects.filter(keywords=instance.keywords).update(count=(F('count') - 1))
+    instance.article.CollocationModel.objects.filter(keywords=instance.keywords).update(count=(F(
+        'count') - instance.count))
 
 
 @receiver(post_save, sender=ArticleCollocation)
