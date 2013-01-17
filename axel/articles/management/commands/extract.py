@@ -7,7 +7,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 
 from axel.articles.utils import nlp
-from axel.articles.utils.nlp import Stemmer, build_ngram_index
+from axel.articles.utils.nlp import Stemmer, build_ngram_index, _update_ngram_counts
 
 
 class Command(BaseCommand):
@@ -50,19 +50,8 @@ class Command(BaseCommand):
         for text in (pdf_text, pdfx_text, texpp_text):
             #build n-gram index for each result
             index = build_ngram_index(text)
-            all_concepts = list(ontology.intersection(index.keys()))
-            all_concepts.sort(key=lambda x: len(x))
-            concept_counts = {}
-            for c in all_concepts:
-                concept_counts[c] = index[c]
-
-            # normalize quantities
-            for c in reversed(all_concepts):
-                if concept_counts[c] == 0:
-                    continue
-                for c1 in sorted(build_ngram_index(c).keys(), key=lambda x: len(x))[:-1]:
-                    if c1 in concept_counts:
-                        concept_counts[c1] -= concept_counts[c]
+            all_concepts = set([concept.split() for concept in (ontology.intersection(index.keys()))])
+            concept_counts = _update_ngram_counts(all_concepts, index)
 
             concept_counts = dict([c for c in concept_counts.items() if c[1]>0])
             comparing_counts.append(set(concept_counts.keys()))
