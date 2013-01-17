@@ -79,7 +79,7 @@ class PDFCleaner:
 
         #extract body which is article text
         body = etree.fromstring(contents).find('.//{http://www.w3.org/1999/xhtml}body')
-        contents = etree.tostring(body)
+        contents = etree.tostring(body, encoding=unicode)
         contents = strip_tags(contents).strip().split('\n')
         contents = [line for line in contents if line]
 
