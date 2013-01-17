@@ -139,7 +139,7 @@ def _generate_possible_ngrams(collocs, index):
                 new_ngram = bigram_e+bigram_s[inter_len:]
                 # Check new colocation actually present in text
                 if not (new_ngram in possible_ngrams or new_ngram in collocs) and ' '.join(new_ngram) in index :
-                    min_score = min(score_i, score_j)
+                    min_score = min(score_i, score_j, index[' '.join(new_ngram)])
                     possible_ngrams[new_ngram] = min_score
                     # need to update i since we are in the loop
                     score_i -= min_score
