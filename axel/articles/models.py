@@ -104,28 +104,14 @@ class Article(models.Model):
                     index = json.loads(article.index)
                     # Check that collocation is in index and
                     # second check that we don't already have bigger collocations
+                    # This is incorrect to run alone, we need a full update after new collocations
+                    # found!!!!!!!
                     if colloc in index:
                         correct_count = index[colloc] - int(article.articlecollocation_set.filter(
                             keywords__contains=colloc).aggregate(count=Sum('count'))['count'] or 0)
                         if correct_count > 0:
-                            if len(colloc.split()) > 2:
-                                smaller_collocs = nlp.build_ngram_index(colloc)
-                                del smaller_collocs[colloc]
-                                for s_colloc in smaller_collocs:
-                                    try:
-                                        ac = ArticleCollocation.objects.get(article=article,
-                                            keywords=s_colloc)
-                                    except ArticleCollocation.DoesNotExist:
-                                        pass
-                                    else:
-                                        ac.count -= correct_count
-                                        ac.save()
-                                        # delete if we have reached zero
-                                        if ac.count == 0:
-                                            ac.delete()
                             ArticleCollocation.objects.create(keywords=colloc,
                                 article=article, count=correct_count)
-                            # TODO: update quantities completely
 
 
 class ArticleCollocation(models.Model):
@@ -176,10 +162,7 @@ def clean_collocations(sender, instance, **kwargs):
     """
     colloc = instance.article.CollocationModel.objects.get(keywords=instance.keywords)
     colloc.count -= instance.count
-    if colloc.count == 0:
-        colloc.delete()
-    else:
-        colloc.save()
+    colloc.save()
 
 
 @receiver(post_save, sender=ArticleCollocation)
