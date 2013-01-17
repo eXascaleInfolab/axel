@@ -1,13 +1,18 @@
 {% load url from future %}
 <div class="object">
-{% with partial_match_score=object.partial_match_score %}
 <a href="{% url "testcollection_model_detail" model_name object.id %}">{{ object }}</a>
 <span class="badge">Total count: {{ object.count }}</span>
+    {% with partial_match_score=object.partial_match_score %}
 {% if partial_match_score %}
     <span class="badge badge-success">ONT Partial match: {{ partial_match_score }}</span>
 {% endif %}
+{% endwith %}
+{% with often_consumed=object.often_consumed %}
+    {% if often_consumed %}
+    <span class="badge badge-important">Often consumed: {{ often_consumed }}</span>
+    {% endif %}
+{% endwith %}
 <div class="alert alert-info">
     {{ object.context|safe }}
 </div>
-{% endwith %}
 </div>

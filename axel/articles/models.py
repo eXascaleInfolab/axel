@@ -118,7 +118,6 @@ class Article(models.Model):
                                     except ArticleCollocation.DoesNotExist:
                                         pass
                                     else:
-                                        # TODO: save to previously consumed to decrease score
                                         ac.count -= correct_count
                                         ac.save()
                                         # delete if we have reached zero
