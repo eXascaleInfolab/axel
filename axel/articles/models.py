@@ -151,7 +151,7 @@ class ArticleAuthor(models.Model):
     author = models.ForeignKey(Author)
 
     def __unicode__(self):
-        return "{0}: {1}".format(self.author, self.article)
+        return u'{0}: {1}'.format(self.author, self.article)
 
 
 @receiver(pre_delete, sender=ArticleCollocation)

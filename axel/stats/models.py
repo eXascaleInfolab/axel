@@ -28,7 +28,7 @@ class CommonCollocationInfo(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return "{0}".format(self.keywords)
+        return u'{0}'.format(self.keywords)
 
     @property
     def context(self):
