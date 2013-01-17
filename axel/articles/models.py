@@ -82,10 +82,9 @@ class Article(models.Model):
 
             # get all existing not found, (those that have score <= 2)
             # we do not need to check <=2 condition here, is should be automatically satisfied
-            for colloc in all_collocs.difference(collocs.keys()):
-                if colloc in index:
-                    ArticleCollocation.objects.get_or_create(keywords=colloc,
-                        article=self, defaults={'count': index[colloc]})
+            for colloc in all_collocs.difference(collocs.keys()).intersection(index.keys()):
+                ArticleCollocation.objects.get_or_create(keywords=colloc,
+                    article=self, defaults={'count': index[colloc]})
 
             # Create other collocations
             for name, score in collocs.iteritems():
@@ -119,6 +118,7 @@ class Article(models.Model):
                                     except ArticleCollocation.DoesNotExist:
                                         pass
                                     else:
+                                        # TODO: save to previously consumed to decrease score
                                         ac.count -= correct_count
                                         ac.save()
                                         # delete if we have reached zero
@@ -126,6 +126,7 @@ class Article(models.Model):
                                             ac.delete()
                             ArticleCollocation.objects.create(keywords=colloc,
                                 article=article, count=correct_count)
+                            # TODO: update quantities completely
 
 
 class ArticleCollocation(models.Model):
