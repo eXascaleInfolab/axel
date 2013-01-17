@@ -35,7 +35,7 @@ class CommonCollocationInfo(models.Model):
         """Get random context for collocation, used in collocation list view"""
         article =  ArticleCollocation.objects.filter(keywords=self.keywords)[0].article
         return get_context(article.stemmed_text, self.keywords).replace(self.keywords,
-            '<span class="error">{0}</span>'.format(self.keywords))
+            u'<span class="error">{0}</span>'.format(self.keywords))
 
     @property
     def all_contexts(self):
@@ -44,7 +44,7 @@ class CommonCollocationInfo(models.Model):
         for text in  ArticleCollocation.objects.filter(keywords=self.keywords).values_list(
             'article__stemmed_text', flat=True):
             contexts.append(get_context(text, self.keywords).replace(self.keywords,
-                '<span class="error">{0}</span>'.format(self.keywords)))
+                u'<span class="error">{0}</span>'.format(self.keywords)))
         return contexts
 
     @property
