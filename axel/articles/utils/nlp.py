@@ -87,37 +87,54 @@ def collocations(index):
     filtered_collocs = finder.ngram_fd
 
     # generate possible n-grams
-    filtered_collocs = _generate_possible_ngrams(filtered_collocs, index)
-
-    # join tuples
-    filtered_collocs = dict([((' '.join(colloc), score)) for colloc, \
-                                                         score in filtered_collocs.iteritems()])
-
+    filtered_collocs = _update_ngram_counts(_generate_possible_ngrams(filtered_collocs, index),
+                                                                                        index)
     return filtered_collocs
+
+
+@print_timing
+def _update_ngram_counts(ngrams, index):
+    """
+    Create a dict and fill in the correct counts for all the ngrams using ngram index
+    :type index: dict
+    :type ngrams: set
+    :rtype: dict
+    """
+    ngrams = [u' '.join(ngram) for ngram in ngrams]
+    # Sort ngrams from max length to min
+    ngrams.sort(key=lambda ngram: len(ngram), reverse=True)
+
+    # pre-fill ngram counts with the absolute values from the index
+    ngram_counts = {}
+    for ngram in ngrams:
+        ngram_counts[ngram] = index[ngram]
+
+    for ngram in ngrams:
+        if ngram_counts[ngram] == 0:
+            continue
+        for ngram1 in sorted(build_ngram_index(ngram).keys(), key=lambda x: len(x))[:-1]:
+            if ngram1 in ngram_counts:
+                ngram_counts[ngram1] -= ngram_counts[ngram]
+    return ngram_counts
 
 
 @print_timing
 def _generate_possible_ngrams(collocs, index):
     """
-    Recursively generate all possible n-grams from list of bigrams
-    Score is needed because we want to know if n-1 gram is present in the text itself
-    or it is always part of n-gram.
-    :param collocs: dict of bigrams with scores
-    :type collocs: dict
+    Recursively generate all possible n-grams from list of bigrams, without counts,
+    we will add them later
+    :param collocs: set of bigrams
+    :param index: ngram index of the text with counts
+    :type collocs: set
     :type index: dict
     """
-    collocs_items = collocs.items()
-    possible_ngrams = {}
+    possible_ngrams = set()
+    collocs_items = list(collocs)
     total_len = len(collocs_items)
     for i in range(total_len):
-        bigram_i, score_i = collocs_items[i]
-        if not score_i:
-            continue
+        bigram_i = collocs_items[i]
         for j in range(i+1, total_len):
-            bigram_j, score_j = collocs_items[j]
-            # check score_j and score_i are positive
-            if not score_j:
-                continue
+            bigram_j = collocs_items[j]
 
             inter = set(bigram_i).intersection(bigram_j)
             inter_len = len(inter)
@@ -138,20 +155,10 @@ def _generate_possible_ngrams(collocs, index):
             if bigram_s and bigram_e:
                 new_ngram = bigram_e+bigram_s[inter_len:]
                 # Check new colocation actually present in text
-                if not (new_ngram in possible_ngrams or new_ngram in collocs) and ' '.join(new_ngram) in index :
-                    min_score = min(score_i, score_j, index[' '.join(new_ngram)])
-                    possible_ngrams[new_ngram] = min_score
-                    # need to update i since we are in the loop
-                    score_i -= min_score
-                    collocs_items[i] = (bigram_i, score_i)
-                    collocs_items[j] = (bigram_j, score_j - min_score)
-                    # break if we are exhausted
-                    if score_i == 0:
-                        break
+                if not (new_ngram in collocs) and ' '.join(new_ngram) in index :
+                    possible_ngrams.add(new_ngram)
 
-    # create new dict, we do not remove zero-score collocations here since we will use them to
-    # diff existing collocations
-    collocs = dict([(bigram, score) for bigram, score in collocs_items])
+    # create new set
     possible_ngrams.update(collocs)
     if len(possible_ngrams) == len(collocs):
         return possible_ngrams
