@@ -6,6 +6,7 @@ django-indexer==0.3.0
 django-paging==0.2.4
 django-sentry==1.13.5
 django-templatetag-sugar==0.1
+django-activelink>=0.3
 eventlet==0.9.17
 greenlet==0.4.0
 lockfile==0.9.1
@@ -21,5 +22,6 @@ nltk>=2.0.3
 numpy>=1.6.2
 pygraphviz>=1.1
 networkx>=1.7
+ipython
 -e git+https://github.com/toastdriven/django-haystack.git@13e5a4926992581106ed14db1f8dd58a897c9a76#egg=django_haystack-dev
 -e git+https://github.com/dragoon/django-test-collection.git#egg=django_test_collection-dev
