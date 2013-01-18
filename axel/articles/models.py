@@ -47,7 +47,7 @@ class Article(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return "{0} {1}: {2}".format(self.venue, self.year, self.title)
+        return u"{0} {1}: {2}".format(self.venue, self.year, self.title)
 
     @property
     def collocations(self):
@@ -127,7 +127,7 @@ class ArticleCollocation(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return "{0}: {1}".format(self.article, self.keywords)
+        return u"{0}: {1}".format(self.article, self.keywords)
 
 
 class Author(models.Model):
