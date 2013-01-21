@@ -30,3 +30,12 @@ def get_context(text, word):
     context_start = max(word_start - 50, 0)
     context_end = min(len(text), word_start + len(word) + 50)
     return text[context_start:context_end]
+
+
+def print_progress(iterable, percent_step=1):
+    total = float(len(iterable))
+    abs_step = int((total * percent_step)/100)
+    for i, obj in enumerate(iterable):
+        if i and not i % abs_step:
+            print "{0:.2%} processed".format(i/total)
+        yield obj
