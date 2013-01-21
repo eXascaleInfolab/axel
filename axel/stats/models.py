@@ -48,6 +48,11 @@ class CommonCollocationInfo(models.Model):
         return contexts
 
     @property
+    def count_score(self):
+        """Proxy to the count, need for test collection app to pick up the _score"""
+        return self.count
+
+    @property
     def partial_match_score(self):
         """
         Sum of the counts of words from a given collocation in the ontology
@@ -75,7 +80,7 @@ class CommonCollocationInfo(models.Model):
         return score
 
     @property
-    def often_consumed(self):
+    def often_consumed_score(self):
         """How often does an ngram gets consumed by a bigger one"""
         score = SWCollocations.objects.filter(keywords__contains=self.keywords).aggregate(
             count=Sum('count'))['count']
