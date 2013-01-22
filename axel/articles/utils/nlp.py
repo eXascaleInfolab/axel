@@ -13,13 +13,16 @@ from axel.libs.utils import print_timing
 class Stemmer:
     """Collection of stemmers"""
 
+    # We need custom expr to keep dashes for example
+    TOKENIZE_REGEXP = r'[\w-]+|[^\w\s]+'
+
     @classmethod
     def stem_wordnet(cls, text):
         """WordNet lemmatizer"""
         lmtzr = WordNetLemmatizer()
         # split on whitespace
         result = []
-        for word in nltk.wordpunct_tokenize(text):
+        for word in nltk.regexp_tokenize(text, cls.TOKENIZE_REGEXP):
             if word.istitle():
                 word = word.lower()
             result.append(lmtzr.lemmatize(word))
@@ -31,7 +34,7 @@ class Stemmer:
         """Porter stemmer"""
         stemmer = PorterStemmer()
         result = []
-        for word in nltk.wordpunct_tokenize(text):
+        for word in nltk.regexp_tokenize(text, cls.TOKENIZE_REGEXP):
             if word.istitle():
                 word = word.lower()
             result.append(stemmer.stem(word))
@@ -49,7 +52,7 @@ class Stemmer:
         return f_names
 
 
-_PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\-.?!,":;()\'|]+')
+_PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\.?!,":;()\'|]+')
 
 _STOPWORDS = {'per', 'could', 'like', 'better', 'community', 'within', 'via', 'around', 'seen',
               'would', 'along', 'successful', 'may', 'without', 'including', 'given', 'today',
