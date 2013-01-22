@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.files import File
 from axel.articles.models import Article, Venue, ArticleCollocation
 from axel.articles.utils.nlp import _update_ngram_counts
+from axel.libs.utils import print_progress
 
 
 class Command(BaseCommand):
@@ -49,7 +50,7 @@ class Command(BaseCommand):
                     article_ids.append(article.id)
 
         print 'Starting updates...'
-        for article in Article.objects.filter(id__in=article_ids):
+        for article in print_progress(Article.objects.filter(id__in=article_ids)):
             ngrams = sorted(article.articlecollocation_set.values_list('keywords','count'),
                                                                 key=lambda x:(x[1],x[0]))
             new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]],
