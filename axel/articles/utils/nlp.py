@@ -20,7 +20,7 @@ class Stemmer:
     def stem_wordnet(cls, text):
         """WordNet lemmatizer"""
         lmtzr = WordNetLemmatizer()
-        # split on whitespace
+        # split on punctuation
         result = []
         for word in nltk.regexp_tokenize(text, cls.TOKENIZE_REGEXP):
             if word.istitle():
