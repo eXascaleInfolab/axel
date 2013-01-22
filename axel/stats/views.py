@@ -63,12 +63,12 @@ class ConceptIndexStats(TemplateView):
 #        # strip model
 #        cur_docs = [doc.split('.')[-1] for doc in cur_docs]
 #        if len(cur_docs) > collocation.count:
-#            docs = set(Article.objects.exclude(articlecollocation__keywords=collocation.keywords).
+#            docs = set(Article.objects.exclude(articlecollocation__ngram=collocation.keywords).
 #                    filter(id__in=cur_docs).values_list('id', 'stemmed_text'))
 #            for doc_id, text in docs:
-#                c_count = text.count(collocation.keywords)
+#                c_count = text.count(collocation.ngram)
 #                ArticleCollocation.objects.create(article_id=doc_id,
-#                    keywords=collocation.keywords, count=c_count)
+#                    ngram=collocation.ngram, count=c_count)
 #
 #    return HttpResponseRedirect(reverse('stats'))
 

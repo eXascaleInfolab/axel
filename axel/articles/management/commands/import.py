@@ -59,9 +59,9 @@ class Command(BaseCommand):
             new_ngrams = [k for k in new_ngrams if k[1]>0]
             if new_ngrams != ngrams:
                 obsolete_ngrams = set(ngrams).difference(new_ngrams)
-                article.articlecollocation_set.filter(keywords__in=zip(*obsolete_ngrams)[0])\
+                article.articlecollocation_set.filter(ngram__in=zip(*obsolete_ngrams)[0])\
                                                                                         .delete()
                 for ngram, score in set(new_ngrams).difference(ngrams):
-                    ArticleCollocation.objects.create(keywords=ngram, count=score, article=article)
+                    ArticleCollocation.objects.create(ngram=ngram, count=score, article=article)
 
 

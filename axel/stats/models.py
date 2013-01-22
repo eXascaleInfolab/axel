@@ -26,7 +26,7 @@ class Collocation(models.Model):
     @property
     def context(self):
         """Get random context for collocation, used in collocation list view"""
-        article =  ArticleCollocation.objects.filter(keywords=self.ngram)[0].article
+        article =  ArticleCollocation.objects.filter(ngram=self.ngram)[0].article
         return get_context(article.stemmed_text, self.ngram).replace(self.ngram,
             u'<span class="error">{0}</span>'.format(self.ngram))
 
@@ -34,7 +34,7 @@ class Collocation(models.Model):
     def all_contexts(self):
         """Get all contexts for detailed view page"""
         contexts = []
-        for text in  ArticleCollocation.objects.filter(keywords=self.ngram).values_list(
+        for text in  ArticleCollocation.objects.filter(ngram=self.ngram).values_list(
             'article__stemmed_text', flat=True):
             contexts.append(get_context(text, self.ngram).replace(self.ngram,
                 u'<span class="error">{0}</span>'.format(self.ngram)))
