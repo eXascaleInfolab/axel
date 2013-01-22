@@ -84,13 +84,13 @@ class Article(models.Model):
             # get all existing not found, (those that have score <= 2)
             # we do not need to check <=2 condition here, is should be automatically satisfied
             for colloc in all_collocs.difference(collocs.keys()).intersection(index.keys()):
-                ArticleCollocation.objects.get_or_create(keywords=colloc,
+                ArticleCollocation.objects.get_or_create(ngram=colloc,
                     article=self, defaults={'count': index[colloc]})
 
             # Create other collocations
             for name, score in collocs.iteritems():
                 if score > 0:
-                    acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
+                    acolloc, created = ArticleCollocation.objects.get_or_create(ngram=name,
                         article=self, defaults={'count': score})
                     if not created:
                         acolloc.score = score
@@ -109,9 +109,9 @@ class Article(models.Model):
                     # found!!!!!!!
                     if colloc in index:
                         correct_count = index[colloc] - int(article.articlecollocation_set.filter(
-                            keywords__contains=colloc).aggregate(count=Sum('count'))['count'] or 0)
+                            ngram__contains=colloc).aggregate(count=Sum('count'))['count'] or 0)
                         if correct_count > 0:
-                            ArticleCollocation.objects.create(keywords=colloc,
+                            ArticleCollocation.objects.create(ngram=colloc,
                                 article=article, count=correct_count)
 
 
@@ -215,12 +215,12 @@ def create_collocations(sender, instance, **kwargs):
 #        text = instance.stemmed_text
 #        acronyms = nlp.acronyms(text)
 #        for abbr, name in collocs:
-#            acolloc, created = ArticleCollocation.objects.get_or_create(keywords=name,
+#            acolloc, created = ArticleCollocation.objects.get_or_create(ngram=name,
 #                article=instance, defaults={'count': score})
 #            if not created:
 #                acolloc.score = score
 #                acolloc.save()
-#            colloc, created = Collocations.objects.get_or_create(keywords=name)
+#            colloc, created = Collocations.objects.get_or_create(ngram=name)
 #            if not created:
 #                colloc.count = F('count') + 1
 #                colloc.save()

@@ -58,12 +58,12 @@ class ConceptIndexStats(TemplateView):
 #def collocations_update(request):
 #    """Update collocations by searching existing ones"""
 #    for collocation in Collocations.objects.all():
-#        cur_docs = SearchQuerySet().filter(content__exact=collocation.keywords).values_list('id',
+#        cur_docs = SearchQuerySet().filter(content__exact=collocation.ngram).values_list('id',
 #            flat=True)
 #        # strip model
 #        cur_docs = [doc.split('.')[-1] for doc in cur_docs]
 #        if len(cur_docs) > collocation.count:
-#            docs = set(Article.objects.exclude(articlecollocation__ngram=collocation.keywords).
+#            docs = set(Article.objects.exclude(articlecollocation__ngram=collocation.ngram).
 #                    filter(id__in=cur_docs).values_list('id', 'stemmed_text'))
 #            for doc_id, text in docs:
 #                c_count = text.count(collocation.ngram)
