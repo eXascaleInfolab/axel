@@ -33,7 +33,7 @@ def build_index():
         return
     from axel.stats.models import Collocations
     index = defaultdict(list)
-    for id, concept in Collocations.objects.values_list('id', 'keywords'):
+    for id, concept in Collocations.objects.values_list('id', 'ngram'):
         for word in concept.split():
             index[word].append(id)
     for key, values in index.iteritems():

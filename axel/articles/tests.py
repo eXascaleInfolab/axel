@@ -21,7 +21,7 @@ class CollocationsTest(TestCase):
 
         collocs = Collocations.objects.all()
         self.assertTrue(collocs)
-        self.assertEqual(collocs[0].keywords, 'probabilistic latent semantic indexing')
+        self.assertEqual(collocs[0].ngram, 'probabilistic latent semantic indexing')
         article.delete()
 
         # Check it's empty now

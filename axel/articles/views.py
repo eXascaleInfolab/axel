@@ -61,8 +61,8 @@ class ConceptAutocompleteView(JSONResponseMixin, TemplateView):
         if form.is_valid():
             query = form.cleaned_data['query']
             # search concepts
-            results = Collocations.objects.filter(keywords__icontains=query)
-            results = [colloc.keywords+' '+str(colloc.count) for colloc in results]
+            results = Collocations.objects.filter(ngram__icontains=query)
+            results = [colloc.ngram+' '+str(colloc.count) for colloc in results]
             context = {'results': results}
             return JSONResponseMixin.render_to_response(self, context)
         raise Http404
@@ -82,6 +82,6 @@ def article_rescan_view(request, article_id):
 def filter_articles_view(request):
     """View that shows filtered articles based on concepts"""
     concepts = request.POST.getlist('concepts')
-    articles = Article.objects.filter(articlecollocation__keywords__in=concepts).distinct()
+    articles = Article.objects.filter(articlecollocation__ngram__in=concepts).distinct()
     return render_to_response('partial/list.html', {'articles': articles},
                         context_instance=RequestContext(request))

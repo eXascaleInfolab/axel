@@ -11,12 +11,12 @@ def get_nx_collocations_graph():
         for i, c1 in enumerate(collocs):
             for j in range(i+1,len(collocs)):
                 c2 = collocs[j]
-                if colloc_graph.has_edge(c1.keywords, c2.keywords):
-                    edge = colloc_graph[c1.keywords][c2.keywords]
+                if colloc_graph.has_edge(c1.ngram, c2.ngram):
+                    edge = colloc_graph[c1.ngram][c2.ngram]
                     if edge.has_key('weight'):
                         edge['weight'] += 1
                     else:
                         edge['weight'] = 2
                 else:
-                    colloc_graph.add_edge(c1.keywords, c2.keywords)
+                    colloc_graph.add_edge(c1.ngram, c2.ngram)
     return colloc_graph

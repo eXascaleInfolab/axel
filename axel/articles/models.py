@@ -53,7 +53,7 @@ class Article(models.Model):
     @property
     def collocations(self):
         """Get co-locations from the saved stemmed text"""
-        colocs = list(self.articlecollocation_set.values_list('count', 'keywords'))
+        colocs = list(self.articlecollocation_set.values_list('count', 'ngram'))
         colocs.sort(key=lambda col: col[0], reverse=True)
         return colocs
 
@@ -77,7 +77,7 @@ class Article(models.Model):
             # found collocs = found existing + found new
             collocs = nlp.collocations(index)
             # all previously existing collocs
-            all_collocs = set(self.CollocationModel.objects.values_list('keywords', flat=True))
+            all_collocs = set(self.CollocationModel.objects.values_list('ngram', flat=True))
             # get all new
             new_collocs = set(collocs.keys()).difference(all_collocs)
 
@@ -117,18 +117,18 @@ class Article(models.Model):
 
 class ArticleCollocation(models.Model):
     """Model contains collocation for each article and their count"""
-    keywords = models.CharField(max_length=255)
+    ngram = models.CharField(max_length=255)
     count = models.IntegerField()
     article = models.ForeignKey(Article)
 
     class Meta:
         """Meta info"""
         ordering = ['-count']
-        unique_together = ('keywords', 'article')
+        unique_together = ('ngram', 'article')
 
     def __unicode__(self):
         """String representation"""
-        return u"{0}: {1}".format(self.article, self.keywords)
+        return u"{0}: {1}".format(self.article, self.ngram)
 
 
 class Author(models.Model):
@@ -161,7 +161,7 @@ def clean_collocations(sender, instance, **kwargs):
     Reduce collocation count on delete for ArticleCollocation
     :type instance: ArticleCollocation
     """
-    colloc = instance.article.CollocationModel.objects.get(keywords=instance.keywords)
+    colloc = instance.article.CollocationModel.objects.get(ngram=instance.ngram)
     colloc.count -= instance.count
     colloc.save()
 
@@ -183,14 +183,14 @@ def update_global_collocations(sender, instance, created, **kwargs):
     """
     if created:
         colloc, created_local = instance.article.CollocationModel.objects.get_or_create(
-            keywords=instance.keywords, defaults={'count': instance.count})
+            ngram=instance.ngram, defaults={'count': instance.count})
         if not created_local:
             colloc.count = F('count') + instance.count
             colloc.save()
     else:
         # Recalculate count otherwise
-        colloc = instance.article.CollocationModel.objects.get(keywords=instance.keywords)
-        colloc.count = sender.objects.filter(keywords=instance.keywords).aggregate(count=Sum('count'))['count']
+        colloc = instance.article.CollocationModel.objects.get(ngram=instance.ngram)
+        colloc.count = sender.objects.filter(ngram=instance.ngram).aggregate(count=Sum('count'))['count']
         colloc.save()
 
 

@@ -51,7 +51,7 @@ class Command(BaseCommand):
 
         print 'Starting updates...'
         for article in print_progress(Article.objects.filter(id__in=article_ids)):
-            ngrams = sorted(article.articlecollocation_set.values_list('keywords','count'),
+            ngrams = sorted(article.articlecollocation_set.values_list('ngram','count'),
                                                                 key=lambda x:(x[1],x[0]))
             new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]],
                 json.loads(article.index))
