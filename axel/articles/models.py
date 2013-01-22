@@ -1,4 +1,5 @@
 import json
+import os
 from django.db import models
 from django.db.models import F, Sum
 from django.db.models.signals import pre_delete, post_save
@@ -163,6 +164,15 @@ def clean_collocations(sender, instance, **kwargs):
     colloc = instance.article.CollocationModel.objects.get(keywords=instance.keywords)
     colloc.count -= instance.count
     colloc.save()
+
+
+@receiver(pre_delete, sender=Article)
+def clean_pdf(sender, instance, **kwargs):
+    """
+    Remove PDF on deletion
+    :type instance: Article
+    """
+    os.unlink(instance.pdf.path)
 
 
 @receiver(post_save, sender=ArticleCollocation)
