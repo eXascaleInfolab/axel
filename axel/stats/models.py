@@ -3,23 +3,16 @@ from __future__ import division
 from collections import defaultdict
 from django.db import models
 from django.db.models import Q, Sum
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 import operator
 from axel.articles.models import ArticleCollocation
-from axel.articles.utils.concepts_index import update_index
 import axel.articles.utils.sw_indexes as sw
 from axel.libs.utils import get_context
 
 
-class CommonCollocationInfo(models.Model):
+class Collocation(models.Model):
     """Aggregated collocation statistics model"""
     keywords = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
-
-    # boolean field to mark concept either correct or not,
-    # null when unknown
-    correct = models.NullBooleanField(blank=True)
 
     class Meta:
         """Meta info"""
@@ -82,7 +75,7 @@ class CommonCollocationInfo(models.Model):
     @property
     def often_consumed_score(self):
         """How often does an ngram gets consumed by a bigger one"""
-        score = SWCollocations.objects.filter(keywords__contains=self.keywords).aggregate(
+        score = Collocation.objects.filter(keywords__contains=self.keywords).aggregate(
             count=Sum('count'))['count']
         return score // self.count - 1
 
@@ -101,23 +94,13 @@ class CommonCollocationInfo(models.Model):
         return histogram_data
 
 
-class Collocations(CommonCollocationInfo):
+class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
 
 
-class SWCollocations(CommonCollocationInfo):
+class SWCollocations(Collocation):
     """
     collocation for ScienceWISE
     everything is the same except table name
     """
-
-
-#@receiver(post_save, sender=Collocations)
-def create_collocations(sender, instance, created, **kwargs):
-    """
-    Add to index on create
-    :type instance: Collocations
-    """
-    if created:
-        update_index(instance.id, instance.keywords)
 

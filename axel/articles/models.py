@@ -61,7 +61,7 @@ class Article(models.Model):
     def CollocationModel(self):
         """
         Get correct collocation model according to the desired split
-        :rtype CommonCollocationInfo
+        :rtype Collocation
         """
         from axel.stats.models import Collocations, SWCollocations
         if self.venue.acronym == 'ARXIV':

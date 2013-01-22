@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 
 from axel.articles.models import ArticleCollocation, Article
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
-from axel.stats.models import Collocations
+from axel.stats.models import Collocation
 
 
 class CollocationStats(TemplateView):
@@ -21,11 +21,11 @@ class CollocationStats(TemplateView):
     def get_context_data(self, **kwargs):
         """Add form to context"""
         context = super(CollocationStats, self).get_context_data(**kwargs)
-        counts, bins = numpy.histogram(Collocations.objects.values_list('count', flat=True),
+        counts, bins = numpy.histogram(Collocation.objects.values_list('count', flat=True),
             bins=10)
         counts = [x+1 for x in counts]
         context['histogram_data'] = str(zip(bins, counts)).replace('(', '[').replace(')', ']')
-        context['collocations'] = Collocations.objects.order_by('-count').values_list('count',
+        context['collocations'] = Collocation.objects.order_by('-count').values_list('count',
             'keywords')[:10]
         return context
 
@@ -44,10 +44,10 @@ class ConceptIndexStats(TemplateView):
 
         context['histogram_data'] = str(counts.items()).replace('(', '[').replace(')', ']')
         context['word_count'] = len(global_word_set)
-        context['concept_count'] = Collocations.objects.count()
+        context['concept_count'] = Collocation.objects.count()
 
         word_counts = defaultdict(lambda: 0)
-        for collocation in Collocations.objects.values_list("keywords", flat=True):
+        for collocation in Collocation.objects.values_list("keywords", flat=True):
             word_counts[len(collocation.split())] += 1
         context['col_word_len_hist'] = str(word_counts.items()).replace('(', '[').replace(')', ']')
         return context
