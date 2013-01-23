@@ -24,9 +24,17 @@ def print_timing(func):
         return func
 
 
-def get_context(text, word):
-    """Get context from text, full sentence"""
-    word_start = text.find(word)
+def get_context(text, ngram, start=0):
+    """
+    Get first encountered context from text, full sentence
+    :param ngram: n-gram to search for
+    :param start: start of the ngram occurrence, optional
+    :rtype: str
+    """
+    if start:
+        word_start = start
+    else:
+        word_start = text.find(ngram, start)
     # Check possible punctuations
     context_start = 0
     context_end = len(text)
@@ -34,10 +42,23 @@ def get_context(text, word):
         punct_rpos = text.rfind(punct, 0, word_start)
         punct_lpos = text.find(punct, word_start)
         if punct_rpos != -1:
-            context_start = max(punct_rpos+1, context_start)
+            context_start = max(punct_rpos + 1, context_start)
         if punct_lpos != -1:
-            context_end = min(punct_lpos+1, context_end)
+            context_end = min(punct_lpos + 1, context_end)
     return text[context_start:context_end].strip()
+
+
+def get_contexts(text, ngram):
+    """
+    Get all contexts from the text
+    :rtype: list
+    """
+    contexts = []
+    word_start = text.find(ngram, 0)
+    while word_start != -1:
+        contexts.append(get_context(text, ngram, word_start))
+        word_start = text.find(ngram, word_start + 1)
+    return contexts
 
 
 def print_progress(iterable, percent_step=1):

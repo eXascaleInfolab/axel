@@ -80,9 +80,9 @@
     </div>
 
     <h4>Contexts</h4>
-    <ul>
+    <ol>
         {% for context in object.all_contexts %}
             <li>{{ context|safe }}</li>
         {% endfor %}
-    </ul>
+    </ol>
 {% endblock %}

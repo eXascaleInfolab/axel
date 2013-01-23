@@ -6,7 +6,7 @@ from django.db.models import Q, Sum
 import operator
 from axel.articles.models import ArticleCollocation
 import axel.articles.utils.sw_indexes as sw
-from axel.libs.utils import get_context
+from axel.libs.utils import get_context, get_contexts
 
 
 class Collocation(models.Model):
@@ -36,8 +36,8 @@ class Collocation(models.Model):
         contexts = []
         for text in  ArticleCollocation.objects.filter(ngram=self.ngram).values_list(
             'article__stemmed_text', flat=True):
-            contexts.append(get_context(text, self.ngram).replace(self.ngram,
-                u'<span class="error">{0}</span>'.format(self.ngram)))
+            contexts.extend([context.replace(self.ngram, u'<span class="error">{0}</span>'
+            .format(self.ngram)) for context in get_contexts(text, self.ngram)])
         return contexts
 
     @property
