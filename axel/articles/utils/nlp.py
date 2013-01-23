@@ -53,6 +53,7 @@ class Stemmer:
 
 
 _PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\.?!,":;()\'|]+')
+_DIGIT_RE = re.compile(r'^[\s\d-]+$')
 
 _STOPWORDS = {'per', 'could', 'like', 'better', 'community', 'within', 'via', 'around', 'seen',
               'would', 'along', 'successful', 'may', 'without', 'including', 'given', 'today',
@@ -82,6 +83,8 @@ def collocations(index):
     finder = AbstractCollocationFinder(None, bigram_index)
     # remove collocation from 2 equal words
     finder.apply_ngram_filter(lambda x, y: x == y)
+    # remove weird collocations
+    finder.apply_ngram_filter(lambda x, y: _DIGIT_RE.match(x) and _DIGIT_RE.match(y))
     # remove punctuation, len and stopwords
     finder.apply_word_filter(filter_punkt)
     finder.apply_word_filter(filter_len)
