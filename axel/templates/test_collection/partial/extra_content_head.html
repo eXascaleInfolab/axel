@@ -10,3 +10,8 @@
         </dd>
     </dl>
 </div>
+<form class="form-search" method="GET" action="{% url colloc_filter model_name %}">
+    <h3>Filter ngrams</h3>
+    <input type="text" name="query" class="input-xlarge search-query">
+    <button type="submit" class="btn btn-inverse">Filter</button>
+</form>

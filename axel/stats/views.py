@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
+from test_collection.views import CollectionModelView
 
 from axel.articles.models import ArticleCollocation, Article
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
@@ -51,6 +52,20 @@ class ConceptIndexStats(TemplateView):
             word_counts[len(collocation.split())] += 1
         context['col_word_len_hist'] = str(word_counts.items()).replace('(', '[').replace(')', ']')
         return context
+
+
+class FilteredCollectionModelView(CollectionModelView):
+    """filtered collection view"""
+    query = None
+
+    def get(self, request, *args, **kwargs):
+        """get form args"""
+        self.query = request.GET.get('query', '')
+        return super(FilteredCollectionModelView, self).get(request, *args, **kwargs)
+
+    def generate_queryset(self, model):
+        """filter ngram by query here, filter only unjudged results"""
+        return self.total_queryset.filter(ngram__icontains=self.query)
 
 
 
