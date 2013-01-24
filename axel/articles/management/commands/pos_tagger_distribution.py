@@ -22,8 +22,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not options['model']:
             raise CommandError("need to specify model")
-        app_label, model = options['model'].rsplit('.', 1)
-        Model = get_model('stats', 'SWCollocations')
+        app_label, model = options['model'].split('.')[1::2]
+        Model = get_model(app_label, model)
         ct = ContentType.objects.get_for_model(Model)
         results = [defaultdict(lambda:0), defaultdict(lambda:0)]
         all_tags = set()
