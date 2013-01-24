@@ -1,9 +1,9 @@
 """ScienceWISE-specific scores calculation"""
 import pickle
+import sys
 
 from django.core.cache import cache
-
-import sys
+from django.conf import settings
 
 
 _WORD_COUNTS_PREFIX = 'SW_word_counts'
@@ -18,7 +18,7 @@ def _get_global_word_counts():
     """
     if not cache.has_key(_WORD_COUNTS_PREFIX):
         # file contains dict of words with counts from SW ontology, we will use it directly
-        word_counts = pickle.load(open('word_counts.pcl'))
+        word_counts = pickle.load(open(settings.ABS_PATH('word_counts.pcl')))
         cache.set(_WORD_COUNTS_PREFIX, word_counts, _EXPIRE)
         return word_counts
     return cache.get(_WORD_COUNTS_PREFIX)
