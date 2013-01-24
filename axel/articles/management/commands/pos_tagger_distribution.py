@@ -6,6 +6,7 @@ from django.core.management import BaseCommand, CommandError
 from django.db.models.loading import get_model
 
 import nltk
+import re
 from test_collection.models import TaggedCollection
 from axel.libs.utils import print_progress
 
@@ -51,8 +52,9 @@ class Command(BaseCommand):
 
             # select max weight combination
             max_ngram_tags = max(ngram_tags.items(), key=lambda x: x[1])[0]
-            all_tags.add(' '.join(max_ngram_tags))
-            results[int(obj.is_relevant)][' '.join(max_ngram_tags)] += 1
+            max_ngram = re.sub(r'(VB)\w', r'\1' ,' '.join(max_ngram_tags))
+            all_tags.add(max_ngram)
+            results[int(obj.is_relevant)][max_ngram] += 1
         all_tags = sorted(all_tags)
         relevant = [results[1][tag] for tag in all_tags]
         irrelevant = [results[0][tag] for tag in all_tags]
