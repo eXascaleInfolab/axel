@@ -63,7 +63,7 @@ def get_contexts(text, ngram):
 
 def print_progress(iterable, percent_step=1):
     total = float(len(iterable))
-    abs_step = int((total * percent_step)/100)
+    abs_step = int((total * percent_step)/100) or 1
     for i, obj in enumerate(iterable):
         if i and not i % abs_step:
             print "{0:.2%} processed".format(i/total)
