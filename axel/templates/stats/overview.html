@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+    <h3>Available models</h3>
+    <ul>
+        {% for model in collection_models %}
+            <li>
+                <h4>{{ model.name }}</h4>
+                <a href="{% url "count_dist" model.name %}">Count distribution</a>
+                <br>
+                <a href="{% url "ci_stats" model.name %}">N-gram word distribution</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

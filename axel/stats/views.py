@@ -3,14 +3,18 @@ import numpy
 
 from django.core.cache import cache
 from django.views.generic import TemplateView
-from test_collection.views import CollectionModelView, _get_model_from_string
+from test_collection.views import CollectionModelView, _get_model_from_string, TestCollectionOverview
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 
 
-class CollocationStats(TemplateView):
+class CollocationMainView(TestCollectionOverview):
     """Main conceptual search view"""
+    template_name = "stats/overview.html"
 
+
+class CollocationStats(TemplateView):
+    """Stats about raw counts distribution"""
     template_name = "stats/collocations.html"
 
     def get_context_data(self, **kwargs):
