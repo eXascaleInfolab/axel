@@ -1,17 +1,11 @@
 from collections import defaultdict
 import numpy
-from haystack.query import SearchQuerySet
 
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
-from test_collection.views import CollectionModelView
+from test_collection.views import CollectionModelView, _get_model_from_string
 
-from axel.articles.models import ArticleCollocation, Article
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
-from axel.stats.models import Collocation
 
 
 class CollocationStats(TemplateView):
@@ -22,11 +16,12 @@ class CollocationStats(TemplateView):
     def get_context_data(self, **kwargs):
         """Add form to context"""
         context = super(CollocationStats, self).get_context_data(**kwargs)
-        counts, bins = numpy.histogram(Collocation.objects.values_list('count', flat=True),
+        model = _get_model_from_string(self.kwargs['model_name'])
+        counts, bins = numpy.histogram(model.objects.values_list('count', flat=True),
             bins=10)
         counts = [x+1 for x in counts]
         context['histogram_data'] = str(zip(bins, counts)).replace('(', '[').replace(')', ']')
-        context['collocations'] = Collocation.objects.order_by('-count').values_list('count',
+        context['collocations'] = model.objects.order_by('-count').values_list('count',
             'ngram')[:10]
         return context
 
@@ -38,6 +33,8 @@ class ConceptIndexStats(TemplateView):
     def get_context_data(self, **kwargs):
         """Add data to context"""
         context = super(ConceptIndexStats, self).get_context_data(**kwargs)
+
+        model = _get_model_from_string(self.kwargs['model_name'])
         global_word_set = cache.get(WORDS_SET)
         counts = defaultdict(lambda: 0)
         for word in global_word_set:
@@ -45,10 +42,10 @@ class ConceptIndexStats(TemplateView):
 
         context['histogram_data'] = str(counts.items()).replace('(', '[').replace(')', ']')
         context['word_count'] = len(global_word_set)
-        context['concept_count'] = Collocation.objects.count()
+        context['concept_count'] = model.objects.count()
 
         word_counts = defaultdict(lambda: 0)
-        for collocation in Collocation.objects.values_list("ngram", flat=True):
+        for collocation in model.objects.values_list("ngram", flat=True):
             word_counts[len(collocation.split())] += 1
         context['col_word_len_hist'] = str(word_counts.items()).replace('(', '[').replace(')', ']')
         return context
