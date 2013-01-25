@@ -30,7 +30,11 @@ class Collocation(models.Model):
         # prevent contexts from bigger ngrams
         bigger_ngrams = ArticleCollocation.objects.filter(article=article,
             ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
-        return get_contexts(article.stemmed_text, self.ngram, bigger_ngrams).next()
+        try:
+            context = get_contexts(article.stemmed_text, self.ngram, bigger_ngrams).next()
+        except StopIteration:
+            context = 'No context'
+        return context
 
     @property
     def all_contexts(self):
