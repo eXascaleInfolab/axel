@@ -6,7 +6,7 @@ from django.db.models import Q, Sum
 import operator
 from axel.articles.models import ArticleCollocation
 import axel.articles.utils.sw_indexes as sw
-from axel.libs.utils import get_context, get_contexts
+from axel.libs.utils import get_contexts
 
 
 class Collocation(models.Model):
@@ -27,15 +27,20 @@ class Collocation(models.Model):
     def context(self):
         """Get random context for collocation, used in collocation list view"""
         article =  ArticleCollocation.objects.filter(ngram=self.ngram)[0].article
-        return get_context(article.stemmed_text, self.ngram)
+        # prevent contexts from bigger ngrams
+        bigger_ngrams = ArticleCollocation.objects.filter(article=article,
+            ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
+        return get_contexts(article.stemmed_text, self.ngram, bigger_ngrams).next()
 
     @property
     def all_contexts(self):
         """Get all contexts for detailed view page"""
         contexts = []
-        for text in  ArticleCollocation.objects.filter(ngram=self.ngram).values_list(
-            'article__stemmed_text', flat=True):
-            contexts.extend([context for context in get_contexts(text, self.ngram)])
+        for text, article_id in  ArticleCollocation.objects.filter(ngram=self.ngram).values_list(
+            'article__stemmed_text', 'article'):
+            bigger_ngrams = ArticleCollocation.objects.filter(article__id=article_id,
+                ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
+            contexts.extend([context for context in get_contexts(text, self.ngram, bigger_ngrams)])
         return contexts
 
     @property

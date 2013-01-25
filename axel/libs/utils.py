@@ -24,7 +24,7 @@ def print_timing(func):
         return func
 
 
-def get_context(text, ngram, start=0):
+def _get_context(text, ngram, start=0):
     """
     Get first encountered context from text, full sentence
     :param ngram: n-gram to search for
@@ -48,17 +48,32 @@ def get_context(text, ngram, start=0):
     return text[context_start:context_end].strip()
 
 
-def get_contexts(text, ngram):
+def get_contexts(text, ngram, bigger_ngrams):
     """
-    Get all contexts from the text
-    :rtype: list
+    GENERATOR
+    Get all contexts from the text that do not contain bigger ngrams
+    :rtype: generator
     """
-    contexts = []
-    word_start = text.find(ngram, 0)
-    while word_start != -1:
-        contexts.append(get_context(text, ngram, word_start))
-        word_start = text.find(ngram, word_start + 1)
-    return contexts
+    def find_text_iter(text, ngram):
+        """Iterate all occurrences of ngram in the text"""
+        start = 0
+        while True:
+            ngram_start = text.find(ngram, start)
+            if ngram_start != -1:
+                start = ngram_start + 1
+                yield ngram_start
+            else:
+                break
+
+    for ngram_start in find_text_iter(text, ngram):
+        context = _get_context(text, ngram, ngram_start)
+        result = True
+        for b_ngram in bigger_ngrams:
+            if b_ngram in context:
+                result = False
+                break
+        if result:
+            yield context
 
 
 def print_progress(iterable, percent_step=1):
