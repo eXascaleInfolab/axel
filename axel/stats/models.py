@@ -6,7 +6,7 @@ from django.db.models import Q, Sum
 import operator
 from axel.articles.models import ArticleCollocation
 import axel.articles.utils.sw_indexes as sw
-from axel.libs.utils import get_contexts
+from axel.libs.utils import get_contexts, _get_context
 
 
 class Collocation(models.Model):
@@ -30,10 +30,8 @@ class Collocation(models.Model):
         # prevent contexts from bigger ngrams
         bigger_ngrams = ArticleCollocation.objects.filter(article=article,
             ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
-        try:
-            context = get_contexts(article.stemmed_text, self.ngram, bigger_ngrams).next()
-        except StopIteration:
-            context = 'No context'
+        context = next(get_contexts(article.stemmed_text, self.ngram, bigger_ngrams),
+           _get_context(article.stemmed_text, self.ngram))
         return context
 
     @property
@@ -45,6 +43,8 @@ class Collocation(models.Model):
             bigger_ngrams = ArticleCollocation.objects.filter(article__id=article_id,
                 ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
             contexts.extend([context for context in get_contexts(text, self.ngram, bigger_ngrams)])
+        if not contexts:
+            return [self.context]
         return contexts
 
     @property
