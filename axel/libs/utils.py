@@ -58,7 +58,18 @@ def get_contexts(text, ngram, bigger_ngrams):
         """Iterate all occurrences of ngram in the text"""
         start = 0
         while True:
-            ngram_start = text.find(ngram, start)
+            found = False
+            # check that we didn't catch part of a word
+            while not found:
+                ngram_start = text.find(ngram, start)
+                if ngram_start == -1:
+                    break
+                # Check this is a separated ngram
+                if text[ngram_start-1:ngram_start] == ' ' and text[ngram_start+len(
+                    ngram):ngram_start+len(ngram)+1] == ' ':
+                    found = True
+                else:
+                    start = ngram_start + 1
             if ngram_start != -1:
                 start = ngram_start + 1
                 yield ngram_start
