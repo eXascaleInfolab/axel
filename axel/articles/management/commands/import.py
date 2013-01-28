@@ -19,7 +19,7 @@ class Command(BaseCommand):
             action='store',
             dest='dir',
             help='directory to import PDFs from'),
-        make_option('--venue', '-v', action='store', dest='venue',
+        make_option('--venue', action='store', dest='venue',
             help='Conference name, one of: {0}'.format(', '.join(Venue.objects.values_list(
                 'acronym', flat=True)))),
         make_option('--year', '-y', action='store', dest='year',
