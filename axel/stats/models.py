@@ -25,7 +25,11 @@ class Collocation(models.Model):
 
     @property
     def context(self):
-        """Get random context for collocation, used in collocation list view"""
+        """
+        Get random context for collocation, used in collocation list view,
+        :rtype: unicode
+        :returns: context if found, ngram itself otherwise
+        """
         article =  ArticleCollocation.objects.filter(ngram=self.ngram)[0].article
         # prevent contexts from bigger ngrams
         bigger_ngrams = ArticleCollocation.objects.filter(article=article,
@@ -36,7 +40,11 @@ class Collocation(models.Model):
 
     @property
     def all_contexts(self):
-        """Get all contexts for detailed view page"""
+        """
+        Get all contexts for detailed view page
+        :rtype: list
+        :returns: contexts if found, [ngram] otherwise
+        """
         contexts = []
         for text, article_id in  ArticleCollocation.objects.filter(ngram=self.ngram).values_list(
             'article__stemmed_text', 'article'):
