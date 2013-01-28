@@ -41,6 +41,7 @@ class Article(models.Model):
     pdf = models.FileField(upload_to=pdf_upload_to)
     stemmed_text = models.TextField(default='')
     index = models.TextField(default='')
+    cluster_id = models.CharField(max_length=255)
 
     class Meta:
         """Meta info"""
@@ -63,11 +64,8 @@ class Article(models.Model):
         Get correct collocation model according to the desired split
         :rtype Collocation
         """
-        from axel.stats.models import Collocations, SWCollocations
-        if self.venue.acronym == 'ARXIV':
-            return SWCollocations
-        else:
-            return Collocations
+        from axel.stats.models import CLUSTERS_DICT
+        return CLUSTERS_DICT[self.cluster_id]
 
     def create_collocations(self):
         """Create collocation for the article"""
