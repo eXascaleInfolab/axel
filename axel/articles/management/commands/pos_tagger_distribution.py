@@ -36,11 +36,21 @@ class Command(BaseCommand):
                 continue
             contexts = ngram.all_contexts
             ngram_len = len(ngram.ngram.split())
-            words = set(ngram.ngram.split())
+            words = tuple(ngram.ngram.split())
             for i, context in enumerate(contexts):
-                tags = [tag for word, tag in nltk.pos_tag(nltk.word_tokenize(context)) if
-                        word in words][:ngram_len]
-                ngram_tags[tuple(tags)] += 1
+                tags = [(word, tag) for word, tag in nltk.pos_tag(nltk.word_tokenize(context)) if
+                        word in set(words)]
+                found = False
+                for j, wordtag in enumerate(tags):
+                    if wordtag[0] == words[0] and tuple(zip(*tags)[0][j:j+ngram_len]) == words:
+                        tags = tuple(zip(*tags)[1][j:j+ngram_len])
+                        found = True
+                        break
+                if not found:
+                    print context, ngram.ngram
+                    continue
+
+                ngram_tags[tags] += 1
                 # check every 10 iterations for speed
                 if not i % 10 and i > 1:
                     if len(ngram_tags) == 1:
