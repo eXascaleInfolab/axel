@@ -8,7 +8,7 @@ from django.db.models.loading import get_model
 import nltk
 import re
 from test_collection.models import TaggedCollection
-from axel.libs.utils import print_progress
+from axel.libs.utils import print_progress, get_contexts_ngrams
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -34,10 +34,11 @@ class Command(BaseCommand):
             """:type: Collocation"""
             if not ngram:
                 continue
-            contexts = ngram.all_contexts
+            contexts = ngram.all_contexts(func=get_contexts_ngrams)
             ngram_len = len(ngram.ngram.split())
-            words = tuple(ngram.ngram.split())
             for i, context in enumerate(contexts):
+                words, context = context
+                words = tuple(words.split())
                 tags = [(word, tag) for word, tag in nltk.pos_tag(nltk.word_tokenize(context)) if
                         word in set(words)]
                 found = False
@@ -63,6 +64,8 @@ class Command(BaseCommand):
             # select max weight combination
             max_ngram_tags = max(ngram_tags.items(), key=lambda x: x[1])[0]
             max_ngram = re.sub(r'(VB)\w', r'\1' ,' '.join(max_ngram_tags))
+            if max_ngram == 'NN NN' and not obj.is_relevant:
+                print ngram_tags, ngram.ngram
             all_tags.add(max_ngram)
             results[int(obj.is_relevant)][max_ngram] += 1
         all_tags = sorted(all_tags)

@@ -47,8 +47,7 @@ class Collocation(models.Model):
            self.ngram)
         return context
 
-    @property
-    def all_contexts(self):
+    def all_contexts(self, func=get_contexts):
         """
         Get all contexts for detailed view page
         :rtype: list
@@ -59,7 +58,7 @@ class Collocation(models.Model):
             'article__stemmed_text', 'article'):
             bigger_ngrams = ArticleCollocation.objects.filter(article__id=article_id,
                 ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
-            contexts.extend([context for context in get_contexts(text, self.ngram, bigger_ngrams)])
+            contexts.extend([context for context in func(text, self.ngram, bigger_ngrams)])
         if not contexts:
             return [self.ngram]
         return contexts

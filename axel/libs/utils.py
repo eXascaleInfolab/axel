@@ -2,6 +2,7 @@ import time
 import traceback
 
 from django.conf import settings
+import re
 
 
 def print_timing(func):
@@ -34,7 +35,8 @@ def _get_context(text, ngram, start=0):
     if start:
         word_start = start
     else:
-        word_start = text.find(ngram, start)
+        ngram = r's? '.join(ngram.split())+r's?'
+        word_start = re.search(ngram, text)
     # Check possible punctuations
     context_start = 0
     context_end = len(text)
@@ -48,43 +50,35 @@ def _get_context(text, ngram, start=0):
     return text[context_start:context_end].strip()
 
 
-def get_contexts(text, ngram, bigger_ngrams):
+def get_contexts_ngrams(text, ngram, bigger_ngrams):
     """
     GENERATOR
     Get all contexts from the text that do not contain bigger ngrams
+    :returns: a pair (matched_ngram, context)
     :rtype: generator
     """
-    def find_text_iter(text, ngram):
-        """Iterate all occurrences of ngram in the text"""
-        start = 0
-        while True:
-            found = False
-            # check that we didn't catch part of a word
-            while not found:
-                ngram_start = text.find(ngram, start)
-                if ngram_start == -1:
-                    break
-                # Check this is a separated ngram
-                if text[ngram_start-1:ngram_start] == ' ' and text[ngram_start+len(
-                    ngram):ngram_start+len(ngram)+1] == ' ':
-                    found = True
-                else:
-                    start = ngram_start + 1
-            if ngram_start != -1:
-                start = ngram_start + 1
-                yield ngram_start
-            else:
-                break
-
-    for ngram_start in find_text_iter(text, ngram):
-        context = _get_context(text, ngram, ngram_start)
+    # add possible plural forms
+    ngram = r's? '.join(ngram.split())+r's?'
+    for match in re.finditer(r'\s'+ngram+r'\s', text):
+        context = _get_context(text, ngram, match.start() + 1)
         result = True
         for b_ngram in bigger_ngrams:
             if b_ngram in context:
                 result = False
                 break
         if result:
-            yield context
+            yield match.group(0).strip(), context
+
+
+def get_contexts(text, ngram, bigger_ngrams):
+    """
+    GENERATOR
+    Get all contexts from the text that do not contain bigger ngrams,
+    :returns: yields context for ngram without actual ngram (single/plural form)
+    :rtype: generator
+    """
+    for matched_ngram, context in get_contexts_ngrams(text, ngram, bigger_ngrams):
+        yield context
 
 
 def print_progress(iterable, percent_step=1):
