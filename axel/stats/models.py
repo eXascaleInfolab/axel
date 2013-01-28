@@ -6,13 +6,15 @@ from django.db.models import Q, Sum
 import operator
 from axel.articles.models import ArticleCollocation
 import axel.articles.utils.sw_indexes as sw
-from axel.libs.utils import get_contexts, _get_context
+from axel.libs.utils import get_contexts
 
 
 class Collocation(models.Model):
     """Aggregated collocation statistics model"""
     ngram = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
+
+    CLUSTER_ID = 'ABSTRACT'
 
     class Meta:
         """Meta info"""
@@ -24,13 +26,20 @@ class Collocation(models.Model):
         return u'{0}'.format(self.ngram)
 
     @property
+    def _articlecollocations(self):
+        """
+        :rtype: QuerySet
+        """
+        return ArticleCollocation.objects.filter(article__cluster_id=self.CLUSTER_ID)
+
+    @property
     def context(self):
         """
         Get random context for collocation, used in collocation list view,
         :rtype: unicode
         :returns: context if found, ngram itself otherwise
         """
-        article =  ArticleCollocation.objects.filter(ngram=self.ngram)[0].article
+        article =  self._articlecollocations.filter(ngram=self.ngram)[0].article
         # prevent contexts from bigger ngrams
         bigger_ngrams = ArticleCollocation.objects.filter(article=article,
             ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
@@ -46,7 +55,7 @@ class Collocation(models.Model):
         :returns: contexts if found, [ngram] otherwise
         """
         contexts = []
-        for text, article_id in  ArticleCollocation.objects.filter(ngram=self.ngram).values_list(
+        for text, article_id in  self._articlecollocations.filter(ngram=self.ngram).values_list(
             'article__stemmed_text', 'article'):
             bigger_ngrams = ArticleCollocation.objects.filter(article__id=article_id,
                 ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
@@ -71,7 +80,7 @@ class Collocation(models.Model):
     @property
     def often_score_glob(self):
         """How many articles do contain an ngram"""
-        return ArticleCollocation.objects.filter(ngram=self.ngram).count()
+        return self._articlecollocations.filter(ngram=self.ngram).count()
 
     @property
     def often_word_local(self):
@@ -81,16 +90,16 @@ class Collocation(models.Model):
             argument_list.append(Q(**{'ngram__regex': r'\b'+word+r'\b'}))
         query = reduce(operator.or_, argument_list)
 
-        article_ids = ArticleCollocation.objects.filter(ngram=self.ngram).values_list(
+        article_ids = self._articlecollocations.filter(ngram=self.ngram).values_list(
             'article', flat=True)
-        score = ArticleCollocation.objects.filter(article__id__in=article_ids).filter(query)\
+        score = self._articlecollocations.filter(article__id__in=article_ids).filter(query)\
                                             .count() - len(article_ids)
         return score
 
     @property
     def often_consumed_score(self):
         """How often does an ngram gets consumed by a bigger one"""
-        score = Collocation.objects.filter(ngram__contains=self.ngram).aggregate(
+        score = self.__class__.objects.filter(ngram__contains=self.ngram).aggregate(
             count=Sum('count'))['count']
         return score // self.count - 1
 
@@ -101,7 +110,7 @@ class Collocation(models.Model):
         :returns: histogram data in a string form suitable for highcharts
         """
         counts = defaultdict(lambda: 0)
-        for count in ArticleCollocation.objects.filter(ngram=self.ngram).values_list('count',
+        for count in self._articlecollocations.filter(ngram=self.ngram).values_list('count',
                                 flat=True):
             counts[count] += 1
 
@@ -111,6 +120,7 @@ class Collocation(models.Model):
 
 class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
+    CLUSTER_ID = 'CS_COLLOCS'
 
 
 class SWCollocations(Collocation):
@@ -118,4 +128,12 @@ class SWCollocations(Collocation):
     collocation for ScienceWISE
     everything is the same except table name
     """
+    CLUSTER_ID = 'SW_COLLOCS'
+
+class SWCollocationsNoLemmas(Collocation):
+    """
+    collocation for ScienceWISE
+    everything is the same except table name, no lemmatization
+    """
+    CLUSTER_ID = 'SW_COLLOCS_NO_LEMMAS'
 
