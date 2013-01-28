@@ -31,7 +31,7 @@ class Collocation(models.Model):
         bigger_ngrams = ArticleCollocation.objects.filter(article=article,
             ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
         context = next(get_contexts(article.stemmed_text, self.ngram, bigger_ngrams),
-           _get_context(article.stemmed_text, self.ngram))
+           self.ngram)
         return context
 
     @property
@@ -44,7 +44,7 @@ class Collocation(models.Model):
                 ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
             contexts.extend([context for context in get_contexts(text, self.ngram, bigger_ngrams)])
         if not contexts:
-            return [self.context]
+            return [self.ngram]
         return contexts
 
     @property
