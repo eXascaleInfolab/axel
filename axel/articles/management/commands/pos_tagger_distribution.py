@@ -35,6 +35,8 @@ class Command(BaseCommand):
             if not ngram:
                 continue
             contexts = ngram.all_contexts(func=get_contexts_ngrams)
+            if not contexts:
+                contexts = [(ngram.ngram, ngram.ngram)]
             ngram_len = len(ngram.ngram.split())
             for i, context in enumerate(contexts):
                 words, context = context

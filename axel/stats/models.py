@@ -59,8 +59,6 @@ class Collocation(models.Model):
             bigger_ngrams = ArticleCollocation.objects.filter(article__id=article_id,
                 ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
             contexts.extend([context for context in func(text, self.ngram, bigger_ngrams)])
-        if not contexts:
-            return [self.ngram]
         return contexts
 
     @property
