@@ -10,6 +10,7 @@ import re
 from test_collection.models import TaggedCollection
 from axel.libs.utils import print_progress, get_contexts_ngrams
 
+
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--model', '-m',
@@ -18,6 +19,18 @@ class Command(BaseCommand):
             help='model to tag POS from'),
         )
     help = 'POS tagger statistics'
+
+    def _compress_pos_tag(self, max_ngram_tags):
+        max_ngram = ' '.join(max_ngram_tags)
+        if max_ngram.startswith('CD '):
+            max_ngram = 'NUM XXX'
+        elif re.search('VB\w$', max_ngram):
+            max_ngram = 'XXX VERB'
+        elif max_ngram.startswith('RB '):
+            max_ngram = 'ADV XXX'
+        elif re.search(r'^VB[^GN]', max_ngram):
+            max_ngram = 'VERB XXX'
+        return max_ngram
 
     def handle(self, *args, **options):
         if not options['model']:
@@ -65,14 +78,13 @@ class Command(BaseCommand):
 
             # select max weight combination
             max_ngram_tags = max(ngram_tags.items(), key=lambda x: x[1])[0]
-            max_ngram = re.sub(r'(VB)\w', r'\1' ,' '.join(max_ngram_tags))
-            if max_ngram == 'NN NN' and not obj.is_relevant:
-                print ngram_tags, ngram.ngram
+            max_ngram = self._compress_pos_tag(max_ngram_tags)
             all_tags.add(max_ngram)
             results[int(obj.is_relevant)][max_ngram] += 1
         all_tags = sorted(all_tags)
         relevant = [results[1][tag] for tag in all_tags]
         irrelevant = [results[0][tag] for tag in all_tags]
+        print results
         print all_tags
         print 'Relevant:', relevant
         print 'Irrelevant', irrelevant
