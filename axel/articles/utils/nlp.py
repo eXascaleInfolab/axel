@@ -173,7 +173,7 @@ def _generate_possible_ngrams(collocs, index):
 
 
 @print_timing
-def stem_text(text, stem_func=Stemmer.stem_wordnet):
+def get_full_text(text):
     """
     Stems text passed from text argument
     :type text: str
@@ -183,7 +183,6 @@ def stem_text(text, stem_func=Stemmer.stem_wordnet):
     result = PDFCleaner.clean_pdf_data(text)
     t = loader.select_template(('search/indexes/articles/article_text.txt', ))
     full_text = t.render(Context({'extracted': result}))
-    full_text = stem_func(full_text)
     # override full text
     result['text'] = full_text
     return result
