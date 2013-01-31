@@ -36,7 +36,7 @@ def _get_context(text, ngram, start=0):
         word_start = start
     else:
         ngram = r's? '.join(ngram.split())+r's?'
-        word_start = re.search(ngram, text)
+        word_start = re.search(ngram, text, re.I)
     # Check possible punctuations
     context_start = 0
     context_end = len(text)
@@ -59,7 +59,7 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
     """
     # add possible plural forms
     ngram = r's? '.join(ngram.split())+r's?'
-    for match in re.finditer(r'\s'+ngram+r'\s', text):
+    for match in re.finditer(r'\s'+ngram+r'\s', text, re.I):
         context = _get_context(text, ngram, match.start() + 1)
         result = True
         for b_ngram in bigger_ngrams:
