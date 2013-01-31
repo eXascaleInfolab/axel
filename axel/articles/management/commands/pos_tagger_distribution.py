@@ -28,6 +28,10 @@ class Command(BaseCommand):
             max_ngram = 'XXX VERB'
         elif max_ngram.startswith('RB '):
             max_ngram = 'ADV XXX'
+        elif max_ngram.startswith('JJ '):
+            max_ngram = 'ADJ XXX'
+        elif max_ngram.startswith('NN NN'):
+            max_ngram = 'NN NN XXX'
         elif re.search(r'^VB[^GN]', max_ngram):
             max_ngram = 'VERB XXX'
         return max_ngram
@@ -54,8 +58,9 @@ class Command(BaseCommand):
             for i, context in enumerate(contexts):
                 words, context = context
                 words = tuple(words.split())
-                tags = [(word, tag) for word, tag in nltk.pos_tag(nltk.word_tokenize(context)) if
-                        word in set(words)]
+                tags = [(word, tag.replace('NNS', 'NN'))
+                        for word, tag in nltk.pos_tag(nltk.word_tokenize(context))
+                        if word in set(words)]
                 found = False
                 for j, wordtag in enumerate(tags):
                     if wordtag[0] == words[0] and tuple(zip(*tags)[0][j:j+ngram_len]) == words:
@@ -79,6 +84,10 @@ class Command(BaseCommand):
             # select max weight combination
             max_ngram_tags = max(ngram_tags.items(), key=lambda x: x[1])[0]
             max_ngram = self._compress_pos_tag(max_ngram_tags)
+            #if max_ngram == 'XXX VERB' and obj.is_relevant:
+            #    print ngram_tags, ngram.ngram
+            #if max_ngram in ('JJ NN','NN NN') and not obj.is_relevant:
+            #    print 'IRREL:', ngram_tags, ngram.ngram
             all_tags.add(max_ngram)
             results[int(obj.is_relevant)][max_ngram] += 1
         all_tags = sorted(all_tags)
