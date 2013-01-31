@@ -23,8 +23,16 @@ class Stemmer:
         # split on punctuation
         result = []
         for word in nltk.regexp_tokenize(text, cls.TOKENIZE_REGEXP):
-            if word.istitle() or '-' in word:
+            if word.istitle():
                 word = word.lower()
+            elif '-' in word:
+                normalized_word = []
+                for int_word in word.split('-'):
+                    if int_word.istitle():
+                        normalized_word.append(int_word.lower())
+                    else:
+                        normalized_word.append(int_word)
+                word = '-'.join(normalized_word)
             result.append(lmtzr.lemmatize(word))
         return ' '.join(result)
 
@@ -35,8 +43,17 @@ class Stemmer:
         stemmer = PorterStemmer()
         result = []
         for word in nltk.regexp_tokenize(text, cls.TOKENIZE_REGEXP):
-            if word.istitle() or '-' in word:
+            if word.istitle():
                 word = word.lower()
+            elif '-' in word:
+                normalized_word = []
+                for int_word in word.split('-'):
+                    if int_word.istitle():
+                        normalized_word.append(int_word.lower())
+                    else:
+                        normalized_word.append(int_word)
+                word = '-'.join(normalized_word)
+
             result.append(stemmer.stem(word))
         return ' '.join(result)
 
