@@ -127,12 +127,5 @@ class SWCollocations(Collocation):
     """
     CLUSTER_ID = 'SW_COLLOCS'
 
-class SWCollocationsNoLemmas(Collocation):
-    """
-    collocation for ScienceWISE
-    everything is the same except table name, no lemmatization
-    """
-    CLUSTER_ID = 'SW_COLLOCS_NO_LEMMAS'
-
-CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (Collocations, SWCollocations, SWCollocationsNoLemmas)])
+CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (Collocations, SWCollocations)])
 
