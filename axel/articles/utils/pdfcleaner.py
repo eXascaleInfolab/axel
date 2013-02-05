@@ -99,4 +99,8 @@ class PDFCleaner:
             if len(contents[i].split())<=2:
                 contents[i]+='\n'
         result_dict['text'] = ' '.join(contents)
+
+        # remove title from text, because it it a strong collocation
+        result_dict['text'] =  result_dict['text'].replace(result_dict['title'],' ')
+
         return result_dict
