@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block extra-head %}
+    <style>
+
+        rect {
+            fill: none;
+            pointer-events: all;
+        }
+
+        .node {
+            fill: #5bb75b;
+        }
+
+        .node.irrel {
+            fill: #da4f49;
+        }
+
+        .link {
+            stroke: #999;
+        }
+
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript">
+        var width = 960, height = 500;
+
+        var fill = d3.scale.category10();
+
+        var force = d3.layout.force()
+                .size([width, height])
+                .nodes([{}]) // initialize with a single node
+                .linkDistance(30)
+                .charge(-60)
+                .on("tick", tick);
+        var svg = d3.select("svg");
+
+        svg.append("rect")
+                .attr("width", width)
+                .attr("height", height);
+
+        var nodes = force.nodes(),
+                links = force.links(),
+                node = svg.selectAll(".node"),
+                link = svg.selectAll(".link");
+        restart();
+
+        function restart() {
+            link = link.data(links);
+
+            link.enter().insert("line", ".node")
+                    .attr("class", "link");
+
+            node = node.data(nodes);
+
+            node.enter().attr("class", "node")
+                    .attr("r", 5)
+                    .call(force.drag);
+
+            force.start();
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+         viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
+         style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:-1;">
+    </svg>
+{% endblock %}
