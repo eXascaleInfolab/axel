@@ -1,4 +1,5 @@
 from collections import defaultdict
+import json
 import numpy
 
 from django.core.cache import cache
@@ -6,6 +7,7 @@ from django.views.generic import TemplateView
 from test_collection.views import CollectionModelView, _get_model_from_string, TestCollectionOverview
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
+from axel.articles.utils.nlp import build_ngram_index
 
 
 class CollocationMainView(TestCollectionOverview):
@@ -71,6 +73,47 @@ class FilteredCollectionModelView(CollectionModelView):
     def generate_queryset(self, model):
         """filter ngram by query here, filter only unjudged results"""
         return self.total_queryset.filter(ngram__icontains=self.query)
+
+
+class NgramParticipationView(TemplateView):
+    """View to draw ngram participation graph, d3.js"""
+    template_name='stats/graph_vis/ngram_particiation.html'
+
+    def get_context_data(self, **kwargs):
+        """Add nodes and links to the context"""
+        context = super(NgramParticipationView, self).get_context_data(**kwargs)
+        model = _get_model_from_string(self.kwargs['model_name'])
+        # nodes are simply ngrams
+        links = []
+        valid_ngrams = list(model.objects.filter(tags__is_relevant=True).values_list('ngram',
+            flat=True))
+        # Sort from longest to shortest, we use this in computing connections
+        valid_ngrams.sort(key=lambda x: len(x)+len(x.split()), reverse=True)
+
+        valid_ngrams_set = set(valid_ngrams)
+        participation_dict = defaultdict(list)
+        for ngram in valid_ngrams:
+            if ngram in participation_dict:
+                for ngram_1 in participation_dict[ngram]:
+                    links.append((ngram, ngram_1))
+                # replace with current ngram
+                for ngram_i in valid_ngrams_set.intersection(build_ngram_index(ngram).keys()):
+                    participation_dict[ngram_i] = [ngram]
+            else:
+                # append current ngram
+                for ngram_i in valid_ngrams_set.intersection(build_ngram_index(ngram).keys()):
+                    participation_dict[ngram_i].append(ngram)
+
+        # keep only connected components
+        connected_nodes = list(set(zip(*links)[0]).union(set(zip(*links)[1])))
+        node_dict = dict([(node,i) for i, node in enumerate(connected_nodes)])
+
+
+        links = [{'source':node_dict[source], 'target': node_dict[target]} for source,
+                                                                            target in links]
+        nodes = [{"name": ngram} for ngram in connected_nodes]
+        context['data'] = json.dumps({'nodes': nodes, 'links': links})
+        return context
 
 
 
