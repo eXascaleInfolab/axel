@@ -85,23 +85,25 @@ class NgramParticipationView(TemplateView):
         model = _get_model_from_string(self.kwargs['model_name'])
         # nodes are simply ngrams
         links = []
-        valid_ngrams = list(model.objects.filter(tags__is_relevant=True).values_list('ngram',
-            flat=True))
+        all_ngrams = list(model.objects.filter(tags__is_relevant__isnull=False).values_list(
+            'ngram', flat=True))
+        rel_ngrams = set(model.objects.filter(tags__is_relevant=True).values_list(
+            'ngram', flat=True))
         # Sort from longest to shortest, we use this in computing connections
-        valid_ngrams.sort(key=lambda x: len(x)+len(x.split()), reverse=True)
+        all_ngrams.sort(key=lambda x: len(x)+len(x.split()), reverse=True)
 
-        valid_ngrams_set = set(valid_ngrams)
+        ngrams_set = set(all_ngrams)
         participation_dict = defaultdict(list)
-        for ngram in valid_ngrams:
+        for ngram in all_ngrams:
             if ngram in participation_dict:
                 for ngram_1 in participation_dict[ngram]:
                     links.append((ngram, ngram_1))
                 # replace with current ngram
-                for ngram_i in valid_ngrams_set.intersection(build_ngram_index(ngram).keys()):
+                for ngram_i in ngrams_set.intersection(build_ngram_index(ngram).keys()):
                     participation_dict[ngram_i] = [ngram]
             else:
                 # append current ngram
-                for ngram_i in valid_ngrams_set.intersection(build_ngram_index(ngram).keys()):
+                for ngram_i in ngrams_set.intersection(build_ngram_index(ngram).keys()):
                     participation_dict[ngram_i].append(ngram)
 
         # keep only connected components
@@ -111,7 +113,7 @@ class NgramParticipationView(TemplateView):
 
         links = [{'source':node_dict[source], 'target': node_dict[target]} for source,
                                                                             target in links]
-        nodes = [{"name": ngram} for ngram in connected_nodes]
+        nodes = [{"name": ngram, "rel": ngram in rel_ngrams} for ngram in connected_nodes]
         context['data'] = json.dumps({'nodes': nodes, 'links': links})
         return context
 

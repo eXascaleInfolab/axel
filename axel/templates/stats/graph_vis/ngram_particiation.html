@@ -7,7 +7,7 @@
             fill: #5bb75b;
         }
 
-        .node.irrel {
+        .node-irrel {
             fill: #da4f49;
         }
 
@@ -22,7 +22,7 @@
         $(document).ready(function() {
 
         var data = {{ data|safe }};
-        var w = 1280, h = 1500, r=6;
+        var w = 1280, h = 600, r=6;
         var svg = d3.select("body").append("svg")
                 .attr("width", w)
                 .attr("height", h);
@@ -34,10 +34,15 @@
                 .append("g")
                 .attr("class", "node-wrap");
         // adding circle and text
-        node.append("circle").attr("class", "node").attr("r", r);
-        node.append("text")
-                .attr("text-anchor", "middle")
-                .text(function(d) { return d.name; });
+        node.append("circle").attr("class", function(d){
+            if (d.rel)
+                return "node";
+            else
+                return "node-irrel";
+        }).attr("r", r);
+        //node.append("text")
+        //        .attr("text-anchor", "middle")
+        //        .text(function(d) { return d.name; });
         var link = svg.selectAll(".link")
                 .data(data.links)
                 .enter()
@@ -47,8 +52,8 @@
                 .size([w, h])
                 .nodes(data.nodes)
                 .links(data.links)
-                .linkDistance(50)// default, keep for reference
-                .charge(-250).start();
+                .linkDistance(20)// default, keep for reference
+                .charge(-20).start();
         node.call(force.drag);
 
 
