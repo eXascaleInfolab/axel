@@ -21,17 +21,21 @@ class CollocationStats(TemplateView):
         """Add form to context"""
         context = super(CollocationStats, self).get_context_data(**kwargs)
         model = _get_model_from_string(self.kwargs['model_name'])
-        counts, bins = numpy.histogram(model.objects.values_list('count', flat=True),
-            bins=10)
-        counts = [x+1 for x in counts]
-        context['histogram_data'] = str(zip(bins, counts)).replace('(', '[').replace(')', ']')
+        #counts, bins = numpy.histogram(model.objects.values_list('count', flat=True), bins=10)
+        #counts = [x+1 for x in counts]
+        counts = defaultdict(lambda: 0)
+        for count in model.objects.values_list('count', flat=True):
+            counts[count]+=1
+        context['histogram_data'] = str(counts.items()).replace('(', '[').replace(')', ']')
         context['collocations'] = model.objects.order_by('-count').values_list('count',
             'ngram')[:10]
         return context
 
 
 class ConceptIndexStats(TemplateView):
-    """displays statistics about concept index"""
+    """Displays statistics about concept index:
+    N-gram word distribution
+    """
 
     template_name = "stats/conceptindex.html"
     def get_context_data(self, **kwargs):
@@ -56,7 +60,7 @@ class ConceptIndexStats(TemplateView):
 
 
 class FilteredCollectionModelView(CollectionModelView):
-    """filtered collection view"""
+    """Filtered collection view, for searching using query"""
     query = None
 
     def get(self, request, *args, **kwargs):

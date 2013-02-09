@@ -15,7 +15,7 @@
                 },
                 xAxis:{
                     title:{
-                        text:'Concept frequency',
+                        text:'N-gram count',
                         style:{
                             fontSize:'24px'
                         }
@@ -73,7 +73,7 @@
                 },
                 xAxis:{
                     title:{
-                        text:'Collocation length in words',
+                        text:'N-gram length in words',
                         style:{
                             fontSize:'24px'
                         }
@@ -127,6 +127,7 @@
 {% block content %}
     <div class="row">
         <div class="span12">
+            <h4>In how many ngrams does a word participate</h4>
             <div id="container" style="min-width: 800px; height: 500px; margin: 0 auto"></div>
         </div>
     </div>
