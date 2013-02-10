@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block extra-head %}
+    <style>
+
+        .node {
+            fill: #5bb75b;
+        }
+
+        .node-irrel {
+            fill: #da4f49;
+        }
+
+        .link {
+            stroke: #666;
+        }
+
+        text.hidden-hover {
+            display: none;
+        }
+
+        .node-wrap {
+            cursor: pointer;
+        }
+        .node-wrap:hover .hidden-hover {
+            display: block;
+            z-index: 100;
+        }
+
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            var data = {{ data|safe }};
+            var w = 1280, h = 600, r=6;
+            var svg = d3.select("body").append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+            var fill = d3.scale.category10();
+
+            var node = svg.selectAll("g.node-wrap")
+                    .data(data.nodes)
+                    .enter()
+                    .append("g")
+                    .attr("class", "node-wrap");
+            // adding circle and text
+            node.append("circle").attr("class", function(d){
+                if (d.rel)
+                    return "node";
+                else
+                    return "node-irrel";
+            }).attr("r", r);
+            node.append("text")
+                    .attr("class", "hidden-hover")
+                    .attr("text-anchor", "middle")
+                    .text(function(d) { return d.name; });
+            var link = svg.selectAll(".link")
+                    .data(data.links)
+                    .enter()
+                    .append('line').attr("class", "link");
+
+            var force = d3.layout.force()
+                    .size([w, h])
+                    .nodes(data.nodes)
+                    .links(data.links)
+                    .linkDistance(20)// default, keep for reference
+                    .charge(-20).start();
+            node.call(force.drag);
+
+
+            // standard tick
+            force.on("tick", function (e) {
+                link.attr("x1", function (d) {
+                    return d.source.x;
+                })
+                        .attr("y1", function (d) {
+                            return d.source.y;
+                        }).attr("x2", function (d) {
+                            return d.target.x;
+                        }).attr("y2", function (d) {
+                            return d.target.y;
+                        });
+                node.attr("cx", function(d) { return d.x = Math.max(r, Math.min(w - r, d.x)); })
+                        .attr("cy", function(d) { return d.y = Math.max(r, Math.min(h - r, d.y)); });
+                //node.attr("cx", function(d) { return d.x; })
+                //    .attr("cy", function(d) { return d.y; });
+                node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            });
+
+            var nodes = force.nodes(),
+                    links = force.links();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block graphname %}
+    {% endblock %}
+{% endblock %}
