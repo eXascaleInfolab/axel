@@ -15,6 +15,18 @@
             stroke: #666;
         }
 
+        text.hidden-hover {
+            display: none;
+        }
+
+        .node-wrap {
+            cursor: pointer;
+        }
+        .node-wrap:hover .hidden-hover {
+            display: block;
+            z-index: 100;
+        }
+
     </style>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript">
@@ -40,9 +52,10 @@
             else
                 return "node-irrel";
         }).attr("r", r);
-        //node.append("text")
-        //        .attr("text-anchor", "middle")
-        //        .text(function(d) { return d.name; });
+        node.append("text")
+                .attr("class", "hidden-hover")
+                .attr("text-anchor", "middle")
+                .text(function(d) { return d.name; });
         var link = svg.selectAll(".link")
                 .data(data.links)
                 .enter()
