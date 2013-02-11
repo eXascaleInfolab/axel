@@ -24,11 +24,11 @@ def _get_global_word_counts():
     return cache.get(_WORD_COUNTS_PREFIX)
 
 
-def get_concept_score(concept):
+def get_word_concept_score(concept):
     """
     :param concept: concept to get score for
     :type concept: unicode
     :rtype: int
     """
     word_counts = _get_global_word_counts()
-    return sum([word_counts[c] for c in set(concept.split()).intersection(word_counts)])
+    return sum([word_counts.get(c, 0) for c in set(concept.split())])
