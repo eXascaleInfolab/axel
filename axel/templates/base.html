@@ -41,6 +41,8 @@
                         <a href="{% url "articles" %}">Articles</a></li>
                     <li class="{% ifstartswith "stats" %}active{% endifstartswith %}">
                         <a href="{% url "stats" %}">Statistics</a></li>
+                    <li class="{% ifstartswith "testcollection_main" %}active{% endifstartswith %}">
+                        <a href="{% url "testcollection_main" %}">Test collection</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
