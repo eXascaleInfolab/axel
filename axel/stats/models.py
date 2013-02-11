@@ -70,12 +70,20 @@ class Collocation(models.Model):
         return self.count
 
     @property
-    def partial_match_score(self):
+    def partial_word_score(self):
         """
         Sum of the counts of words from a given collocation in the ontology
         (how often a word appears as a part of a concept in the ontology).
         """
-        return sw.get_concept_score(self.ngram)
+        return sw.get_word_concept_score(self.ngram)
+
+    @property
+    def partial_match_score(self):
+        """
+        Sum of the counts of FULL NGRAM in the ontology
+        (How often a full ngram appears as a part of a concept in the ontology)
+        """
+        return sw.get_ngram_concept_score(self.ngram)
 
     @property
     def often_score_glob(self):

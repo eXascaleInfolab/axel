@@ -7,6 +7,7 @@ from django.conf import settings
 
 
 _WORD_COUNTS_PREFIX = 'SW_word_counts'
+_NGRAM_COUNTS_PREFIX = 'SW_ngram_counts'
 _EXPIRE = sys.maxint
 
 
@@ -24,11 +25,35 @@ def _get_global_word_counts():
     return cache.get(_WORD_COUNTS_PREFIX)
 
 
-def get_word_concept_score(concept):
+def _get_global_ngram_counts():
     """
-    :param concept: concept to get score for
-    :type concept: unicode
+    Build global SW ngram set and put it to cache if does not exist
+    It is used in full ngram-concept matching
+    :rtype: dict
+    """
+    if not cache.has_key(_NGRAM_COUNTS_PREFIX):
+        # file contains dict of words with counts from SW ontology, we will use it directly
+        ngram_counts = pickle.load(open(settings.ABS_PATH('counts.pcl')))
+        cache.set(_NGRAM_COUNTS_PREFIX, ngram_counts, _EXPIRE)
+        return ngram_counts
+    return cache.get(_NGRAM_COUNTS_PREFIX)
+
+
+def get_word_concept_score(ngram):
+    """
+    :param ngram: ngram to get score for
+    :type ngram: unicode
     :rtype: int
     """
     word_counts = _get_global_word_counts()
-    return sum([word_counts.get(c, 0) for c in set(concept.split())])
+    return sum([word_counts.get(c, 0) for c in set(ngram.split())])
+
+
+def get_ngram_concept_score(ngram):
+    """
+    :param ngram: ngram to get score for
+    :type ngram: unicode
+    :rtype: int
+    """
+    ngram_counts = _get_global_ngram_counts()
+    return u','.join(ngram_counts.keys()).count(ngram)
