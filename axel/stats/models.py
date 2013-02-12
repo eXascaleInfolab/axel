@@ -12,13 +12,40 @@ import axel.articles.utils.sw_indexes as sw
 from axel.libs.utils import get_contexts
 
 
+# TODO: make a blog post out of a technique
+class db_cache(object):
+    """
+    Decorator to cache the expensively computed field in some other field
+    that supports dict-like assignment
+    """
+
+    def __init__(self, model_field):
+        """
+        :param model_field: field of the model to store and retrieve field from
+        """
+        self.model_field = model_field
+
+    def __call__(self, f):
+        def wrapper(object):
+            fields = getattr(object, self.model_field)
+            if f.__name__ in fields:
+                return fields[f.__name__]
+            else:
+                value = f(object)
+                fields[f.__name__] = value
+                setattr(object, self.model_field, fields)
+                object.save()
+                return value
+        return wrapper
+
+
 class Collocation(models.Model):
     """Aggregated collocation statistics model"""
     ngram = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
     tags = generic.GenericRelation(TaggedCollection)
     # extra fields will store pre-computed scores
-    _extra_fields = models.TextField()
+    _extra_fields = models.TextField(default='{}')
 
     CLUSTER_ID = 'ABSTRACT'
 
@@ -83,6 +110,7 @@ class Collocation(models.Model):
         return self.count
 
     @property
+    @db_cache('extra_fields')
     def partial_word_score(self):
         """
         Sum of the counts of words from a given collocation in the ontology
@@ -91,6 +119,7 @@ class Collocation(models.Model):
         return sw.get_word_concept_score(self.ngram)
 
     @property
+    @db_cache('extra_fields')
     def partial_ngram_score(self):
         """
         Sum of the counts of FULL NGRAM in the ontology
@@ -99,6 +128,7 @@ class Collocation(models.Model):
         return sw.get_ngram_concept_score(self.ngram)
 
     @property
+    @db_cache('extra_fields')
     def partial_ont_score(self):
         """How often does any concept from the ontology occur in the NGRAM"""
         return sw.get_concept_ngram_score(self.ngram)
@@ -118,6 +148,7 @@ class Collocation(models.Model):
         return score
 
     @property
+    @db_cache('extra_fields')
     def often_consumed_score(self):
         """How often does an ngram gets consumed by a bigger one"""
         score = self.__class__.objects.filter(ngram__contains=self.ngram).aggregate(
