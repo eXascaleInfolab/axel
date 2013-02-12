@@ -9,9 +9,9 @@
         <span class="badge badge-warning">ONT partial word: {{ partial_word_score }}</span>
     {% endif %}
 {% endwith %}
-{% with partial_match_score=object.partial_match_score %}
-    {% if partial_match_score %}
-        <span class="badge badge-success">ONT partial n-gram: {{ partial_match_score }}</span>
+{% with partial_ngram_score=object.partial_ngram_score %}
+    {% if partial_ngram_score %}
+        <span class="badge badge-success">ONT partial n-gram: {{ partial_ngram_score }}</span>
     {% endif %}
 {% endwith %}
 {% with often_consumed=object.often_consumed %}

@@ -78,7 +78,7 @@ class Collocation(models.Model):
         return sw.get_word_concept_score(self.ngram)
 
     @property
-    def partial_match_score(self):
+    def partial_ngram_score(self):
         """
         Sum of the counts of FULL NGRAM in the ontology
         (How often a full ngram appears as a part of a concept in the ontology)
@@ -86,9 +86,9 @@ class Collocation(models.Model):
         return sw.get_ngram_concept_score(self.ngram)
 
     @property
-    def often_score_glob(self):
-        """How many articles do contain an ngram"""
-        return self._articlecollocations.filter(ngram=self.ngram).count()
+    def partial_ont_score(self):
+        """How often does any concept from the ontology occur in the NGRAM"""
+        return sw.get_concept_ngram_score(self.ngram)
 
     @property
     def often_word_local(self):

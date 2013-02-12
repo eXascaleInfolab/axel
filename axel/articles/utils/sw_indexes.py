@@ -4,6 +4,7 @@ import sys
 
 from django.core.cache import cache
 from django.conf import settings
+from axel.articles.utils.nlp import build_ngram_index
 
 
 _WORD_COUNTS_PREFIX = 'SW_word_counts'
@@ -56,4 +57,18 @@ def get_ngram_concept_score(ngram):
     :rtype: int
     """
     ngram_counts = _get_global_ngram_counts()
+    if ngram in ngram_counts:
+        del ngram_counts[ngram]
     return u','.join(ngram_counts.keys()).count(ngram)
+
+
+def get_concept_ngram_score(ngram):
+    """
+    :param ngram: ngram to get score for
+    :type ngram: unicode
+    :rtype: int
+    """
+    ngram_counts = _get_global_ngram_counts()
+    if ngram in ngram_counts:
+        del ngram_counts[ngram]
+    return len(set(build_ngram_index(ngram).keys()).intersection(ngram_counts.keys()))
