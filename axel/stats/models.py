@@ -76,6 +76,7 @@ class Collocation(models.Model):
         self._extra_fields = json.dumps(value)
 
     @property
+    @db_cache('extra_fields')
     def context(self):
         """
         Get random context for collocation, used in collocation list view,
