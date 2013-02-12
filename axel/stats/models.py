@@ -1,4 +1,5 @@
 from __future__ import division
+import json
 
 from collections import defaultdict
 from django.contrib.contenttypes import generic
@@ -16,6 +17,8 @@ class Collocation(models.Model):
     ngram = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
     tags = generic.GenericRelation(TaggedCollection)
+    # extra fields will store pre-computed scores
+    _extra_fields = models.TextField()
 
     CLUSTER_ID = 'ABSTRACT'
 
@@ -34,6 +37,16 @@ class Collocation(models.Model):
         :rtype: QuerySet
         """
         return ArticleCollocation.objects.filter(article__cluster_id=self.CLUSTER_ID)
+
+    @property
+    def extra_fields(self):
+        """Load from json"""
+        return json.loads(self._extra_fields)
+
+    @extra_fields.setter
+    def extra_fields(self, value):
+        """Convert to json"""
+        self._extra_fields = json.dumps(value)
 
     @property
     def context(self):
