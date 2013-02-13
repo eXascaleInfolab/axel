@@ -1,4 +1,4 @@
-"""ScienceWISE-specific scores calculation"""
+"""Collection scorings calculation"""
 import pickle
 import sys
 
@@ -72,3 +72,6 @@ def get_concept_ngram_score(ngram):
     if ngram in ngram_counts:
         del ngram_counts[ngram]
     return len(set(build_ngram_index(ngram).keys()).intersection(ngram_counts.keys()))
+
+# import POS tagging scorings
+from .postag import *
