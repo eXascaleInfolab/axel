@@ -59,7 +59,7 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
     """
     # add possible plural forms
     ngram = r's? '.join(ngram.split())+r's?'
-    for match in re.finditer(r'(?=\W)'+ngram+r'(?=\W)', text, re.I):
+    for match in re.finditer(r'(?:\W)'+ngram+r'(?:\W)', text, re.I):
         context = _get_context(text, ngram, match.start() + 1)
         result = True
         for b_ngram in bigger_ngrams:
