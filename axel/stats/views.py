@@ -1,9 +1,11 @@
 from collections import defaultdict
 import json
 from django.contrib.contenttypes.models import ContentType
-import numpy
 
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 from test_collection.models import TaggedCollection
 from test_collection.views import CollectionModelView, _get_model_from_string, TestCollectionOverview
@@ -159,21 +161,18 @@ class NgramPOSView(TemplateView):
 
 
 
-#@require_POST
-#def collocations_update(request):
-#    """Update collocations by searching existing ones"""
-#    for collocation in Collocations.objects.all():
-#        cur_docs = SearchQuerySet().filter(content__exact=collocation.ngram).values_list('id',
-#            flat=True)
-#        # strip model
-#        cur_docs = [doc.split('.')[-1] for doc in cur_docs]
-#        if len(cur_docs) > collocation.count:
-#            docs = set(Article.objects.exclude(articlecollocation__ngram=collocation.ngram).
-#                    filter(id__in=cur_docs).values_list('id', 'stemmed_text'))
-#            for doc_id, text in docs:
-#                c_count = text.count(collocation.ngram)
-#                ArticleCollocation.objects.create(article_id=doc_id,
-#                    ngram=collocation.ngram, count=c_count)
-#
-#    return HttpResponseRedirect(reverse('stats'))
+@require_POST
+def clear_attribute(request, model_name, attribute):
+    """Clear specified model attribute from `extra_fields` JSON model attribute"""
+    model = _get_model_from_string(model_name)
+
+    for obj in model.objects.all():
+        fields = obj.extra_fields
+        if attribute in fields:
+            del fields[attribute]
+            obj.extra_fields = fields
+            obj.save()
+
+    next = request.GET.get('next', reverse('testcollection_model', args=[model_name]))
+    return HttpResponseRedirect(next)
 
