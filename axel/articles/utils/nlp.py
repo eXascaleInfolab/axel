@@ -90,7 +90,7 @@ def collocations(index):
         return _PUNKT_RE.match(word)
 
     def filter_len(word):
-        return len(word) < 3
+        return len(word) < 3 and not word.isupper()
 
     # do filtration by frequency > 2
     bigram_index = dict([(tuple(k.split()), v) for k, v in index.iteritems()
