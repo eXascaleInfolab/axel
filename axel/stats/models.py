@@ -48,6 +48,8 @@ class Collocation(models.Model):
     _extra_fields = models.TextField(default='{}')
 
     CLUSTER_ID = 'ABSTRACT'
+    CACHED_FIELDS = ('context', 'pos_tag', 'partial_word_score', 'partial_ngram_score',
+        'partial_ont_score')
 
     class Meta:
         """Meta info"""

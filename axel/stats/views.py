@@ -5,13 +5,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.views.decorators.http import require_POST
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 from test_collection.models import TaggedCollection
 from test_collection.views import CollectionModelView, _get_model_from_string, TestCollectionOverview
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
+from axel.stats.forms import ScoreCacheResetForm
 
 
 class CollocationMainView(TestCollectionOverview):
@@ -160,19 +160,30 @@ class NgramPOSView(TemplateView):
         return context
 
 
+class ClearCachedAttrView(FormView):
+    """Extract and display collocations from pdf document"""
+    form_class = ScoreCacheResetForm
 
-@require_POST
-def clear_attribute(request, model_name, attribute):
-    """Clear specified model attribute from `extra_fields` JSON model attribute"""
-    model = _get_model_from_string(model_name)
+    def get_form(self, form_class):
+        """
+        Returns an instance of the form to be used in this view.
+        """
+        model = _get_model_from_string(self.kwargs['model_name'])
+        return form_class(model, **self.get_form_kwargs())
 
-    for obj in model.objects.all():
-        fields = obj.extra_fields
-        if attribute in fields:
-            del fields[attribute]
-            obj.extra_fields = fields
-            obj.save()
+    def form_valid(self, form):
+        """
+        clear cache
+        """
+        attribute = form.cleaned_data['attr']
+        model = _get_model_from_string(self.kwargs['model_name'])
+        for obj in model.objects.all():
+            fields = obj.extra_fields
+            if attribute in fields:
+                del fields[attribute]
+                obj.extra_fields = fields
+                obj.save()
 
-    next = request.GET.get('next', reverse('testcollection_model', args=[model_name]))
-    return HttpResponseRedirect(next)
+        next = self.request.GET.get('next', reverse('testcollection_model', args=[self.kwargs['model_name']]))
+        return HttpResponseRedirect(next)
 

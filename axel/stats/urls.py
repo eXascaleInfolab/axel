@@ -1,7 +1,7 @@
 """Url mappings"""
 from django.conf.urls import patterns, url
 from axel.stats.views import CollocationStats, ConceptIndexStats, FilteredCollectionModelView, \
-    CollocationMainView, NgramParticipationView, NgramPOSView
+    CollocationMainView, NgramParticipationView, NgramPOSView, ClearCachedAttrView
 
 
 urlpatterns = patterns('axel.stats.views',
@@ -13,6 +13,5 @@ urlpatterns = patterns('axel.stats.views',
     url(r'^(?P<model_name>[^/]+)/pos_dist/$',
         NgramPOSView.as_view(), name='pos_dist'),
     url(r'^(?P<model_name>[^/]+)/filter/$', FilteredCollectionModelView.as_view(), name='colloc_filter'),
-    url(r'^(?P<model_name>[^/]+)/clear/(?P<attribute>[^/]+)$', 'clear_attribute',
-        name='clear_attribute')
+    url(r'^(?P<model_name>[^/]+)/clear/$', ClearCachedAttrView.as_view(), name='clear_attribute')
 )
