@@ -85,7 +85,7 @@ class Collocation(models.Model):
         """
         article =  self._articlecollocations.filter(ngram=self.ngram)[0].article
         # prevent contexts from bigger ngrams
-        bigger_ngrams = ArticleCollocation.objects.filter(article=article,
+        bigger_ngrams = self._articlecollocations.filter(article=article,
             ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
         context = next(get_contexts(article.stemmed_text, self.ngram, bigger_ngrams),
            self.ngram)
@@ -100,9 +100,10 @@ class Collocation(models.Model):
         contexts = []
         for text, article_id in  self._articlecollocations.filter(ngram=self.ngram).values_list(
             'article__stemmed_text', 'article'):
-            bigger_ngrams = ArticleCollocation.objects.filter(article__id=article_id,
+            bigger_ngrams = self._articlecollocations.filter(article__id=article_id,
                 ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
-            contexts.extend([context for context in func(text, self.ngram, bigger_ngrams)])
+            for context in func(text, self.ngram, bigger_ngrams):
+                contexts.append(context)
         return contexts
 
     @property
