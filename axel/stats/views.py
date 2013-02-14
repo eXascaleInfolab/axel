@@ -1,9 +1,11 @@
 from collections import defaultdict
 import json
+from django.contrib.contenttypes.models import ContentType
 import numpy
 
 from django.core.cache import cache
 from django.views.generic import TemplateView
+from test_collection.models import TaggedCollection
 from test_collection.views import CollectionModelView, _get_model_from_string, TestCollectionOverview
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
@@ -115,6 +117,44 @@ class NgramParticipationView(TemplateView):
                                                                             target in links]
         nodes = [{"name": ngram, "rel": ngram in rel_ngrams} for ngram in connected_nodes]
         context['data'] = json.dumps({'nodes': nodes, 'links': links})
+        return context
+
+
+class NgramPOSView(TemplateView):
+    """View to draw ngram participation graph, d3.js"""
+    template_name='stats/graph_vis/pos_distribution.html'
+
+    def get_context_data(self, **kwargs):
+        """Add nodes and links to the context"""
+        context = super(NgramPOSView, self).get_context_data(**kwargs)
+        model = _get_model_from_string(self.kwargs['model_name'])
+        ct = ContentType.objects.get_for_model(model)
+
+        relevant_ids = set(TaggedCollection.objects.filter(content_type=ct,
+            is_relevant=True).values_list('object_id', flat=True))
+        irrelevant_ids = set(TaggedCollection.objects.filter(content_type=ct,
+            is_relevant=False).values_list('object_id', flat=True))
+
+        all_tags = set()
+
+        context['correct_data'] = defaultdict(lambda:0)
+        context['incorrect_data'] = defaultdict(lambda:0)
+        context['unjudged_data'] = defaultdict(lambda:0)
+        for obj in model.objects.all():
+            tag = str(obj.pos_score)
+            all_tags.add(tag)
+            if obj.id in relevant_ids:
+                context['correct_data'][tag] += 1
+            elif obj.id in irrelevant_ids:
+                context['incorrect_data'][tag] += 1
+            else:
+                context['unjudged_data'][tag] += 1
+
+        context['correct_data'] = [context['correct_data'][tag] for tag in all_tags]
+        context['incorrect_data'] = [context['incorrect_data'][tag] for tag in all_tags]
+        context['unjudged_data'] = [context['unjudged_data'][tag] for tag in all_tags]
+
+        context['categories'] = sorted(all_tags)
         return context
 
 

@@ -3,6 +3,8 @@ from collections import defaultdict
 import nltk
 import re
 
+from axel.articles.utils.nlp import Stemmer
+
 
 def _compress_pos_tag(max_ngram_tags):
     """compress POS ngram tag"""
@@ -37,17 +39,12 @@ def pos_tag(ngram, contexts):
         words, context = context
         words = tuple(words.split())
         tags = [(word, tag.replace('NNS', 'NN'))
-                for word, tag in nltk.pos_tag(nltk.wordpunct_tokenize(context))
+                for word, tag in nltk.pos_tag(nltk.regexp_tokenize(context, Stemmer.TOKENIZE_REGEXP))
                 if word in set(words)]
-        found = False
         for j, wordtag in enumerate(tags):
             if wordtag[0] == words[0] and tuple(zip(*tags)[0][j:j+ngram_len]) == words:
                 tags = tuple(zip(*tags)[1][j:j+ngram_len])
-                found = True
                 break
-        if not found:
-            print context, ngram
-            continue
 
         ngram_tags[tags] += 1
         # check every 10 iterations for speed
@@ -59,8 +56,6 @@ def pos_tag(ngram, contexts):
                 if items[0][1] > 5*items[1][1]:
                     break
 
-    if not ngram_tags.items():
-        print 'LOL'
     # select max weight combination
     max_ngram_tags = max(ngram_tags.items(), key=lambda x: x[1])[0]
     max_ngram = _compress_pos_tag(max_ngram_tags)

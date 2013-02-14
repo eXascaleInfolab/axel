@@ -16,6 +16,10 @@
                 <a href="{% url "ngram_participation_stats" model.name %}">
                     <i class="icon-fire"></i>
                     N-gram participation graph</a>
+                <br>
+                <a href="{% url "pos_dist" model.name %}">
+                    <i class="icon-signal"></i>
+                    POS tag distribution</a>
             </li>
         {% endfor %}
     </ul>

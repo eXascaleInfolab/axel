@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block extra-head %}
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            var chart;
+            $(document).ready(function() {
+                chart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'container',
+                        type: 'column',
+                        marginTop: 100
+                    },
+                    credits: false,
+                    title: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: {{ categories|safe }},
+                        labels: {
+                            style: {
+                                fontSize: '18px'
+                            },
+                            y: 20
+                        }
+
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Count',
+                            style: {
+                                fontSize: '24px'
+                            }
+                        },
+                        labels: {
+                            style: {
+                                fontSize: '18px'
+                            }
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.1,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Relevant',
+                            data: {{ correct_data }}
+
+                        },
+                        {
+                            name: 'Irrelevant',
+                            data: {{ incorrect_data }}
+
+                        },
+                        {
+                            name: 'Unjudged',
+                            data: {{ unjudged_data }},
+                            color: '#999'
+
+                        }
+                    ]
+                });
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h3>POS tags distribution</h3>
+    <div id="container" style="min-width: 800px; height: 800px; margin: 0 auto"></div>
+{% endblock %}
