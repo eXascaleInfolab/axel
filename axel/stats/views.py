@@ -141,7 +141,7 @@ class NgramPOSView(TemplateView):
         context['incorrect_data'] = defaultdict(lambda:0)
         context['unjudged_data'] = defaultdict(lambda:0)
         for obj in model.objects.all():
-            tag = str(obj.pos_score)
+            tag = str(obj.pos_tag)
             all_tags.add(tag)
             if obj.id in relevant_ids:
                 context['correct_data'][tag] += 1

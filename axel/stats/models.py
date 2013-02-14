@@ -8,8 +8,8 @@ from django.db.models import Q, Sum
 import operator
 from test_collection.models import TaggedCollection
 from axel.articles.models import ArticleCollocation
-import axel.articles.utils.sw_indexes as sw
-from axel.libs.utils import get_contexts
+import axel.stats.scores as scores
+from axel.libs.utils import get_contexts, get_contexts_ngrams
 
 
 # TODO: make a blog post out of a technique
@@ -117,7 +117,17 @@ class Collocation(models.Model):
         Sum of the counts of words from a given collocation in the ontology
         (how often a word appears as a part of a concept in the ontology).
         """
-        return sw.get_word_concept_score(self.ngram)
+        return scores.get_word_concept_score(self.ngram)
+
+    @property
+    @db_cache('extra_fields')
+    def pos_tag(self):
+        """
+        Defines part-of-speech tag for ngram
+        :return: Part-of-Speech tag
+        :rtype: unicode
+        """
+        return scores.pos_tag(self.ngram, self.all_contexts(func=get_contexts_ngrams))
 
     @property
     @db_cache('extra_fields')
@@ -126,13 +136,13 @@ class Collocation(models.Model):
         Sum of the counts of FULL NGRAM in the ontology
         (How often a full ngram appears as a part of a concept in the ontology)
         """
-        return sw.get_ngram_concept_score(self.ngram)
+        return scores.get_ngram_concept_score(self.ngram)
 
     @property
     @db_cache('extra_fields')
     def partial_ont_score(self):
         """How often does any concept from the ontology occur in the NGRAM"""
-        return sw.get_concept_ngram_score(self.ngram)
+        return scores.get_concept_ngram_score(self.ngram)
 
     @property
     def often_word_local(self):
