@@ -163,12 +163,14 @@ class NgramPOSView(TemplateView):
 class ClearCachedAttrView(FormView):
     """Extract and display collocations from pdf document"""
     form_class = ScoreCacheResetForm
+    template_name = "test_collection/partial/clear_cache_form.html"
 
     def get_form(self, form_class):
         """
         Returns an instance of the form to be used in this view.
         """
-        model = _get_model_from_string(self.kwargs['model_name'])
+        self.model_name = self.kwargs['model_name']
+        model = _get_model_from_string(self.model_name)
         return form_class(model, **self.get_form_kwargs())
 
     def form_valid(self, form):
@@ -176,7 +178,7 @@ class ClearCachedAttrView(FormView):
         clear cache
         """
         attribute = form.cleaned_data['attr']
-        model = _get_model_from_string(self.kwargs['model_name'])
+        model = _get_model_from_string(self.model_name)
         for obj in model.objects.all():
             fields = obj.extra_fields
             if attribute in fields:
@@ -184,6 +186,12 @@ class ClearCachedAttrView(FormView):
                 obj.extra_fields = fields
                 obj.save()
 
-        next = self.request.GET.get('next', reverse('testcollection_model', args=[self.kwargs['model_name']]))
+        next = self.request.GET.get('next', reverse('testcollection_model', args=[self.model_name]))
         return HttpResponseRedirect(next)
+
+    def get_context_data(self, **kwargs):
+        """Add nodes and links to the context"""
+        context = super(ClearCachedAttrView, self).get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        return context
 

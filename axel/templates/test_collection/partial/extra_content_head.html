@@ -1,3 +1,4 @@
+{% load url from future %}
 <div>
     <h3>Scoring legend</h3>
     <dl class="dl-horizontal">
@@ -16,16 +17,15 @@
 </div>
 <div class="row">
     <div class="span6">
-        <form class="form-search" method="GET" action="{% url colloc_filter model_name %}">
+        <form class="form-search" method="GET" action="{% url "colloc_filter" model_name %}">
             <h3>Filter ngrams</h3>
-            <input type="text" name="query" class="input-xlarge search-query">
-            <button type="submit" class="btn btn-inverse">Filter</button>
+            <div class="input-append">
+                <input type="text" name="query" class="input-xlarge search-query">
+                <button type="submit" class="btn btn-inverse">Filter</button>
+            </div>
         </form>
     </div>
     <div class="span6">
-        <form method="POST" action="{% url clear_attribute model_name "context" %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Clear context cache</button>
-        </form>
+        <h4><a href="{% url "clear_attribute" model_name %}">Clear attribute cache</a></h4>
     </div>
 </div>

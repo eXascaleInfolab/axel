@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+    <form class="form-search" method="POST" action="{% url "clear_attribute" model_name %}">
+        {% csrf_token %}
+        <legend>Clear attribute cache: {{ model_name }}</legend>
+        {% for field in form %}
+            {{ field }}
+        {% endfor %}
+        <button type="submit" class="btn btn-danger">Clear cache</button>
+    </form>
+{% endblock %}
