@@ -9,7 +9,9 @@ from axel.articles.utils.nlp import Stemmer
 def _compress_pos_tag(max_ngram_tags):
     """compress POS ngram tag"""
     max_ngram = ' '.join(max_ngram_tags)
-    if max_ngram.startswith('CD '):
+    if 'NNS' in max_ngram:
+        max_ngram = 'PLURAL'
+    elif max_ngram.startswith('CD '):
         max_ngram = 'NUM XXX'
     elif re.search('VB\w$', max_ngram):
         max_ngram = 'XXX VERB'
@@ -38,7 +40,7 @@ def pos_tag(ngram, contexts):
     for i, context in enumerate(contexts):
         words, context = context
         words = tuple(words.split())
-        tags = [(word, tag.replace('NNS', 'NN'))
+        tags = [(word, tag)
                 for word, tag in nltk.pos_tag(nltk.regexp_tokenize(context, Stemmer.TOKENIZE_REGEXP))
                 if word in set(words)]
         for j, wordtag in enumerate(tags):
@@ -63,4 +65,6 @@ def pos_tag(ngram, contexts):
     #    print ngram_tags, ngram.ngram
     #if max_ngram in ('JJ NN','NN NN') and not obj.is_relevant:
     #    print 'IRREL:', ngram_tags, ngram.ngram
+    if 'PRP$' in max_ngram:
+        print ngram
     return max_ngram
