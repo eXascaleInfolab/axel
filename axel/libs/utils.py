@@ -63,7 +63,7 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
         context = _get_context(text, ngram, match.start())
         result = True
         for b_ngram in bigger_ngrams:
-            if b_ngram in context:
+            if re.search(b_ngram, context, re.I):
                 result = False
                 break
         if result:
