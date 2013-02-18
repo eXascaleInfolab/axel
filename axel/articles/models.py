@@ -100,6 +100,8 @@ class Article(models.Model):
                 .exclude(id='articles.article.'+str(self.id)).values_list('id', flat=True)
                 new_articles = set([a_id.split('.')[-1] for a_id in new_articles])
                 for article in Article.objects.filter(id__in=new_articles):
+                    if article.cluster_id != self.cluster_id:
+                        continue
                     index = json.loads(article.index)
                     # Check that collocation is in index and
                     # second check that we don't already have bigger collocations
