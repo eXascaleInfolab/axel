@@ -19,6 +19,11 @@
     <span class="badge badge-important">Often consumed: {{ often_consumed }}</span>
     {% endif %}
 {% endwith %}
+{% with acm_score=object.acm_score %}
+    {% if acm_score %}
+        <span class="badge badge-success">ACM score: {{ acm_score }}</span>
+    {% endif %}
+{% endwith %}
 <div class="alert alert-info">
     {% highlight_ngram_context object.ngram object.context %}
 </div>
