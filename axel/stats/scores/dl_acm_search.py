@@ -4,7 +4,7 @@ import requests
 import re
 
 
-COUNT_RE = re.compile(r'Results 1 - 20 of ([\d,]+)')
+COUNT_RE = re.compile(r'Results 1 - \d{1,2} of ([\d,]+)')
 
 
 def acm_search_result_count(ngram):
