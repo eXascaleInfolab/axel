@@ -65,6 +65,6 @@ def pos_tag(ngram, contexts):
     #    print ngram_tags, ngram.ngram
     #if max_ngram in ('JJ NN','NN NN') and not obj.is_relevant:
     #    print 'IRREL:', ngram_tags, ngram.ngram
-    if 'PRP$' in max_ngram:
-        print ngram
+    #if 'PRP$' in max_ngram:
+    #    print ngram
     return max_ngram

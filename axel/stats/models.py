@@ -116,15 +116,6 @@ class Collocation(models.Model):
 
     @property
     @db_cache('extra_fields')
-    def partial_word_score(self):
-        """
-        Sum of the counts of words from a given collocation in the ontology
-        (how often a word appears as a part of a concept in the ontology).
-        """
-        return scores.get_word_concept_score(self.ngram)
-
-    @property
-    @db_cache('extra_fields')
     def pos_tag(self):
         """
         Defines part-of-speech tag for ngram
@@ -133,20 +124,6 @@ class Collocation(models.Model):
         """
         return scores.pos_tag(self.ngram, self.all_contexts(func=get_contexts_ngrams))
 
-    @property
-    @db_cache('extra_fields')
-    def partial_ngram_score(self):
-        """
-        Sum of the counts of FULL NGRAM in the ontology
-        (How often a full ngram appears as a part of a concept in the ontology)
-        """
-        return scores.get_ngram_concept_score(self.ngram)
-
-    @property
-    @db_cache('extra_fields')
-    def partial_ont_score(self):
-        """How often does any concept from the ontology occur in the NGRAM"""
-        return scores.get_concept_ngram_score(self.ngram)
 
     @property
     def often_word_local(self):
@@ -189,6 +166,14 @@ class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
     CLUSTER_ID = 'CS_COLLOCS'
 
+    @property
+    @db_cache('extra_fields')
+    def acm_score(self):
+        """
+        Get ACM search score
+        """
+        return scores.acm_search_result_count(self.ngram)
+
 
 class SWCollocations(Collocation):
     """
@@ -196,6 +181,31 @@ class SWCollocations(Collocation):
     everything is the same except table name
     """
     CLUSTER_ID = 'SW_COLLOCS'
+
+    @property
+    @db_cache('extra_fields')
+    def partial_word_score(self):
+        """
+        Sum of the counts of words from a given collocation in the ontology
+        (how often a word appears as a part of a concept in the ontology).
+        """
+        return scores.get_word_concept_score(self.ngram)
+
+    @property
+    @db_cache('extra_fields')
+    def partial_ngram_score(self):
+        """
+        Sum of the counts of FULL NGRAM in the ontology
+        (How often a full ngram appears as a part of a concept in the ontology)
+        """
+        return scores.get_ngram_concept_score(self.ngram)
+
+    @property
+    @db_cache('extra_fields')
+    def partial_ont_score(self):
+        """How often does any concept from the ontology occur in the NGRAM"""
+        return scores.get_concept_ngram_score(self.ngram)
+
 
 CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (Collocations, SWCollocations)])
 
