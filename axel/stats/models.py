@@ -48,8 +48,7 @@ class Collocation(models.Model):
     _extra_fields = models.TextField(default='{}')
 
     CLUSTER_ID = 'ABSTRACT'
-    CACHED_FIELDS = ('context', 'pos_tag', 'partial_word_score', 'partial_ngram_score',
-        'partial_ont_score')
+    CACHED_FIELDS = ()
     SYNC_FIELD = 'ngram'
 
     class Meta:
@@ -165,6 +164,7 @@ class Collocation(models.Model):
 class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
     CLUSTER_ID = 'CS_COLLOCS'
+    CACHED_FIELDS = ('context', 'pos_tag', 'acm_score')
 
     @property
     @db_cache('extra_fields')
@@ -181,6 +181,8 @@ class SWCollocations(Collocation):
     everything is the same except table name
     """
     CLUSTER_ID = 'SW_COLLOCS'
+    CACHED_FIELDS = ('context', 'pos_tag', 'partial_word_score', 'partial_ngram_score',
+                     'partial_ont_score')
 
     @property
     @db_cache('extra_fields')
