@@ -157,7 +157,7 @@ class Collocation(models.Model):
                                 flat=True):
             counts[count] += 1
 
-        histogram_data = str(counts.items()).replace('(', '[').replace(')', ']')
+        histogram_data = str(sorted(counts.items())).replace('(', '[').replace(')', ']')
         return histogram_data
 
 
