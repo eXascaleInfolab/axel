@@ -42,7 +42,8 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         extracted_data = self._get_backend(None).extract_file_contents(obj.pdf.file)
         obj.pdf.close()
         result = nlp.get_full_text(extracted_data['contents'])
-        obj.stemmed_text = result['text']
+        # get rid of multiple whitespaces
+        obj.stemmed_text = ' '.join(result['text'].split())
         obj.index = json.dumps(nlp.build_ngram_index(nlp.Stemmer.stem_wordnet(result['text'])))
 
         if result['abstract']:
