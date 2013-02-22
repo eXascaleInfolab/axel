@@ -44,7 +44,7 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         result = nlp.get_full_text(extracted_data['contents'])
         # get rid of multiple whitespaces
         obj.stemmed_text = ' '.join(result['text'].split())
-        obj.index = json.dumps(nlp.build_ngram_index(nlp.Stemmer.stem_wordnet(result['text'])))
+        obj.index = json.dumps(nlp.build_ngram_index(nlp.Stemmer.stem_wordnet(obj.stemmed_text)))
 
         if result['abstract']:
             obj.abstract = result['abstract']
@@ -53,6 +53,6 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         # save raw because we don't want to trigger signal again
         obj.save_base(raw=True)
 
-        data['text'] = result['text']
+        data['text'] = obj.stemmed_text
         return data
 
