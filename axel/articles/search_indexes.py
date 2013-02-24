@@ -2,6 +2,7 @@ import datetime
 import json
 
 from haystack import indexes
+import re
 
 from axel.articles.models import Article
 from axel.articles.utils import nlp
@@ -12,6 +13,8 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     abstract = indexes.CharField(model_attr='abstract')
     pub_year = indexes.IntegerField(model_attr='year')
+
+    MULTI_SPACE_REGEX = re.compile(r'  +')
 
     def get_model(self):
         """returns underlying model"""
@@ -43,7 +46,7 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         obj.pdf.close()
         result = nlp.get_full_text(extracted_data['contents'])
         # get rid of multiple whitespaces
-        obj.stemmed_text = ' '.join(result['text'].split())
+        obj.stemmed_text = self.MULTI_SPACE_REGEX.sub(' ', result['text'])
         obj.index = json.dumps(nlp.build_ngram_index(nlp.Stemmer.stem_wordnet(obj.stemmed_text)))
 
         if result['abstract']:
