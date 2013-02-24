@@ -35,8 +35,8 @@ def _get_context(text, ngram, start=0):
     if start:
         word_start = start
     else:
-        ngram = r's? '.join(ngram.split())+r's?'
-        word_start = re.search(ngram, text, re.I)
+        ngram = r's? '.join(ngram.split()) + r's?'
+        word_start = re.search(ngram, text, re.I).start()
     # Check possible punctuations
     context_start = 0
     context_end = len(text)
@@ -58,15 +58,34 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
     :rtype: generator
     """
     # add possible plural forms
-    ngram = r's? '.join(ngram.split())+r's?'
-    for match in re.finditer(r'(?:\W)'+ngram+r'(?:\W)', text, re.I):
+    def _ngram_plural_regex(ngram):
+        """
+        :type ngram: unicode
+        """
+        ngram = ur''.join([x if x in (' ', '-', '') else
+                           ur'({0}|{1})({2}|{3})(s|es)?'.format(x[0], x[0].upper(), x[1:],
+                            x[1:-1]+ur'ies') for x in re.split(r'([\s\-])', ngram)])
+        return ur'(?:[^\w\-]|^){0}(?:[^\w\-]|$)'.format(ngram)
+
+    regex_ngram = _ngram_plural_regex(ngram)
+    skip_count = 0
+    for match in re.finditer(regex_ngram, text, re.U):
+        if skip_count:
+            skip_count -= 1
+            continue
         context = _get_context(text, ngram, match.start())
+        # we need to keep ngram count and in the end set the skip count number correctly,
+        # because in one sentence there can be multiple occurrences.
+        ngram_count = len(re.findall(regex_ngram, context, re.U)) or 1
+        b_ngram_count = 0
         result = True
         for b_ngram in bigger_ngrams:
-            if re.search(b_ngram, context, re.I):
+            b_ngram_count += len(re.findall(_ngram_plural_regex(b_ngram), context, re.U))
+            if b_ngram_count == ngram_count:
                 result = False
                 break
         if result:
+            skip_count = b_ngram_count
             yield match.group(0).strip(), context
 
 
