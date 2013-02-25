@@ -65,7 +65,7 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
         ngram = ur''.join([x if x in (' ', '-', '') else
                            ur'({0}|{1})({2}|{3})(s|es)?'.format(x[0], x[0].upper(), x[1:],
                             x[1:-1]+ur'ies') for x in re.split(r'([\s\-])', ngram)])
-        return ur'(?:[^\w\-]|^){0}(?:[^\w\-]|$)'.format(ngram)
+        return ur'(?:[^\w\-]|^)(?P<orig>{0})(?:[^\w\-]|$)'.format(ngram)
 
     regex_ngram = _ngram_plural_regex(ngram)
     skip_count = 0
@@ -86,7 +86,7 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
                 break
         if result:
             skip_count = b_ngram_count
-            yield match.group(0).strip(), context
+            yield match.group('orig').strip(), context
 
 
 def get_contexts(text, ngram, bigger_ngrams):
