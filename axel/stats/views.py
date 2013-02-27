@@ -152,11 +152,12 @@ class NgramPOSView(TemplateView):
             else:
                 context['unjudged_data'][tag] += 1
 
+        all_tags = sorted(all_tags)
+        context['categories'] = all_tags
         context['correct_data'] = [context['correct_data'][tag] for tag in all_tags]
         context['incorrect_data'] = [context['incorrect_data'][tag] for tag in all_tags]
         context['unjudged_data'] = [context['unjudged_data'][tag] for tag in all_tags]
 
-        context['categories'] = sorted(all_tags)
         return context
 
 
