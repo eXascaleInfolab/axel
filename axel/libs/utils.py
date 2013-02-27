@@ -73,7 +73,7 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
         if skip_count:
             skip_count -= 1
             continue
-        context = _get_context(text, ngram, match.start())
+        context = _get_context(text, ngram, match.start('orig'))
         # we need to keep ngram count and in the end set the skip count number correctly,
         # because in one sentence there can be multiple occurrences.
         ngram_count = len(re.findall(regex_ngram, context, re.U)) or 1
