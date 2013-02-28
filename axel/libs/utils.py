@@ -86,7 +86,14 @@ def get_contexts_ngrams(text, ngram, bigger_ngrams):
                 break
         if result:
             skip_count = b_ngram_count
-            yield match.group('orig').strip(), context
+            orig_ngram = match.group('orig').strip()
+            # lower case first letter if it's not title nor acronym
+            if not orig_ngram.istitle() and orig_ngram[0].isupper() and \
+                not orig_ngram.split()[0].isupper():
+                orig_ngram2 = orig_ngram[0].lower() + orig_ngram[1:]
+                context = context.replace(orig_ngram, orig_ngram2)
+                orig_ngram = orig_ngram2
+            yield orig_ngram, context
 
 
 def get_contexts(text, ngram, bigger_ngrams):
