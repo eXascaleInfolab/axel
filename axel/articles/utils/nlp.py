@@ -10,6 +10,7 @@ from django.template import loader, Context
 from axel.articles.utils.pdfcleaner import PDFCleaner
 from axel.libs.utils import print_timing
 
+
 class Stemmer:
     """Collection of stemmers"""
 
@@ -35,7 +36,6 @@ class Stemmer:
                 word = '-'.join(normalized_word)
             result.append(lmtzr.lemmatize(word))
         return ' '.join(result)
-
 
     @classmethod
     def stem_porter(cls, text):
@@ -108,10 +108,11 @@ def collocations(index):
     finder.apply_word_filter(lambda w: w in _STOPWORDS)
 
     filtered_collocs = finder.ngram_fd
+    """:type: dict"""
 
     # generate possible n-grams
     filtered_collocs = _update_ngram_counts(_generate_possible_ngrams(filtered_collocs, index),
-                                                                                        index)
+                                            index)
     return filtered_collocs
 
 
@@ -156,7 +157,7 @@ def _generate_possible_ngrams(collocs, index):
     total_len = len(collocs_items)
     for i in range(total_len):
         bigram_i = collocs_items[i]
-        for j in range(i+1, total_len):
+        for j in range(i + 1, total_len):
             bigram_j = collocs_items[j]
 
             inter = set(bigram_i).intersection(bigram_j)
@@ -170,15 +171,15 @@ def _generate_possible_ngrams(collocs, index):
 
             # determine how to merge n-grams
             bigram_s, bigram_e = None, None
-            if set(bigram_i[:inter_len])==inter and set(bigram_j[-inter_len:])==inter:
+            if set(bigram_i[:inter_len]) == inter and set(bigram_j[-inter_len:]) == inter:
                 bigram_s, bigram_e = bigram_i, bigram_j
-            elif set(bigram_j[:inter_len])==inter and set(bigram_i[-inter_len:])==inter:
+            elif set(bigram_j[:inter_len]) == inter and set(bigram_i[-inter_len:]) == inter:
                 bigram_s, bigram_e = bigram_j, bigram_i
 
             if bigram_s and bigram_e:
-                new_ngram = bigram_e+bigram_s[inter_len:]
+                new_ngram = bigram_e + bigram_s[inter_len:]
                 # Check new colocation actually present in text
-                if not (new_ngram in collocs) and ' '.join(new_ngram) in index :
+                if not (new_ngram in collocs) and ' '.join(new_ngram) in index:
                     possible_ngrams.add(new_ngram)
 
     # create new set
@@ -194,7 +195,6 @@ def get_full_text(text):
     """
     Stems text passed from text argument
     :type text: str
-    :param stem_func: function that performs word stemming
     :returns: dict containing the results, in form {'title':..., 'abstract':..., 'text':...}
     """
     result = PDFCleaner.clean_pdf_data(text)
@@ -230,7 +230,7 @@ def build_ngram_index(text):
     all_ngrams = defaultdict(lambda: 0)
     # TODO: add real value from db
     max_db_size = 5
-    for n in range(2, max_db_size+1):
+    for n in range(2, max_db_size + 1):
         for sentence in text:
             ngrams = nltk.ngrams(sentence.split(), n)
             for ngram in ngrams:
