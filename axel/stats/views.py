@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, FormView
 from test_collection.models import TaggedCollection
-from test_collection.views import CollectionModelView, _get_model_from_string, TestCollectionOverview
+from test_collection.views import CollectionModelView, _get_model_from_string,\
+    TestCollectionOverview
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
@@ -31,10 +32,10 @@ class CollocationStats(TemplateView):
         #counts = [x+1 for x in counts]
         counts = defaultdict(lambda: 0)
         for count in model.objects.values_list('count', flat=True):
-            counts[count]+=1
+            counts[count] += 1
         context['histogram_data'] = str(counts.items()).replace('(', '[').replace(')', ']')
         context['collocations'] = model.objects.order_by('-count').values_list('count',
-            'ngram')[:10]
+                                                                               'ngram')[:10]
         return context
 
 
@@ -44,6 +45,7 @@ class ConceptIndexStats(TemplateView):
     """
 
     template_name = "stats/conceptindex.html"
+
     def get_context_data(self, **kwargs):
         """Add data to context"""
         context = super(ConceptIndexStats, self).get_context_data(**kwargs)
@@ -52,7 +54,7 @@ class ConceptIndexStats(TemplateView):
         global_word_set = cache.get(WORDS_SET)
         counts = defaultdict(lambda: 0)
         for word in global_word_set:
-            counts[len(cache.get(CONCEPT_PREFIX+word))] += 1
+            counts[len(cache.get(CONCEPT_PREFIX + word))] += 1
 
         context['histogram_data'] = str(counts.items()).replace('(', '[').replace(')', ']')
         context['word_count'] = len(global_word_set)
@@ -81,7 +83,7 @@ class FilteredCollectionModelView(CollectionModelView):
 
 class NgramParticipationView(TemplateView):
     """View to draw ngram participation graph, d3.js"""
-    template_name='stats/graph_vis/ngram_particiation.html'
+    template_name = 'stats/graph_vis/ngram_particiation.html'
 
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
@@ -94,7 +96,7 @@ class NgramParticipationView(TemplateView):
         rel_ngrams = set(model.objects.filter(tags__is_relevant=True).values_list(
             'ngram', flat=True))
         # Sort from longest to shortest, we use this in computing connections
-        all_ngrams.sort(key=lambda x: len(x)+len(x.split()), reverse=True)
+        all_ngrams.sort(key=lambda x: len(x) + len(x.split()), reverse=True)
 
         ngrams_set = set(all_ngrams)
         participation_dict = defaultdict(list)
@@ -112,11 +114,10 @@ class NgramParticipationView(TemplateView):
 
         # keep only connected components
         connected_nodes = list(set(zip(*links)[0]).union(set(zip(*links)[1])))
-        node_dict = dict([(node,i) for i, node in enumerate(connected_nodes)])
-
+        node_dict = dict([(node, i) for i, node in enumerate(connected_nodes)])
 
         links = [{'source':node_dict[source], 'target': node_dict[target]} for source,
-                                                                            target in links]
+                                                                               target in links]
         nodes = [{"name": ngram, "rel": ngram in rel_ngrams} for ngram in connected_nodes]
         context['data'] = json.dumps({'nodes': nodes, 'links': links})
         return context
@@ -124,7 +125,7 @@ class NgramParticipationView(TemplateView):
 
 class NgramPOSView(TemplateView):
     """View to draw ngram participation graph, d3.js"""
-    template_name='stats/graph_vis/pos_distribution.html'
+    template_name = 'stats/graph_vis/pos_distribution.html'
 
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
@@ -139,9 +140,9 @@ class NgramPOSView(TemplateView):
 
         all_tags = set()
 
-        context['correct_data'] = defaultdict(lambda:0)
-        context['incorrect_data'] = defaultdict(lambda:0)
-        context['unjudged_data'] = defaultdict(lambda:0)
+        context['correct_data'] = defaultdict(lambda: 0)
+        context['incorrect_data'] = defaultdict(lambda: 0)
+        context['unjudged_data'] = defaultdict(lambda: 0)
         for obj in model.objects.all():
             tag = str(obj.pos_tag)
             all_tags.add(tag)
@@ -195,4 +196,3 @@ class ClearCachedAttrView(FormView):
         context = super(ClearCachedAttrView, self).get_context_data(**kwargs)
         context['model_name'] = self.model_name
         return context
-
