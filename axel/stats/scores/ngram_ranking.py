@@ -14,10 +14,9 @@ from axel.libs.utils import print_progress
 
 bigram_measures = nltk.collocations.BigramAssocMeasures
 
-MEASURES = (('Student T', bigram_measures.student_t), ('Pearson φ', bigram_measures.phi_sq),
-            ('Pearson χ', bigram_measures.chi_sq), ('MI likelihood', bigram_measures.mi_like),
-            ('Pointwise MI', bigram_measures.pmi), ('Likelihood ratio',
-                                                    bigram_measures.likelihood_ratio),
+MEASURES = (('Student T', bigram_measures.student_t), ('Pearson χ', bigram_measures.chi_sq),
+            ('MI likelihood', bigram_measures.mi_like), ('Pointwise MI', bigram_measures.pmi),
+            ('Likelihood ratio', bigram_measures.likelihood_ratio),
             ('Jaccard', bigram_measures.jaccard), ('Dice', bigram_measures.dice),
             ('Poisson-Stirling', bigram_measures.poisson_stirling))
 
@@ -117,10 +116,14 @@ class NgramMeasureScoring:
 
         graph_results = defaultdict(list)
         for order_name, results in orderings.iteritems():
+            total_relevant = 0
+            total_irrelevant = 0
             for rel_count, irrel_count in zip(results['relevant'].items(),
                                               results['irrelevant'].items()):
+                total_relevant += rel_count[1]
+                total_irrelevant += irrel_count[1]
                 graph_results[order_name].append((rel_count[0],
-                    round(rel_count[1] / (rel_count[1] + irrel_count[1]), 3)))
+                    round(total_relevant / (total_irrelevant + total_relevant), 3)))
 
         return graph_results
 
