@@ -13,6 +13,7 @@ from test_collection.views import CollectionModelView, _get_model_from_string,\
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
 from axel.stats.forms import ScoreCacheResetForm
+from axel.stats.scores.ngram_ranking import NgramMeasureScoring
 
 
 class CollocationMainView(TestCollectionOverview):
@@ -159,6 +160,20 @@ class NgramPOSView(TemplateView):
         context['incorrect_data'] = [context['incorrect_data'][tag] for tag in all_tags]
         context['unjudged_data'] = [context['unjudged_data'][tag] for tag in all_tags]
 
+        return context
+
+
+class NgramMeasureScoringView(TemplateView):
+    """View to get """
+    template_name = 'stats/graph_vis/ngram_scoring_distribution.html'
+
+    def get_context_data(self, **kwargs):
+        """Add nodes and links to the context"""
+        context = super(NgramMeasureScoringView, self).get_context_data(**kwargs)
+        model = _get_model_from_string(self.kwargs['model_name'])
+        scores = NgramMeasureScoring.get_scores(model)
+        context['graph_data'] = [(measure_name, str(data).replace('(', '[').replace(')', ']'))
+                                 for measure_name, data in scores.iteritems()]
         return context
 
 
