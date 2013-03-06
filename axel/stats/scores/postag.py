@@ -6,23 +6,15 @@ import re
 from axel.articles.utils.nlp import Stemmer
 
 
-def _compress_pos_tag(max_ngram_tags):
-    """compress POS ngram tag"""
-    max_ngram = ' '.join(max_ngram_tags)
-    if 'NNS' in max_ngram:
-        max_ngram = 'PLURAL'
-    elif max_ngram.startswith('CD '):
-        max_ngram = 'NUM XXX'
-    elif re.search('VB\w$', max_ngram):
-        max_ngram = 'XXX VERB'
-    elif max_ngram.startswith('RB '):
-        max_ngram = 'ADV XXX'
-    elif max_ngram.startswith('JJ '):
-        max_ngram = 'ADJ XXX'
-    elif max_ngram.startswith('NN NN'):
-        max_ngram = 'NN NN XXX'
-    elif re.search(r'^VB[^GN]', max_ngram):
-        max_ngram = 'VERB XXX'
+def compress_pos_tag(max_ngram, rules_dict):
+    """compress POS ngram tag
+    :param rules_dict: correspondence rules on how to compress tags,
+    values should contain compiled regular expressions, for example {'PLURAL': ('.*NNS.*', ... )}
+    :type rules_dict: dict
+    """
+    for key, regex in rules_dict.iteritems():
+        if regex.match(max_ngram):
+            return key
     return max_ngram
 
 
@@ -60,11 +52,11 @@ def pos_tag(ngram, contexts):
 
     # select max weight combination
     max_ngram_tags = max(ngram_tags.items(), key=lambda x: x[1])[0]
-    max_ngram = _compress_pos_tag(max_ngram_tags)
+    #max_ngram = _compress_pos_tag(max_ngram_tags)
     #if max_ngram == 'XXX VERB' and obj.is_relevant:
     #    print ngram_tags, ngram.ngram
     #if max_ngram in ('JJ NN','NN NN') and not obj.is_relevant:
     #    print 'IRREL:', ngram_tags, ngram.ngram
     #if 'PRP$' in max_ngram:
     #    print ngram
-    return max_ngram
+    return ' '.join(max_ngram_tags)

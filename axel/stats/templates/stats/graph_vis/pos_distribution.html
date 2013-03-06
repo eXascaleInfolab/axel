@@ -76,4 +76,40 @@
 {% block content %}
     <h3>POS tags distribution</h3>
     <div id="container" style="min-width: 800px; height: 800px; margin: 0 auto"></div>
+    <form class="form-inline" method="GET" action="">
+        <fieldset>
+            <legend>POS Tag grouping</legend>
+            {% for name, regex in regex_groups %}
+            <div class="control-group">
+                <label>
+                    Group
+                    <input type="text" name="groupname" value="{{ name }}">
+                </label>
+                <label>
+                    Regular expression
+                    <input class="input-xlarge" type="text"  placeholder="REGEX" name="regex"
+                           value="{{ regex }}">
+                </label>
+            </div>
+            {% endfor %}
+        </fieldset>
+        <button class="btn btn-large"><i class="icon-plus"></i>Add group</button>
+        <button class="btn btn-large btn-primary">Update graph</button>
+    </form>
+
+    <h3>Top relevant data</h3>
+    <ul>
+        {% for tag, rel_count, irrel_count, unjudged_count in top_relevant_data %}
+            <li><strong>{{ tag }}: </strong>Relevant: {{ rel_count }},
+                Irrelevant: {{ irrel_count }}, Unjudged: {{ unjudged_count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Top irrelevant data</h3>
+    <ul>
+        {% for tag, rel_count, irrel_count, unjudged_count in top_irrelevant_data %}
+            <li><strong>{{ tag }}: </strong>Relevant: {{ rel_count }},
+                Irrelevant: {{ irrel_count }}, Unjudged: {{ unjudged_count }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

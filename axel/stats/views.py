@@ -1,5 +1,6 @@
 from collections import defaultdict
 import json
+import re
 from django.contrib.contenttypes.models import ContentType
 
 from django.core.cache import cache
@@ -12,6 +13,7 @@ from test_collection.views import CollectionModelView, _get_model_from_string,\
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
+from axel.stats import scores
 from axel.stats.forms import ScoreCacheResetForm
 from axel.stats.scores.ngram_ranking import NgramMeasureScoring
 
@@ -117,8 +119,8 @@ class NgramParticipationView(TemplateView):
         connected_nodes = list(set(zip(*links)[0]).union(set(zip(*links)[1])))
         node_dict = dict([(node, i) for i, node in enumerate(connected_nodes)])
 
-        links = [{'source':node_dict[source], 'target': node_dict[target]} for source,
-                                                                               target in links]
+        links = [{'source':node_dict[source], 'target': node_dict[target]}
+                 for source, target in links]
         nodes = [{"name": ngram, "rel": ngram in rel_ngrams} for ngram in connected_nodes]
         context['data'] = json.dumps({'nodes': nodes, 'links': links})
         return context
@@ -128,37 +130,66 @@ class NgramPOSView(TemplateView):
     """View to draw ngram participation graph, d3.js"""
     template_name = 'stats/graph_vis/pos_distribution.html'
 
+    def _parse_rules(self):
+        """
+        :returns: parsed rules dict to compress POS tags
+        :rtype: dict
+        """
+        rules_dict = {}
+        # three empty values to populate initial forms
+        names = self.request.GET.getlist('groupname', ['', '', ''])
+        regexes = self.request.GET.getlist('regex', ['', '', ''])
+        for name, regex in zip(names, regexes):
+            if name and regex:
+                rules_dict[name] = re.compile(regex)
+        self.regex_groups = zip(names, regexes)
+        return rules_dict
+
+
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
         context = super(NgramPOSView, self).get_context_data(**kwargs)
         model = _get_model_from_string(self.kwargs['model_name'])
         ct = ContentType.objects.get_for_model(model)
 
+        rules_dict = self._parse_rules()
+
         relevant_ids = set(TaggedCollection.objects.filter(content_type=ct,
-            is_relevant=True).values_list('object_id', flat=True))
+                           is_relevant=True).values_list('object_id', flat=True))
         irrelevant_ids = set(TaggedCollection.objects.filter(content_type=ct,
-            is_relevant=False).values_list('object_id', flat=True))
+                             is_relevant=False).values_list('object_id', flat=True))
 
         all_tags = set()
 
-        context['correct_data'] = defaultdict(lambda: 0)
-        context['incorrect_data'] = defaultdict(lambda: 0)
-        context['unjudged_data'] = defaultdict(lambda: 0)
+        correct_data = defaultdict(lambda: 0)
+        incorrect_data = defaultdict(lambda: 0)
+        unjudged_data = defaultdict(lambda: 0)
         for obj in model.objects.all():
-            tag = str(obj.pos_tag)
+            tag = str(scores.compress_pos_tag(obj.pos_tag, rules_dict))
             all_tags.add(tag)
             if obj.id in relevant_ids:
-                context['correct_data'][tag] += 1
+                correct_data[tag] += 1
             elif obj.id in irrelevant_ids:
-                context['incorrect_data'][tag] += 1
+                incorrect_data[tag] += 1
             else:
-                context['unjudged_data'][tag] += 1
+                unjudged_data[tag] += 1
 
         all_tags = sorted(all_tags)
         context['categories'] = all_tags
-        context['correct_data'] = [context['correct_data'][tag] for tag in all_tags]
-        context['incorrect_data'] = [context['incorrect_data'][tag] for tag in all_tags]
-        context['unjudged_data'] = [context['unjudged_data'][tag] for tag in all_tags]
+        context['top_relevant_data'] = [(tag, correct_data[tag], incorrect_data[tag],
+                                         unjudged_data[tag]) for tag in all_tags
+                if int(correct_data[tag] / (incorrect_data[tag] + 0.1)) > 10]
+
+        context['top_irrelevant_data'] = [(tag, correct_data[tag], incorrect_data[tag],
+                                           unjudged_data[tag]) for tag in all_tags
+                if int(incorrect_data[tag] / (correct_data[tag] + 0.1)) > 10]
+
+        context['correct_data'] = [correct_data[tag] for tag in all_tags]
+        context['incorrect_data'] = [incorrect_data[tag] for tag in all_tags]
+        context['unjudged_data'] = [unjudged_data[tag] for tag in all_tags]
+
+        # Add regex groups to populate forms
+        context['regex_groups'] = self.regex_groups
 
         return context
 
