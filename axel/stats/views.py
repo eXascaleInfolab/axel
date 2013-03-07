@@ -140,7 +140,7 @@ class NgramPOSView(TemplateView):
         names = self.request.GET.getlist('groupname', [''])
         regexes = self.request.GET.getlist('regex', [''])
         if names[-1] != '':
-            names.append([''])
+            names.append('')
         if regexes[-1] != '':
             regexes.append('')
         for name, regex in zip(names, regexes):
