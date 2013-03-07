@@ -136,9 +136,11 @@ class NgramPOSView(TemplateView):
         :rtype: dict
         """
         rules_dict = {}
-        # three empty values to populate initial forms
-        names = self.request.GET.getlist('groupname', ['', '', ''])
-        regexes = self.request.GET.getlist('regex', ['', '', ''])
+        # add three extra forms to extend initial forms
+        names = self.request.GET.getlist('groupname', [])
+        regexes = self.request.GET.getlist('regex', [])
+        names.extend(['', '', ''])
+        regexes.extend(['', '', ''])
         for name, regex in zip(names, regexes):
             if name and regex:
                 rules_dict[name] = re.compile(regex)
