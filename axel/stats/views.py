@@ -149,7 +149,6 @@ class NgramPOSView(TemplateView):
         self.regex_groups = zip(names, regexes)
         return rules_dict
 
-
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
         context = super(NgramPOSView, self).get_context_data(**kwargs)
@@ -238,8 +237,9 @@ class ClearCachedAttrView(FormView):
                 obj.extra_fields = fields
                 obj.save()
 
-        next = self.request.GET.get('next', reverse('testcollection_model', args=[self.model_name]))
-        return HttpResponseRedirect(next)
+        next_url = self.request.GET.get('next', reverse('testcollection_model',
+                                        args=[self.model_name]))
+        return HttpResponseRedirect(next_url)
 
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
