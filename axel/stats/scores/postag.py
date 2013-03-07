@@ -13,7 +13,7 @@ def compress_pos_tag(max_ngram, rules_dict):
     :type rules_dict: dict
     """
     for key, regex in rules_dict.iteritems():
-        if regex.match(max_ngram):
+        if regex.search(max_ngram):
             return key
     return max_ngram
 
