@@ -125,7 +125,16 @@ class Collocation(models.Model):
         :rtype: unicode
         """
         return scores.pos_tag(self.ngram, self.all_contexts(func=get_contexts_ngrams))
-
+        
+    @property
+    @db_cache('extra_fields')
+    def pos_tag_prev(self):
+        """
+        Retrieves part-of-speech tag for the word before ngram
+        :return: dict of Part-of-Speech tags with scores
+        :rtype: dicr
+        """
+        return scores.pos_tag_prev(self.ngram, self.all_contexts(func=get_contexts_ngrams))
 
     @property
     def often_word_local(self):
