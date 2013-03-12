@@ -16,6 +16,31 @@ def compress_pos_tag(max_ngram, rules_dict):
         if regex.search(max_ngram):
             return key
     return max_ngram
+    
+    
+def pos_tag(ngram, contexts):
+    """
+    Identifies POS tag for the ngram in each context and returns the MAX probable
+    :type ngram: unicode
+    :type contexts: list
+    :rtype: unicode
+    """
+    ngram_tags = defaultdict(lambda: 0)
+    if not contexts:
+        contexts = [(ngram, ngram)]
+    ngram_len = len(ngram.split())
+    for i, context in enumerate(contexts):
+        words, context = context
+        words = tuple(words.split())
+        tags = [(word, tag)
+                for word, tag in nltk.pos_tag(nltk.regexp_tokenize(context, Stemmer.TOKENIZE_REGEXP))]
+        for j, wordtag in enumerate(tags):
+            if wordtag[0] == words[0] and tuple(zip(*tags)[0][j:j+ngram_len]) == words:
+                tag = tags[j-1][1]
+                break
+        ngram_tags[tag] += 1
+
+    return ngram_tags
 
 
 def pos_tag(ngram, contexts):
