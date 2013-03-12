@@ -25,33 +25,32 @@ class JSONResponseMixin(object):
         return json.dumps(context)
 
 
-class AttributeFilterMixin(object):
-    """
-    Supplies a form to perform data filtration based on the attribute values
-    """
-    attribute_names = None
-
-    def _FilterForm(self):
-        """:rtype: Form"""
-        if self.attribute_names is None:
-            raise ImproperlyConfigured(
-                "AttributeFilterMixin requires a definition of 'attribute_names'")
-        fields = {}
-        for attribute in self.attribute_names:
-            attribute += '__regex'
-            fields[attribute] = forms.CharField(label=attribute)
-        return type('AttributeForm', (forms.Form,), fields)
-
-
-class AttributeFilterView(AttributeFilterMixin, TemplateView):
+class AttributeFilterView(TemplateView):
     """
     A view that adds an attribute filter form to view.
-    Also handles forms processing (filtration)
+    Also handles forms processing (filtration).
+
+    Fields
+    :model_name: name of the kwargs parameter that defines the model name being filtered
+
+    :queryset: defines queryset for filtration, either `queryset` or `model_name` should be defined
+
+    :model_fields_attr: defines name of the model attribute which should contains attributes used
+    to construct a filter form.
     """
     context_form_name = 'filter_form'
     model_name = 'model_name'
     queryset = None
     """:type: QuerySet"""
+    model_fields_attr = None
+
+    def _FilterForm(self, fields):
+        """:rtype: Form"""
+        fields = {}
+        for attribute in fields:
+            attribute += '__regex'
+            fields[attribute] = forms.CharField(label=attribute)
+        return type('AttributeForm', (forms.Form,), fields)
 
     def get_context_data(self, **kwargs):
         context = super(AttributeFilterView, self).get_context_data(**kwargs)
@@ -63,7 +62,8 @@ class AttributeFilterView(AttributeFilterMixin, TemplateView):
                 raise ImproperlyConfigured(
                     "AttributeFilterView requires either a definition of "
                     "'queryset' or a 'model_name' kwarg attribute")
-        form = self._FilterForm()(self.request.POST or None)
+        fields = getattr(self.queryset, self.model_fields_attr)
+        form = self._FilterForm(fields)(self.request.POST or None)
         if form.is_valid():
             filter_values = dict([(field, value) for field, value in form.cleaned_data.iteritems()])
             self.queryset = self.queryset.filter(**filter_values)
