@@ -13,6 +13,7 @@ from test_collection.views import CollectionModelView, _get_model_from_string,\
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
+from axel.libs.mixins import AttributeFilterView
 from axel.stats import scores
 from axel.stats.forms import ScoreCacheResetForm
 from axel.stats.scores.ngram_ranking import NgramMeasureScoring
@@ -23,23 +24,23 @@ class CollocationMainView(TestCollectionOverview):
     template_name = "stats/overview.html"
 
 
-class CollocationStats(TemplateView):
-    """Stats about raw counts distribution"""
-    template_name = "stats/collocations.html"
+class FilteredCollectionModelView(CollectionModelView):
+    """Filtered collection view, for searching using query"""
+    query = None
 
-    def get_context_data(self, **kwargs):
-        """Add form to context"""
-        context = super(CollocationStats, self).get_context_data(**kwargs)
-        model = _get_model_from_string(self.kwargs['model_name'])
-        #counts, bins = numpy.histogram(model.objects.values_list('count', flat=True), bins=10)
-        #counts = [x+1 for x in counts]
-        counts = defaultdict(lambda: 0)
-        for count in model.objects.values_list('count', flat=True):
-            counts[count] += 1
-        context['histogram_data'] = str(counts.items()).replace('(', '[').replace(')', ']')
-        context['collocations'] = model.objects.order_by('-count').values_list('count',
-                                                                               'ngram')[:10]
-        return context
+    def get(self, request, *args, **kwargs):
+        """get form args"""
+        self.query = request.GET.get('query', '')
+        return super(FilteredCollectionModelView, self).get(request, *args, **kwargs)
+
+    def generate_queryset(self, model):
+        """filter ngram by query here, filter only unjudged results"""
+        return self.total_queryset.filter(ngram__icontains=self.query)
+
+
+class CollocationAttributeFilterView(AttributeFilterView):
+    """Class to define all defaults for Collocation objects"""
+    model_fields_attr = 'FILTERED_FIELDS'
 
 
 class ConceptIndexStats(TemplateView):
@@ -68,20 +69,6 @@ class ConceptIndexStats(TemplateView):
             word_counts[len(collocation.split())] += 1
         context['col_word_len_hist'] = str(word_counts.items()).replace('(', '[').replace(')', ']')
         return context
-
-
-class FilteredCollectionModelView(CollectionModelView):
-    """Filtered collection view, for searching using query"""
-    query = None
-
-    def get(self, request, *args, **kwargs):
-        """get form args"""
-        self.query = request.GET.get('query', '')
-        return super(FilteredCollectionModelView, self).get(request, *args, **kwargs)
-
-    def generate_queryset(self, model):
-        """filter ngram by query here, filter only unjudged results"""
-        return self.total_queryset.filter(ngram__icontains=self.query)
 
 
 class NgramParticipationView(TemplateView):

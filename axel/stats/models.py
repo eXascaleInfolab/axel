@@ -5,6 +5,8 @@ from collections import defaultdict
 from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models import Q, Sum
+from django import forms
+
 import operator
 from test_collection.models import TaggedCollection
 from axel.articles.models import ArticleCollocation
@@ -46,10 +48,11 @@ class Collocation(models.Model):
     tags = generic.GenericRelation(TaggedCollection)
     # extra fields will store pre-computed scores
     _extra_fields = models.TextField(default='{}')
+    _pos_tag = models.CharField(max_length=255, null=True, blank=True)
 
     CLUSTER_ID = 'ABSTRACT'
     CACHED_FIELDS = ()
-    SYNC_FIELD = 'ngram'
+    FILTERED_FIELDS = ()
 
     class Meta:
         """Meta info"""
@@ -85,7 +88,7 @@ class Collocation(models.Model):
         :rtype: unicode
         :returns: context if found, ngram itself otherwise
         """
-        article =  self._articlecollocations.filter(ngram=self.ngram)[0].article
+        article = self._articlecollocations.filter(ngram=self.ngram)[0].article
         # prevent contexts from bigger ngrams
         bigger_ngrams = self._articlecollocations.filter(article=article,
             ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
@@ -100,7 +103,7 @@ class Collocation(models.Model):
         :returns: contexts if found, [ngram] otherwise
         """
         contexts = []
-        for text, article_id in  self._articlecollocations.filter(ngram=self.ngram).values_list(
+        for text, article_id in self._articlecollocations.filter(ngram=self.ngram).values_list(
             'article__stemmed_text', 'article'):
             bigger_ngrams = self._articlecollocations.filter(article__id=article_id,
                 ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
@@ -165,6 +168,7 @@ class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
     CLUSTER_ID = 'CS_COLLOCS'
     CACHED_FIELDS = ('context', 'pos_tag', 'acm_score')
+    FILTERED_FIELDS = (('_pos_tag', 'Part of Speech', forms.CharField),)
 
     @property
     @db_cache('extra_fields')

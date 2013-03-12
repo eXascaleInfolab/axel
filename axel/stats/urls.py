@@ -8,7 +8,6 @@ urlpatterns = patterns('axel.stats.views',
     url(r'^$', CollocationMainView.as_view(), name='stats'),
 
     # Distributions
-    url(r'^(?P<model_name>[^/]+)/$', CollocationStats.as_view(), name='count_dist'),
     url(r'^(?P<model_name>[^/]+)/ci/$', ConceptIndexStats.as_view(), name='ci_stats'),
     url(r'^(?P<model_name>[^/]+)/ngram_participation/$',
         NgramParticipationView.as_view(), name='ngram_participation_stats'),

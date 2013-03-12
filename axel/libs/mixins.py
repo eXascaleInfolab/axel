@@ -47,9 +47,8 @@ class AttributeFilterView(TemplateView):
     def _FilterForm(self, field_list):
         """:rtype: Form"""
         fields = {}
-        for attribute in field_list:
-            attribute += '__regex'
-            fields[attribute] = forms.CharField(label=attribute)
+        for attribute, label, field_type in field_list:
+            fields[attribute + '__regex'] = field_type(label=label)
         return type('AttributeForm', (forms.Form,), fields)
 
     def get_context_data(self, **kwargs):
