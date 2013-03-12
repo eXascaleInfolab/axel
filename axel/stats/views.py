@@ -44,6 +44,7 @@ class CollocationAttributeFilterView(AttributeFilterView):
 
 
 class ConceptIndexStats(TemplateView):
+    # TODO: inherit from FILTERVIEW?
     """Displays statistics about concept index:
     N-gram word distribution
     """
@@ -71,19 +72,18 @@ class ConceptIndexStats(TemplateView):
         return context
 
 
-class NgramParticipationView(TemplateView):
+class NgramParticipationView(CollocationAttributeFilterView):
     """View to draw ngram participation graph, d3.js"""
     template_name = 'stats/graph_vis/ngram_particiation.html'
 
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
         context = super(NgramParticipationView, self).get_context_data(**kwargs)
-        model = _get_model_from_string(self.kwargs['model_name'])
         # nodes are simply ngrams
         links = []
-        all_ngrams = list(model.objects.filter(tags__is_relevant__isnull=False).values_list(
+        all_ngrams = list(self.queryset.filter(tags__is_relevant__isnull=False).values_list(
             'ngram', flat=True))
-        rel_ngrams = set(model.objects.filter(tags__is_relevant=True).values_list(
+        rel_ngrams = set(self.queryset.filter(tags__is_relevant=True).values_list(
             'ngram', flat=True))
         # Sort from longest to shortest, we use this in computing connections
         all_ngrams.sort(key=lambda x: len(x) + len(x.split()), reverse=True)
@@ -184,15 +184,14 @@ class NgramPOSView(TemplateView):
         return context
 
 
-class NgramMeasureScoringView(TemplateView):
+class NgramMeasureScoringView(CollocationAttributeFilterView):
     """View to get """
     template_name = 'stats/graph_vis/ngram_scoring_distribution.html'
 
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
         context = super(NgramMeasureScoringView, self).get_context_data(**kwargs)
-        model = _get_model_from_string(self.kwargs['model_name'])
-        scores = NgramMeasureScoring.get_scores(model)
+        scores = NgramMeasureScoring.get_scores(self.queryset)
         context['graph_data'] = [(measure_name, str(data).replace('(', '[').replace(')', ']'))
                                  for measure_name, data in scores.iteritems()]
         return context

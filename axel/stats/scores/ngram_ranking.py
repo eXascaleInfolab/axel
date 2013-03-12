@@ -6,7 +6,6 @@ from collections import defaultdict
 import json
 import nltk
 
-from test_collection.models import TaggedCollection
 from axel.articles.models import Article
 from axel.articles.utils.nlp import _update_ngram_counts, _generate_possible_ngrams, _PUNKT_RE,\
     _DIGIT_RE, _STOPWORDS
@@ -83,24 +82,24 @@ class NgramMeasureScoring:
             yield measure_name, zip(*scored_ngrams)[0]
 
     @classmethod
-    def get_scores(cls, model):
+    def get_scores(cls, queryset):
         """
-        :param model: Collocation
+        :param queryset: QuerySet
         :returns: accuracy scores for each method
         :rtype: defaultdict
         """
 
-        relevant_names = set(TaggedCollection.objects.filter(is_relevant=True).values_list(
-            model.__name__.lower() + '__ngram', flat=True))
-        irrelevant_names = set(TaggedCollection.objects.filter(is_relevant=False).values_list(
-            model.__name__.lower() + '__ngram', flat=True))
+        relevant_names = set(queryset.filter(tags__is_relevant=True).values_list('ngram',
+                                                                                 flat=True))
+        irrelevant_names = set(queryset.filter(tags__is_relevant=False).values_list('ngram',
+                                                                                    flat=True))
 
         unjudged = defaultdict(lambda: 0)
         orderings = defaultdict(lambda: {'relevant': defaultdict(lambda: 0),
                                          'irrelevant': defaultdict(lambda: 0)})
 
         print 'Starting article processing...'
-        for article in print_progress(Article.objects.filter(cluster_id=model.CLUSTER_ID)):
+        for article in print_progress(Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID)):
             index = json.loads(article.index)
             for order_name, ordering in cls.collocations(index, MEASURES):
                 for i, ngram in enumerate(ordering):
