@@ -1,0 +1,16 @@
+<form class="form-inline" method="POST" action="">
+    {% csrf_token %}
+    <fieldset>
+        <legend>POS Tag grouping</legend>
+        {% for field in filter_form %}
+            <div class="control-group">
+                <label>
+                    {{ field.label }}:
+                    {{ field }}
+                    {{ field.errors }}
+                </label>
+            </div>
+        {% endfor %}
+    </fieldset>
+    <button class="btn btn-large btn-primary">Filter</button>
+</form>
