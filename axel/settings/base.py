@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     #'raven.contrib.django',
     'axel.articles',
     'axel.stats',
+    'axel.libs',
     )
 
 # Set to false to register haystack signals in tests
