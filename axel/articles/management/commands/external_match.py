@@ -14,10 +14,10 @@ from axel.libs.utils import print_progress
 
 DBLP_URL = 'http://dblp.l3s.de/WS/aspl2.php?wsdl'
 imp = Import('http://schemas.xmlsoap.org/soap/encoding/',
-    location='http://schemas.xmlsoap.org/soap/encoding/')
+             location='http://schemas.xmlsoap.org/soap/encoding/')
 dblp_client = Client(DBLP_URL,plugins=[ImportDoctor(imp)])
 
-DBPEDIA_REQ = u'http://lookup.dbpedia.org/api/search'\
+DBPEDIA_REQ = u'http://lookup.dbpedia.org/api/search' \
               u'.asmx/KeywordSearch?QueryClass=&QueryString={0}&MaxHits=1'
 
 
