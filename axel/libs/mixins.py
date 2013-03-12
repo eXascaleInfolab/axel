@@ -44,10 +44,10 @@ class AttributeFilterView(TemplateView):
     """:type: QuerySet"""
     model_fields_attr = None
 
-    def _FilterForm(self, fields):
+    def _FilterForm(self, field_list):
         """:rtype: Form"""
         fields = {}
-        for attribute in fields:
+        for attribute in field_list:
             attribute += '__regex'
             fields[attribute] = forms.CharField(label=attribute)
         return type('AttributeForm', (forms.Form,), fields)
@@ -62,7 +62,7 @@ class AttributeFilterView(TemplateView):
                 raise ImproperlyConfigured(
                     "AttributeFilterView requires either a definition of "
                     "'queryset' or a 'model_name' kwarg attribute")
-        fields = getattr(self.queryset, self.model_fields_attr)
+        fields = getattr(self.queryset.model, self.model_fields_attr)
         form = self._FilterForm(fields)(self.request.POST or None)
         if form.is_valid():
             filter_values = dict([(field, value) for field, value in form.cleaned_data.iteritems()])

@@ -1,7 +1,7 @@
 <form class="form-inline" method="POST" action="">
     {% csrf_token %}
     <fieldset>
-        <legend>POS Tag grouping</legend>
+        <legend>Attribute filtering</legend>
         {% for field in filter_form %}
             <div class="control-group">
                 <label>
