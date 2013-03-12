@@ -11,6 +11,10 @@
             fill: #da4f49;
         }
 
+        .node-unjudged {
+            fill: #333;
+        }
+
         .link {
             stroke: #666;
         }
@@ -47,10 +51,12 @@
                     .attr("class", "node-wrap");
             // adding circle and text
             node.append("circle").attr("class", function(d){
-                if (d.rel)
+                if (d.rel == "1")
                     return "node";
-                else
+                else if (d.rel == "-1")
                     return "node-irrel";
+                else
+                    return "node-unjudged";
             }).attr("r", r);
             node.append("text")
                     .attr("class", "hidden-hover")

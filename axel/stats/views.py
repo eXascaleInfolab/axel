@@ -81,10 +81,12 @@ class NgramParticipationView(CollocationAttributeFilterView):
         context = super(NgramParticipationView, self).get_context_data(**kwargs)
         # nodes are simply ngrams
         links = []
-        all_ngrams = list(self.queryset.filter(tags__is_relevant__isnull=False).values_list(
+        irrel_ngrams = set(self.queryset.filter(tags__is_relevant=False).values_list(
             'ngram', flat=True))
         rel_ngrams = set(self.queryset.filter(tags__is_relevant=True).values_list(
             'ngram', flat=True))
+
+        all_ngrams = list(self.queryset.values_list('ngram', flat=True))
         # Sort from longest to shortest, we use this in computing connections
         all_ngrams.sort(key=lambda x: len(x) + len(x.split()), reverse=True)
 
@@ -108,7 +110,16 @@ class NgramParticipationView(CollocationAttributeFilterView):
 
         links = [{'source':node_dict[source], 'target': node_dict[target]}
                  for source, target in links]
-        nodes = [{"name": ngram, "rel": ngram in rel_ngrams} for ngram in connected_nodes]
+
+        def _get_rel_info(ngram):
+            if ngram in rel_ngrams:
+                return 1
+            elif ngram in irrel_ngrams:
+                return -1
+            return 0
+
+        nodes = [{"name": ngram, "rel": _get_rel_info(ngram)} for ngram in
+                 connected_nodes]
         context['data'] = json.dumps({'nodes': nodes, 'links': links})
         return context
 
