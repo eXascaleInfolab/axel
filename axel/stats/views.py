@@ -195,6 +195,50 @@ class NgramPOSView(TemplateView):
         return context
 
 
+class NgramPrevPOSView(CollocationAttributeFilterView):
+    template_name = 'stats/graph_vis/pos_distribution.html'
+
+    def get_context_data(self, **kwargs):
+        """Add nodes and links to the context"""
+        context = super(NgramPrevPOSView, self).get_context_data(**kwargs)
+
+        irrel_ids = set(self.queryset.filter(tags__is_relevant=False).values_list('id', flat=True))
+        rel_ids = set(self.queryset.filter(tags__is_relevant=True).values_list('id', flat=True))
+
+        all_tags = set()
+
+        correct_data = defaultdict(lambda: 0)
+        incorrect_data = defaultdict(lambda: 0)
+        unjudged_data = defaultdict(lambda: 0)
+        for obj in self.queryset:
+            for tag, count in obj.pos_tag_prev.iteritems():
+                if count > 10:
+                    tag = str(tag)
+                    all_tags.add(tag)
+                    if obj.id in rel_ids:
+                        correct_data[tag] += 1
+                    elif obj.id in irrel_ids:
+                        incorrect_data[tag] += 1
+                    else:
+                        unjudged_data[tag] += 1
+
+        all_tags = sorted(all_tags)
+        context['categories'] = all_tags
+        context['top_relevant_data'] = [(tag, correct_data[tag], incorrect_data[tag],
+                                         unjudged_data[tag]) for tag in all_tags
+                                        if int(correct_data[tag] / (incorrect_data[tag] + 0.1)) > 10]
+
+        context['top_irrelevant_data'] = [(tag, correct_data[tag], incorrect_data[tag],
+                                           unjudged_data[tag]) for tag in all_tags
+                                          if int(incorrect_data[tag] / (correct_data[tag] + 0.1)) > 10]
+
+        context['correct_data'] = [correct_data[tag] for tag in all_tags]
+        context['incorrect_data'] = [incorrect_data[tag] for tag in all_tags]
+        context['unjudged_data'] = [unjudged_data[tag] for tag in all_tags]
+
+        return context
+
+
 class NgramMeasureScoringView(CollocationAttributeFilterView):
     """View to get """
     template_name = 'stats/graph_vis/ngram_scoring_distribution.html'

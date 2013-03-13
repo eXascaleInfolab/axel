@@ -12,6 +12,7 @@ urlpatterns = patterns('axel.stats.views',
     url(r'^(?P<model_name>[^/]+)/ngram_participation/$',
         NgramParticipationView.as_view(), name='ngram_participation_stats'),
     url(r'^(?P<model_name>[^/]+)/pos_dist/$',  NgramPOSView.as_view(), name='pos_dist'),
+    url(r'^(?P<model_name>[^/]+)/pos_prev_dist/$',  NgramPrevPOSView.as_view(), name='pos_prev_dist'),
     url(r'^(?P<model_name>[^/]+)/ngram_measures/$',  NgramMeasureScoringView.as_view(),
         name='ngram_measures'),
 
