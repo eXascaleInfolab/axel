@@ -41,6 +41,19 @@ class db_cache(object):
         return wrapper
 
 
+def db_cache_simple(func):
+    def wrapper(self):
+        value = getattr(self, '_' + func.__name__)
+        if value:
+            return value
+        else:
+            value = func(self)
+            setattr(self, '_' + func.__name__, value)
+            self.save_base(raw=True)
+            return value
+    return wrapper
+
+
 class Collocation(models.Model):
     """Aggregated collocation statistics model"""
     ngram = models.CharField(max_length=255)
@@ -49,6 +62,7 @@ class Collocation(models.Model):
     # extra fields will store pre-computed scores
     _extra_fields = models.TextField(default='{}')
     _pos_tag = models.CharField(max_length=255, null=True, blank=True)
+    _df_score = models.IntegerField(null=True, blank=True)
 
     # required for TestCollection upload
     SYNC_FIELD = 'ngram'
@@ -119,7 +133,16 @@ class Collocation(models.Model):
         return self.count
 
     @property
-    @db_cache('extra_fields')
+    @db_cache_simple
+    def df_score(self):
+        """
+        Document frequency
+        :rtype: int
+        """
+        return ArticleCollocation.objects.filter(ngram=self.ngram).count()
+
+    @property
+    @db_cache_simple
     def pos_tag(self):
         """
         Defines part-of-speech tag for ngram
@@ -127,6 +150,7 @@ class Collocation(models.Model):
         :rtype: unicode
         """
         return scores.pos_tag(self.ngram, self.all_contexts(func=get_contexts_ngrams))
+
 
     @property
     @db_cache('extra_fields')
@@ -178,7 +202,7 @@ class Collocation(models.Model):
 class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
     CLUSTER_ID = 'CS_COLLOCS'
-    CACHED_FIELDS = ('context', 'pos_tag', 'acm_score')
+    CACHED_FIELDS = ('context', 'acm_score')
     FILTERED_FIELDS = (('_pos_tag', 'Part of Speech', forms.CharField),)
 
     @property
@@ -196,7 +220,7 @@ class SWCollocations(Collocation):
     everything is the same except table name
     """
     CLUSTER_ID = 'SW_COLLOCS'
-    CACHED_FIELDS = ('context', 'pos_tag', 'partial_word_score', 'partial_ngram_score',
+    CACHED_FIELDS = ('context', 'partial_word_score', 'partial_ngram_score',
                      'partial_ont_score')
 
     @property
