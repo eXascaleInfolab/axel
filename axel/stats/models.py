@@ -50,6 +50,8 @@ class Collocation(models.Model):
     _extra_fields = models.TextField(default='{}')
     _pos_tag = models.CharField(max_length=255, null=True, blank=True)
 
+    # required for TestCollection upload
+    SYNC_FIELD = 'ngram'
     CLUSTER_ID = 'ABSTRACT'
     CACHED_FIELDS = ()
     FILTERED_FIELDS = ()
