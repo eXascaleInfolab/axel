@@ -40,6 +40,7 @@ class Article(models.Model):
     citations = models.IntegerField(default=0)
     pdf = models.FileField(upload_to=pdf_upload_to)
     stemmed_text = models.TextField(default='')
+    text = models.TextField(default='')
     index = models.TextField(default='')
     cluster_id = models.CharField(max_length=255)
 
