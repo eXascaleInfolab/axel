@@ -4,11 +4,12 @@ from __future__ import division
 
 from collections import defaultdict
 import json
+import math
 import nltk
 
 from axel.articles.models import Article
-from axel.articles.utils.nlp import _update_ngram_counts, _generate_possible_ngrams, _PUNKT_RE,\
-    _DIGIT_RE, _STOPWORDS
+from axel.articles.utils import nlp
+from axel.articles.utils.nlp import _update_ngram_counts, _generate_possible_ngrams, _PUNKT_RE
 from axel.libs.utils import print_progress
 
 bigram_measures = nltk.collocations.BigramAssocMeasures
@@ -23,7 +24,7 @@ MEASURES = (('Student T', bigram_measures.student_t), ('Pearson χ', bigram_meas
 class NgramMeasureScoring:
 
     @staticmethod
-    def collocations(index, measures):
+    def collocations(text, index, measures):
         """
         Extract collocations from n-gram index
         :type index: dict
@@ -45,24 +46,24 @@ class NgramMeasureScoring:
         # remove collocation from 2 equal words
         finder.apply_ngram_filter(lambda x, y: x == y)
         # remove weird collocations
-        finder.apply_ngram_filter(lambda x, y: _DIGIT_RE.match(x) and _DIGIT_RE.match(y))
+        finder.apply_ngram_filter(lambda x, y: nlp._DIGIT_RE.match(x) and nlp._DIGIT_RE.match(y))
         # remove punctuation, len and stopwords
         finder.apply_word_filter(filter_punkt)
         finder.apply_word_filter(filter_len)
-        finder.apply_word_filter(lambda w: w in _STOPWORDS)
+        finder.apply_word_filter(lambda w: w in nlp._STOPWORDS)
 
         # build word distribution
         from nltk.probability import FreqDist
         word_fd = FreqDist()
-        for ngram, count in index.iteritems():
-            for word in ngram.split():
-                word_fd.inc(word, count)
+        for word in text.split():
+            word_fd.inc(word)
         finder_big = nltk.collocations.BigramCollocationFinder(word_fd, finder.ngram_fd)
 
         filtered_collocs = _update_ngram_counts(_generate_possible_ngrams(finder.ngram_fd, index),
                                                 index).items()
         filtered_collocs.sort(key=lambda col: col[1], reverse=True)
-        filtered_collocs = zip(*filtered_collocs)[0]  # keep only ordering, we don't need score
+        # do not keep zero scores to exclude them in other rankings
+        filtered_collocs = [col for col, score in filtered_collocs if score > 0]
         yield 'raw', filtered_collocs
 
         # build bigram correspondence dict
@@ -76,7 +77,8 @@ class NgramMeasureScoring:
             scored_ngrams = defaultdict(lambda: 0)
             for bigram, score in bigrams:
                 for ngram in corr_dict[bigram]:
-                    scored_ngrams[ngram] += score
+                    if scored_ngrams[ngram] < score:
+                        scored_ngrams[ngram] = score
             scored_ngrams = scored_ngrams.items()
             scored_ngrams.sort(key=lambda col: col[1], reverse=True)
             yield measure_name, zip(*scored_ngrams)[0]
@@ -99,9 +101,20 @@ class NgramMeasureScoring:
                                          'irrelevant': defaultdict(lambda: 0)})
 
         print 'Starting article processing...'
+        df_dict = dict(queryset.values_list('ngram', '_df_score'))
+        total_docs = Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID).count()
         for article in print_progress(Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID)):
             index = json.loads(article.index)
-            for order_name, ordering in cls.collocations(index, MEASURES):
+            # add TF-IDF score
+            ngrams = article.articlecollocation_set.values_list('ngram', 'count')
+            tfidf_ordering = [(ngram, score * math.log(total_docs / df_dict[ngram]))
+                              for ngram, score in ngrams if ngram in df_dict]
+            tfidf_ordering.sort(key=lambda x: x[1], reverse=True)
+
+            cur_orderings = list(cls.collocations(article.stemmed_text, index, MEASURES))
+            cur_orderings.append(('tf-idf', zip(*tfidf_ordering)[0]))
+
+            for order_name, ordering in cur_orderings:
                 for i, ngram in enumerate(ordering):
                     if ngram in relevant_names:
                         orderings[order_name]['relevant'][i] += 1
@@ -110,6 +123,7 @@ class NgramMeasureScoring:
                     else:
                         # not present
                         unjudged[i] += 1
+
         print 'End article processing...'
         print 'Starting result formatting...'
 
@@ -125,4 +139,3 @@ class NgramMeasureScoring:
                     round(total_relevant / (total_irrelevant + total_relevant), 3)))
 
         return graph_results
-
