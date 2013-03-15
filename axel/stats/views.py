@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import json
 import re
 from django.contrib.contenttypes.models import ContentType
@@ -133,7 +133,7 @@ class NgramPOSView(TemplateView):
         :returns: parsed rules dict to compress POS tags
         :rtype: dict
         """
-        rules_dict = {}
+        rules_dict = OrderedDict()
         # add three extra forms to extend initial forms
         names = self.request.GET.getlist('groupname', [''])
         regexes = self.request.GET.getlist('regex', [''])
