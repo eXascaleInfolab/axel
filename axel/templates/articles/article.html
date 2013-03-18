@@ -14,7 +14,11 @@
         {% for score, collocation in article.collocations %}
             <li>
                 {{ collocation }}
-                <span class="badge">{{ score }}</span>
+                {% with is_rel = collocation.is_relevant %}
+                <span class="badge {% if is_rel != -1 %}
+                {% if is_rel %}badge-success{% else %}badge-important{% endif %}
+                {% endif %}">{{ score }}</span>
+                {% endwith %}
             </li>
         {% endfor %}
     </ul>
