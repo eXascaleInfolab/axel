@@ -211,7 +211,8 @@ class Collocations(Collocation):
         """
         Get ACM search score
         """
-        return scores.acm_search_result_count(self.ngram)
+        return 0
+        #return scores.acm_search_result_count(self.ngram)
 
 
 class SWCollocations(Collocation):
