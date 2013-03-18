@@ -11,13 +11,13 @@
     </form>
     <p class="lead">{{ article.abstract }}</p>
     <ul class="unstyled">
-        {% for score, collocation in article.collocations %}
+        {% for collocation in article.articlecollocation_set.all %}
             <li>
-                {{ collocation }}
+                {{ collocation.ngram }}
                 {% with is_rel=collocation.is_relevant %}
                 <span class="badge {% if is_rel != -1 %}
                 {% if is_rel %}badge-success{% else %}badge-important{% endif %}
-                {% endif %}">{{ score }}</span>
+                {% endif %}">{{ collocation.count }}</span>
                 {% endwith %}
             </li>
         {% endfor %}
