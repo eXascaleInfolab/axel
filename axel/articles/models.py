@@ -53,13 +53,6 @@ class Article(models.Model):
         return u"{0} {1}: {2}".format(self.venue, self.year, self.title)
 
     @property
-    def collocations(self):
-        """Get co-locations from the saved stemmed text"""
-        colocs = list(self.articlecollocation_set.values_list('count', 'ngram'))
-        colocs.sort(key=lambda col: col[0], reverse=True)
-        return colocs
-
-    @property
     def CollocationModel(self):
         """
         Get correct collocation model according to the desired split
