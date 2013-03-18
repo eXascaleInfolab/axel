@@ -130,7 +130,19 @@ class ArticleCollocation(models.Model):
     def __unicode__(self):
         """String representation"""
         return u"{0}: {1}".format(self.article, self.ngram)
-
+        
+    @property
+    def is_relevant(self):
+        """
+        Get relevance information from underlying Collocation model.
+        Used in article detail view.
+        """
+        cModel = self.article.CollocationModel
+        try:
+            return cModel.objects.get(ngram=self.ngram).tags.all()[0].is_relevant
+        except (cModel.DoesNotExist, IndexError):
+            return -1
+            
 
 class Author(models.Model):
     """Basic author model"""
