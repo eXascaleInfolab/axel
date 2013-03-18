@@ -15,7 +15,7 @@
             <li>
                 {{ collocation }}
                 {% with is_rel=collocation.is_relevant %}
-                <span class="badge {% if is_rel!=-1 %}
+                <span class="badge {% if is_rel != -1 %}
                 {% if is_rel %}badge-success{% else %}badge-important{% endif %}
                 {% endif %}">{{ score }}</span>
                 {% endwith %}
