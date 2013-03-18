@@ -46,8 +46,9 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         obj.pdf.close()
         result = nlp.get_full_text(extracted_data['contents'])
         # get rid of multiple whitespaces
-        obj.stemmed_text = self.MULTI_SPACE_REGEX.sub(' ', result['text'])
-        obj.index = json.dumps(nlp.build_ngram_index(nlp.Stemmer.stem_wordnet(obj.stemmed_text)))
+        obj.text = self.MULTI_SPACE_REGEX.sub(' ', result['text'])
+        obj.stemmed_text = nlp.Stemmer.stem_wordnet(obj.stemmed_text)
+        obj.index = json.dumps(nlp.build_ngram_index(obj.stemmed_text))
 
         if result['abstract']:
             obj.abstract = result['abstract']
