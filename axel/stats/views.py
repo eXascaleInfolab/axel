@@ -252,6 +252,51 @@ class NgramMeasureScoringView(CollocationAttributeFilterView):
         return context
 
 
+class NgramWordBindingDistributionView(CollocationAttributeFilterView):
+
+    def get_context_data(self, **kwargs):
+        """Add nodes and links to the context"""
+        context = super(NgramWordBindingDistributionView, self).get_context_data(**kwargs)
+        from collections import Counter
+        from numpy import array
+        from axel.articles.models import Article
+
+        results = []
+        for c in self.queryset.filter(_pos_tag='JJ NNS',
+                                  tags__is_relevant__isnull=False):
+            #if re.search(r'(CD|RB|NONE|DT|CC|MD|RP|JJR|JJS)', c.pos_tag):
+            #    continue
+            # _pos_tag__regex='^[A-Z]{2,3} [A-Z]{2,3} [A-Z]{2,3}$'
+            is_rel = c.tags.all()[0].is_relevant
+            #bi1, w1 = c.ngram.rsplit(' ', 1)
+            #w2, bi2 = c.ngram.split(' ', 1)
+            w1, w2 = c.ngram.split()
+            denominator = 0
+            score = 0
+            for article in Article.objects.filter(articlecollocation__ngram=c.ngram):
+                text = article.stemmed_text
+                distribution_dict = Counter(re.findall(ur'{0} (\w+)'.format(w1), text))
+                arr = array(distribution_dict.values())
+                N1 = arr.sum()
+                if len(arr) == 1:
+                    score += N1 * 2
+                else:
+                    score += distribution_dict[w2] * N1 / (arr.mean() + arr.std())
+                denominator += N1
+
+                distribution_dict = Counter(re.findall(ur'(\w+) {0}'.format(w2), text))
+                arr = array(distribution_dict.values())
+                N2 = arr.sum()
+                score += distribution_dict[w1] * N2 / (arr.mean() + arr.std())
+                denominator += N2
+            score /= denominator
+            #print c.ngram, score, is_rel
+            results.append((c.ngram, score, is_rel))
+        results.sort(key=lambda x: x[1])
+        results = results[-50:]
+        return context
+
+
 class ClearCachedAttrView(FormView):
     """Extract and display collocations from pdf document"""
     form_class = ScoreCacheResetForm

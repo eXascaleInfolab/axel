@@ -15,6 +15,8 @@ urlpatterns = patterns('axel.stats.views',
     url(r'^(?P<model_name>[^/]+)/pos_prev_dist/$',  NgramPrevPOSView.as_view(), name='pos_prev_dist'),
     url(r'^(?P<model_name>[^/]+)/ngram_measures/$',  NgramMeasureScoringView.as_view(),
         name='ngram_measures'),
+    url(r'^(?P<model_name>[^/]+)/ngram_bindings/$',  NgramWordBindingDistributionView.as_view(),
+        name='ngram_bindings'),
 
     # Filtering
     url(r'^(?P<model_name>[^/]+)/filter/$', FilteredCollectionModelView.as_view(),
