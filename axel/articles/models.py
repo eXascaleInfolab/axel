@@ -1,9 +1,12 @@
 import json
 import os
+
+from django.conf import settings
 from django.db import models
 from django.db.models import F, Sum
 from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
+
 from haystack.query import SearchQuerySet
 
 
@@ -60,6 +63,32 @@ class Article(models.Model):
         """
         from axel.stats.models import CLUSTERS_DICT
         return CLUSTERS_DICT[self.cluster_id]
+
+    @property
+    def dbpedia_graph(self):
+        """
+        Generate a dbpedia category graph using networkx
+        :rtype: networkx.classes.graph.Graph
+        """
+        if settings.BUILD_DBPEDIA_GRAPHS:
+            import networkx as nx
+            from SPARQLWrapper import SPARQLWrapper, JSON
+            sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+            sparql.setReturnFormat(JSON)
+
+            graph = nx.Graph()
+            ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
+            ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
+            for ngram in ngrams:
+                if ngram.source == 'dbpedia':
+                    sparql.setQuery("""SELECT ?subject
+                WHERE { <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }
+                        """)
+                    results = sparql.query().convert()
+                    for result in results['results']['bindings']:
+                        uri = result['subject']['value']
+            return graph
+        return None
 
     def create_collocations(self):
         """Create collocation for the article"""
@@ -123,7 +152,7 @@ class ArticleCollocation(models.Model):
     def __unicode__(self):
         """String representation"""
         return u"{0}: {1}".format(self.article, self.ngram)
-        
+
     @property
     def is_relevant(self):
         """
@@ -135,7 +164,7 @@ class ArticleCollocation(models.Model):
             return cModel.objects.get(ngram=self.ngram).tags.all()[0].is_relevant
         except (cModel.DoesNotExist, IndexError):
             return -1
-            
+
 
 class Author(models.Model):
     """Basic author model"""
