@@ -112,6 +112,12 @@ class Collocation(models.Model):
            self.ngram)
         return context
 
+    @property
+    @db_cache('extra_fields')
+    def source(self):
+        """Return source of the field, None by default"""
+        return None
+
     def all_contexts(self, func=get_contexts):
         """
         Get all contexts for detailed view page
