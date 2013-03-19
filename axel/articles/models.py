@@ -67,10 +67,32 @@ class Article(models.Model):
     @property
     def dbpedia_graph(self):
         """
-        Generate a dbpedia category graph using networkx
+        Generate a dbpedia category TREE using networkx
         :rtype: networkx.classes.graph.Graph
         """
         if settings.BUILD_DBPEDIA_GRAPHS:
+            
+            def recurse_populate_graph(resource, graph):
+                if 'Category' in resource:
+                    query = 'SELECT ?broader WHERE {{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}'.format(resource)
+                    attr = 'broader'
+                else:
+                    query = 'SELECT ?subject WHERE {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}'.format(resource)
+                    attr = 'subject'
+                    
+                sparql.setQuery(query)
+                results = sparql.query().convert()
+                results = results['results']['bindings']
+                if results:
+                    result = results[0]
+                    uri = result[attr]['value']
+                    parent_resource = uri.split('/')[-1]
+                    if parent_resource in graph:
+                        return
+                    print parent_resource
+                    graph.add_edge(resource, parent_resource)
+                    recurse_populate_graph(parent_resource, graph)
+            
             import networkx as nx
             from SPARQLWrapper import SPARQLWrapper, JSON
             sparql = SPARQLWrapper("http://dbpedia.org/sparql")
@@ -81,12 +103,8 @@ class Article(models.Model):
             ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
                 if ngram.source == 'dbpedia':
-                    sparql.setQuery("""SELECT ?subject
-                WHERE { <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }
-                        """)
-                    results = sparql.query().convert()
-                    for result in results['results']['bindings']:
-                        uri = result['subject']['value']
+                    resource = ngram.ngram.capitalize().replace(' ', '_')
+                    recurse_populate_graph(resource, graph)
             return graph
         return None
 
