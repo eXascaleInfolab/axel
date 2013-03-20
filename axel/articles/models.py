@@ -71,7 +71,7 @@ class Article(models.Model):
         :rtype: networkx.classes.graph.Graph
         """
         if settings.BUILD_DBPEDIA_GRAPHS:
-            
+
             def recurse_populate_graph(resource, graph):
                 if 'Category' in resource:
                     query = 'SELECT ?broader WHERE {{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}'.format(resource)
@@ -79,33 +79,40 @@ class Article(models.Model):
                 else:
                     query = 'SELECT ?subject WHERE {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}'.format(resource)
                     attr = 'subject'
-                    
+
                 sparql.setQuery(query)
                 results = sparql.query().convert()
                 results = results['results']['bindings']
-                if results:
-                    result = results[0]
+                if attr == 'broader':
+                    results = results[:1]
+                for result in results:
                     uri = result[attr]['value']
                     parent_resource = uri.split('/')[-1]
                     if parent_resource in graph:
+                        graph.add_edge(resource, parent_resource)
                         return
-                    print parent_resource
                     graph.add_edge(resource, parent_resource)
                     recurse_populate_graph(parent_resource, graph)
-            
+
             import networkx as nx
             from SPARQLWrapper import SPARQLWrapper, JSON
             sparql = SPARQLWrapper("http://dbpedia.org/sparql")
             sparql.setReturnFormat(JSON)
+            results = []
 
             graph = nx.Graph()
             ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
             ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
                 if ngram.source == 'dbpedia':
+                    results.append(ngram.ngram)
                     resource = ngram.ngram.capitalize().replace(' ', '_')
                     recurse_populate_graph(resource, graph)
-            return graph
+            components = []
+            for component in nx.connected_components(graph):
+                components.append([node for node in component if 'Category' not in node])
+
+            return components, results
         return None
 
     def create_collocations(self):
