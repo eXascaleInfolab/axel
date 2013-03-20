@@ -68,16 +68,17 @@ class Article(models.Model):
     def dbpedia_graph(self):
         """
         Generate a dbpedia category TREE using networkx
-        :rtype: networkx.classes.graph.Graph
+        :rtype: list
         """
         if settings.BUILD_DBPEDIA_GRAPHS:
 
             def recurse_populate_graph(resource, graph):
                 if 'Category' in resource:
-                    query = 'SELECT ?broader WHERE {{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}'.format(resource)
+                    query = u'SELECT ?broader WHERE {{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}'.format(resource)
                     attr = 'broader'
                 else:
-                    query = 'SELECT ?subject WHERE {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}'.format(resource)
+                    url_resource = resource.capitalize().replace(' ', '_')
+                    query = u'SELECT ?subject WHERE {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}'.format(url_resource)
                     attr = 'subject'
 
                 sparql.setQuery(query)
@@ -98,21 +99,20 @@ class Article(models.Model):
             from SPARQLWrapper import SPARQLWrapper, JSON
             sparql = SPARQLWrapper("http://dbpedia.org/sparql")
             sparql.setReturnFormat(JSON)
-            results = []
 
             graph = nx.Graph()
             ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
             ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
                 if ngram.source == 'dbpedia':
-                    results.append(ngram.ngram)
-                    resource = ngram.ngram.capitalize().replace(' ', '_')
-                    recurse_populate_graph(resource, graph)
-            components = []
+                    recurse_populate_graph(ngram.ngram, graph)
+            results = []
             for component in nx.connected_components(graph):
-                components.append([node for node in component if 'Category' not in node])
+                component = [node for node in component if 'Category' not in node]
+                if len(component) > 2:
+                    results.extend(component)
 
-            return components, results
+            return results
         return None
 
     def create_collocations(self):
