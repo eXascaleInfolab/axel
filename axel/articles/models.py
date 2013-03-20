@@ -104,15 +104,14 @@ class Article(models.Model):
             ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
             ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
-                if ngram.source == 'dbpedia':
+                if 'dbpedia' in ngram.source:
                     recurse_populate_graph(ngram.ngram, graph)
             results = []
             for component in nx.connected_components(graph):
                 component = [node for node in component if 'Category' not in node]
-                if len(component) > 2:
-                    results.extend(component)
+                results.append(component)
 
-            return results
+            return max(results, key=lambda x: len(x))
         return None
 
     def create_collocations(self):
