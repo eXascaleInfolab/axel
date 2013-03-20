@@ -115,8 +115,11 @@ class Collocation(models.Model):
     @property
     @db_cache('extra_fields')
     def source(self):
-        """Return source of the field, None by default"""
-        return None
+        """
+        Return source of the field, empty list by default
+        :rtype: list
+        """
+        return []
 
     def all_contexts(self, func=get_contexts):
         """
