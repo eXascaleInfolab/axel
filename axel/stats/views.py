@@ -2,6 +2,7 @@ from __future__ import division
 from collections import defaultdict, OrderedDict, Counter
 import json
 import re
+from numpy import array
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
@@ -308,26 +309,18 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         N2 = sum(distribution_dict.values())
         score += distribution_dict[w2]/N2
         return score / 2
-    
-    def _min_both_gram_score(self, ngram, text):
-        w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
-        N1 = sum(distribution_dict.values())
-        score = distribution_dict[w1]/N1
-        distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
-        N2 = sum(distribution_dict.values())
-        score = min(distribution_dict[w2]/N2, score)
-        return score
         
-    def _max_both_gram_score(self, ngram, text):
+    def _std_both_gram_score(self, ngram, text):
         w1, w2 = ngram.split()
         distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
-        N1 = sum(distribution_dict.values())
-        score = distribution_dict[w1]/N1
+        arr = array(distribution_dict.values())
+        N1 = arr.sum()
+        score = distribution_dict[w1]/(arr.mean() + 2*arr.std())*N1
         distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
-        N2 = sum(distribution_dict.values())
-        score = max(distribution_dict[w2]/N2, score)
-        return score
+        arr = array(distribution_dict.values())
+        N2 = arr.sum()
+        score += distribution_dict[w2/(arr.mean() + 2*arr.std())*N2
+        return score / 2
 
     def _caclculate_average_precision(self, article_dict):
         avg_prec_list = []
