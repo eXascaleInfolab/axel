@@ -315,7 +315,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
         arr = array(distribution_dict.values())
         N1 = arr.sum()
-        score = distribution_dict[w1]/(arr.mean() + 2*arr.std())1
+        score = distribution_dict[w1]/(arr.mean() + 2*arr.std())
         distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
         arr = array(distribution_dict.values())
         N2 = arr.sum()
