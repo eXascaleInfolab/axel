@@ -277,7 +277,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
 
     def _populate_article_dict(self, pos_tag, score_func):
         article_dict = defaultdict(list)
-        for c in self.queryset.filter(_pos_tag=pos_tag, tags__is_relevant__isnull=False):
+        for c in self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag), tags__is_relevant__isnull=False):
             is_rel = c.tags.all()[0].is_relevant
             for ac in ArticleCollocation.objects.filter(ngram=c.ngram):
                 if ac.count <= 1:
