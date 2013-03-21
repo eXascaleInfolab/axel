@@ -20,6 +20,18 @@
     </form>
     {% if avg_precision %}
         <h3>Average precision: {{ avg_precision }}</h3>
+        <ul>
+            {% for key, values in article_dict.items %}
+            <li>
+                <b>{{ key }}</b>
+                <ul>
+                    {% for row in values %}
+                    <li>{{ row }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
     {% endif %}
 
 {% endblock %}
