@@ -274,6 +274,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             article_dict = self._populate_article_dict(pos_tag, score_func)
             context['avg_precision'] = self._caclculate_average_precision(article_dict)
         context['form'] = form
+        context['article_dict'] = article_dict
         return context
 
     def _populate_article_dict(self, pos_tag, score_func):
