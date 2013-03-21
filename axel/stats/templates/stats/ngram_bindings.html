@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+    <h3>Ngram per-article collocations scorings</h3>
+    <form class="form-horizontal" method="POST" action="">
+        {% csrf_token %}
+        <fieldset>
+            {% for field in form %}
+                <div class="control-group">
+                    <label>
+                        {{ field.label }}:
+                        {{ field }}
+                        {{ field.errors }}
+                    </label>
+                </div>
+            {% endfor %}
+        </fieldset>
+        <button class="btn btn-large btn-primary">Score!</button>
+    </form>
+    {% if avg_precision %}
+        <h3>Average precision: {{ avg_precision }}</h3>
+    {% endif %}
+
+{% endblock %}

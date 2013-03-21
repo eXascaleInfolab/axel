@@ -1,8 +1,9 @@
-from collections import defaultdict, OrderedDict
+from __future__ import division
+from collections import defaultdict, OrderedDict, Counter
 import json
 import re
-from django.contrib.contenttypes.models import ContentType
 
+from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -10,12 +11,13 @@ from django.views.generic import TemplateView, FormView
 from test_collection.models import TaggedCollection
 from test_collection.views import CollectionModelView, _get_model_from_string,\
     TestCollectionOverview
+from axel.articles.models import ArticleCollocation
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
 from axel.libs.mixins import AttributeFilterView
 from axel.stats import scores
-from axel.stats.forms import ScoreCacheResetForm
+from axel.stats.forms import ScoreCacheResetForm, NgramBindingForm
 from axel.stats.scores.ngram_ranking import NgramMeasureScoring
 
 
@@ -254,47 +256,76 @@ class NgramMeasureScoringView(CollocationAttributeFilterView):
 
 class NgramWordBindingDistributionView(CollocationAttributeFilterView):
 
+    template_name = 'stats/ngram_bindings.html'
+    form_class = NgramBindingForm
+
+    @classmethod
+    def scores(cls):
+        return [name[1:-6] for name in dir(cls) if name.endswith('_score')]
+
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
         context = super(NgramWordBindingDistributionView, self).get_context_data(**kwargs)
-        from collections import Counter
-        from numpy import array
-        from axel.articles.models import Article
-
-        results = []
-        for c in self.queryset.filter(_pos_tag='JJ NNS',
-                                  tags__is_relevant__isnull=False):
-            #if re.search(r'(CD|RB|NONE|DT|CC|MD|RP|JJR|JJS)', c.pos_tag):
-            #    continue
-            # _pos_tag__regex='^[A-Z]{2,3} [A-Z]{2,3} [A-Z]{2,3}$'
-            is_rel = c.tags.all()[0].is_relevant
-            #bi1, w1 = c.ngram.rsplit(' ', 1)
-            #w2, bi2 = c.ngram.split(' ', 1)
-            w1, w2 = c.ngram.split()
-            denominator = 0
-            score = 0
-            for article in Article.objects.filter(articlecollocation__ngram=c.ngram):
-                text = article.stemmed_text
-                distribution_dict = Counter(re.findall(ur'{0} (\w+)'.format(w1), text))
-                arr = array(distribution_dict.values())
-                N1 = arr.sum()
-                if len(arr) == 1:
-                    score += N1 * 2
-                else:
-                    score += distribution_dict[w2] * N1 / (arr.mean() + arr.std())
-                denominator += N1
-
-                distribution_dict = Counter(re.findall(ur'(\w+) {0}'.format(w2), text))
-                arr = array(distribution_dict.values())
-                N2 = arr.sum()
-                score += distribution_dict[w1] * N2 / (arr.mean() + arr.std())
-                denominator += N2
-            score /= denominator
-            #print c.ngram, score, is_rel
-            results.append((c.ngram, score, is_rel))
-        results.sort(key=lambda x: x[1])
-        results = results[-50:]
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            pos_tag = form.cleaned_data['pos_tag']
+            score_func = getattr(self, '_' + form.cleaned_data['scoring_function'] + '_score')
+            article_dict = self._populate_article_dict(pos_tag, score_func)
+            context['avg_precision'] = self._caclculate_average_precision(article_dict)
+        context['form'] = form
         return context
+
+    def _populate_article_dict(self, pos_tag, score_func):
+        article_dict = defaultdict(list)
+        for c in self.queryset.filter(_pos_tag=pos_tag, tags__is_relevant__isnull=False):
+            is_rel = c.tags.all()[0].is_relevant
+            for ac in ArticleCollocation.objects.filter(ngram=c.ngram):
+                if ac.count <= 1:
+                    continue
+                text = ac.article.stemmed_text
+                score = score_func(c.ngram, text)
+                article_dict[ac.article].append((c.ngram, ac.count, score, is_rel))
+        return article_dict
+
+    def _weight_prev_gram_score(self, ngram, text):
+        w1, w2 = ngram.split()
+        distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
+        score = distribution_dict[w2] / sum(distribution_dict.values())
+        return score
+
+    def _weight_last_gram_score(self, ngram, text):
+        w1, w2 = ngram.split()
+        distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
+        score = distribution_dict[w1] / sum(distribution_dict.values())
+        return score
+
+    def _weight_both_gram_score(self, ngram, text):
+        w1, w2 = ngram.split()
+        distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
+        N1 = sum(distribution_dict.values())
+        score = distribution_dict[w1]/N1
+        distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
+        N2 = sum(distribution_dict.values())
+        score += distribution_dict[w2]/N2
+        return score / 2
+
+    def _caclculate_average_precision(self, article_dict):
+        avg_prec_list = []
+        for k, v in article_dict.items():
+            local_precision = []
+            sorted_scores = sorted(v, key=lambda x: x[2], reverse=True)
+            tp = len([x for x in sorted_scores if x[3]])
+            if tp == 0:
+                continue
+            correct_count = 0
+            for ngram, _, _, is_rel in sorted_scores:
+                correct_count += int(is_rel)
+                tp += int(not is_rel)
+                local_precision.append(correct_count / tp)
+                if int(local_precision[-1]) == 1:
+                    break
+            avg_prec_list.append(max(local_precision))
+        return sum(avg_prec_list) / len(avg_prec_list)
 
 
 class ClearCachedAttrView(FormView):
