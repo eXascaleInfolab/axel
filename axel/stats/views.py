@@ -319,7 +319,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
         arr = array(distribution_dict.values())
         N2 = arr.sum()
-        score += distribution_dict[w2/(arr.mean() + 2*arr.std())*N2
+        score += distribution_dict[w2]/(arr.mean() + 2*arr.std())*N2
         return score / 2
 
     def _caclculate_average_precision(self, article_dict):
