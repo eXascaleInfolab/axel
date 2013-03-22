@@ -285,7 +285,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             is_rel = c.tags.all()[0].is_relevant
             for ac in ArticleCollocation.objects.filter(ngram=c.ngram,
                                                         article__cluster_id='CS_COLLOCS'):
-                if ac.count <= 1:
+                if ac.count <= 2:
                     continue
                 text = ac.article.stemmed_text
                 score = score_func(c.ngram, text)
