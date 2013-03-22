@@ -259,6 +259,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
 
     template_name = 'stats/ngram_bindings.html'
     form_class = NgramBindingForm
+    ngram_regex = ur'(?:\w|-)'
 
     @classmethod
     def scores(cls):
@@ -293,37 +294,29 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
 
     def _weight_prev_gram_score(self, ngram, text):
         w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
+        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
         score = distribution_dict[w2] / sum(distribution_dict.values())
         return score
 
     def _weight_last_gram_score(self, ngram, text):
         w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
+        distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
         score = distribution_dict[w1] / sum(distribution_dict.values())
         return score
 
     def _weight_both_gram_score(self, ngram, text):
         w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
+        distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
         N1 = sum(distribution_dict.values())
+        N1_len = len(distribution_dict)
         score = distribution_dict[w1] / N1
-        distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
+        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
         N2 = sum(distribution_dict.values())
+        N2_len = len(distribution_dict)
         score += distribution_dict[w2] / N2
+        if N2_len == N1_len and N2_len == 1 and text.count(ngram) > 5:
+            score += 2
         return score / 2
-
-    def _std_both_gram_score(self, ngram, text):
-        w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
-        arr = array(distribution_dict.values())
-        N1 = arr.sum()
-        score = distribution_dict[w1]/(arr.mean() + 2*arr.std())
-        distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
-        arr = array(distribution_dict.values())
-        N2 = arr.sum()
-        score += distribution_dict[w2]/(arr.mean() + 2*arr.std())
-        return score / (N1 + N2)
 
     def _caclculate_average_precision(self, article_dict):
         avg_prec_list = []

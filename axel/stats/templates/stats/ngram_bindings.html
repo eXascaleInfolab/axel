@@ -23,7 +23,7 @@
         <ul>
             {% for key, values in article_dict %}
             <li>
-                <b>{{ key }}</b>
+                <b>{{ key.id }}</b>
                 <ul>
                     {% for ngram, count, score, is_rel in values %}
                     <li><span class="label {% if is_rel %}label-success{% else %}label-important{% endif %}">
