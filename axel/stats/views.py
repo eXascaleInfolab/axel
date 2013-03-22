@@ -281,30 +281,34 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
 
     def _populate_article_dict(self, pos_tag, score_func):
         article_dict = defaultdict(list)
-        for c in self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag), tags__is_relevant__isnull=False):
+        queryset = self.queryset
+        if pos_tag:
+            queryset = self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag))
+        for c in queryset.filter(tags__is_relevant__isnull=False):
             is_rel = c.tags.all()[0].is_relevant
             for ac in ArticleCollocation.objects.filter(ngram=c.ngram,
                                                         article__cluster_id='CS_COLLOCS'):
-                if ac.count <= 2:
-                    continue
                 text = ac.article.stemmed_text
+                ngram_count = text.count(c.ngram)
+                if ngram_count <= 2:
+                    continue
                 score = score_func(c.ngram, text)
                 article_dict[ac.article].append((c.ngram, ac.count, score, is_rel))
         return article_dict
 
-    def _weight_prev_gram_score(self, ngram, text):
+    def _weight_prev_bigram_score(self, ngram, text):
         w1, w2 = ngram.split()
         distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
         score = distribution_dict[w2] / sum(distribution_dict.values())
         return score
 
-    def _weight_last_gram_score(self, ngram, text):
+    def _weight_last_bigram_score(self, ngram, text):
         w1, w2 = ngram.split()
         distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
         score = distribution_dict[w1] / sum(distribution_dict.values())
         return score
 
-    def _weight_both_gram_score(self, ngram, text):
+    def _weight_both_bigram_score(self, ngram, text):
         w1, w2 = ngram.split()
         distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
         N1 = sum(distribution_dict.values())

@@ -11,7 +11,7 @@ class ScoreCacheResetForm(forms.Form):
 
 class NgramBindingForm(forms.Form):
     scoring_function = forms.ChoiceField(choices=())
-    pos_tag = forms.CharField()
+    pos_tag = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(NgramBindingForm, self).__init__(*args, **kwargs)
