@@ -273,15 +273,17 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             score_func = getattr(self, '_' + form.cleaned_data['scoring_function'] + '_score')
             article_dict = self._populate_article_dict(pos_tag, score_func)
             context['avg_precision'] = self._caclculate_average_precision(article_dict)
+            context['article_dict'] = [(key, sorted(values, key=lambda x: x[2], reverse=True))
+                                       for key, values in article_dict.iteritems()]
         context['form'] = form
-        context['article_dict'] = [(key, sorted(values, key=lambda x: x[2], reverse=True)) for key, values in article_dict.iteritems()]
         return context
 
     def _populate_article_dict(self, pos_tag, score_func):
         article_dict = defaultdict(list)
         for c in self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag), tags__is_relevant__isnull=False):
             is_rel = c.tags.all()[0].is_relevant
-            for ac in ArticleCollocation.objects.filter(ngram=c.ngram):
+            for ac in ArticleCollocation.objects.filter(ngram=c.ngram,
+                                                        article__cluster_id='CS_COLLOCS'):
                 if ac.count <= 1:
                     continue
                 text = ac.article.stemmed_text
@@ -305,12 +307,12 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         w1, w2 = ngram.split()
         distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
         N1 = sum(distribution_dict.values())
-        score = distribution_dict[w1]/N1
+        score = distribution_dict[w1] / N1
         distribution_dict = Counter(re.findall(ur'{0} ([A-Za-z\-]+)'.format(w1), text))
         N2 = sum(distribution_dict.values())
-        score += distribution_dict[w2]/N2
+        score += distribution_dict[w2] / N2
         return score / 2
-        
+
     def _std_both_gram_score(self, ngram, text):
         w1, w2 = ngram.split()
         distribution_dict = Counter(re.findall(ur'([A-Za-z\-]+) {0}'.format(w2), text))
@@ -321,7 +323,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         arr = array(distribution_dict.values())
         N2 = arr.sum()
         score += distribution_dict[w2]/(arr.mean() + 2*arr.std())
-        return score / (N1+N2)
+        return score / (N1 + N2)
 
     def _caclculate_average_precision(self, article_dict):
         avg_prec_list = []

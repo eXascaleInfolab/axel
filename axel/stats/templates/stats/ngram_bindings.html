@@ -25,8 +25,11 @@
             <li>
                 <b>{{ key }}</b>
                 <ul>
-                    {% for row in values %}
-                    <li>{{ row }}</li>
+                    {% for ngram, count, score, is_rel in values %}
+                    <li><span class="label {% if is_rel %}label-success{% else %}label-important{% endif %}">
+                        {{ ngram }}: {{ score }}, count: {{ count }}
+                        </span>
+                    </li>
                     {% endfor %}
                 </ul>
             </li>
