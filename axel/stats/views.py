@@ -274,22 +274,24 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             score_func = getattr(self, '_' + form.cleaned_data['scoring_function'] + '_score')
             article_dict = self._populate_article_dict(pos_tag, score_func)
             context['avg_precision'] = self._caclculate_average_precision(article_dict)
-            context['article_dict'] = [(key, sorted(values, key=lambda x: x[2], reverse=True))
+            context['article_dict'] = [(key, sorted([(ngram, value[0], value[1], value[2]) for ngram,
+                                                    value in values.items()],
+                                                    key=lambda x: x[2], reverse=True))
                                        for key, values in article_dict.iteritems()]
         context['form'] = form
         return context
 
     def _populate_article_dict(self, pos_tag, score_func):
-        article_dict = defaultdict(list)
+        article_dict = defaultdict(dict)
         self.queryset = self.queryset.values_list('ngram', flat=True)
         if pos_tag:
             self.queryset = self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag))
         rel_ngram_set = set(self.queryset.filter(tags__is_relevant=True))
         irrel_ngram_set = set(self.queryset.filter(tags__is_relevant=False))
-        for article in Article.objects.filter(cluster_id=self.queryset.model.CLUSTER_ID):
+        for article in Article.objects.filter(cluster_id=self.queryset.model.CLUSTER_ID)[:10]:
             text = article.stemmed_text
             for ngram in sorted(article.articlecollocation_set.values_list('ngram', flat=True),
-                                key=lambda x: len(x[0].split())):
+                                key=lambda x: len(x.split())):
                 if ngram in rel_ngram_set:
                     is_rel = True
                 elif ngram in irrel_ngram_set:
@@ -299,60 +301,59 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
                 ngram_count = text.count(ngram)
                 if ngram_count <= 2:
                     continue
-                score = score_func(ngram, text, article_dict)
-                article_dict[article].append((ngram, ngram_count, score, is_rel))
+                score = score_func(ngram, text, article_dict[article])
+                article_dict[article][ngram] = (ngram_count, score, is_rel)
         return article_dict
 
-    def _weight_prev_bigram_score(self, ngram, text, article_dict):
-        w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
-        score = distribution_dict[w2] / sum(distribution_dict.values())
-        return score
-
-    def _weight_last_bigram_score(self, ngram, text, article_dict):
-        w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
-        score = distribution_dict[w1] / sum(distribution_dict.values())
-        return score
-
-    def _weight_both_bigram_score(self, ngram, text, article_dict):
-        w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
-        N1 = sum(distribution_dict.values())
-        N1_len = len(distribution_dict)
-        score = distribution_dict[w1] / N1
-        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
-        N2 = sum(distribution_dict.values())
-        N2_len = len(distribution_dict)
-        score += distribution_dict[w2] / N2
-        if N1_len == 1 or N2_len == 1 and text.count(ngram) > 5:
-            score += 2
-        return score / 2
+    def _weight_both_ngram_score(self, ngram, text, article_dict):
+        score = 0
+        space_index = -1
+        denominator = 0
+        while True:
+            space_index = ngram.find(' ', space_index + 1)
+            if space_index == -1:
+                break
+            w1, w2 = ngram[:space_index], ngram[space_index + 1:]
+            distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
+            N1 = sum(distribution_dict.values())
+            N1_len = len(distribution_dict)
+            if N1 == 0:
+                return score
+            score += distribution_dict[w1] / N1
+            distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
+            N2 = sum(distribution_dict.values())
+            N2_len = len(distribution_dict)
+            if N2 == 0:
+                return score
+            score += distribution_dict[w2] / N2
+            if (N1_len == 1 or N2_len == 1) and text.count(ngram) > 5:
+                score += 2
+            denominator += 2
+        return score / denominator
 
     def _weight_ngram_score(self, ngram, text, article_dict):
-        w1, w2 = ngram.split()
-        distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
-        N1 = sum(distribution_dict.values())
-        N1_len = len(distribution_dict)
-        score = distribution_dict[w1] / N1
-        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
-        N2 = sum(distribution_dict.values())
-        N2_len = len(distribution_dict)
-        score += distribution_dict[w2] / N2
-        if N1_len == 1 or N2_len == 1 and text.count(ngram) > 5:
-            score += 2
-        return score / 2
+        if len(ngram.split()) == 2:
+            return self._weight_both_ngram_score(ngram, text, article_dict)
+        elif len(ngram.split()) == 3:
+            local_ngrams = set(build_ngram_index(ngram).keys()).intersection(article_dict.keys())
+            # check bigram inside
+            if local_ngrams:
+                score = sum([article_dict[ngram][1] for ngram in local_ngrams])
+            # no - full average
+            else:
+                score = self._weight_both_ngram_score(ngram, text, article_dict)
+            return score
 
     def _caclculate_average_precision(self, article_dict):
         avg_prec_list = []
-        for k, v in article_dict.items():
+        for k, values_dict in article_dict.items():
             local_precision = []
-            sorted_scores = sorted(v, key=lambda x: x[2], reverse=True)
-            tp = len([x for x in sorted_scores if x[3]])
+            sorted_scores = sorted(values_dict.values(), key=lambda x: x[1], reverse=True)
+            tp = len([x for x in sorted_scores if x[2]])
             if tp == 0:
                 continue
             correct_count = 0
-            for ngram, _, _, is_rel in sorted_scores:
+            for _, _, is_rel in sorted_scores:
                 correct_count += int(is_rel)
                 tp += int(not is_rel)
                 local_precision.append(correct_count / tp)
