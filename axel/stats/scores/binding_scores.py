@@ -1,3 +1,4 @@
+from __future__ import division
 from collections import Counter, defaultdict
 import re
 from axel.articles.models import Article
