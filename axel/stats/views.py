@@ -19,6 +19,7 @@ from axel.libs.mixins import AttributeFilterView
 from axel.stats import scores
 from axel.stats.forms import ScoreCacheResetForm, NgramBindingForm
 from axel.stats.scores import binding_scores
+from axel.stats.scores.binding_scores import populate_article_dict
 from axel.stats.scores.ngram_ranking import NgramMeasureScoring
 
 
@@ -281,28 +282,10 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         return context
 
     def _populate_article_dict(self, pos_tag, score_func):
-        article_dict = defaultdict(dict)
         self.queryset = self.queryset.values_list('ngram', flat=True)
         if pos_tag:
             self.queryset = self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag))
-        rel_ngram_set = set(self.queryset.filter(tags__is_relevant=True))
-        irrel_ngram_set = set(self.queryset.filter(tags__is_relevant=False))
-        for article in Article.objects.filter(cluster_id=self.queryset.model.CLUSTER_ID)[:30]:
-            text = article.stemmed_text
-            for ngram in sorted(article.articlecollocation_set.values_list('ngram', flat=True),
-                                key=lambda x: len(x.split())):
-                if ngram in rel_ngram_set:
-                    is_rel = True
-                elif ngram in irrel_ngram_set:
-                    is_rel = False
-                else:
-                    continue
-                ngram_count = text.count(ngram)
-                if ngram_count <= 2:
-                    continue
-                score = score_func(ngram, text, article_dict[article])
-                article_dict[article][ngram] = (ngram_count, score, is_rel)
-        return article_dict
+        return populate_article_dict(self.queryset, score_func)
 
     def _caclculate_average_precision(self, article_dict):
         avg_prec_list = []

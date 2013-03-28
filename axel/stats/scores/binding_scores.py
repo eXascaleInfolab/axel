@@ -1,5 +1,6 @@
-from collections import Counter
+from collections import Counter, defaultdict
 import re
+from axel.articles.models import Article
 from axel.articles.utils.nlp import build_ngram_index
 
 NGRAM_REGEX = ur'(?:\w|-)'
@@ -44,3 +45,28 @@ def weight_ngram_score(ngram, text, article_dict):
         else:
             score = weight_both_ngram_score(ngram, text, article_dict)
         return score
+
+
+def populate_article_dict(queryset, score_func):
+    """
+    :type queryset: QuerySet
+    """
+    article_dict = defaultdict(dict)
+    rel_ngram_set = set(queryset.filter(tags__is_relevant=True))
+    irrel_ngram_set = set(queryset.filter(tags__is_relevant=False))
+    for article in Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID):
+        text = article.stemmed_text
+        for ngram in sorted(article.articlecollocation_set.values_list('ngram', flat=True),
+                            key=lambda x: len(x.split())):
+            if ngram in rel_ngram_set:
+                is_rel = True
+            elif ngram in irrel_ngram_set:
+                is_rel = False
+            else:
+                continue
+            ngram_count = text.count(ngram)
+            if ngram_count <= 2:
+                continue
+            score = score_func(ngram, text, article_dict[article])
+            article_dict[article][ngram] = (ngram_count, score, is_rel)
+    return article_dict
