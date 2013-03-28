@@ -1,8 +1,7 @@
 from __future__ import division
-from collections import defaultdict, OrderedDict, Counter
+from collections import defaultdict, OrderedDict
 import json
 import re
-from numpy import array
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
@@ -12,13 +11,14 @@ from django.views.generic import TemplateView, FormView
 from test_collection.models import TaggedCollection
 from test_collection.views import CollectionModelView, _get_model_from_string,\
     TestCollectionOverview
-from axel.articles.models import ArticleCollocation, Article
+from axel.articles.models import Article
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
 from axel.libs.mixins import AttributeFilterView
 from axel.stats import scores
 from axel.stats.forms import ScoreCacheResetForm, NgramBindingForm
+from axel.stats.scores import binding_scores
 from axel.stats.scores.ngram_ranking import NgramMeasureScoring
 
 
@@ -111,7 +111,7 @@ class NgramParticipationView(CollocationAttributeFilterView):
         connected_nodes = list(set(zip(*links)[0]).union(set(zip(*links)[1])))
         node_dict = dict([(node, i) for i, node in enumerate(connected_nodes)])
 
-        links = [{'source':node_dict[source], 'target': node_dict[target]}
+        links = [{'source': node_dict[source], 'target': node_dict[target]}
                  for source, target in links]
 
         def _get_rel_info(ngram):
@@ -259,11 +259,10 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
 
     template_name = 'stats/ngram_bindings.html'
     form_class = NgramBindingForm
-    ngram_regex = ur'(?:\w|-)'
 
     @classmethod
     def scores(cls):
-        return [name[1:-6] for name in dir(cls) if name.endswith('_score')]
+        return [name for name in dir(binding_scores) if name.endswith('_score')]
 
     def get_context_data(self, **kwargs):
         """Add nodes and links to the context"""
@@ -271,7 +270,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         form = self.form_class(self.request.POST or None)
         if form.is_valid():
             pos_tag = form.cleaned_data['pos_tag']
-            score_func = getattr(self, '_' + form.cleaned_data['scoring_function'] + '_score')
+            score_func = getattr(binding_scores, form.cleaned_data['scoring_function'])
             article_dict = self._populate_article_dict(pos_tag, score_func)
             context['avg_precision'] = self._caclculate_average_precision(article_dict)
             context['article_dict'] = [(key, sorted([(ngram, value[0], value[1], value[2]) for ngram,
@@ -288,7 +287,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             self.queryset = self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag))
         rel_ngram_set = set(self.queryset.filter(tags__is_relevant=True))
         irrel_ngram_set = set(self.queryset.filter(tags__is_relevant=False))
-        for article in Article.objects.filter(cluster_id=self.queryset.model.CLUSTER_ID)[:10]:
+        for article in Article.objects.filter(cluster_id=self.queryset.model.CLUSTER_ID)[:30]:
             text = article.stemmed_text
             for ngram in sorted(article.articlecollocation_set.values_list('ngram', flat=True),
                                 key=lambda x: len(x.split())):
@@ -304,45 +303,6 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
                 score = score_func(ngram, text, article_dict[article])
                 article_dict[article][ngram] = (ngram_count, score, is_rel)
         return article_dict
-
-    def _weight_both_ngram_score(self, ngram, text, article_dict):
-        score = 0
-        space_index = -1
-        denominator = 0
-        while True:
-            space_index = ngram.find(' ', space_index + 1)
-            if space_index == -1:
-                break
-            w1, w2 = ngram[:space_index], ngram[space_index + 1:]
-            distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, self.ngram_regex), text))
-            N1 = sum(distribution_dict.values())
-            N1_len = len(distribution_dict)
-            if N1 == 0:
-                return score
-            score += distribution_dict[w1] / N1
-            distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, self.ngram_regex), text))
-            N2 = sum(distribution_dict.values())
-            N2_len = len(distribution_dict)
-            if N2 == 0:
-                return score
-            score += distribution_dict[w2] / N2
-            if (N1_len == 1 or N2_len == 1) and text.count(ngram) > 5:
-                score += 2
-            denominator += 2
-        return score / denominator
-
-    def _weight_ngram_score(self, ngram, text, article_dict):
-        if len(ngram.split()) == 2:
-            return self._weight_both_ngram_score(ngram, text, article_dict)
-        elif len(ngram.split()) == 3:
-            local_ngrams = set(build_ngram_index(ngram).keys()).intersection(article_dict.keys())
-            # check bigram inside
-            if local_ngrams:
-                score = sum([article_dict[ngram][1] for ngram in local_ngrams])
-            # no - full average
-            else:
-                score = self._weight_both_ngram_score(ngram, text, article_dict)
-            return score
 
     def _caclculate_average_precision(self, article_dict):
         avg_prec_list = []
