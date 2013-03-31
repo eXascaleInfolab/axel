@@ -28,6 +28,10 @@ class Command(BaseCommand):
                     action='store',
                     dest='cluster',
                     help='cluster id for article type'),
+        make_option('--cvnum', '-n',
+                    action='store',
+                    dest='cv_num',
+                    help='number of cross validation folds, defaults to 10'),
     )
     args = '<method1> <method2> ...'
     help = 'Train SVM classified with a set of features'
@@ -37,6 +41,7 @@ class Command(BaseCommand):
         self.cluster_id = cluster_id = options['cluster']
         if not cluster_id:
             raise CommandError("need to specify cluster id")
+        cv_num = int(options['cv_num']) or 10
         self.Model = Model = Article.objects.filter(cluster_id=cluster_id)[0].CollocationModel
         print 'Building initial binding scores...'
         article_dict = populate_article_dict(Model.objects.values_list('ngram', flat=True),
@@ -50,10 +55,10 @@ class Command(BaseCommand):
                 scored_ngrams.append((ngram_obj, score, ngram_count, is_rel))
 
         print 'Fitting classifier...'
-        fit_ml_algo(scored_ngrams)
+        fit_ml_algo(scored_ngrams, cv_num)
 
 
-def fit_ml_algo(scored_ngrams):
+def fit_ml_algo(scored_ngrams, cv_num):
     """
     :param scored_ngrams: list of tuple of type (ngram, score) after initial scoring
     """
@@ -71,11 +76,11 @@ def fit_ml_algo(scored_ngrams):
         collection.append((initial_score, 'dblp' in ngram.source, 'dbpedia' in ngram.source,
                            pos_tag_dict[pos_tag], count))
         collection_labels.append(is_rel)
-    clf = svm.SVR(kernel='linear', probability=True)
+    clf = svm.SVC(kernel='linear', probability=True)
     #clf.fit(collection, collection_labels)
 
-    # 10-fold cross-validation
-    print collection
-    scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels), cv=10)
+    # K-fold cross-validation
+    scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels),
+                                              cv=cv_num)
 
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() / 2))
