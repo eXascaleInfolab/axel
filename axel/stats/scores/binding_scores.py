@@ -67,9 +67,9 @@ def populate_article_dict(queryset, score_func):
                 is_rel = False
             else:
                 continue
-            ngram_count = text.count(ngram.ngram)
-            if ngram_count <= 5:
+            ngram_abs_count = text.count(ngram.ngram)
+            if ngram_abs_count <= 5:
                 continue
             score = score_func(ngram.ngram, text, article_dict[article])
-            article_dict[article][ngram.ngram] = (ngram_count, score, is_rel)
+            article_dict[article][ngram.ngram] = (ngram_abs_count, score, is_rel)
     return article_dict
