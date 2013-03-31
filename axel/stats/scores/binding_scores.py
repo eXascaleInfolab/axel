@@ -37,11 +37,13 @@ def weight_both_ngram_score(ngram, text, article_dict):
 def weight_ngram_score(ngram, text, article_dict):
     if len(ngram.split()) == 2:
         return weight_both_ngram_score(ngram, text, article_dict)
-    elif len(ngram.split()) == 3:
+    else:
         local_ngrams = set(build_ngram_index(ngram).keys()).intersection(article_dict.keys())
-        # check bigram inside
+        # select biggest prev combination
         if local_ngrams:
+
             score = sum([article_dict[ngram][1] for ngram in local_ngrams])
+            # reduce score from the consumed ngram according its score
         # no - full average
         else:
             score = weight_both_ngram_score(ngram, text, article_dict)
@@ -55,19 +57,19 @@ def populate_article_dict(queryset, score_func):
     article_dict = defaultdict(dict)
     rel_ngram_set = set(queryset.filter(tags__is_relevant=True))
     irrel_ngram_set = set(queryset.filter(tags__is_relevant=False))
-    for article in Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID):
+    for article in Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID)[:20]:
         text = article.stemmed_text
-        for ngram in sorted(article.articlecollocation_set.values_list('ngram', flat=True),
-                            key=lambda x: len(x.split())):
-            if ngram in rel_ngram_set:
+        for ngram in sorted(article.articlecollocation_set.all(),
+                            key=lambda x: len(x.ngram.split())):
+            if ngram.ngram in rel_ngram_set:
                 is_rel = True
-            elif ngram in irrel_ngram_set:
+            elif ngram.ngram in irrel_ngram_set:
                 is_rel = False
             else:
                 continue
-            ngram_count = text.count(ngram)
-            if ngram_count <= 2:
+            ngram_count = text.count(ngram.ngram)
+            if ngram_count <= 5:
                 continue
-            score = score_func(ngram, text, article_dict[article])
-            article_dict[article][ngram] = (ngram_count, score, is_rel)
+            score = score_func(ngram.ngram, text, article_dict[article])
+            article_dict[article][ngram.ngram] = (ngram_count, score, is_rel)
     return article_dict
