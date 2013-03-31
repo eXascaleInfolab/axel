@@ -273,7 +273,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             pos_tag = form.cleaned_data['pos_tag']
             score_func = getattr(binding_scores, form.cleaned_data['scoring_function'])
             article_dict = self._populate_article_dict(pos_tag, score_func)
-            context['avg_precision'] = self._caclculate_average_precision(article_dict)
+            context['map_precision'] = self._caclculate_MAP(article_dict)
             context['article_dict'] = [(key, sorted([(ngram, value[0], value[1], value[2]) for ngram,
                                                     value in values.items()],
                                                     key=lambda x: x[2], reverse=True))
@@ -287,22 +287,23 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             self.queryset = self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag))
         return populate_article_dict(self.queryset, score_func)
 
-    def _caclculate_average_precision(self, article_dict):
+    def _caclculate_MAP(self, article_dict):
         avg_prec_list = []
+
         for k, values_dict in article_dict.items():
-            local_precision = []
             sorted_scores = sorted(values_dict.values(), key=lambda x: x[1], reverse=True)
-            tp = len([x for x in sorted_scores if x[2]])
-            if tp == 0:
+            rel_ngram_num = len([x for x in sorted_scores if x[2]])
+            if rel_ngram_num == 0:
                 continue
             correct_count = 0
+            local_precision = 0
+            i = 0
             for _, _, is_rel in sorted_scores:
-                correct_count += int(is_rel)
-                tp += int(not is_rel)
-                local_precision.append(correct_count / tp)
-                if int(local_precision[-1]) == 1:
-                    break
-            avg_prec_list.append(max(local_precision))
+                i += 1
+                if is_rel:
+                    correct_count += 1
+                    local_precision += correct_count / i
+            avg_prec_list.append(local_precision/rel_ngram_num)
         return sum(avg_prec_list) / len(avg_prec_list)
 
 

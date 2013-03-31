@@ -18,8 +18,8 @@
         </fieldset>
         <button class="btn btn-large btn-primary">Score!</button>
     </form>
-    {% if avg_precision %}
-        <h3>Average precision: {{ avg_precision }}</h3>
+    {% if map_precision %}
+        <h3>MAP: {{ map_precision }}</h3>
         <ul>
             {% for key, values in article_dict %}
             <li>
