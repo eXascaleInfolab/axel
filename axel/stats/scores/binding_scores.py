@@ -95,15 +95,18 @@ def weight_both_ngram3(ngram, text, split_ngram=None):
         if split_ngram and w1 != split_ngram and not w2 != split_ngram:
             continue
         # subtract existing prefixes/suffixes from distribution dicts
-        distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, NGRAM_REGEX), text, re.U))
+        regex = u'(' + (ur'{0}+ '.format(NGRAM_REGEX) * len(w1.split()))[:-1] + u') ' + w2
+        distribution_dict = Counter(re.findall(regex, text, re.U))
         N2 = sum(distribution_dict.values())
         N2_len = len(distribution_dict)
         score1 = distribution_dict[w1]
-        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, NGRAM_REGEX), text, re.U))
+
+        regex = w1 + u' (' + (ur' {0}+'.format(NGRAM_REGEX) * len(w2.split()))[1:] + u')'
+        distribution_dict = Counter(re.findall(regex, text, re.U))
         N1 = sum(distribution_dict.values())
         N1_len = len(distribution_dict)
         score2 = distribution_dict[w2]
-        score = (score1 + score2) / (N1 + N2)
+        score += (score1 + score2) / (N1 + N2)
         # 4% increase in MAP
         score /= N2_len/N1_len
         denominator += 1
