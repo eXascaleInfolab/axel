@@ -18,13 +18,13 @@ def weight_both_ngram(ngram, text, article_dict):
             break
         w1, w2 = ngram[:space_index], ngram[space_index + 1:]
         distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, NGRAM_REGEX, re.U), text))
-        N1 = sum(distribution_dict.values())
-        N1_len = len(distribution_dict)
-        score += distribution_dict[w1] / N1
-        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, NGRAM_REGEX, re.U), text))
         N2 = sum(distribution_dict.values())
         N2_len = len(distribution_dict)
-        score += distribution_dict[w2] / N2
+        score += distribution_dict[w1] / N2
+        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, NGRAM_REGEX, re.U), text))
+        N1 = sum(distribution_dict.values())
+        N1_len = len(distribution_dict)
+        score += distribution_dict[w2] / N1
         if (N1_len == 1 or N2_len == 1) and text.count(ngram) > 5:
             score += 2
         denominator += 2
@@ -65,19 +65,19 @@ def weight_both_ngram2(ngram, text, article_dict):
             break
         w1, w2 = ngram[:space_index], ngram[space_index + 1:]
         distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, NGRAM_REGEX), text, re.U))
-        N1 = sum(distribution_dict.values())
-        N1_len = len(distribution_dict)
-        score1 = distribution_dict[w1]
-        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, NGRAM_REGEX), text, re.U))
         N2 = sum(distribution_dict.values())
         N2_len = len(distribution_dict)
+        score1 = distribution_dict[w1]
+        distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, NGRAM_REGEX), text, re.U))
+        N1 = sum(distribution_dict.values())
+        N1_len = len(distribution_dict)
         score2 = distribution_dict[w2]
         score = (score1 + score2) / (N1 + N2)
-        # 2% increase in MAP
+        # 4% increase in MAP
         if N2_len / N1_len >= 5:
-            score += 1
-        elif N1_len / N2_len >= 5:
             score /= 2
+        elif N1_len / N2_len >= 5:
+            score += 1
         denominator += 1
     return score / denominator
 
@@ -93,13 +93,15 @@ def weight_ngram_score(ngram, text, article_dict, ngram_abs_count):
                 smaller_ngram = smaller_ngrams.pop()
                 smaller_ngram_count, smaller_ngram_score, is_rel = article_dict[smaller_ngram]
                 score = smaller_ngram_score * ngram_abs_count / smaller_ngram_count
+                # reduce score from the consumed ngram according its score
                 article_dict[smaller_ngram] = (smaller_ngram_count,
                                                smaller_ngram_score - score, is_rel)
-                # reduce score from the consumed ngram according its score
             else:
-                print smaller_ngrams
-                local_ngrams = sorted(smaller_ngrams, key=lambda x: len(x.split()), reverse=True)
-                score = sum([article_dict[ngram][1] for ngram in local_ngrams])
+                smaller_ngrams = sorted(smaller_ngrams, key=lambda x: len(x.split()), reverse=True)
+                smaller_ngram_count, smaller_ngram_score, is_rel = article_dict[smaller_ngrams[0]]
+                score = smaller_ngram_score * ngram_abs_count / smaller_ngram_count
+                article_dict[smaller_ngrams[0]] = (smaller_ngram_count,
+                                                   smaller_ngram_score - score, is_rel)
         # no - full average
         else:
             score = weight_both_ngram2(ngram, text, article_dict)
