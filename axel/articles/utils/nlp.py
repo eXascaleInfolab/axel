@@ -123,6 +123,8 @@ def _update_ngram_counts(ngrams, index):
     :type index: dict
     :type ngrams: set
     :rtype: dict
+    RATIONAL: we cannot go from the smallest to longest, because smallest haven't been updated
+    yes with longest, we cannot subtract bigger value.
     """
     ngrams = [u' '.join(ngram) for ngram in ngrams]
     # Sort ngrams from max length to min
