@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% load url from future %}
 
+{% block extra-head %}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.uncollapse-next').on('click', function (e) {
+            $(this).next().toggleClass('hidden');
+        });
+    });
+    </script>
+{% endblock %}
+
 {% block content %}
     <h3>Ngram per-article collocations scorings</h3>
     <form class="form-horizontal" method="POST" action="">
@@ -26,9 +36,14 @@
                 <b>{{ article.id }}: {{ article.title }}</b>
                 <ul>
                     {% for ngram, value in values.items %}
-                    <li><span class="label {% if value.is_rel %}label-success{% else %}label-important{% endif %}">
+                    <li><span class="uncollapse-next label {% if value.is_rel %}label-success{% else %}label-important{% endif %}">
                         {{ ngram }}: {{ value.score }}, count: {{ value.abs_count }}
                         </span>
+                        <div class="hidden">
+                            {{ value.ddict1 }}
+                            <br>
+                            {{ value.ddict2 }}
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>
