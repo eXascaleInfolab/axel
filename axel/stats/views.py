@@ -274,9 +274,8 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             score_func = getattr(binding_scores, form.cleaned_data['scoring_function'])
             article_dict = self._populate_article_dict(pos_tag, score_func)
             context['map_precision'] = self._caclculate_MAP(article_dict)
-            context['article_dict'] = [(key, sorted([(ngram, value[0], value[1], value[2]) for ngram,
-                                                    value in values.items()],
-                                                    key=lambda x: x[2], reverse=True))
+            context['article_dict'] = [(key, OrderedDict(sorted(values.iteritems(), reverse=True,
+                                                                key=lambda x: x[1]['score'],)))
                                        for key, values in article_dict.iteritems()]
         context['form'] = form
         return context
@@ -291,16 +290,16 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         avg_prec_list = []
 
         for k, values_dict in article_dict.items():
-            sorted_scores = sorted(values_dict.values(), key=lambda x: x[1], reverse=True)
-            rel_ngram_num = len([x for x in sorted_scores if x[2]])
+            sorted_scores = OrderedDict(sorted(values_dict.iteritems(), key=lambda x: x[1]['score'], reverse=True))
+            rel_ngram_num = len([x for x in sorted_scores.values() if x['is_rel']])
             if rel_ngram_num == 0:
                 continue
             correct_count = 0
             local_precision = 0
             i = 0
-            for _, _, is_rel in sorted_scores:
+            for ngram, values in sorted_scores.items():
                 i += 1
-                if is_rel:
+                if values['is_rel']:
                     correct_count += 1
                     local_precision += correct_count / i
             avg_prec_list.append(local_precision/rel_ngram_num)

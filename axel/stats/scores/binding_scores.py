@@ -7,7 +7,7 @@ from axel.articles.utils.nlp import build_ngram_index
 NGRAM_REGEX = ur'(?:\w|-)'
 
 
-def weight_both_ngram(ngram, text):
+def weight_both_ngram(ngram, text, split_ngram=None, corr_dict=None):
     """AVERAGE BETWEEN TWO SCORES"""
     score = 0
     space_index = -1
@@ -31,7 +31,7 @@ def weight_both_ngram(ngram, text):
     return score / denominator
 
 
-def weight_both_ngram1(ngram, text):
+def weight_both_ngram1(ngram, text, split_ngram=None, corr_dict=None):
     """AVERAGE BETWEEN TWO WEIGHTED SCORES"""
     score = 0
     space_index = -1
@@ -54,7 +54,7 @@ def weight_both_ngram1(ngram, text):
     return score / denominator
 
 
-def weight_both_ngram2(ngram, text):
+def weight_both_ngram2(ngram, text, split_ngram=None, corr_dict=None):
     """MODIFIER DETERMINER"""
     score = 0
     space_index = -1
@@ -82,8 +82,8 @@ def weight_both_ngram2(ngram, text):
     return score / denominator
 
 
-def weight_both_ngram3(ngram, text, split_ngram=None):
-    """MODIFIER DETERMINER + SUBTRACT EXISTING"""
+def weight_both_ngram3(ngram, text, split_ngram=None, corr_dict=None):
+    """MODIFIER DETERMINER2 TRIGRAMS OPTIMIZER"""
     score = 0
     space_index = -1
     denominator = 0
@@ -113,9 +113,74 @@ def weight_both_ngram3(ngram, text, split_ngram=None):
     return score / denominator
 
 
-def weight_ngram_score(ngram, text, article_dict, ngram_abs_count, score_func=weight_both_ngram3):
+def weight_both_ngram4(ngram, text, split_ngram=None, corr_dict=None):
+    """MODIFIER DETERMINER + SUBTRACT EXISTING"""
+    score = 0
+    space_index = -1
+    denominator = 0
+    corr_dict = corr_dict or {}
+    while True:
+        space_index = ngram.find(' ', space_index + 1)
+        if space_index == -1:
+            break
+        w1, w2 = ngram[:space_index], ngram[space_index + 1:]
+        if split_ngram and w1 != split_ngram and not w2 != split_ngram:
+            continue
+        # subtract existing prefixes/suffixes from distribution dicts
+        regex = u'(' + (ur'{0}+ '.format(NGRAM_REGEX) * len(w1.split()))[:-1] + u') ' + w2
+        distribution_dict = Counter(re.findall(regex, text, re.U))
+        if w2 in corr_dict:
+            for w in corr_dict[w2]:
+                if w != w1:
+                    distribution_dict.pop(w, None)
+        N2 = sum(distribution_dict.values())
+        N2_len = len(distribution_dict)
+        score1 = distribution_dict[w1]
+
+        regex = w1 + u' (' + (ur' {0}+'.format(NGRAM_REGEX) * len(w2.split()))[1:] + u')'
+        distribution_dict = Counter(re.findall(regex, text, re.U))
+        if w1 in corr_dict:
+            for w in corr_dict[w1]:
+                if w != w2:
+                    distribution_dict.pop(w, None)
+        N1 = sum(distribution_dict.values())
+        N1_len = len(distribution_dict)
+        score2 = distribution_dict[w2]
+        score += (score1 + score2) / (N1 + N2)
+        # 4% increase in MAP
+        score /= N2_len/N1_len
+        denominator += 1
+    return score / denominator
+
+
+def weight_both_ngram5(ngram, text, split_ngram=None, corr_dict=None):
+    score = 0
+    space_index = -1
+    denominator = 0
+    corr_dict = corr_dict or {}
+    while True:
+        space_index = ngram.find(' ', space_index + 1)
+        if space_index == -1:
+            break
+        w1, w2 = ngram[:space_index], ngram[space_index + 1:]
+
+        regex = w1 + u' (' + (ur' {0}+'.format(NGRAM_REGEX) * len(w2.split()))[1:] + u')'
+        distribution_dict = Counter(re.findall(regex, text, re.U))
+        if w1 in corr_dict:
+            for w in corr_dict[w1]:
+                if w != w2:
+                    distribution_dict.pop(w, None)
+        N1 = sum(distribution_dict.values())
+        N1_len = len(distribution_dict)
+        score += 1 / N1_len
+        denominator += 1
+    return score / denominator
+
+
+def weight_ngram_score(ngram, text, article_dict, ngram_abs_count, corr_dict=None,
+                       score_func=weight_both_ngram5):
     if len(ngram.split()) == 2:
-        return score_func(ngram, text)
+        return score_func(ngram, text, corr_dict=corr_dict)
     else:
         smaller_ngrams = set(build_ngram_index(ngram).keys()).intersection(article_dict.keys())
         # select max split combination
@@ -160,6 +225,13 @@ def populate_article_dict(queryset, score_func):
     irrel_ngram_set = set(queryset.filter(tags__is_relevant=False))
     for article in Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID):
         text = article.stemmed_text
+        # create correspondence dict
+        corr_dict = defaultdict(set)
+        for ngram in article.articlecollocation_set.values_list('ngram', flat=True):
+            if len(ngram.split()) == 2:
+                w1, w2 = ngram.split()
+                corr_dict[w2].add(w1)
+                corr_dict[w1].add(w2)
         for ngram in sorted(article.articlecollocation_set.all(),
                             key=lambda x: len(x.ngram.split())):
             if ngram.ngram in rel_ngram_set:
@@ -169,8 +241,9 @@ def populate_article_dict(queryset, score_func):
             else:
                 continue
             ngram_abs_count = text.count(ngram.ngram)
-            if ngram_abs_count <= 5:
+            if ngram_abs_count <= 2:
                 continue
-            score = score_func(ngram.ngram, text, article_dict[article], ngram_abs_count)
-            article_dict[article][ngram.ngram] = (ngram_abs_count, score, is_rel)
+            score = score_func(ngram.ngram, text, article_dict[article], ngram_abs_count, corr_dict)
+            article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
+                                                  'is_rel': is_rel, 'count': ngram.count}
     return article_dict
