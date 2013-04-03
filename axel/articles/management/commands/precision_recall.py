@@ -1,5 +1,6 @@
 """Match extracted collocation with DBPedia entities"""
 from __future__ import division
+from collections import Counter
 from optparse import make_option
 from termcolor import colored
 
@@ -42,6 +43,8 @@ class Command(BaseCommand):
         for colloc in self.Model.objects.all():
             if 'dbpedia' in colloc.source:
                 dbpedia_ngrams.add(colloc.ngram)
+
+        top_false_counter = Counter()
         for obj in Article.objects.filter(cluster_id=self.cluster_id):
             article = obj
             """:type: Article"""
@@ -51,6 +54,7 @@ class Command(BaseCommand):
 
             true_pos = [x for x in results if x in correct_objects]
             false_pos = [x for x in results if x in incorrect_objects]
+            top_false_counter.update(false_pos)
             local_precision = len(true_pos) / len([x for x in results if x in correct_objects or
                                                                          x in incorrect_objects])
             local_recall = len(true_pos) / len([x for x in article.articlecollocation_set
@@ -71,6 +75,7 @@ class Command(BaseCommand):
         print 'Precision: ', precision
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
+        print colored(str(top_false_counter), 'red')
 
     def _dblp_calculation(self, correct_objects, incorrect_objects):
         print 'Calculating Precision/Recall using DBLP match'
