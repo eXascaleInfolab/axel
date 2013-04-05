@@ -72,20 +72,24 @@ class Article(models.Model):
         """
         if settings.BUILD_DBPEDIA_GRAPHS:
 
-            def recurse_populate_graph(resource, graph):
+            def recurse_populate_graph(resource, graph, depth):
+                if depth == 0:
+                    return
                 if 'Category' in resource:
-                    query = u'SELECT ?broader WHERE {{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}'.format(resource)
+                    query1 = u'SELECT ?broader WHERE {{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}'.format(resource)
+                    query2 = u'SELECT ?broader WHERE {{ ?broader skos:broader <http://dbpedia.org/resource/{0}> }}'.format(resource)
                     attr = 'broader'
                 else:
                     url_resource = resource.capitalize().replace(' ', '_')
-                    query = u'SELECT ?subject WHERE {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}'.format(url_resource)
+                    query1 = u'SELECT ?subject WHERE {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}'.format(url_resource)
+                    query2 = u'SELECT ?subject WHERE {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}'.format(url_resource)
                     attr = 'subject'
 
-                sparql.setQuery(query)
-                results = sparql.query().convert()
-                results = results['results']['bindings']
-                if attr == 'broader':
-                    results = results[:1]
+                results = []
+                sparql.setQuery(query1)
+                results.extend(sparql.query().convert()['results']['bindings'])
+                sparql.setQuery(query2)
+                results.extend(sparql.query().convert()['results']['bindings'])
                 for result in results:
                     uri = result[attr]['value']
                     parent_resource = uri.split('/')[-1]
@@ -93,7 +97,7 @@ class Article(models.Model):
                         graph.add_edge(resource, parent_resource)
                         return
                     graph.add_edge(resource, parent_resource)
-                    recurse_populate_graph(parent_resource, graph)
+                    recurse_populate_graph(parent_resource, graph, depth-1)
 
             import networkx as nx
             from SPARQLWrapper import SPARQLWrapper, JSON
@@ -105,12 +109,13 @@ class Article(models.Model):
             ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
                 if 'dbpedia' in ngram.source:
-                    recurse_populate_graph(ngram.ngram, graph)
+                    recurse_populate_graph(ngram.ngram, graph, 2)
             results = []
             for component in nx.connected_components(graph):
                 component = [node for node in component if 'Category' not in node]
                 results.append(component)
 
+            # select 2 max clusters
             return max(results, key=lambda x: len(x))
         return None
 

@@ -48,11 +48,12 @@ class Command(BaseCommand):
         for obj in Article.objects.filter(cluster_id=self.cluster_id):
             article = obj
             """:type: Article"""
-            #results = article.dbpedia_graph
+            results = article.dbpedia_graph
             article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
-            results = article_ngrams.intersection(dbpedia_ngrams)
+            results_all = article_ngrams.intersection(dbpedia_ngrams)
 
             true_pos = [x for x in results if x in correct_objects]
+            good_removed = [x for x in results_all if x in correct_objects and x not in true_pos]
             false_pos = [x for x in results if x in incorrect_objects]
             top_false_counter.update(false_pos)
             local_precision = len(true_pos) / len([x for x in results if x in correct_objects or
@@ -64,6 +65,7 @@ class Command(BaseCommand):
             recall.append(local_recall)
             print obj.id
             print colored(true_pos, 'green')
+            print colored(good_removed, 'yellow')
             print colored(false_pos, 'red')
             print
 
