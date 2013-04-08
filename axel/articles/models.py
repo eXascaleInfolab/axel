@@ -72,37 +72,71 @@ class Article(models.Model):
         """
         if settings.BUILD_DBPEDIA_GRAPHS:
 
+            stop_uris_set = open(settings.ABS_PATH('stop_uri.txt')).read().split()
+            stop_uris_set = set([x.split('/')[-1] for x in stop_uris_set])
+
             def recurse_populate_graph(resource, graph, depth):
+                if resource in stop_uris_set:
+                    return
                 if depth == 0:
                     return
                 if 'Category' in resource:
-                    query1 = u'SELECT ?broader WHERE {{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}'.format(resource)
-                    query2 = u'SELECT ?broader WHERE {{ ?broader skos:broader <http://dbpedia.org/resource/{0}> }}'.format(resource)
+                    query = u'SELECT ?broader WHERE {{{{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}' \
+                             u' UNION {{ ?broader skos:broader <http://dbpedia.org/resource/{0}> }}' \
+                             u' UNION {{ ?broader skos:related <http://dbpedia.org/resource/{0}> }}' \
+                             u' UNION {{ <http://dbpedia.org/resource/{0}> skos:related ?broader }}}}'.format(resource)
                     attr = 'broader'
                 else:
                     url_resource = resource.capitalize().replace(' ', '_')
-                    query1 = u'SELECT ?subject WHERE {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}'.format(url_resource)
-                    query2 = u'SELECT ?subject WHERE {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}'.format(url_resource)
+                    url_resource1 = resource.title().replace(' ', '_')
+                    if resource == 'latent dirichlet allocation':
+                        url_resource = 'Latent_Dirichlet_allocation'
+                    elif resource == 'named entity recognition':
+                        url_resource = 'Named-entity_recognition'
+                    elif resource == 'dynamic bayesian network':
+                        url_resource = 'Dynamic_Bayesian_network'
+                    elif resource == 'leaf node':
+                        url_resource = 'Tree_(data_structure)'
+                    elif resource == 'web archive':
+                        url_resource = 'Web_archiving'
+                    elif resource == 'semantic relatedness':
+                        url_resource = 'Semantic_similarity'
+                    elif resource == 'domain expert':
+                        url_resource = 'Subject-matter_expert'
+                    elif resource == 'naive bayes classifier':
+                        url_resource = 'Naive_Bayes_classifier'
+                    elif resource == 'world wide web conference':
+                        url_resource = 'International_World_Wide_Web_Conference'
+                    elif resource == 'hidden markov model':
+                        url_resource = 'Hidden_Markov_model'
+                    elif resource == 'social network service':
+                        url_resource = 'Social_networking_service'
+                    query = u'SELECT ?subject WHERE {{{{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}' \
+                            u' UNION {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}'.format(url_resource) + \
+                            u' UNION {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}}}'.format(url_resource1)
                     attr = 'subject'
 
                 results = []
-                sparql.setQuery(query1)
+                sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+                sparql.setReturnFormat(JSON)
+                sparql.setQuery(query)
                 results.extend(sparql.query().convert()['results']['bindings'])
-                sparql.setQuery(query2)
-                results.extend(sparql.query().convert()['results']['bindings'])
+                if attr == 'subject' and not results:
+                    if resource == 'gradient boosting':
+                        results = [{'subject':{'value': 'Category:Ensemble_learning'}}, {'subject':{'value': 'Category:Decision_trees'}}]
+                    elif resource == 'optimization problem':
+                        results = [{'subject':{'value': 'Category:Computational_problems'}}]
+                    else:
+                        print resource
                 for result in results:
                     uri = result[attr]['value']
                     parent_resource = uri.split('/')[-1]
-                    if parent_resource in graph:
-                        graph.add_edge(resource, parent_resource)
-                        return
+                    #print '  ' * (3 - depth), resource, '->', parent_resource
                     graph.add_edge(resource, parent_resource)
                     recurse_populate_graph(parent_resource, graph, depth-1)
 
             import networkx as nx
             from SPARQLWrapper import SPARQLWrapper, JSON
-            sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-            sparql.setReturnFormat(JSON)
 
             graph = nx.Graph()
             ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
@@ -116,7 +150,8 @@ class Article(models.Model):
                 results.append(component)
 
             # select 2 max clusters
-            return max(results, key=lambda x: len(x))
+            results.sort(key=lambda x: len(x), reverse=True)
+            return [item for sublist in results[:1] for item in sublist]
         return None
 
     def create_collocations(self):
