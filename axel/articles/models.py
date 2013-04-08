@@ -123,11 +123,10 @@ class Article(models.Model):
                 results.extend(sparql.query().convert()['results']['bindings'])
                 if attr == 'subject' and not results:
                     if resource == 'gradient boosting':
-                        results = [{'subject':{'value': 'Category:Ensemble_learning'}}, {'subject':{'value': 'Category:Decision_trees'}}]
+                        results = [{'subject': {'value': 'Category:Ensemble_learning'}},
+                                   {'subject': {'value': 'Category:Decision_trees'}}]
                     elif resource == 'optimization problem':
-                        results = [{'subject':{'value': 'Category:Computational_problems'}}]
-                    else:
-                        print resource
+                        results = [{'subject': {'value': 'Category:Computational_problems'}}]
                 for result in results:
                     uri = result[attr]['value']
                     parent_resource = uri.split('/')[-1]
