@@ -1,5 +1,5 @@
 from __future__ import division
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, OrderedDict
 import re
 from axel.articles.models import Article
 from axel.articles.utils.nlp import build_ngram_index
@@ -270,11 +270,32 @@ def populate_article_dict(queryset, score_func, cutoff=5, options=None):
             # DBPedia - DBLP
             if 'dbpedia' in options:
                 if 'dbpedia' in collection_ngram.source:
-                    score = 10 * score
+                    score *= 10
             if 'dblp' in options:
                 if 'dblp' in collection_ngram.source:
-                    score = 10 * score
+                    score *= 10
             article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
                                                   'is_rel': is_rel, 'count': ngram.count,
                                                   'ddict1': ddict1, 'ddict2': ddict2}
     return article_dict
+
+
+def caclculate_MAP(article_dict):
+    avg_prec_list = []
+
+    for k, values_dict in article_dict.items():
+        sorted_scores = OrderedDict(sorted(values_dict.iteritems(), key=lambda x: x[1]['score'],
+                                           reverse=True))
+        rel_ngram_num = len([x for x in sorted_scores.values() if x['is_rel']])
+        if rel_ngram_num == 0:
+            continue
+        correct_count = 0
+        local_precision = 0
+        i = 0
+        for ngram, values in sorted_scores.items():
+            i += 1
+            if values['is_rel']:
+                correct_count += 1
+                local_precision += correct_count / i
+        avg_prec_list.append(local_precision/rel_ngram_num)
+    return sum(avg_prec_list) / len(avg_prec_list)

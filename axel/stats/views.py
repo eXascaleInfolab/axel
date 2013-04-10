@@ -11,7 +11,6 @@ from django.views.generic import TemplateView, FormView
 from test_collection.models import TaggedCollection
 from test_collection.views import CollectionModelView, _get_model_from_string,\
     TestCollectionOverview
-from axel.articles.models import Article
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
 from axel.articles.utils.nlp import build_ngram_index
@@ -19,7 +18,7 @@ from axel.libs.mixins import AttributeFilterView
 from axel.stats import scores
 from axel.stats.forms import ScoreCacheResetForm, NgramBindingForm
 from axel.stats.scores import binding_scores
-from axel.stats.scores.binding_scores import populate_article_dict
+from axel.stats.scores.binding_scores import populate_article_dict, caclculate_MAP
 from axel.stats.scores.ngram_ranking import NgramMeasureScoring
 
 
@@ -273,7 +272,7 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
             pos_tag = form.cleaned_data['pos_tag']
             score_func = getattr(binding_scores, form.cleaned_data['scoring_function'])
             article_dict = self._populate_article_dict(pos_tag, score_func)
-            context['map_precision'] = self._caclculate_MAP(article_dict)
+            context['map_precision'] = caclculate_MAP(article_dict)
             context['article_dict'] = [(key, OrderedDict(sorted(values.iteritems(), reverse=True,
                                                                 key=lambda x: x[1]['score'],)))
                                        for key, values in article_dict.iteritems()]
@@ -285,25 +284,6 @@ class NgramWordBindingDistributionView(CollocationAttributeFilterView):
         if pos_tag:
             self.queryset = self.queryset.filter(_pos_tag__regex='^{0}$'.format(pos_tag))
         return populate_article_dict(self.queryset, score_func)
-
-    def _caclculate_MAP(self, article_dict):
-        avg_prec_list = []
-
-        for k, values_dict in article_dict.items():
-            sorted_scores = OrderedDict(sorted(values_dict.iteritems(), key=lambda x: x[1]['score'], reverse=True))
-            rel_ngram_num = len([x for x in sorted_scores.values() if x['is_rel']])
-            if rel_ngram_num == 0:
-                continue
-            correct_count = 0
-            local_precision = 0
-            i = 0
-            for ngram, values in sorted_scores.items():
-                i += 1
-                if values['is_rel']:
-                    correct_count += 1
-                    local_precision += correct_count / i
-            avg_prec_list.append(local_precision/rel_ngram_num)
-        return sum(avg_prec_list) / len(avg_prec_list)
 
 
 class ClearCachedAttrView(FormView):
