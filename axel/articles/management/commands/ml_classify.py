@@ -8,7 +8,8 @@ import numpy as np
 from django.core.management.base import BaseCommand, CommandError
 
 from axel.articles.models import Article
-from axel.stats.scores.binding_scores import populate_article_dict, weight_ngram_score
+from axel.stats.scores.binding_scores import populate_article_dict
+from axel.stats.scores import binding_scores
 
 
 RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re.compile('RB')),
@@ -33,7 +34,7 @@ class Command(BaseCommand):
                     dest='cv_num',
                     help='number of cross validation folds, defaults to 10'),
     )
-    args = '<method1> <method2> ...'
+    args = '<score1> <score2> ...'
     help = 'Train SVM classified with a set of features'
 
     def handle(self, *args, **options):
@@ -43,19 +44,21 @@ class Command(BaseCommand):
             raise CommandError("need to specify cluster id")
         cv_num = int(options['cv_num']) or 10
         self.Model = Model = Article.objects.filter(cluster_id=cluster_id)[0].CollocationModel
-        print 'Building initial binding scores...'
-        article_dict = populate_article_dict(Model.objects.values_list('ngram', flat=True),
-                                             weight_ngram_score)
-        scored_ngrams = []
-        print 'Reformatting the results...'
-        for values in article_dict.itervalues():
-            for ngram, scores in values.iteritems():
-                ngram_count, score, is_rel = scores
-                ngram_obj = Model.objects.get(ngram=ngram)
-                scored_ngrams.append((ngram_obj, score, ngram_count, is_rel))
+        for score_name in args:
+            print 'Building initial binding scores for {0}...'.format(score_name)
+            article_dict = populate_article_dict(Model.objects.values_list('ngram', flat=True),
+                                                 getattr(binding_scores, score_name))
+            scored_ngrams = []
+            print 'Reformatting the results...'
+            for values in article_dict.itervalues():
+                for ngram, scores in values.iteritems():
+                    ngram_count, score, is_rel = scores
+                    ngram_obj = Model.objects.get(ngram=ngram)
+                    scored_ngrams.append((ngram_obj, score, ngram_count, is_rel))
 
-        print 'Fitting classifier...'
-        fit_ml_algo(scored_ngrams, cv_num)
+            print 'Fitting classifier...'
+            fit_ml_algo(scored_ngrams, cv_num)
+            print
 
 
 def fit_ml_algo(scored_ngrams, cv_num):

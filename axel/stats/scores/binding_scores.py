@@ -7,7 +7,48 @@ from axel.articles.utils.nlp import build_ngram_index
 NGRAM_REGEX = ur'(?:\w|-)'
 
 
-def weight_ngram_score(ngram, text, article_dict, ngram_abs_count, corr_dict1=None, corr_dict2=None, score_func='weight_both_ngram4'):
+def abs_count_score(collection_ngram, ngram, text, article_dict, ngram_abs_count, *args, **kwargs):
+    """
+    :type collection_ngram: Collocation
+    :type ngram: ArticleCollocation
+    :type ngram_abs_count: int
+    """
+    return ngram_abs_count, {}, {}
+
+
+def rel_count_score(collection_ngram, ngram, *args, **kwargs):
+    """
+    :type collection_ngram: Collocation
+    :type ngram: ArticleCollocation
+    """
+    return ngram.count, {}, {}
+
+
+def abs_collection_count_score(collection_ngram, *args, **kwargs):
+    """
+    :type collection_ngram: Collocation
+    """
+    return collection_ngram.count, {}, {}
+
+
+def abs__multi_count_score(collection_ngram, ngram, text, article_dict,
+                           ngram_abs_count, *args, **kwargs):
+    """
+    :type collection_ngram: Collocation
+    :type ngram: ArticleCollocation
+    :type ngram_abs_count: int
+    """
+    return ngram_abs_count * collection_ngram.count, {}, {}
+
+
+def linked_score(collection_ngram, ngram, text, article_dict, ngram_abs_count, corr_dict1=None,
+                 corr_dict2=None, score_func='weight_both_ngram4'):
+    """
+    :type collection_ngram: Collocation
+    :type ngram: ArticleCollocation
+    :type text: unicode
+    """
+    ngram = ngram.ngram
     nb = NgramBindings(ngram, text, corr_dict1=corr_dict1, corr_dict2=corr_dict2)
     if len(ngram.split()) == 2:
         score = getattr(nb, score_func)()
@@ -44,6 +85,8 @@ class NgramBindings(object):
         self.ngram = ngram
         self.corr_dict1 = corr_dict1 or {}
         self.corr_dict2 = corr_dict2 or {}
+        self.ddict1 = {}
+        self.ddict2 = {}
 
     def weight_both_ngram(self, split_ngram=None):
         """AVERAGE BETWEEN TWO SCORES"""
@@ -191,10 +234,12 @@ class NgramBindings(object):
         return score / denominator
 
 
-def populate_article_dict(queryset, score_func):
+def populate_article_dict(queryset, score_func, cutoff=5, options=None):
     """
     :type queryset: QuerySet
     """
+    if options is None:
+        options = {}
     article_dict = defaultdict(dict)
     rel_ngram_set = set(queryset.filter(tags__is_relevant=True))
     irrel_ngram_set = set(queryset.filter(tags__is_relevant=False))
@@ -217,10 +262,18 @@ def populate_article_dict(queryset, score_func):
             else:
                 continue
             ngram_abs_count = text.count(ngram.ngram)
-            if ngram_abs_count <= 5:
+            if ngram_abs_count <= cutoff:
                 continue
-            score, ddict1, ddict2 = score_func(ngram.ngram, text, article_dict[article],
+            collection_ngram = queryset.model.objects.get(ngram=ngram.ngram)
+            score, ddict1, ddict2 = score_func(collection_ngram, ngram, text, article_dict[article],
                                                ngram_abs_count, corr_dict1, corr_dict2)
+            # DBPedia - DBLP
+            if 'dbpedia' in options:
+                if 'dbpedia' in collection_ngram.source:
+                    score = 10 * score
+            if 'dblp' in options:
+                if 'dblp' in collection_ngram.source:
+                    score = 10 * score
             article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
                                                   'is_rel': is_rel, 'count': ngram.count,
                                                   'ddict1': ddict1, 'ddict2': ddict2}
