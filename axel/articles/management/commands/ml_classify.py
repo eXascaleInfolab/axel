@@ -8,7 +8,7 @@ import numpy as np
 from django.core.management.base import BaseCommand, CommandError
 
 from axel.articles.models import Article
-from axel.stats.scores.binding_scores import populate_article_dict
+from axel.stats.scores.binding_scores import populate_article_dict, caclculate_MAP
 from axel.stats.scores import binding_scores
 
 
@@ -29,9 +29,16 @@ class Command(BaseCommand):
                     action='store',
                     dest='cluster',
                     help='cluster id for article type'),
+        make_option('--classify',
+                    action='store_true',
+                    dest='classify',
+                    default=False,
+                    help='whether to classify collection instead of MAP calculation'),
         make_option('--cvnum', '-n',
                     action='store',
                     dest='cv_num',
+                    type='int',
+                    default=10,
                     help='number of cross validation folds, defaults to 10'),
     )
     args = '<score1> <score2> ...'
@@ -42,23 +49,33 @@ class Command(BaseCommand):
         self.cluster_id = cluster_id = options['cluster']
         if not cluster_id:
             raise CommandError("need to specify cluster id")
-        cv_num = int(options['cv_num']) or 10
+        cv_num = options['cv_num']
         self.Model = Model = Article.objects.filter(cluster_id=cluster_id)[0].CollocationModel
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
             article_dict = populate_article_dict(Model.objects.values_list('ngram', flat=True),
-                                                 getattr(binding_scores, score_name))
-            scored_ngrams = []
-            print 'Reformatting the results...'
-            for values in article_dict.itervalues():
-                for ngram, scores in values.iteritems():
-                    ngram_count, score, is_rel = scores
-                    ngram_obj = Model.objects.get(ngram=ngram)
-                    scored_ngrams.append((ngram_obj, score, ngram_count, is_rel))
+                                                 getattr(binding_scores, score_name), cutoff=0)
+            if options['classify']:
+                scored_ngrams = []
+                print 'Reformatting the results...'
+                for values in article_dict.itervalues():
+                    for ngram, scores in values.iteritems():
+                        ngram_count, score, is_rel = scores
+                        ngram_obj = Model.objects.get(ngram=ngram)
+                        scored_ngrams.append((ngram_obj, score, ngram_count, is_rel))
 
-            print 'Fitting classifier...'
-            fit_ml_algo(scored_ngrams, cv_num)
-            print
+                print 'Fitting classifier...'
+                fit_ml_algo(scored_ngrams, cv_num)
+            else:
+                map_results = []
+                for i in range(50):
+                    print 'Cutoff {0}'.format(i)
+                    article_dict = dict([(article, dict(value for value in values.iteritems() if value['abs_count'] > i))
+                                         for article, values in article_dict.iteritems()])
+                    map_score = caclculate_MAP(article_dict)
+                    # TODO: calculate recall
+                    map_results.append((i, map_score))
+                print str(map_results).replace('(', '[').replace(')', ']')
 
 
 def fit_ml_algo(scored_ngrams, cv_num):
