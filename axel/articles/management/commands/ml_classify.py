@@ -1,6 +1,7 @@
 import re
 from collections import OrderedDict
 from sklearn import svm, cross_validation
+from sklearn.naive_bayes import MultinomialNB
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
 import numpy as np
@@ -59,10 +60,8 @@ class Command(BaseCommand):
                 scored_ngrams = []
                 print 'Reformatting the results...'
                 for values in article_dict.itervalues():
-                    for ngram, scores in values.iteritems():
-                        ngram_count, score, is_rel = scores
-                        ngram_obj = Model.objects.get(ngram=ngram)
-                        scored_ngrams.append((ngram_obj, score, ngram_count, is_rel))
+                    for scores in values.itervalues():
+                        scored_ngrams.append(scores)
 
                 print 'Fitting classifier...'
                 fit_ml_algo(scored_ngrams, cv_num)
@@ -88,15 +87,17 @@ def fit_ml_algo(scored_ngrams, cv_num):
     pos_tag_dict = {}
     pos_tag_i = 0
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
-    for ngram, initial_score, count, is_rel in scored_ngrams:
+    for score_dict in scored_ngrams:
+        ngram = score_dict['ngram']
         pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
         if pos_tag not in pos_tag_dict:
             pos_tag_dict[pos_tag] = pos_tag_i
             pos_tag_i += 1
-        collection.append((initial_score, 'dblp' in ngram.source, 'dbpedia' in ngram.source,
-                           pos_tag_dict[pos_tag], count))
-        collection_labels.append(is_rel)
-    clf = svm.SVC(kernel='linear', probability=True)
+        collection.append((score_dict['score'], 'dblp' in ngram.source, 'dbpedia' in ngram.source,
+                           pos_tag_dict[pos_tag], ngram.count, ngram.count * score_dict['score']))
+        collection_labels.append(score_dict['is_rel'])
+    #clf = svm.SVC(kernel='linear', probability=True)
+    clf = MultinomialNB()
     #clf.fit(collection, collection_labels)
 
     # K-fold cross-validation
