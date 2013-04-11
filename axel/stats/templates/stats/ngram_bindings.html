@@ -37,7 +37,7 @@
                 <ul>
                     {% for ngram, value in values.items %}
                     <li><span class="uncollapse-next label {% if value.is_rel %}label-success{% else %}label-important{% endif %}">
-                        {{ ngram }}: {{ value.score }}, count: {{ value.abs_count }}
+                        {{ ngram }}: {{ value.score }}, count: {{ value.abs_count }}{% if value.source %}, {{ value.source }} {% endif %}
                         </span>
                         <div class="hidden">
                             {{ value.ddict1 }}

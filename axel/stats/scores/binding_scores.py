@@ -31,7 +31,7 @@ def abs_collection_count_score(collection_ngram, *args, **kwargs):
     return collection_ngram.count, {}, {}
 
 
-def abs__multi_count_score(collection_ngram, ngram, text, article_dict,
+def abs_multi_count_score(collection_ngram, ngram, text, article_dict,
                            ngram_abs_count, *args, **kwargs):
     """
     :type collection_ngram: Collocation
@@ -39,6 +39,16 @@ def abs__multi_count_score(collection_ngram, ngram, text, article_dict,
     :type ngram_abs_count: int
     """
     return ngram_abs_count * collection_ngram.count, {}, {}
+
+
+def linked_multi_collection_score(collection_ngram, *args, **kwargs):
+    """
+    :type collection_ngram: Collocation
+    :type ngram: ArticleCollocation
+    :type ngram_abs_count: int
+    """
+    score, dict1, dict2 = linked_score(collection_ngram, *args, **kwargs)
+    return score * collection_ngram.count, dict1, dict2
 
 
 def linked_score(collection_ngram, ngram, text, article_dict, ngram_abs_count, corr_dict1=None,
@@ -245,8 +255,7 @@ def populate_article_dict(queryset, score_func, cutoff=5, options=None):
     irrel_ngram_set = set(queryset.filter(tags__is_relevant=False))
     for article in Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID):
         text = article.stemmed_text
-        if 'dbpedia' in options:
-            dbp_graph = article.dbpedia_graph
+        dbp_graph = article.dbpedia_graph
         # create correspondence dict
         corr_dict1 = defaultdict(set)
         corr_dict2 = defaultdict(set)
@@ -269,16 +278,16 @@ def populate_article_dict(queryset, score_func, cutoff=5, options=None):
             collection_ngram = queryset.model.objects.get(ngram=ngram.ngram)
             score, ddict1, ddict2 = score_func(collection_ngram, ngram, text, article_dict[article],
                                                ngram_abs_count, corr_dict1, corr_dict2)
-            # DBPedia - DBLP
-            if 'dbpedia' in options:
-                if ngram.ngram in dbp_graph:
-                    score *= 10
-            if 'dblp' in options:
-                if 'dblp' in collection_ngram.source:
-                    score *= 10
-            article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
+            source = 1
+            if 'dblp' in collection_ngram.source:
+                source += 1
+            if ngram.ngram in dbp_graph:
+                source += 1
+            article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score*(100 * source),
                                                   'is_rel': is_rel, 'count': ngram.count,
-                                                  'ddict1': ddict1, 'ddict2': ddict2}
+                                                  'ddict1': ddict1, 'ddict2': ddict2,
+                                                  'source': collection_ngram.source}
+
     return article_dict
 
 
