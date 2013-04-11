@@ -70,7 +70,7 @@ class Command(BaseCommand):
                 map_results = []
                 for i in range(50):
                     print 'Cutoff {0}'.format(i)
-                    article_dict = dict([(article, dict(value for value in values.iteritems() if value['abs_count'] > i))
+                    article_dict = dict([(article, dict((ngram, value) for ngram, value in values.iteritems() if value['abs_count'] > i))
                                          for article, values in article_dict.iteritems()])
                     map_score = caclculate_MAP(article_dict)
                     # TODO: calculate recall
