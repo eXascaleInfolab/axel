@@ -1,3 +1,4 @@
+from __future__ import division
 import re
 from collections import OrderedDict
 from sklearn import svm, cross_validation
@@ -45,6 +46,13 @@ class Command(BaseCommand):
     args = '<score1> <score2> ...'
     help = 'Train SVM classified with a set of features'
 
+    def _total_valid(self, article_dict):
+        total_valid = 0
+        for values in article_dict.itervalues():
+            for value in values.itervalues():
+                total_valid += int(value['is_rel'])
+        return total_valid
+
     def handle(self, *args, **options):
 
         self.cluster_id = cluster_id = options['cluster']
@@ -56,6 +64,9 @@ class Command(BaseCommand):
             print 'Building initial binding scores for {0}...'.format(score_name)
             article_dict = populate_article_dict(Model.objects.values_list('ngram', flat=True),
                                                  getattr(binding_scores, score_name), cutoff=0)
+            # Calculate total valid for recall
+            total_valid = self._total_valid(article_dict)
+
             if options['classify']:
                 scored_ngrams = []
                 print 'Reformatting the results...'
@@ -72,8 +83,7 @@ class Command(BaseCommand):
                     article_dict = dict([(article, dict((ngram, value) for ngram, value in values.iteritems() if value['abs_count'] > i))
                                          for article, values in article_dict.iteritems()])
                     map_score = caclculate_MAP(article_dict)
-                    # TODO: calculate recall
-                    map_results.append((i, map_score))
+                    map_results.append((self._total_valid(article_dict)/total_valid, map_score))
                 print str(map_results).replace('(', '[').replace(')', ']')
 
 
