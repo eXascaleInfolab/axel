@@ -21,8 +21,8 @@ RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re
                           (u'4NGRAM', re.compile(r'([A-Z]{2}.? ?){4}')),
                           (u'5NGRAM', re.compile(r'([A-Z]{2}.? ?){5}')),
                           (u'PLURAL_START', re.compile(r'^NNS')),
-                          (u'PROPER', re.compile(r'(NNP\s?)+')),
-                          (u'PREP_END', re.compile(r'IN $'))])
+                          (u'PREP_END', re.compile(r'IN $')),
+                          (u'EVERYTHING', re.compile(r'.*'))])
 
 
 class Command(BaseCommand):
@@ -103,8 +103,11 @@ def fit_ml_algo(scored_ngrams, cv_num):
         if pos_tag not in pos_tag_dict:
             pos_tag_dict[pos_tag] = pos_tag_i
             pos_tag_i += 1
-        collection.append((score_dict['score'], 'dblp' in ngram.source, 'dbpedia' in ngram.source,
-                           pos_tag_dict[pos_tag], ngram.count, ngram.count * score_dict['score']))
+        #collection.append((score_dict['score'], 'dblp' in ngram.source, 'dbpedia' in ngram.source,
+        #                   pos_tag_dict[pos_tag], ngram.count, ngram.count * score_dict['score']))
+        collection.append((score_dict['score'], ngram.count * score_dict['score'],
+                           'dblp' in ngram.source, 'dbpedia' in ngram.source,
+                           pos_tag_dict[pos_tag]))
         collection_labels.append(score_dict['is_rel'])
     #clf = svm.SVC(kernel='linear', probability=True)
     clf = MultinomialNB()
@@ -114,4 +117,4 @@ def fit_ml_algo(scored_ngrams, cv_num):
     scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels),
                                               cv=cv_num)
 
-    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() / 2))
+    print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
