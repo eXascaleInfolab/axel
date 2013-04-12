@@ -1,7 +1,9 @@
 from __future__ import division
+import os
 import re
+import pickle
 from collections import OrderedDict
-from sklearn import svm, cross_validation
+from sklearn import cross_validation
 from sklearn.naive_bayes import MultinomialNB
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
@@ -17,12 +19,12 @@ from axel.stats.scores import binding_scores
 RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re.compile('RB')),
                           (u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP)')),
                           (u'AJD_FORM', re.compile(r'JJR|JJS')),
-                          (u'SMTH_BEFORE_ADJ', re.compile(r'\sJJ')),
+                          (u'PREP_START', re.compile(r'(^IN|IN$)')),
                           (u'4NGRAM', re.compile(r'([A-Z]{2}.? ?){4}')),
                           (u'5NGRAM', re.compile(r'([A-Z]{2}.? ?){5}')),
                           (u'PLURAL_START', re.compile(r'^NNS')),
-                          (u'PREP_END', re.compile(r'IN $')),
-                          (u'EVERYTHING', re.compile(r'.*'))])
+                          (u'VERB_STARTS', re.compile(r'^VB')),
+                          (u'NN_STARTS', re.compile(r'^NN'))])
 
 
 class Command(BaseCommand):
@@ -62,8 +64,13 @@ class Command(BaseCommand):
         self.Model = Model = Article.objects.filter(cluster_id=cluster_id)[0].CollocationModel
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
-            article_dict = populate_article_dict(Model.objects.values_list('ngram', flat=True),
-                                                 getattr(binding_scores, score_name), cutoff=0)
+            if os.path.exists('article_dict.pcl'):
+                print 'File found, loading...'
+                article_dict = pickle.load(open('article_dict.pcl'))
+            else:
+                article_dict = dict(populate_article_dict(Model.objects.values_list('ngram', flat=True),
+                                                 getattr(binding_scores, score_name), cutoff=0))
+                pickle.dump(article_dict, open('article_dict.pcl', 'wb'))
             # Calculate total valid for recall
             total_valid = self._total_valid(article_dict)
 
@@ -105,7 +112,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
             pos_tag_i += 1
         #collection.append((score_dict['score'], 'dblp' in ngram.source, 'dbpedia' in ngram.source,
         #                   pos_tag_dict[pos_tag], ngram.count, ngram.count * score_dict['score']))
-        collection.append((score_dict['score'], ngram.count * score_dict['score'],
+        collection.append((score_dict['score'], ngram.count,
                            'dblp' in ngram.source, 'dbpedia' in ngram.source,
                            pos_tag_dict[pos_tag]))
         collection_labels.append(score_dict['is_rel'])
