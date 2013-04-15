@@ -244,7 +244,7 @@ class NgramBindings(object):
         return score / denominator
 
 
-def populate_article_dict(queryset, score_func, cutoff=5, options=None):
+def populate_article_dict(queryset, score_func, cutoff=1, options=None):
     """
     :type queryset: QuerySet
     """
@@ -286,7 +286,7 @@ def populate_article_dict(queryset, score_func, cutoff=5, options=None):
             article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score * (100 * source),
                                                   'is_rel': is_rel, 'count': ngram.count,
                                                   'ddict1': ddict1, 'ddict2': ddict2,
-                                                  'source': collection_ngram.source}
+                                                  'source': collection_ngram.source, 'ngram': collection_ngram}
 
     return article_dict
 
