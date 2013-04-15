@@ -87,6 +87,58 @@ def linked_score(collection_ngram, ngram, text, article_dict, ngram_abs_count, c
     return score, nb.ddict1, nb.ddict2
 
 
+def linked_score1(collection_ngram, ngram, text, *args, **kwargs):
+    """
+    :type collection_ngram: Collocation
+    :type ngram: ArticleCollocation
+    :type text: unicode
+    """
+    ngram = ngram.ngram
+    scores = []
+    for i, word in enumerate(ngram.split()):
+
+        regex = []
+        for w in ngram.split():
+            if w != word:
+                regex.append(ur'{0}+'.format(NGRAM_REGEX))
+            else:
+                regex.append(word)
+        regex = u' '.join(regex)
+        distribution_dict = Counter(re.findall(regex, text, re.U))
+        N = sum(distribution_dict.values())
+        N_len = len(distribution_dict)
+        score = distribution_dict[ngram]
+        scores.append(score / N / N_len)
+    return sum(scores) / len(scores), {}, {}
+
+
+def linked_score2(collection_ngram, ngram, text, *args, **kwargs):
+    """
+    :type collection_ngram: Collocation
+    :type ngram: ArticleCollocation
+    :type text: unicode
+    """
+    ngram = ngram.ngram
+    scores = []
+    for i, word in enumerate(ngram.split()):
+
+        regex = []
+        for w in ngram.split():
+            if w == word:
+                regex.append(ur'{0}+'.format(NGRAM_REGEX))
+            else:
+                regex.append(w)
+        regex = u' '.join(regex)
+        distribution_dict = Counter(re.findall(regex, text, re.U))
+        N = sum(distribution_dict.values())
+        N_len = len(distribution_dict)
+        score = distribution_dict[ngram]
+        scores.append(score / N)
+    print ngram
+    print scores
+    return sum(scores) / len(scores), {}, {}
+
+
 class NgramBindings(object):
 
     def __init__(self, ngram, stemmed_text, corr_dict1=None, corr_dict2=None):
@@ -97,30 +149,6 @@ class NgramBindings(object):
         self.corr_dict2 = corr_dict2 or {}
         self.ddict1 = {}
         self.ddict2 = {}
-
-    def weight_both_ngram(self, split_ngram=None):
-        """AVERAGE BETWEEN TWO SCORES"""
-        ngram = self.ngram
-        score = 0
-        space_index = -1
-        denominator = 0
-        while True:
-            space_index = ngram.find(' ', space_index + 1)
-            if space_index == -1:
-                break
-            w1, w2 = ngram[:space_index], ngram[space_index + 1:]
-            distribution_dict = Counter(re.findall(ur'({1}+) {0}'.format(w2, NGRAM_REGEX, re.U), self.text))
-            N2 = sum(distribution_dict.values())
-            N2_len = len(distribution_dict)
-            score += distribution_dict[w1] / N2
-            distribution_dict = Counter(re.findall(ur'{0} ({1}+)'.format(w1, NGRAM_REGEX, re.U), self.text))
-            N1 = sum(distribution_dict.values())
-            N1_len = len(distribution_dict)
-            score += distribution_dict[w2] / N1
-            if (N1_len == 1 or N2_len == 1) and self.text.count(ngram) > 5:
-                score += 2
-            denominator += 2
-        return score / denominator
 
     def weight_both_ngram1(self, split_ngram=None):
         """AVERAGE BETWEEN TWO WEIGHTED SCORES"""
