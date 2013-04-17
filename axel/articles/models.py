@@ -81,11 +81,11 @@ class Article(models.Model):
                 if depth == 0:
                     return
                 if 'Category' in resource:
-                    query = u'SELECT ?broader WHERE {{{{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}' \
-                             u' UNION {{ ?broader skos:broader <http://dbpedia.org/resource/{0}> }}' \
-                             u' UNION {{ ?broader skos:related <http://dbpedia.org/resource/{0}> }}' \
-                             u' UNION {{ <http://dbpedia.org/resource/{0}> skos:related ?broader }}}}'.format(resource)
-                    attr = 'broader'
+                    query = u'SELECT ?broader, ?related, ?broaderof WHERE' \
+                            u' {{{{ <http://dbpedia.org/resource/{0}> skos:broader ?broader }}' \
+                            u' UNION {{ ?broaderof skos:broader <http://dbpedia.org/resource/{0}> }}' \
+                            u' UNION {{ ?related skos:related <http://dbpedia.org/resource/{0}> }}' \
+                            u' UNION {{ <http://dbpedia.org/resource/{0}> skos:related ?related }}}}'.format(resource)
                 else:
                     url_resource = resource.capitalize().replace(' ', '_')
                     url_resource1 = resource.title().replace(' ', '_')
@@ -114,25 +114,25 @@ class Article(models.Model):
                     query = u'SELECT ?subject WHERE {{{{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}' \
                             u' UNION {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}'.format(url_resource) + \
                             u' UNION {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}}}'.format(url_resource1)
-                    attr = 'subject'
 
                 results = []
                 sparql = SPARQLWrapper("http://dbpedia.org/sparql")
                 sparql.setReturnFormat(JSON)
                 sparql.setQuery(query)
                 results.extend(sparql.query().convert()['results']['bindings'])
-                if attr == 'subject' and not results:
+                if not results:
                     if resource == 'gradient boosting':
                         results = [{'subject': {'value': 'Category:Ensemble_learning'}},
                                    {'subject': {'value': 'Category:Decision_trees'}}]
                     elif resource == 'optimization problem':
                         results = [{'subject': {'value': 'Category:Computational_problems'}}]
                 for result in results:
-                    uri = result[attr]['value']
-                    parent_resource = uri.split('/')[-1]
-                    #print '  ' * (3 - depth), resource, '->', parent_resource
-                    graph.add_edge(resource, parent_resource)
-                    recurse_populate_graph(parent_resource, graph, depth-1)
+                    for rel_type, value in result.iteritems():
+                        uri = value['value']
+                        parent_resource = uri.split('/')[-1]
+                        #print '  ' * (3 - depth), resource, '->', parent_resource
+                        graph.add_edge(resource, parent_resource, type=rel_type)
+                        recurse_populate_graph(parent_resource, graph, depth-1)
 
             import networkx as nx
             from SPARQLWrapper import SPARQLWrapper, JSON
