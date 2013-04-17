@@ -101,6 +101,8 @@ class Article(models.Model):
                         url_resource = 'Dynamic_Bayesian_network'
                     elif resource == 'leaf node':
                         url_resource = 'Tree_(data_structure)'
+                    elif resource == 'scheduling algorithm':
+                        url_resource = 'Scheduling_(computing)'
                     elif resource == 'web archive':
                         url_resource = 'Web_archiving'
                     elif resource == 'semantic relatedness':
@@ -115,6 +117,10 @@ class Article(models.Model):
                         url_resource = 'Hidden_Markov_model'
                     elif resource == 'social network service':
                         url_resource = 'Social_networking_service'
+                    elif resource == 'human language':
+                        url_resource = 'Natural_language'
+                    elif resource == 'original research':
+                        url_resource = 'Research'
                     query = u'SELECT ?subject WHERE {{{{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}' \
                             u' UNION {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}'.format(url_resource) + \
                             u' UNION {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}}}'.format(url_resource1)
@@ -139,8 +145,21 @@ class Article(models.Model):
                         results = [{'subject': {'value': 'Category:Matrices'}},
                                    {'subject': {'value': 'Category:DNA'}},
                                    {'subject': {'value': 'Category:Bioinformatics'}},
-                                   {'subject': {'value': 'Category:Statistical distance measures'}},
-                                   {'subject': {'value': 'Category:Multivariate statistics'}}]
+                                   {'subject': {'value': 'Category:Statistical_distance_measures'}},
+                                   {'subject': {'value': 'Category:Multivariate_statistics'}}]
+                    elif resource == 'first one':
+                        results = [{'subject': {'value': 'Category:Babylon_5_races'}}]
+                    elif resource == 'mean absolute error':
+                        results = [{'subject': {'value': 'Category:Point_estimation_performance'}},
+                                   {'subject': {'value': 'Category:Statistical_terminology'}},
+                                   {'subject': {'value': 'Category:Time_series_analysis'}},
+                                   {'subject': {'value': 'Category:Statistical_deviation_and_dispersion'}}]
+                    elif resource == 'working set':
+                        results = [{'subject': {'value': 'Category:Virtual_memory'}},
+                                   {'subject': {'value': 'Category:Operating_system_technology'}}]
+                    elif resource == 'lossy compression':
+                        results = [{'subject': {'value': 'Category:Lossy_compression_algorithms'}},
+                                   {'subject': {'value': 'Category:Data_compression'}}]
                 for result in results:
                     for rel_type, value in result.iteritems():
                         uri = value['value']
