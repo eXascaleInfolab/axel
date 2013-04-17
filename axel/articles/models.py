@@ -89,6 +89,10 @@ class Article(models.Model):
                 else:
                     url_resource = resource.capitalize().replace(' ', '_')
                     url_resource1 = resource.title().replace(' ', '_')
+                    if resource == 'engineering science':
+                        url_resource = 'Engineering_physics'
+                    if resource == 'cumulative gain':
+                        url_resource = 'Discounted_cumulative_gain'
                     if resource == 'latent dirichlet allocation':
                         url_resource = 'Latent_Dirichlet_allocation'
                     elif resource == 'named entity recognition':
@@ -126,6 +130,17 @@ class Article(models.Model):
                                    {'subject': {'value': 'Category:Decision_trees'}}]
                     elif resource == 'optimization problem':
                         results = [{'subject': {'value': 'Category:Computational_problems'}}]
+                    elif resource == 'greedy algorithm':
+                        results = [{'subject': {'value': 'Category:Matroid_theory'}},
+                                   {'subject': {'value': 'Category:Optimization_algorithms_and_methods'}},
+                                   {'subject': {'value': 'Category:Combinatorial_algorithms'}},
+                                   {'subject': {'value': 'Category:Exchange_algorithms'}}]
+                    elif resource == 'similarity matrix':
+                        results = [{'subject': {'value': 'Category:Matrices'}},
+                                   {'subject': {'value': 'Category:DNA'}},
+                                   {'subject': {'value': 'Category:Bioinformatics'}},
+                                   {'subject': {'value': 'Category:Statistical distance measures'}},
+                                   {'subject': {'value': 'Category:Multivariate statistics'}}]
                 for result in results:
                     for rel_type, value in result.iteritems():
                         uri = value['value']
