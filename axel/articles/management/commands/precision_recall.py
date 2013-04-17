@@ -1,6 +1,6 @@
 """Match extracted collocation with DBPedia entities"""
 from __future__ import division
-from collections import Counter
+from collections import Counter, defaultdict
 from optparse import make_option
 from termcolor import colored
 
@@ -33,6 +33,44 @@ class Command(BaseCommand):
         for arg in args:
             eval_method = getattr(self, '_' + arg + '_calculation')
             eval_method(correct_objects, incorrect_objects)
+
+    def _dbpedia_relation_calculation(self, correct_objects, incorrect_objects):
+        print 'Generating DBPedia relations Histogram'
+        import networkx as nx
+
+        relation_distibution = {'valid': defaultdict(lambda: 0), 'invalid': defaultdict(lambda: 0),
+                                'multi': defaultdict(lambda: 0)}
+
+        dbpedia_ngrams = set()
+        for colloc in self.Model.objects.all():
+            if 'dbpedia' in colloc.source:
+                dbpedia_ngrams.add(colloc.ngram)
+
+        for obj in Article.objects.filter(cluster_id=self.cluster_id):
+            print obj
+            article = obj
+            """:type: Article"""
+            graph = article.dbpedia_graph
+            article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
+            results_all = list(dbpedia_ngrams.intersection(article_ngrams))
+            for i, ngram1 in enumerate(results_all):
+                for j in range(i+1, len(results_all)):
+                    ngram2 = results_all[j]
+                    if ngram1 in correct_objects and ngram2 in correct_objects:
+                        attr = 'valid'
+                    elif ngram1 in incorrect_objects and ngram2 in incorrect_objects:
+                        attr = 'invalid'
+                    else:
+                        attr = 'multi'
+                    try:
+                        path = nx.shortest_path(graph, ngram1, ngram2)
+                    except nx.exception.NetworkXNoPath:
+                        continue
+                    for k, node in enumerate(path[:-1]):
+                        rel_type = graph[node][path[k + 1]]['type']
+                        relation_distibution[attr][rel_type] += 1
+        print relation_distibution
+
 
     def _dbpedia_calculation(self, correct_objects, incorrect_objects):
         print 'Calculating Precision/Recall using dbpedia graph method'
