@@ -38,6 +38,7 @@ class Command(BaseCommand):
         print 'Generating DBPedia relations Histogram'
         import requests
         import json
+        import re
         template_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=links&plnamespace=0&pllimit=500&format=json'
 
         relation_distibution = {'valid': 0, 'invalid': 0, 'multi': 0}
@@ -51,8 +52,12 @@ class Command(BaseCommand):
 
         def _get_links(ngram):
             ngram_links = json.loads(requests.get(template_query.format(ngram)).text)
-            ngram_links = ngram_links['query']['pages'].values()[0]['links']
-            ngram_links = set([link['title'] for link in ngram_links])
+            try:
+                ngram_links = ngram_links['query']['pages'].values()[0]['links']
+            except KeyError:
+                return []
+            ngram_links = [re.sub(r' \(.+\)', '', link['title'].lower()) for link in ngram_links]
+            ngram_links = set([ngram for ngram in ngram_links if len(ngram.split()) > 1])
             return ngram_links
 
         for obj in Article.objects.filter(cluster_id=self.cluster_id):
@@ -61,7 +66,7 @@ class Command(BaseCommand):
             """:type: Article"""
 
             article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
-            article_ngrams = article_ngrams.intersection(dbpedia_ngrams)
+            article_ngrams = list(article_ngrams.intersection(dbpedia_ngrams))
 
             for i, ngram1 in enumerate(article_ngrams):
                 if ngram1 in links_dict:
@@ -71,7 +76,7 @@ class Command(BaseCommand):
                     links_dict[ngram1] = ngram1_links
                 for j in range(i+1, len(article_ngrams)):
                     ngram2 = article_ngrams[j]
-                    if ngram1 in links_dict:
+                    if ngram2 in links_dict:
                         ngram2_links = links_dict[ngram2]
                     else:
                         ngram2_links = _get_links(ngram2)
