@@ -36,40 +36,80 @@ class Command(BaseCommand):
 
     def _dbpedia_relation_calculation(self, correct_objects, incorrect_objects):
         print 'Generating DBPedia relations Histogram'
-        import networkx as nx
+        import requests
+        import json
+        template_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=links&plnamespace=0&pllimit=500&format=json'
 
-        relation_distibution = {'valid': defaultdict(lambda: 0), 'invalid': defaultdict(lambda: 0),
-                                'multi': defaultdict(lambda: 0)}
+        relation_distibution = {'valid': 0, 'invalid': 0, 'multi': 0}
 
         dbpedia_ngrams = set()
         for colloc in self.Model.objects.all():
             if 'dbpedia' in colloc.source:
                 dbpedia_ngrams.add(colloc.ngram)
 
+        links_dict = {}
+
+        def _get_links(ngram):
+            ngram_links = json.loads(requests.get(template_query.format(ngram)).text)
+            ngram_links = ngram_links['query']['pages'].values()[0]['links']
+            ngram_links = set([link['title'] for link in ngram_links])
+            return ngram_links
+
         for obj in Article.objects.filter(cluster_id=self.cluster_id):
             print obj
             article = obj
             """:type: Article"""
-            graph = article.dbpedia_graph
+
             article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
-            results_all = list(dbpedia_ngrams.intersection(article_ngrams))
-            for i, ngram1 in enumerate(results_all):
-                for j in range(i+1, len(results_all)):
-                    ngram2 = results_all[j]
+            article_ngrams = article_ngrams.intersection(dbpedia_ngrams)
+
+            for i, ngram1 in enumerate(article_ngrams):
+                if ngram1 in links_dict:
+                    ngram1_links = links_dict[ngram1]
+                else:
+                    ngram1_links = _get_links(ngram1)
+                    links_dict[ngram1] = ngram1_links
+                for j in range(i+1, len(article_ngrams)):
+                    ngram2 = article_ngrams[j]
+                    if ngram1 in links_dict:
+                        ngram2_links = links_dict[ngram2]
+                    else:
+                        ngram2_links = _get_links(ngram2)
+                        links_dict[ngram2] = ngram2_links
+
                     if ngram1 in correct_objects and ngram2 in correct_objects:
                         attr = 'valid'
                     elif ngram1 in incorrect_objects and ngram2 in incorrect_objects:
                         attr = 'invalid'
                     else:
                         attr = 'multi'
-                    try:
-                        path = nx.shortest_path(graph, ngram1, ngram2)
-                    except nx.exception.NetworkXNoPath:
-                        continue
-                    for k, node in enumerate(path[:-1]):
-                        rel_type = graph[node][path[k + 1]]['type']
-                        relation_distibution[attr][rel_type] += 1
+                    if ngram1 in ngram2_links or ngram2 in ngram1_links:
+                        relation_distibution[attr] += 1
         print relation_distibution
+
+
+    def _dbpedia_cc_size_calculation(self, correct_objects, incorrect_objects):
+        print 'Generating DBPedia Connected Component size Histogram'
+        import networkx as nx
+
+        cc_size_distibution = {'valid': defaultdict(lambda: 0), 'invalid': defaultdict(lambda: 0)}
+
+        for obj in Article.objects.filter(cluster_id=self.cluster_id):
+            print obj
+            article = obj
+            """:type: Article"""
+            graph = article.dbpedia_graph
+            results = []
+            for component in nx.connected_components(graph):
+                component = [node for node in component if 'Category' not in node]
+                results.append(component)
+                conn_valid = len([node for node in component if node in correct_objects])
+                conn_invalid = len([node for node in component if node in incorrect_objects])
+                if conn_valid > conn_invalid:
+                    cc_size_distibution['valid'][len(component)] += 1
+                else:
+                    cc_size_distibution['invalid'][len(component)] += 1
+        print cc_size_distibution
 
 
     def _dbpedia_calculation(self, correct_objects, incorrect_objects):
