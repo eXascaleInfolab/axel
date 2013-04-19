@@ -84,9 +84,9 @@ class Command(BaseCommand):
             if options['classify']:
                 scored_ngrams = []
                 print 'Reformatting the results...'
-                for values in article_dict.itervalues():
+                for article, values in article_dict.iteritems():
                     for scores in values.itervalues():
-                        scored_ngrams.append(scores)
+                        scored_ngrams.append((article, scores))
 
                 print 'Fitting classifier...'
                 fit_ml_algo(scored_ngrams, cv_num)
@@ -121,7 +121,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     pos_tag_dict = {}
     pos_tag_i = 0
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
-    for score_dict in scored_ngrams:
+    for article, score_dict in scored_ngrams:
         ngram = score_dict['ngram']
         pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
         if pos_tag not in pos_tag_dict:
