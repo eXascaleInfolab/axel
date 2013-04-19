@@ -283,7 +283,6 @@ def populate_article_dict(queryset, score_func, cutoff=1, options=None):
     irrel_ngram_set = set(queryset.filter(tags__is_relevant=False))
     for article in Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID):
         text = article.stemmed_text
-        dbp_graph = article.dbpedia_graph
         # create correspondence dict
         corr_dict1 = defaultdict(set)
         corr_dict2 = defaultdict(set)
@@ -306,15 +305,10 @@ def populate_article_dict(queryset, score_func, cutoff=1, options=None):
             collection_ngram = queryset.model.objects.get(ngram=ngram.ngram)
             score, ddict1, ddict2 = score_func(collection_ngram, ngram, text, article_dict[article],
                                                ngram_abs_count, corr_dict1, corr_dict2)
-            source = 1/100
-            if 'dblp' in collection_ngram.source:
-                source += 1
-            if ngram.ngram in dbp_graph:
-                source += 1
-            article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score * (100 * source),
+            article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
                                                   'is_rel': is_rel, 'count': ngram.count,
                                                   'ddict1': ddict1, 'ddict2': ddict2,
-                                                  'source': collection_ngram.source, 'ngram': collection_ngram}
+                                                  'ngram': collection_ngram}
 
     return article_dict
 
