@@ -2,9 +2,10 @@ from __future__ import division
 import os
 import re
 import pickle
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from sklearn import cross_validation
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
 import numpy as np
@@ -24,7 +25,12 @@ RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re
                           (u'5NGRAM', re.compile(r'([A-Z]{2}.? ?){5}')),
                           (u'PLURAL_START', re.compile(r'^NNS')),
                           (u'VERB_STARTS', re.compile(r'^VB')),
-                          (u'NN_STARTS', re.compile(r'^NN'))])
+                          (u'NN_STARTS', re.compile(r'^NN'))]) # JJ reduces classification accuracy by 5%
+
+POS_TAG_DIST = {'JJ_STARTS': 1.23495702006, 'VERB_STARTS': 0.322884012539, '4NGRAM': 0.196319018405,
+                'NUMBER': 0.0283505154639, 'ADVERB_CONTAINS': 0.04, 'NN_STARTS': 3.74587458746,
+                'STOP_WORD': 0.0, 'PLURAL_START': 0.226890756303, 'AJD_FORM': 0.0675675675676,
+                'PREP_START': 0.209302325581}
 
 
 class Command(BaseCommand):
@@ -89,8 +95,18 @@ class Command(BaseCommand):
                     print 'Cutoff {0}'.format(i)
                     article_dict = dict([(article, dict((ngram, value) for ngram, value in values.iteritems() if value['abs_count'] > i))
                                          for article, values in article_dict.iteritems()])
+                    # adjust score:
+                    for article, values in article_dict.iteritems():
+                        for ngram, value in values.iteritems():
+                            source = 1/100
+                            if 'dblp' in value['ngram'].source:
+                                source += 1
+                            if 'dbpedia' in value['ngram'].source:
+                                source += 1
+                            value['score'] = value['abs_count'] * POS_TAG_DIST[compress_pos_tag(value['ngram'].pos_tag, RULES_DICT)]*(100*source)
+
                     map_score = caclculate_MAP(article_dict)
-                    map_results.append((self._total_valid(article_dict)/total_valid, map_score))
+                    map_results.append((i, map_score))
                 print str(map_results).replace('(', '[').replace(')', ']')
 
 
@@ -110,15 +126,21 @@ def fit_ml_algo(scored_ngrams, cv_num):
         if pos_tag not in pos_tag_dict:
             pos_tag_dict[pos_tag] = pos_tag_i
             pos_tag_i += 1
-        #collection.append((score_dict['score'], 'dblp' in ngram.source, 'dbpedia' in ngram.source,
-        #                   pos_tag_dict[pos_tag], ngram.count, ngram.count * score_dict['score']))
+
         collection.append((score_dict['score'], ngram.count,
                            'dblp' in ngram.source, 'dbpedia' in ngram.source,
                            pos_tag_dict[pos_tag]))
         collection_labels.append(score_dict['is_rel'])
     #clf = svm.SVC(kernel='linear', probability=True)
-    clf = MultinomialNB()
-    #clf.fit(collection, collection_labels)
+    clf = DecisionTreeClassifier()
+    #for tag, values in pos_tag_counts.iteritems():
+    #    print tag, values[1]/values[0]
+    # clf.fit(collection, collection_labels)
+    #
+    # for i, vector in enumerate(collection):
+    #     value = clf.predict(vector)[0]
+    #     if value != collection_labels[i]:
+    #         print vector, value, collection_labels[i]
 
     # K-fold cross-validation
     scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels),
