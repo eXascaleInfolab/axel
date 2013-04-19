@@ -25,7 +25,8 @@ RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re
                           (u'5NGRAM', re.compile(r'([A-Z]{2}.? ?){5}')),
                           (u'PLURAL_START', re.compile(r'^NNS')),
                           (u'VERB_STARTS', re.compile(r'^VB')),
-                          (u'NN_STARTS', re.compile(r'^NN'))]) # JJ reduces classification accuracy by 5%
+                          (u'NN_STARTS', re.compile(r'^NN')),
+                          (u'JJ_STARTS', re.compile(r'^JJ'))]) # JJ reduces classification accuracy by 5%
 
 POS_TAG_DIST = {'JJ_STARTS': 1.23495702006, 'VERB_STARTS': 0.322884012539, '4NGRAM': 0.196319018405,
                 'NUMBER': 0.0283505154639, 'ADVERB_CONTAINS': 0.04, 'NN_STARTS': 3.74587458746,
@@ -132,7 +133,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
                            pos_tag_dict[pos_tag]))
         collection_labels.append(score_dict['is_rel'])
     #clf = svm.SVC(kernel='linear', probability=True)
-    clf = DecisionTreeClassifier()
+    clf = DecisionTreeClassifier(min_samples_leaf=100)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
     # clf.fit(collection, collection_labels)
