@@ -70,7 +70,11 @@ class Article(models.Model):
         Generate a dbpedia category TREE using networkx
         :rtype: list
         """
-        if settings.BUILD_DBPEDIA_GRAPHS:
+        import tempfile
+        from networkx.readwrite import json_graph
+        tmpdir = tempfile.gettempdir()
+        graph_object = tmpdir + '/' + str(self.id) + '.dbpedia.json'
+        if not os.path.exists(graph_object):
 
             stop_uris_set = open(settings.ABS_PATH('stop_uri.txt')).read().split()
             stop_uris_set = set([x.split('/')[-1] for x in stop_uris_set])
@@ -177,15 +181,21 @@ class Article(models.Model):
             for ngram in ngrams:
                 if 'dbpedia' in ngram.source:
                     recurse_populate_graph(ngram.ngram, graph, 2)
-            results = []
-            for component in nx.connected_components(graph):
-                component = [node for node in component if 'Category' not in node]
-                results.append(component)
 
-            # select 2 max clusters
-            results.sort(key=lambda x: len(x), reverse=True)
-            return [item for sublist in results[:1] for item in sublist]
-        return None
+            json_graph.dump(graph, open(graph_object, 'w'))
+            return graph
+            # BELOW CODE RETURNS 2 max connected components
+            # results = []
+            # for component in nx.connected_components(graph):
+            #     component = [node for node in component if 'Category' not in node]
+            #     results.append(component)
+            #
+            # # select 2 max clusters
+            # results.sort(key=lambda x: len(x), reverse=True)
+            # return [item for sublist in results[:1] for item in sublist]
+        else:
+            graph = json_graph.load(open(graph_object))
+            return graph
 
     def create_collocations(self):
         """Create collocation for the article"""
