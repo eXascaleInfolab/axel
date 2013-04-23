@@ -4,11 +4,11 @@ import re
 import pickle
 from collections import OrderedDict, defaultdict
 from sklearn import cross_validation
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
 import numpy as np
+import networkx as nx
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -120,15 +120,26 @@ def fit_ml_algo(scored_ngrams, cv_num):
     collection_labels = []
     pos_tag_dict = {}
     pos_tag_i = 0
+    component_size_dict = {}
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
+        temp_dict = defaultdict(lambda: 0)
+        if article.id not in component_size_dict:
+            dbpedia_graph = article.dbpedia_graph
+            for component in nx.connected_components(dbpedia_graph):
+                comp_len = len(component)
+                for node in component:
+                    if 'Category' not in node:
+                        temp_dict[node] = comp_len
+            component_size_dict[article.id] = temp_dict
         ngram = score_dict['ngram']
         pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
         if pos_tag not in pos_tag_dict:
             pos_tag_dict[pos_tag] = pos_tag_i
             pos_tag_i += 1
 
-        collection.append((score_dict['score'], ngram.count,
+        collection.append((ngram.count, score_dict['abs_count'],
+                           component_size_dict[article.id][ngram.ngram],
                            'dblp' in ngram.source, 'dbpedia' in ngram.source,
                            pos_tag_dict[pos_tag]))
         collection_labels.append(score_dict['is_rel'])
@@ -144,6 +155,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     #         print vector, value, collection_labels[i]
 
     # K-fold cross-validation
+    print 'Performing cross validation'
     scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels),
                                               cv=cv_num)
 
