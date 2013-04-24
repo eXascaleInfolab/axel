@@ -34,8 +34,8 @@ class Command(BaseCommand):
             eval_method = getattr(self, '_' + arg + '_calculation')
             eval_method(correct_objects, incorrect_objects)
 
-    def _dbpedia_relation_calculation(self, correct_objects, incorrect_objects):
-        print 'Generating DBPedia relations Histogram'
+    def _wikilinks_calculation(self, correct_objects, incorrect_objects):
+        print 'Generating wikilinks Histogram'
         import requests
         import json
         import re
