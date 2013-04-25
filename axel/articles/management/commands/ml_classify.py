@@ -138,10 +138,10 @@ def fit_ml_algo(scored_ngrams, cv_num):
             pos_tag_dict[pos_tag] = pos_tag_i
             pos_tag_i += 1
 
-        collection.append((ngram.count, score_dict['abs_count'],
+        wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
+        collection.append((ngram.count, score_dict['abs_count'], wiki_edges_count,
                            component_size_dict[article.id][ngram.ngram],
-                           'dblp' in ngram.source, 'dbpedia' in ngram.source,
-                           pos_tag_dict[pos_tag]))
+                           'dblp' in ngram.source, pos_tag_dict[pos_tag]))
         collection_labels.append(score_dict['is_rel'])
     #clf = svm.SVC(kernel='linear', probability=True)
     clf = DecisionTreeClassifier(min_samples_leaf=100)
