@@ -242,6 +242,7 @@ class Article(models.Model):
                         links_dict[ngram2] = ngram2_links
                     if ngram1 in ngram2_links or ngram2 in ngram1_links:
                         graph.add_edge(ngram1, ngram2)
+            json_graph.dump(graph, open(graph_object, 'w'))
             return graph
 
         else:
