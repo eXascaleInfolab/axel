@@ -197,6 +197,56 @@ class Article(models.Model):
             graph = json_graph.load(open(graph_object))
             return graph
 
+    @property
+    def wikilinks_graph(self):
+        """
+        Generate a wikilinks graph using networkx
+        :rtype: Graph
+        """
+        import tempfile
+        from networkx.readwrite import json_graph
+        import networkx as nx
+        import re
+        import requests
+
+        tmpdir = tempfile.gettempdir()
+        graph_object = tmpdir + '/' + str(self.id) + '.wikilinks.json'
+
+        def _get_links(ngram):
+            ngram_links = json.loads(requests.get(template_query.format(ngram)).text)
+            try:
+                ngram_links = ngram_links['query']['pages'].values()[0]['links']
+            except KeyError:
+                return []
+            ngram_links = [re.sub(r' \(.+\)', '', link['title'].lower()) for link in ngram_links]
+            ngram_links = set([ngram for ngram in ngram_links if len(ngram.split()) > 1])
+            return ngram_links
+
+        if not os.path.exists(graph_object):
+            graph = nx.Graph()
+            links_dict = {}
+            template_query = u'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=links&plnamespace=0&pllimit=500&format=json'
+            article_ngrams = list(self.articlecollocation_set.values_list('ngram', flat=True))
+            for i, ngram1 in enumerate(article_ngrams):
+                if ngram1 in links_dict:
+                    ngram1_links = links_dict[ngram1]
+                else:
+                    ngram1_links = _get_links(ngram1)
+                    links_dict[ngram1] = ngram1_links
+                for j in range(i+1, len(article_ngrams)):
+                    ngram2 = article_ngrams[j]
+                    if ngram2 in links_dict:
+                        ngram2_links = links_dict[ngram2]
+                    else:
+                        ngram2_links = _get_links(ngram2)
+                        links_dict[ngram2] = ngram2_links
+                    if ngram1 in ngram2_links or ngram2 in ngram1_links:
+                        graph.add_edge(ngram1, ngram2)
+
+        else:
+            graph = json_graph.load(open(graph_object))
+            return graph
+
     def create_collocations(self):
         """Create collocation for the article"""
         from axel.articles.utils import nlp
