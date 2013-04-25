@@ -36,11 +36,6 @@ class Command(BaseCommand):
 
     def _wikilinks_calculation(self, correct_objects, incorrect_objects):
         print 'Generating wikilinks Histogram'
-        import requests
-        import json
-        import re
-        template_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=links&plnamespace=0&pllimit=500&format=json'
-
         relation_distibution = {'valid': 0, 'invalid': 0, 'multi': 0}
 
         dbpedia_ngrams = set()
@@ -48,39 +43,26 @@ class Command(BaseCommand):
             if 'dbpedia' in colloc.source:
                 dbpedia_ngrams.add(colloc.ngram)
 
-        links_dict = {}
-
-        def _get_links(ngram):
-            ngram_links = json.loads(requests.get(template_query.format(ngram)).text)
-            try:
-                ngram_links = ngram_links['query']['pages'].values()[0]['links']
-            except KeyError:
-                return []
-            ngram_links = [re.sub(r' \(.+\)', '', link['title'].lower()) for link in ngram_links]
-            ngram_links = set([ngram for ngram in ngram_links if len(ngram.split()) > 1])
-            return ngram_links
-
         for obj in Article.objects.filter(cluster_id=self.cluster_id):
             print obj
             article = obj
             """:type: Article"""
 
-            article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
-            article_ngrams = list(article_ngrams.intersection(dbpedia_ngrams))
+            article_ngrams = list(article.articlecollocation_set.values_list('ngram', flat=True))
+            links_graph = article.wikilinks_graph
+            #article_ngrams = list(article_ngrams.intersection(dbpedia_ngrams))
 
             for i, ngram1 in enumerate(article_ngrams):
-                if ngram1 in links_dict:
-                    ngram1_links = links_dict[ngram1]
-                else:
-                    ngram1_links = _get_links(ngram1)
-                    links_dict[ngram1] = ngram1_links
+                try:
+                    ngram1_links = zip(*links_graph.edges(nbunch=[ngram1]))[1]
+                except IndexError:
+                    ngram1_links = set()
                 for j in range(i+1, len(article_ngrams)):
                     ngram2 = article_ngrams[j]
-                    if ngram2 in links_dict:
-                        ngram2_links = links_dict[ngram2]
-                    else:
-                        ngram2_links = _get_links(ngram2)
-                        links_dict[ngram2] = ngram2_links
+                    try:
+                        ngram2_links = zip(*links_graph.edges(nbunch=[ngram2]))[1]
+                    except IndexError:
+                        ngram2_links = set()
 
                     if ngram1 in correct_objects and ngram2 in correct_objects:
                         attr = 'valid'
@@ -89,6 +71,8 @@ class Command(BaseCommand):
                     else:
                         attr = 'multi'
                     if ngram1 in ngram2_links or ngram2 in ngram1_links:
+                        #if attr == 'multi' or attr == 'invalid':
+                        #    print ngram1, ngram2
                         relation_distibution[attr] += 1
         print relation_distibution
 
