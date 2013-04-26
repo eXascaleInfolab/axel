@@ -286,13 +286,18 @@ def populate_article_dict(queryset, score_func, cutoff=1, options=None):
         # create correspondence dict
         corr_dict1 = defaultdict(set)
         corr_dict2 = defaultdict(set)
-        for ngram in article.articlecollocation_set.values_list('ngram', flat=True):
+        all_ngrams = list(article.articlecollocation_set.values_list('ngram', flat=True))
+        for ngram in all_ngrams:
             if len(ngram.split()) == 2:
                 w1, w2 = ngram.split()
                 corr_dict1[w2].add(w1)
                 corr_dict2[w1].add(w2)
         for ngram in sorted(article.articlecollocation_set.all(),
                             key=lambda x: len(x.ngram.split())):
+            part_count = 0
+            for p_ngram in all_ngrams:
+                if p_ngram != ngram.ngram and ngram.ngram in p_ngram:
+                    part_count += 1
             if ngram.ngram in rel_ngram_set:
                 is_rel = True
             elif ngram.ngram in irrel_ngram_set:
@@ -308,7 +313,8 @@ def populate_article_dict(queryset, score_func, cutoff=1, options=None):
             article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
                                                   'is_rel': is_rel, 'count': ngram.count,
                                                   'ddict1': ddict1, 'ddict2': ddict2,
-                                                  'ngram': collection_ngram}
+                                                  'ngram': collection_ngram,
+                                                  'participation_count': part_count}
 
     return article_dict
 

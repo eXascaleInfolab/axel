@@ -119,9 +119,10 @@ def fit_ml_algo(scored_ngrams, cv_num):
     # 1. Calculate scores with float numbers for ngram bindings, as a dict
     collection = []
     collection_labels = []
-    pos_tag_dict = {}
-    pos_tag_i = 0
+    pos_tag_list = []
+    prev_pos_tag_list = []
     max_pos_tag = 10
+    prev_pos_tag_len = 37
     component_size_dict = {}
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
@@ -135,17 +136,27 @@ def fit_ml_algo(scored_ngrams, cv_num):
                         temp_dict[node] = comp_len
             component_size_dict[article.id] = temp_dict
         ngram = score_dict['ngram']
+
+        # POS TAG enumeration
         pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
-        if pos_tag not in pos_tag_dict:
-            pos_tag_dict[pos_tag] = pos_tag_i
-            pos_tag_i += 1
+        if pos_tag not in pos_tag_list:
+            pos_tag_list.append(pos_tag)
+
+        # PREV POS TAG enumeration
+        prev_pos_tag = max(ngram.pos_tag_prev.items(), key=lambda x: x[1])[0]
+        if prev_pos_tag not in prev_pos_tag_list:
+            prev_pos_tag_list.append(prev_pos_tag)
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
-        feature = [ngram.count, score_dict['abs_count'], wiki_edges_count,
+        feature = [ngram.count, score_dict['abs_count'], wiki_edges_count, score_dict['participation_count'],
                    component_size_dict[article.id][ngram.ngram], 'dblp' in ngram.source]
         # extend with part of speech
-        extended_feature = [1 if i == pos_tag_dict[pos_tag] else 0 for i in range(max_pos_tag)]
+        extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
+        feature.extend(extended_feature)
+
+        # extend with previous part of speech
+        extended_feature = [1 if i == prev_pos_tag_list.index(prev_pos_tag) else 0 for i in range(prev_pos_tag_len)]
         feature.extend(extended_feature)
 
         collection.append(feature)
