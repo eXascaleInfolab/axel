@@ -3,7 +3,8 @@ import os
 import re
 import pickle
 from collections import OrderedDict, defaultdict
-from sklearn import cross_validation
+from sklearn import cross_validation, svm
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
@@ -120,6 +121,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     collection_labels = []
     pos_tag_dict = {}
     pos_tag_i = 0
+    max_pos_tag = 10
     component_size_dict = {}
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
@@ -139,15 +141,28 @@ def fit_ml_algo(scored_ngrams, cv_num):
             pos_tag_i += 1
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
-        collection.append((ngram.count, score_dict['abs_count'], wiki_edges_count,
-                           component_size_dict[article.id][ngram.ngram],
-                           'dblp' in ngram.source, pos_tag_dict[pos_tag]))
+
+        feature = [ngram.count, score_dict['abs_count'], wiki_edges_count,
+                   component_size_dict[article.id][ngram.ngram], 'dblp' in ngram.source]
+        # extend with part of speech
+        extended_feature = [1 if i == pos_tag_dict[pos_tag] else 0 for i in range(max_pos_tag)]
+        feature.extend(extended_feature)
+
+        collection.append(feature)
         collection_labels.append(score_dict['is_rel'])
-    #clf = svm.SVC(kernel='linear', probability=True)
-    clf = DecisionTreeClassifier(min_samples_leaf=100)
+    #clf = svm.SVC(kernel='linear')
+    clf = DecisionTreeClassifier(min_samples_leaf=100, max_depth=5)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
     # clf.fit(collection, collection_labels)
+    # import StringIO, pydot
+    # from sklearn import tree
+    # dot_data = StringIO.StringIO()
+    # feature_names = ['col_count', 'abs_count', 'wikilinks', 'comp_size', 'dblp']
+    # feature_names.extend([str(i) for i in range(max_pos_tag)])
+    # tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
+    # graph = pydot.graph_from_dot_data(dot_data.getvalue())
+    # graph.write_pdf("decision.pdf")
     #
     # for i, vector in enumerate(collection):
     #     value = clf.predict(vector)[0]
