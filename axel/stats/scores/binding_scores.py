@@ -39,16 +39,17 @@ def abs_multi_count_score(collection_ngram, ngram, text, article_dict,
     :type ngram_abs_count: int
     """
     return ngram_abs_count * collection_ngram.count, {}, {}
+    
 
-
-def linked_multi_collection_score(collection_ngram, *args, **kwargs):
+def C_value_score(collection_ngram, ngram, *args, **kwargs):
     """
     :type collection_ngram: Collocation
     :type ngram: ArticleCollocation
-    :type ngram_abs_count: int
     """
-    score, dict1, dict2 = linked_score(collection_ngram, *args, **kwargs)
-    return score * collection_ngram.count, dict1, dict2
+    ngram_count = collection_ngram.count
+    bigger_ngrams = collection_ngram.model.objects.filter(ngram__contains=ngram.ngram).values_list('count', flat=True)
+    
+    return ngram_count - sum(bigger_ngrams)/len(bigger_ngrams), {}, {}
 
 
 def linked_score(collection_ngram, ngram, text, article_dict, ngram_abs_count, corr_dict1=None,
