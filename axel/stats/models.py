@@ -137,6 +137,16 @@ class Collocation(models.Model):
         return contexts
 
     @property
+    def wikipedia_text(self):
+        import requests
+        from django.utils.html import strip_tags
+        if not 'dbpedia' in self.source:
+            return ''
+        query = u'http://en.wikipedia.org/w/api.php?action=parse&page={0}&redirects&format=json'
+        result = json.loads(requests.get(query.format(self.ngram.replace(' ', '_'))).text)
+        return strip_tags(result['parse']['text'])
+
+    @property
     def count_score(self):
         """Proxy to the count, need for test collection app to pick up the _score"""
         return self.count
