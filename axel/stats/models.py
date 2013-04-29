@@ -144,7 +144,10 @@ class Collocation(models.Model):
             return ''
         query = u'http://en.wikipedia.org/w/api.php?action=parse&page={0}&redirects&format=json'
         result = json.loads(requests.get(query.format(self.ngram.replace(' ', '_'))).text)
-        return strip_tags(result['parse']['text'])
+        try:
+            return strip_tags(result['parse']['text'])
+        except KeyError:
+            return ''
 
     @property
     def count_score(self):
