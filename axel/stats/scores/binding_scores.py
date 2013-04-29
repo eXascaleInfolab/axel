@@ -39,7 +39,7 @@ def abs_multi_count_score(collection_ngram, ngram, text, article_dict,
     :type ngram_abs_count: int
     """
     return ngram_abs_count * collection_ngram.count, {}, {}
-    
+
 
 def C_value_score(collection_ngram, ngram, *args, **kwargs):
     """
@@ -47,8 +47,8 @@ def C_value_score(collection_ngram, ngram, *args, **kwargs):
     :type ngram: ArticleCollocation
     """
     ngram_count = collection_ngram.count
-    bigger_ngrams = collection_ngram.model.objects.filter(ngram__contains=ngram.ngram).values_list('count', flat=True)
-    
+    bigger_ngrams = collection_ngram.__class__.objects.filter(ngram__contains=ngram.ngram).values_list('count', flat=True)
+
     return ngram_count - sum(bigger_ngrams)/len(bigger_ngrams), {}, {}
 
 
