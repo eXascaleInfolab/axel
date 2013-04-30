@@ -177,10 +177,14 @@ def fit_ml_algo(scored_ngrams, cv_num):
     # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
     # pl.show()
 
+    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'abs_count']
+    feature_names.extend(pos_tag_list)
+
     from sklearn.ensemble import ExtraTreesClassifier
     clf = ExtraTreesClassifier(random_state=0, compute_importances=True)
     new_collection = clf.fit(collection, collection_labels).transform(collection)
-    print clf.feature_importances_
+    print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
+                 reverse=True)
     print new_collection.shape
     clf = DecisionTreeClassifier(max_depth=10, min_samples_leaf=50)
     #for tag, values in pos_tag_counts.iteritems():
@@ -189,8 +193,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     import StringIO, pydot
     from sklearn import tree
     dot_data = StringIO.StringIO()
-    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'abs_count']
-    feature_names.extend([str(i) for i in range(max_pos_tag)])
+    feature_names = ['dblp', 'comp_size', 'JJ_STARTS']
     tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
     graph = pydot.graph_from_dot_data(dot_data.getvalue())
     graph.write_pdf("decision.pdf")
