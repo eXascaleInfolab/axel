@@ -22,7 +22,6 @@ RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re
                           (u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP)')),
                           (u'AJD_FORM', re.compile(r'JJR|JJS')),
                           (u'PREP_START', re.compile(r'(^IN|IN$)')),
-                          (u'4NGRAM', re.compile(r'([A-Z]{2}.? ?){4}')),
                           (u'5NGRAM', re.compile(r'([A-Z]{2}.? ?){5}')),
                           (u'PLURAL_START', re.compile(r'^NNS')),
                           (u'VERB_STARTS', re.compile(r'^VB')),
@@ -120,9 +119,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     collection = []
     collection_labels = []
     pos_tag_list = []
-    prev_pos_tag_list = []
     max_pos_tag = 10
-    prev_pos_tag_len = 37
     component_size_dict = {}
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
@@ -141,23 +138,18 @@ def fit_ml_algo(scored_ngrams, cv_num):
         if pos_tag not in pos_tag_list:
             pos_tag_list.append(pos_tag)
 
-        # PREV POS TAG enumeration
-        prev_pos_tag = max(ngram.pos_tag_prev.items(), key=lambda x: x[1])[0]
-        if prev_pos_tag not in prev_pos_tag_list:
-            prev_pos_tag_list.append(prev_pos_tag)
-
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
         feature = [ngram.ngram.isupper(), 'dblp' in ngram.source,
                    component_size_dict[article.id][ngram.ngram], wiki_edges_count,
-                   score_dict['participation_count']] # score_dict['abs_count'], ngram.count
+                   score_dict['participation_count'],
+                   ngram._is_wiki,
+                   bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
+                   bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
+                   ]#ngram.count] # score_dict['abs_count'], ngram.count
         # extend with part of speech
         extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
         feature.extend(extended_feature)
-
-        # extend with previous part of speech
-        extended_feature = [1 if i == prev_pos_tag_list.index(prev_pos_tag) else 0 for i in range(prev_pos_tag_len)]
-        #feature.extend(extended_feature)
 
         collection.append(feature)
         collection_labels.append(score_dict['is_rel'])
@@ -177,7 +169,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
     # pl.show()
 
-    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'abs_count']
+    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki', 'pos_tag_prev', 'pos_tag_after']
     feature_names.extend(pos_tag_list)
 
     from sklearn.ensemble import ExtraTreesClassifier
@@ -186,14 +178,14 @@ def fit_ml_algo(scored_ngrams, cv_num):
     print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
                  reverse=True)
     print new_collection.shape
-    clf = DecisionTreeClassifier(max_depth=10, min_samples_leaf=50)
+    clf = DecisionTreeClassifier(max_depth=4, min_samples_leaf=50)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
-    clf.fit(new_collection, collection_labels)
+    clf.fit(collection, collection_labels)
     import StringIO, pydot
     from sklearn import tree
     dot_data = StringIO.StringIO()
-    feature_names = ['dblp', 'comp_size', 'JJ_STARTS']
+    #feature_names = ['dblp', 'comp_size', 'NN_STARTS', 'NN_STARTS', 'test']
     tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
     graph = pydot.graph_from_dot_data(dot_data.getvalue())
     graph.write_pdf("decision.pdf")
@@ -205,7 +197,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
 
     # K-fold cross-validation
     print 'Performing cross validation'
-    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+    scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels),
                                               cv=cv_num)
 
     print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
