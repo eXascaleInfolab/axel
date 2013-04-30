@@ -182,7 +182,17 @@ class Collocation(models.Model):
         :return: dict of Part-of-Speech tags with scores
         :rtype: dict
         """
-        return scores.pos_tag_prev(self.ngram, self.all_contexts(func=get_contexts_ngrams))
+        return scores.pos_tag_pos(self.ngram, self.all_contexts(func=get_contexts_ngrams))
+
+    @property
+    @db_cache('extra_fields')
+    def pos_tag_after(self):
+        """
+        Retrieves part-of-speech tag for the word before ngram
+        :return: dict of Part-of-Speech tags with scores
+        :rtype: dict
+        """
+        return scores.pos_tag_pos(self.ngram, self.all_contexts(func=get_contexts_ngrams), tag_pos=1)
 
     @property
     def often_word_local(self):

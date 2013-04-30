@@ -18,12 +18,12 @@ def compress_pos_tag(max_ngram, rules_dict):
     return max_ngram
 
 
-def pos_tag_prev(ngram, contexts):
+def pos_tag_pos(ngram, contexts, tag_pos=-1):
     """
-    Identifies POS tag for the ngram in each context and returns the MAX probable
+    Identifies POS tag for the ngram in each context and returns the corresponding dict with counts
     :type ngram: unicode
     :type contexts: list
-    :rtype: unicode
+    :rtype: dict
     """
     ngram_tags = defaultdict(lambda: 0)
     if not contexts:
@@ -37,7 +37,7 @@ def pos_tag_prev(ngram, contexts):
                 for word, tag in nltk.pos_tag(nltk.regexp_tokenize(context, Stemmer.TOKENIZE_REGEXP))]
         for j, wordtag in enumerate(tags):
             if wordtag[0] == words[0] and tuple(zip(*tags)[0][j:j+ngram_len]) == words:
-                tag = tags[j-1][1]
+                tag = tags[j+tag_pos][1]
                 break
         if tag:
             ngram_tags[tag] += 1
