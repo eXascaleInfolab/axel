@@ -38,7 +38,10 @@ def pos_tag_pos(ngram, contexts, tag_pos=-1):
                 for word, tag in nltk.pos_tag(nltk.regexp_tokenize(context, Stemmer.TOKENIZE_REGEXP))]
         for j, wordtag in enumerate(tags):
             if wordtag[0] == words[0] and tuple(zip(*tags)[0][j:j+ngram_len]) == words:
-                tag = tags[j + tag_pos][1]
+                try:
+                    tag = tags[j + tag_pos][1]
+                except IndexError:
+                    pass
                 break
         if tag:
             ngram_tags[tag] += 1
