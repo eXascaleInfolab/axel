@@ -130,10 +130,9 @@ def fit_ml_algo(scored_ngrams, cv_num):
         if article.id not in component_size_dict:
             dbpedia_graph = article.dbpedia_graph
             for component in nx.connected_components(dbpedia_graph):
-                comp_len = len(component)
+                comp_len = len([node for node in component if 'Category' not in node])
                 for node in component:
-                    if 'Category' not in node:
-                        temp_dict[node] = comp_len
+                    temp_dict[node] = comp_len
             component_size_dict[article.id] = temp_dict
         ngram = score_dict['ngram']
 
@@ -149,40 +148,61 @@ def fit_ml_algo(scored_ngrams, cv_num):
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
-        feature = [ngram.count, score_dict['abs_count'], wiki_edges_count, score_dict['participation_count'],
-                   component_size_dict[article.id][ngram.ngram], 'dblp' in ngram.source]
+        feature = [ngram.ngram.isupper(), 'dblp' in ngram.source,
+                   component_size_dict[article.id][ngram.ngram], wiki_edges_count,
+                   score_dict['participation_count']] # score_dict['abs_count'], ngram.count
         # extend with part of speech
         extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
         feature.extend(extended_feature)
 
         # extend with previous part of speech
         extended_feature = [1 if i == prev_pos_tag_list.index(prev_pos_tag) else 0 for i in range(prev_pos_tag_len)]
-        feature.extend(extended_feature)
+        #feature.extend(extended_feature)
 
         collection.append(feature)
         collection_labels.append(score_dict['is_rel'])
     #clf = svm.SVC(kernel='linear')
-    clf = DecisionTreeClassifier(min_samples_leaf=100, max_depth=5)
+
+    # from sklearn.feature_selection import RFECV
+    # from sklearn.metrics import zero_one_loss
+    # svc = svm.SVC(kernel="linear")
+    # rfecv = RFECV(estimator=svc, step=1, cv=2, loss_func=zero_one_loss)
+    # rfecv.fit(collection, collection_labels)
+    # print("Optimal number of features : %d" % rfecv.n_features_)
+    # print rfecv.ranking_
+    # import pylab as pl
+    # pl.figure()
+    # pl.xlabel("Number of features selected")
+    # pl.ylabel("Cross validation score (N of misclassifications)")
+    # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
+    # pl.show()
+
+    from sklearn.ensemble import ExtraTreesClassifier
+    clf = ExtraTreesClassifier(random_state=0, compute_importances=True)
+    new_collection = clf.fit(collection, collection_labels).transform(collection)
+    print clf.feature_importances_
+    print new_collection.shape
+    clf = DecisionTreeClassifier(max_depth=10, min_samples_leaf=50)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
-    # clf.fit(collection, collection_labels)
-    # import StringIO, pydot
-    # from sklearn import tree
-    # dot_data = StringIO.StringIO()
-    # feature_names = ['col_count', 'abs_count', 'wikilinks', 'comp_size', 'dblp']
-    # feature_names.extend([str(i) for i in range(max_pos_tag)])
-    # tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
-    # graph = pydot.graph_from_dot_data(dot_data.getvalue())
-    # graph.write_pdf("decision.pdf")
+    clf.fit(new_collection, collection_labels)
+    import StringIO, pydot
+    from sklearn import tree
+    dot_data = StringIO.StringIO()
+    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'abs_count']
+    feature_names.extend([str(i) for i in range(max_pos_tag)])
+    tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
+    graph = pydot.graph_from_dot_data(dot_data.getvalue())
+    graph.write_pdf("decision.pdf")
     #
     # for i, vector in enumerate(collection):
     #     value = clf.predict(vector)[0]
-    #     if value != collection_labels[i]:
-    #         print vector, value, collection_labels[i]
+    #     if value != collection_labels[i] and value:
+    #         print scored_ngrams[i][1]['ngram'], vector, value, collection_labels[i]
 
     # K-fold cross-validation
     print 'Performing cross validation'
-    scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels),
+    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                               cv=cv_num)
 
     print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
