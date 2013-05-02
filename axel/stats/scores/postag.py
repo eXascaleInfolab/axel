@@ -11,7 +11,7 @@ def compress_pos_tag(max_ngram, rules_dict):
     values should contain compiled regular expressions, for example {'PLURAL': ('.*NNS.*', ... )}
     :type rules_dict: dict
     """
-    for key, regex in rules_dict.iteritems():
+    for key, regex in rules_dict:
         if regex.search(max_ngram):
             return key
     return max_ngram

@@ -2,9 +2,8 @@ from __future__ import division
 import os
 import re
 import pickle
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
 from sklearn import cross_validation, svm
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
@@ -18,7 +17,7 @@ from axel.stats.scores.binding_scores import populate_article_dict, caclculate_M
 from axel.stats.scores import binding_scores
 
 
-RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re.compile('RB')),
+RULES_DICT = [(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re.compile('RB')),
                           (u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP)')),
                           (u'AJD_FORM', re.compile(r'JJR|JJS')),
                           (u'PREP_START', re.compile(r'(^IN|IN$)')),
@@ -26,7 +25,7 @@ RULES_DICT = OrderedDict([(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re
                           (u'PLURAL_START', re.compile(r'^NNS')),
                           (u'VERB_STARTS', re.compile(r'^VB')),
                           (u'NN_STARTS', re.compile(r'^NN')),
-                          (u'JJ_STARTS', re.compile(r'^JJ'))]) # JJ reduces classification accuracy by 5%
+                          (u'JJ_STARTS', re.compile(r'^JJ'))]
 
 POS_TAG_DIST = {'JJ_STARTS': 1.23495702006, 'VERB_STARTS': 0.322884012539, '4NGRAM': 0.196319018405,
                 'NUMBER': 0.0283505154639, 'ADVERB_CONTAINS': 0.04, 'NN_STARTS': 3.74587458746,
@@ -139,7 +138,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
         if pos_tag not in pos_tag_list:
             pos_tag_list.append(pos_tag)
 
-        end_pos_tag = ngram.pos_tag.split()[-1][:2]
+        end_pos_tag = str(ngram.pos_tag.split()[-1][:2])
         if end_pos_tag not in end_pos_tag_list:
             end_pos_tag_list.append(end_pos_tag)
 
@@ -149,6 +148,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
                    component_size_dict[article.id][ngram.ngram], wiki_edges_count,
                    score_dict['participation_count'],
                    ngram._is_wiki,
+                   'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
                    ]# score_dict['abs_count'], ngram.count
@@ -180,7 +180,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     # pl.show()
 
     feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki',
-                     'pos_tag_prev', 'pos_tag_after', 'pos_tag_end']
+                     'is_redirect', 'pos_tag_prev', 'pos_tag_after']
     feature_names.extend(pos_tag_list)
     feature_names.extend(end_pos_tag_list)
 

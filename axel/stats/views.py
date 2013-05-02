@@ -89,13 +89,14 @@ class NgramParticipationView(CollocationAttributeFilterView):
         rel_ngrams = set(self.queryset.filter(tags__is_relevant=True).values_list(
             'ngram', flat=True))
 
-        all_ngrams = list(self.queryset.values_list('ngram', flat=True))
+        all_ngrams = list(self.queryset)
         # Sort from longest to shortest, we use this in computing connections
-        all_ngrams.sort(key=lambda x: len(x) + len(x.split()), reverse=True)
+        all_ngrams.sort(key=lambda x: len(x.ngram) + len(x.ngram.split()), reverse=True)
 
-        ngrams_set = set(all_ngrams)
+        ngrams_set = set(self.queryset.values_list('ngram', flat=True))
         participation_dict = defaultdict(list)
-        for ngram in all_ngrams:
+        for ngram_obj in all_ngrams:
+            ngram = ngram_obj.ngram
             if ngram in participation_dict:
                 for ngram_1 in participation_dict[ngram]:
                     links.append((ngram, ngram_1))
@@ -136,7 +137,7 @@ class NgramPOSView(TemplateView):
         :returns: parsed rules dict to compress POS tags
         :rtype: dict
         """
-        rules_dict = OrderedDict()
+        rules_dict = []
         # add three extra forms to extend initial forms
         names = self.request.GET.getlist('groupname', [''])
         regexes = self.request.GET.getlist('regex', [''])
@@ -146,7 +147,7 @@ class NgramPOSView(TemplateView):
             regexes.append('')
         for name, regex in zip(names, regexes):
             if name and regex:
-                rules_dict[name] = re.compile(regex)
+                rules_dict.append((name, re.compile(regex)))
         self.regex_groups = zip(names, regexes)
         return rules_dict
 
