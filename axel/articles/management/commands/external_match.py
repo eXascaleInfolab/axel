@@ -25,10 +25,15 @@ DBPEDIA_REQ = u'http://lookup.dbpedia.org/api/search' \
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--model', '-m',
-            action='store',
-            dest='model',
-            help='model to match'),
-        )
+                    action='store',
+                    dest='model',
+                    help='model to match'),
+        make_option('--resource', '-r',
+                    action='store',
+                    dest='resource',
+                    choices=('dblp', 'dbpedia'),
+                    help='resource to use, either dblp or dbpedia'),
+    )
     help = 'Produce match between collocation and DBPeadia concepts'
 
     def handle(self, *args, **options):
@@ -36,6 +41,9 @@ class Command(BaseCommand):
         model = options['model']
         if not model:
             raise CommandError("need to specify model")
+        resource = options['resource']
+        if not resource:
+            raise CommandError("need to specify resource to use for matching")
 
         # get model
         app_label, model = options['model'].split('.')[1::2]
@@ -46,25 +54,26 @@ class Command(BaseCommand):
             'object_id', flat=True))
 
         for obj in print_progress(Model.objects.all()):
-            object = obj
+            model_obj = obj
             """:type: Collocation"""
-            if object.id in tagged_objects:
+            if model_obj.id in tagged_objects:
                 continue
 
-            # perform search using dbpedia
-#            r = requests.get(DBPEDIA_REQ.format(object.ngram))
-#            xml = etree.fromstring(r.text.replace('encoding="utf-8"',''))
-#            result = xml.find('.//{http://lookup.dbpedia.org/}Label')
-#            desc = xml.find('.//{http://lookup.dbpedia.org/}Description')
-#            if result is not None and desc is not None and result.text.lower() == object.ngram:
-#                results.append(object.ngram)
-
-            # perform keyword search from dblp
-            dblp_res = dblp_client.service.all_keywords_year(searchTerm=object.ngram,startYear=1999,
-                endYear=2012,limit=1)
-            if dblp_res and dblp_res[0].keyword.lower() == object.ngram:
-                print object.ngram
-                results.append(object.ngram)
+            if resource == 'dbpedia':
+                # perform search using dbpedia
+                r = requests.get(DBPEDIA_REQ.format(model_obj.ngram))
+                xml = etree.fromstring(r.text.replace('encoding="utf-8"', ''))
+                result = xml.find('.//{http://lookup.dbpedia.org/}Label')
+                desc = xml.find('.//{http://lookup.dbpedia.org/}Description')
+                if result is not None and desc is not None and result.text.lower() == model_obj.ngram:
+                    results.append(model_obj.ngram)
+            elif resource == 'dblp':
+                # perform keyword search from dblp
+                dblp_res = dblp_client.service.all_keywords_year(searchTerm=model_obj.ngram,
+                                                                 startYear=1999, endYear=2012,
+                                                                 limit=1)
+                if dblp_res and dblp_res[0].keyword.lower() == model_obj.ngram:
+                    results.append(model_obj.ngram)
 
 
         print results
