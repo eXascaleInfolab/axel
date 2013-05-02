@@ -119,6 +119,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     collection = []
     collection_labels = []
     pos_tag_list = []
+    end_pos_tag_list = []
     max_pos_tag = 10
     component_size_dict = {}
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
@@ -138,6 +139,10 @@ def fit_ml_algo(scored_ngrams, cv_num):
         if pos_tag not in pos_tag_list:
             pos_tag_list.append(pos_tag)
 
+        end_pos_tag = ngram.pos_tag.split()[-1][:2]
+        if end_pos_tag not in end_pos_tag_list:
+            end_pos_tag_list.append(end_pos_tag)
+
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
         feature = [ngram.ngram.isupper(), 'dblp' in ngram.source,
@@ -146,9 +151,14 @@ def fit_ml_algo(scored_ngrams, cv_num):
                    ngram._is_wiki,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
-                   ]#ngram.count] # score_dict['abs_count'], ngram.count
+                   ]# score_dict['abs_count'], ngram.count
+
         # extend with part of speech
         extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
+        feature.extend(extended_feature)
+
+        # extend with ENDING part of speech
+        extended_feature = [1 if i == end_pos_tag_list.index(end_pos_tag) else 0 for i in range(12)]
         feature.extend(extended_feature)
 
         collection.append(feature)
@@ -169,8 +179,10 @@ def fit_ml_algo(scored_ngrams, cv_num):
     # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
     # pl.show()
 
-    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki', 'pos_tag_prev', 'pos_tag_after']
+    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki',
+                     'pos_tag_prev', 'pos_tag_after', 'pos_tag_end']
     feature_names.extend(pos_tag_list)
+    feature_names.extend(end_pos_tag_list)
 
     from sklearn.ensemble import ExtraTreesClassifier
     clf = ExtraTreesClassifier(random_state=0, compute_importances=True)
@@ -178,14 +190,14 @@ def fit_ml_algo(scored_ngrams, cv_num):
     print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
                  reverse=True)
     print new_collection.shape
-    clf = DecisionTreeClassifier(max_depth=4, min_samples_leaf=50)
+    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=50)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
     clf.fit(collection, collection_labels)
     import StringIO, pydot
     from sklearn import tree
     dot_data = StringIO.StringIO()
-    #feature_names = ['dblp', 'comp_size', 'NN_STARTS', 'NN_STARTS', 'test']
+    #feature_names = ['dblp', 'comp_size', 'NN_STARTS', 'NN_STARTS', 'test', 'test', 'test']
     tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
     graph = pydot.graph_from_dot_data(dot_data.getvalue())
     graph.write_pdf("decision.pdf")
