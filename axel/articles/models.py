@@ -79,7 +79,6 @@ class Article(models.Model):
 
             stop_uris_set = open(settings.ABS_PATH('stop_uri.txt')).read().split()
             stop_uris_set = set([x.split('/')[-1] for x in stop_uris_set])
-            wiki_redirect_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&redirects&format=json'
 
             def recurse_populate_graph(resource, graph, depth):
                 if resource in stop_uris_set:
@@ -92,66 +91,37 @@ class Article(models.Model):
                             u' UNION {{ ?broaderof skos:broader <http://dbpedia.org/resource/{0}> }}' \
                             u' UNION {{ ?related skos:related <http://dbpedia.org/resource/{0}> }}' \
                             u' UNION {{ <http://dbpedia.org/resource/{0}> skos:related ?related }}}}'.format(resource)
-                else:
-                    url_resource = json.loads(requests.get(wiki_redirect_query.format(resource)).text)
-                    url_resource = url_resource['query']['pages'].values()[0]
-                    if 'missing' in url_resource:
-                        url_resource = json.loads(requests.get(wiki_redirect_query.format(resource.title())).text)
-                        url_resource = url_resource['query']['pages'].values()[0]
-                        if 'missing' in url_resource:
-                            print url_resource
-                        url_resource = url_resource['title']
-                    else:
-                        url_resource = url_resource['title']
-                    url_resource = url_resource.replace(' ', '_')
-                    if resource == 'cumulative gain':
-                        url_resource = 'Discounted_cumulative_gain'
-                    elif resource == 'world wide web conference':
-                        url_resource = 'International_World_Wide_Web_Conference'
-                    #wiki_cat_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=categories&cllimit=50&clshow=!hidden&format=json&redirects'
-                    #results = json.loads(requests.get(wiki_cat_query.format(resource)).text)['query']['pages'].values()[0]['categories']
-                    query = u'SELECT ?subject WHERE {{{{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}' \
-                            u' UNION {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}}}'.format(url_resource)
 
-                results = []
-                sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-                sparql.setReturnFormat(JSON)
-                sparql.setQuery(query)
-                results.extend(sparql.query().convert()['results']['bindings'])
-                if not results:
-                    if resource == 'gradient boosting':
-                        results = [{'subject': {'value': 'Category:Ensemble_learning'}},
-                                   {'subject': {'value': 'Category:Decision_trees'}}]
-                    elif resource == 'optimization problem':
-                        results = [{'subject': {'value': 'Category:Computational_problems'}}]
-                    elif resource == 'greedy algorithm':
-                        results = [{'subject': {'value': 'Category:Matroid_theory'}},
-                                   {'subject': {'value': 'Category:Optimization_algorithms_and_methods'}},
-                                   {'subject': {'value': 'Category:Combinatorial_algorithms'}},
-                                   {'subject': {'value': 'Category:Exchange_algorithms'}}]
-                    elif resource == 'similarity matrix':
-                        results = [{'subject': {'value': 'Category:Matrices'}},
-                                   {'subject': {'value': 'Category:DNA'}},
-                                   {'subject': {'value': 'Category:Bioinformatics'}},
-                                   {'subject': {'value': 'Category:Statistical_distance_measures'}},
-                                   {'subject': {'value': 'Category:Multivariate_statistics'}}]
-                    elif resource == 'first one':
-                        results = [{'subject': {'value': 'Category:Babylon_5_races'}}]
-                    elif resource == 'mean absolute error':
-                        results = [{'subject': {'value': 'Category:Point_estimation_performance'}},
-                                   {'subject': {'value': 'Category:Statistical_terminology'}},
-                                   {'subject': {'value': 'Category:Time_series_analysis'}},
-                                   {'subject': {'value': 'Category:Statistical_deviation_and_dispersion'}}]
-                    elif resource == 'working set':
-                        results = [{'subject': {'value': 'Category:Virtual_memory'}},
-                                   {'subject': {'value': 'Category:Operating_system_technology'}}]
-                    elif resource == 'lossy compression':
-                        results = [{'subject': {'value': 'Category:Lossy_compression_algorithms'}},
-                                   {'subject': {'value': 'Category:Data_compression'}}]
-                for result in results:
-                    for rel_type, value in result.iteritems():
-                        uri = value['value']
-                        parent_resource = uri.split('/')[-1]
+                    results = []
+                    sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+                    sparql.setReturnFormat(JSON)
+                    sparql.setQuery(query)
+                    results.extend(sparql.query().convert()['results']['bindings'])
+                    for result in results:
+                        for rel_type, value in result.iteritems():
+                            uri = value['value']
+                            parent_resource = uri.split('/')[-1]
+                            #print '  ' * (3 - depth), resource, '->', parent_resource
+                            graph.add_edge(resource, parent_resource, type=rel_type)
+                            recurse_populate_graph(parent_resource, graph, depth-1)
+                else:
+                    if resource == 'cumulative gain':
+                        resource = 'Discounted_cumulative_gain'
+                    elif resource == 'world wide web conference':
+                        resource = 'International_World_Wide_Web_Conference'
+                    wiki_cat_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=categories&cllimit=50&clshow=!hidden&format=json&redirects'
+                    results = json.loads(requests.get(wiki_cat_query.format(resource)).text)['query']['pages'].values()[0]
+                    if 'missing' in results:
+                        results = json.loads(requests.get(wiki_cat_query.format(resource.title())).text)['query']['pages'].values()[0]
+                        if 'missing' in results:
+                            print results, resource
+                            results = []
+                        else:
+                            results = [c['title'].replace(' ', '_') for c in results['categories']]
+                    else:
+                        results = [c['title'].replace(' ', '_') for c in results['categories']]
+                    rel_type = "subject"
+                    for parent_resource in results:
                         #print '  ' * (3 - depth), resource, '->', parent_resource
                         graph.add_edge(resource, parent_resource, type=rel_type)
                         recurse_populate_graph(parent_resource, graph, depth-1)
