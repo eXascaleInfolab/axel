@@ -71,6 +71,7 @@ class Article(models.Model):
         :rtype: list
         """
         import tempfile
+        import requests
         from networkx.readwrite import json_graph
         tmpdir = tempfile.gettempdir()
         graph_object = tmpdir + '/' + str(self.id) + '.dbpedia.json'
@@ -78,6 +79,7 @@ class Article(models.Model):
 
             stop_uris_set = open(settings.ABS_PATH('stop_uri.txt')).read().split()
             stop_uris_set = set([x.split('/')[-1] for x in stop_uris_set])
+            wiki_redirect_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&redirects&format=json'
 
             def recurse_populate_graph(resource, graph, depth):
                 if resource in stop_uris_set:
@@ -91,43 +93,25 @@ class Article(models.Model):
                             u' UNION {{ ?related skos:related <http://dbpedia.org/resource/{0}> }}' \
                             u' UNION {{ <http://dbpedia.org/resource/{0}> skos:related ?related }}}}'.format(resource)
                 else:
-                    url_resource = resource.capitalize().replace(' ', '_')
-                    url_resource1 = resource.title().replace(' ', '_')
-                    if resource == 'engineering science':
-                        url_resource = 'Engineering_physics'
+                    url_resource = json.loads(requests.get(wiki_redirect_query.format(resource)).text)
+                    url_resource = url_resource['query']['pages'].values()[0]
+                    if 'missing' in url_resource:
+                        url_resource = json.loads(requests.get(wiki_redirect_query.format(resource.title())).text)
+                        url_resource = url_resource['query']['pages'].values()[0]
+                        if 'missing' in url_resource:
+                            print url_resource
+                        url_resource = url_resource['title']
+                    else:
+                        url_resource = url_resource['title']
+                    url_resource = url_resource.replace(' ', '_')
                     if resource == 'cumulative gain':
                         url_resource = 'Discounted_cumulative_gain'
-                    if resource == 'latent dirichlet allocation':
-                        url_resource = 'Latent_Dirichlet_allocation'
-                    elif resource == 'named entity recognition':
-                        url_resource = 'Named-entity_recognition'
-                    elif resource == 'dynamic bayesian network':
-                        url_resource = 'Dynamic_Bayesian_network'
-                    elif resource == 'leaf node':
-                        url_resource = 'Tree_(data_structure)'
-                    elif resource == 'scheduling algorithm':
-                        url_resource = 'Scheduling_(computing)'
-                    elif resource == 'web archive':
-                        url_resource = 'Web_archiving'
-                    elif resource == 'semantic relatedness':
-                        url_resource = 'Semantic_similarity'
-                    elif resource == 'domain expert':
-                        url_resource = 'Subject-matter_expert'
-                    elif resource == 'naive bayes classifier':
-                        url_resource = 'Naive_Bayes_classifier'
                     elif resource == 'world wide web conference':
                         url_resource = 'International_World_Wide_Web_Conference'
-                    elif resource == 'hidden markov model':
-                        url_resource = 'Hidden_Markov_model'
-                    elif resource == 'social network service':
-                        url_resource = 'Social_networking_service'
-                    elif resource == 'human language':
-                        url_resource = 'Natural_language'
-                    elif resource == 'original research':
-                        url_resource = 'Research'
+                    #wiki_cat_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=categories&cllimit=50&clshow=!hidden&format=json&redirects'
+                    #results = json.loads(requests.get(wiki_cat_query.format(resource)).text)['query']['pages'].values()[0]['categories']
                     query = u'SELECT ?subject WHERE {{{{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}' \
-                            u' UNION {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}'.format(url_resource) + \
-                            u' UNION {{ <http://dbpedia.org/resource/{0}> dcterms:subject ?subject }}}}'.format(url_resource1)
+                            u' UNION {{ ?subject dcterms:subject <http://dbpedia.org/resource/{0}> }}}}'.format(url_resource)
 
                 results = []
                 sparql = SPARQLWrapper("http://dbpedia.org/sparql")
