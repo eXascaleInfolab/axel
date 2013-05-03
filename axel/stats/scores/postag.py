@@ -9,7 +9,7 @@ def compress_pos_tag(max_ngram, rules_dict):
     """compress POS ngram tag
     :param rules_dict: correspondence rules on how to compress tags,
     values should contain compiled regular expressions, for example {'PLURAL': ('.*NNS.*', ... )}
-    :type rules_dict: dict
+    :type rules_dict: list
     """
     for key, regex in rules_dict:
         if regex.search(max_ngram):
