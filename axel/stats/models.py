@@ -64,6 +64,7 @@ class Collocation(models.Model):
     _pos_tag = models.CharField(max_length=255, null=True, blank=True)
     _df_score = models.IntegerField(null=True, blank=True)
     _is_wiki = models.BooleanField(default=False)
+    _ms_ngram_score = models.DecimalField(default=0, decimal_places=6, max_digits=9)
 
     # required for TestCollection upload
     SYNC_FIELD = 'ngram'
