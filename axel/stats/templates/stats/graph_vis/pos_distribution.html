@@ -19,6 +19,18 @@
                     title: {
                         text: ''
                     },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'left',
+                        verticalAlign: 'top',
+                        x: 100,
+                        y: 100,
+                        borderWidth: 0,
+                        floating: true,
+                        itemStyle: {
+                            fontSize: '18px'
+                        }
+                    },
                     xAxis: {
                         categories: {{ categories|safe }},
                         labels: {
@@ -59,13 +71,13 @@
                             name: 'Irrelevant',
                             data: {{ incorrect_data }}
 
-                        },
+                        }/*,
                         {
                             name: 'Unjudged',
                             data: {{ unjudged_data }},
                             color: '#999'
 
-                        }
+                        }*/
                     ]
                 });
             });
@@ -76,7 +88,7 @@
 
 {% block content %}
     <h3>POS tags distribution</h3>
-    <div id="container" style="min-width: 800px; height: 800px; margin: 0 auto"></div>
+    <div id="container" style="width: 800px; height: 600px; margin: 0 auto"></div>
     <form class="form-inline" method="GET" action="">
         <fieldset>
             <legend>POS Tag grouping</legend>
