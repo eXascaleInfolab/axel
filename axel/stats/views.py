@@ -135,7 +135,7 @@ class NgramPOSView(TemplateView):
     def _parse_rules(self):
         """
         :returns: parsed rules dict to compress POS tags
-        :rtype: dict
+        :rtype: list
         """
         rules_dict = []
         # add three extra forms to extend initial forms
