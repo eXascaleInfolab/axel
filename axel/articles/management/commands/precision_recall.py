@@ -82,6 +82,7 @@ class Command(BaseCommand):
         import networkx as nx
 
         cc_size_distibution = {'valid': defaultdict(lambda: 0), 'invalid': defaultdict(lambda: 0)}
+        percentage_distribution = defaultdict(list)
 
         for obj in Article.objects.filter(cluster_id=self.cluster_id):
             print obj
@@ -94,11 +95,18 @@ class Command(BaseCommand):
                 results.append(component)
                 conn_valid = len([node for node in component if node in correct_objects])
                 conn_invalid = len([node for node in component if node in incorrect_objects])
+                if (conn_valid + conn_invalid) == 0:
+                    print component
+                    continue
+                percentage_distribution[len(component)].append(conn_valid/(conn_valid+conn_invalid))
                 if conn_valid > conn_invalid:
                     cc_size_distibution['valid'][len(component)] += 1
                 else:
                     cc_size_distibution['invalid'][len(component)] += 1
-        print cc_size_distibution
+        print 'VALID_PER', str([(item, sum(per_list)/len(per_list)) for item, per_list in percentage_distribution.items()]).replace('(','[').replace(')', ']')
+        print 'INVALID_PER', str([(item, 1-sum(per_list)/len(per_list)) for item, per_list in percentage_distribution.items()]).replace('(','[').replace(')', ']')
+        print 'VALID', str(cc_size_distibution['valid'].items()).replace('(','[').replace(')', ']')
+        print 'INVALID', str(cc_size_distibution['invalid'].items()).replace('(','[').replace(')', ']')
 
 
     def _dbpedia_calculation(self, correct_objects, incorrect_objects):
