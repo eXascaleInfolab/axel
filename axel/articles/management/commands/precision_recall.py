@@ -170,7 +170,7 @@ class Command(BaseCommand):
             article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
             results = article_ngrams.intersection(dblp_ngrams)
             true_pos = [x for x in results if x in correct_objects]
-            false_pos = [x for x in results if x not in incorrect_objects]
+            false_pos = [x for x in results if x in incorrect_objects]
             print obj.id
             print colored(true_pos, 'green')
             print colored(false_pos, 'red')
