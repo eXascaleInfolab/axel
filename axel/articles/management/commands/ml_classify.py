@@ -13,7 +13,7 @@ import networkx as nx
 from django.core.management.base import BaseCommand, CommandError
 
 from axel.articles.models import Article
-from axel.stats.scores.binding_scores import populate_article_dict, caclculate_MAP
+from axel.stats.scores.binding_scores import populate_article_dict
 from axel.stats.scores import binding_scores
 
 
@@ -22,15 +22,10 @@ RULES_DICT = [(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re.compile('RB
                           (u'AJD_FORM', re.compile(r'JJR|JJS')),
                           (u'PREP_START', re.compile(r'(^IN|IN$)')),
                           (u'5NGRAM', re.compile(r'([A-Z]{2}.? ?){5}')),
-                          (u'PLURAL_START', re.compile(r'^NNS')),
-                          (u'VERB_STARTS', re.compile(r'^VB')),
+                          (u'NNS_START', re.compile(r'^NNS')),
+                          (u'VB_STARTS', re.compile(r'^VB')),
                           (u'NN_STARTS', re.compile(r'^NN')),
                           (u'JJ_STARTS', re.compile(r'^JJ'))]
-
-POS_TAG_DIST = {'JJ_STARTS': 1.23495702006, 'VERB_STARTS': 0.322884012539, '4NGRAM': 0.196319018405,
-                'NUMBER': 0.0283505154639, 'ADVERB_CONTAINS': 0.04, 'NN_STARTS': 3.74587458746,
-                'STOP_WORD': 0.0, 'PLURAL_START': 0.226890756303, 'AJD_FORM': 0.0675675675676,
-                'PREP_START': 0.209302325581}
 
 
 class Command(BaseCommand):
@@ -80,34 +75,14 @@ class Command(BaseCommand):
             # Calculate total valid for recall
             total_valid = self._total_valid(article_dict)
 
-            if options['classify']:
-                scored_ngrams = []
-                print 'Reformatting the results...'
-                for article, values in article_dict.iteritems():
-                    for scores in values.itervalues():
-                        scored_ngrams.append((article, scores))
+            scored_ngrams = []
+            print 'Reformatting the results...'
+            for article, values in article_dict.iteritems():
+                for scores in values.itervalues():
+                    scored_ngrams.append((article, scores))
 
-                print 'Fitting classifier...'
-                fit_ml_algo(scored_ngrams, cv_num)
-            else:
-                map_results = []
-                for i in range(50):
-                    print 'Cutoff {0}'.format(i)
-                    article_dict = dict([(article, dict((ngram, value) for ngram, value in values.iteritems() if value['abs_count'] > i))
-                                         for article, values in article_dict.iteritems()])
-                    # adjust score:
-                    for article, values in article_dict.iteritems():
-                        for ngram, value in values.iteritems():
-                            source = 1/100
-                            if 'dblp' in value['ngram'].source:
-                                source += 1
-                            if 'dbpedia' in value['ngram'].source:
-                                source += 1
-                            value['score'] = value['abs_count'] * POS_TAG_DIST[compress_pos_tag(value['ngram'].pos_tag, RULES_DICT)]*(100*source)
-
-                    map_score = caclculate_MAP(article_dict)
-                    map_results.append((i, map_score))
-                print str(map_results).replace('(', '[').replace(')', ']')
+            print 'Fitting classifier...'
+            fit_ml_algo(scored_ngrams, cv_num)
 
 
 def fit_ml_algo(scored_ngrams, cv_num):
@@ -151,7 +126,8 @@ def fit_ml_algo(scored_ngrams, cv_num):
                    'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
-                   ]# score_dict['abs_count'], ngram.count
+                   #bool(ngram._ms_ngram_score),
+                   len(ngram.ngram.split())]# score_dict['abs_count'], ngram.count
 
         # extend with part of speech
         extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
@@ -180,7 +156,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
     # pl.show()
 
     feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki',
-                     'is_redirect', 'pos_tag_prev', 'pos_tag_after']
+                     'is_redirect', 'pos_tag_prev', 'pos_tag_after', 'word_len']
     feature_names.extend(pos_tag_list)
     feature_names.extend(end_pos_tag_list)
 
@@ -209,7 +185,7 @@ def fit_ml_algo(scored_ngrams, cv_num):
 
     # K-fold cross-validation
     print 'Performing cross validation'
-    scores = cross_validation.cross_val_score(clf, collection, np.array(collection_labels),
+    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                               cv=cv_num)
 
     print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
