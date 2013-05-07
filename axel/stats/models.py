@@ -261,6 +261,14 @@ class SWCollocations(Collocation):
 
     @property
     @db_cache('extra_fields')
+    def is_ontological(self):
+        """
+        True if concept appears in ontology, False otherwise.
+        """
+        return self.ngram in scores.ontology
+
+    @property
+    @db_cache('extra_fields')
     def partial_word_score(self):
         """
         Sum of the counts of words from a given collocation in the ontology

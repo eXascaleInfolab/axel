@@ -10,7 +10,7 @@ from axel.articles.utils.nlp import build_ngram_index
 _WORD_COUNTS_PREFIX = 'SW_word_counts'
 _NGRAM_COUNTS_PREFIX = 'SW_ngram_counts'
 _EXPIRE = sys.maxint
-
+ontology = set([x for y in pickle.load(open(settings.ABS_PATH('ontology.pcl'))).values() for x in y])
 
 def _get_global_word_counts():
     """
