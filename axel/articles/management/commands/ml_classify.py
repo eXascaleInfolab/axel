@@ -82,20 +82,27 @@ class Command(BaseCommand):
                     scored_ngrams.append((article, scores))
 
             print 'Fitting classifier...'
-            fit_ml_algo(scored_ngrams, cv_num)
+            fit_ml_algo(scored_ngrams, cv_num, self.Model)
 
 
-def fit_ml_algo(scored_ngrams, cv_num):
+def fit_ml_algo(scored_ngrams, cv_num, Model):
     """
     :param scored_ngrams: list of tuple of type (ngram, score) after initial scoring
     """
     # 1. Calculate scores with float numbers for ngram bindings, as a dict
     collection = []
     collection_labels = []
-    pos_tag_list = []
     end_pos_tag_list = []
-    max_pos_tag = 10
     component_size_dict = {}
+
+    # Calculate max pos tag count and build pos_tag_list
+    pos_tag_list = []
+    for ngram in Model.objects.all():
+        pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
+        if pos_tag not in pos_tag_list:
+            pos_tag_list.append(pos_tag)
+    max_pos_tag = len(pos_tag_list)
+
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
         temp_dict = defaultdict(lambda: 0)
@@ -110,8 +117,6 @@ def fit_ml_algo(scored_ngrams, cv_num):
 
         # POS TAG enumeration
         pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
-        if pos_tag not in pos_tag_list:
-            pos_tag_list.append(pos_tag)
 
         end_pos_tag = str(ngram.pos_tag.split()[-1][:2])
         if end_pos_tag not in end_pos_tag_list:
