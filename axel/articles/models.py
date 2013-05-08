@@ -109,7 +109,7 @@ class Article(models.Model):
                         resource = 'Discounted_cumulative_gain'
                     elif resource == 'world wide web conference':
                         resource = 'International_World_Wide_Web_Conference'
-                    wiki_cat_query = 'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=categories&cllimit=50&clshow=!hidden&format=json&redirects'
+                    wiki_cat_query = u'http://en.wikipedia.org/w/api.php?action=query&titles={0}&prop=categories&cllimit=50&clshow=!hidden&format=json&redirects'
                     results = json.loads(requests.get(wiki_cat_query.format(resource)).text)['query']['pages'].values()[0]
                     if 'missing' in results:
                         results = json.loads(requests.get(wiki_cat_query.format(resource.title())).text)['query']['pages'].values()[0]
@@ -133,7 +133,7 @@ class Article(models.Model):
             ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
             ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
-                if 'dbpedia' in ngram.source:
+                if 'dbpedia' in ngram.source or 'wiki_redirect' in ngram.source:
                     recurse_populate_graph(ngram.ngram, graph, 2)
 
             json_graph.dump(graph, open(graph_object, 'w'))
