@@ -23,6 +23,8 @@ def pos_tag_pos(ngram, contexts, tag_pos=-1):
     :type ngram: unicode
     :type contexts: list
     :rtype: dict
+    When ngram is right at the beginning of the sentence, this code actually takes the last (-1)
+    POS tag, which happens to be a punctuation mark.
     """
     ngram_tags = defaultdict(lambda: 0)
     if not contexts:
