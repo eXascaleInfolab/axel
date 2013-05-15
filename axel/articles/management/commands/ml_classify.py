@@ -139,10 +139,9 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
                    ngram._is_wiki,
                    ngram.is_ontological,
                    'dbpedia' in ngram.source,
-                   #'wiki_redirect' in ngram.source,
+                   'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
-                   #bool(ngram._ms_ngram_score),
                    len(ngram.ngram.split())]# score_dict['abs_count'], ngram.count
 
         # extend with compressed part of speech
