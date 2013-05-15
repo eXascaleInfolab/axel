@@ -18,15 +18,22 @@ from axel.stats.scores.binding_scores import populate_article_dict
 from axel.stats.scores import binding_scores
 
 
-RULES_DICT = [(u'NUMBER', re.compile('CD')), (u'ADVERB_CONTAINS', re.compile('RB')),
-                          (u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP)')),
-                          (u'AJD_FORM', re.compile(r'JJR|JJS')),
-                          (u'PREP_START', re.compile(r'(^IN|IN$)')),
-                          (u'5NGRAM', re.compile(r'([A-Z]{2}.? ?){5}')),
-                          (u'NNS_START', re.compile(r'^NNS')),
-                          (u'VB_STARTS', re.compile(r'^VB')),
-                          (u'NN_STARTS', re.compile(r'^NN')),
-                          (u'JJ_STARTS', re.compile(r'^JJ'))]
+RULES_DICT_START = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS)')),
+                    (u'NUMBER_STARTS', re.compile('CD')),
+                    (u'ADVERB_STARTS', re.compile('^RB')),
+                    (u'PREP_START', re.compile(r'(^IN)')),
+                    (u'NNS_START', re.compile(r'^NNS')),
+                    (u'VB_STARTS', re.compile(r'^VB')),
+                    (u'NN_STARTS', re.compile(r'^NN')),
+                    (u'JJ_STARTS', re.compile(r'^JJ'))]
+RULES_DICT_END = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS)')),
+                  (u'NUMBER_ENDS', re.compile('CD$')),
+                  (u'ADVERB_ENDS', re.compile('RB$')),
+                  (u'PREP_ENDS', re.compile(r'(IN$)')),
+                  (u'NNS_ENDS', re.compile(r'NNS$')),
+                  (u'VB_ENDS', re.compile(r'VB$')),
+                  (u'NN_ENDS', re.compile(r'NN$')),
+                  (u'JJ_ENDS', re.compile(r'JJ$'))]
 
 
 class Command(BaseCommand):
@@ -93,16 +100,20 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     # 1. Calculate scores with float numbers for ngram bindings, as a dict
     collection = []
     collection_labels = []
-    end_pos_tag_list = []
     component_size_dict = {}
 
     # Calculate max pos tag count and build pos_tag_list
-    pos_tag_list = []
+    start_pos_tag_list = []
+    end_pos_tag_list = []
     for ngram in Model.objects.all():
-        pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
-        if pos_tag not in pos_tag_list:
-            pos_tag_list.append(pos_tag)
-    max_pos_tag = len(pos_tag_list)
+        pos_tag_start = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_START))
+        pos_tag_end = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_END))
+        if pos_tag_start not in start_pos_tag_list:
+            start_pos_tag_list.append(pos_tag_start)
+        if pos_tag_end not in end_pos_tag_list:
+            end_pos_tag_list.append(pos_tag_end)
+    max_pos_tag_start = len(start_pos_tag_list)
+    max_pos_tag_end = len(end_pos_tag_list)
 
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
@@ -117,11 +128,8 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         ngram = score_dict['ngram']
 
         # POS TAG enumeration
-        pos_tag = str(compress_pos_tag(ngram.pos_tag, RULES_DICT))
-
-        end_pos_tag = str(ngram.pos_tag.split()[-1][:2])
-        if end_pos_tag not in end_pos_tag_list:
-            end_pos_tag_list.append(end_pos_tag)
+        pos_tag_start = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_START))
+        pos_tag_end = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_END))
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
@@ -130,18 +138,17 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
                    score_dict['participation_count'],
                    ngram._is_wiki,
                    ngram.is_ontological,
-                   'wiki_redirect' in ngram.source,
+                   'dbpedia' in ngram.source,
+                   #'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
                    #bool(ngram._ms_ngram_score),
                    len(ngram.ngram.split())]# score_dict['abs_count'], ngram.count
 
-        # extend with part of speech
-        extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
+        # extend with compressed part of speech
+        extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0 for i in range(max_pos_tag_start)]
         feature.extend(extended_feature)
-
-        # extend with ENDING part of speech
-        extended_feature = [1 if i == end_pos_tag_list.index(end_pos_tag) else 0 for i in range(12)]
+        extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0 for i in range(max_pos_tag_end)]
         feature.extend(extended_feature)
 
         collection.append(feature)
@@ -162,9 +169,9 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
     # pl.show()
 
-    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki',
-                     'is_redirect', 'pos_tag_prev', 'pos_tag_after', 'word_len']
-    feature_names.extend(pos_tag_list)
+    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki', 'ScienceWISE',
+                     'dbpedia', 'is_redirect', 'pos_tag_prev', 'pos_tag_after', 'word_len']
+    feature_names.extend(start_pos_tag_list)
     feature_names.extend(end_pos_tag_list)
 
     from sklearn.ensemble import ExtraTreesClassifier
@@ -198,6 +205,9 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                               cv=cv_num, score_func=recall_score)
     print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                              cv=cv_num, score_func=f1_score)
+    print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
     scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                               cv=cv_num)
     print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
