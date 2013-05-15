@@ -18,7 +18,7 @@ from axel.stats.scores.binding_scores import populate_article_dict
 from axel.stats.scores import binding_scores
 
 
-RULES_DICT_START = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS)')),
+RULES_DICT_START = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS|\:)')),
                     (u'NUMBER_STARTS', re.compile('CD')),
                     (u'ADVERB_STARTS', re.compile('^RB')),
                     (u'PREP_START', re.compile(r'(^IN)')),
@@ -26,14 +26,14 @@ RULES_DICT_START = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS)')),
                     (u'VB_STARTS', re.compile(r'^VB')),
                     (u'NN_STARTS', re.compile(r'^NN')),
                     (u'JJ_STARTS', re.compile(r'^JJ'))]
-RULES_DICT_END = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS)')),
+RULES_DICT_END = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS|\:)')),
                   (u'NUMBER_ENDS', re.compile('CD$')),
-                  (u'ADVERB_ENDS', re.compile('RB$')),
+                  (u'ADVERB_ENDS', re.compile('RB.?$')),
                   (u'PREP_ENDS', re.compile(r'(IN$)')),
                   (u'NNS_ENDS', re.compile(r'NNS$')),
-                  (u'VB_ENDS', re.compile(r'VB$')),
-                  (u'NN_ENDS', re.compile(r'NN$')),
-                  (u'JJ_ENDS', re.compile(r'JJ$'))]
+                  (u'VB_ENDS', re.compile(r'VB.?$')),
+                  (u'NN_ENDS', re.compile(r'NN(P|PS)?$')),
+                  (u'JJ_ENDS', re.compile(r'JJ.?$'))]
 
 
 class Command(BaseCommand):
@@ -157,8 +157,8 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         feature.extend(extended_feature)
 
         # Normal part of speech
-        extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
-        feature.extend(extended_feature)
+        #extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
+        #feature.extend(extended_feature)
 
         collection.append(feature)
         collection_labels.append(score_dict['is_rel'])
