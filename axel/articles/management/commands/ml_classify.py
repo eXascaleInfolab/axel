@@ -129,7 +129,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
                    component_size_dict[article.id][ngram.ngram], wiki_edges_count,
                    score_dict['participation_count'],
                    ngram._is_wiki,
-                   #ngram.is_ontological,
+                   ngram.is_ontological,
                    'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
@@ -198,4 +198,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                               cv=cv_num, score_func=recall_score)
     print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                              cv=cv_num)
+    print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
 
