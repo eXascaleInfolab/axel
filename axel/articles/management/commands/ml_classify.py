@@ -4,6 +4,7 @@ import re
 import pickle
 from collections import defaultdict
 from sklearn import cross_validation, svm
+from sklearn.metrics import *
 from sklearn.tree import DecisionTreeClassifier
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
@@ -128,6 +129,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
                    component_size_dict[article.id][ngram.ngram], wiki_edges_count,
                    score_dict['participation_count'],
                    ngram._is_wiki,
+                   #ngram.is_ontological,
                    'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
@@ -166,7 +168,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     feature_names.extend(end_pos_tag_list)
 
     from sklearn.ensemble import ExtraTreesClassifier
-    clf = ExtraTreesClassifier(random_state=0, compute_importances=True)
+    clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=100)
     new_collection = clf.fit(collection, collection_labels).transform(collection)
     print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
                  reverse=True)
@@ -191,6 +193,9 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     # K-fold cross-validation
     print 'Performing cross validation'
     scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                              cv=cv_num)
+                                              cv=cv_num, score_func=precision_score)
+    print("Precision: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                              cv=cv_num, score_func=recall_score)
+    print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
 
-    print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
