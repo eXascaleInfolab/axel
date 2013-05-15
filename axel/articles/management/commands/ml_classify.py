@@ -19,7 +19,7 @@ from axel.stats.scores import binding_scores
 
 
 RULES_DICT_START = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS|\:)')),
-                    (u'NUMBER_STARTS', re.compile('CD')),
+                    (u'NUMBER_STARTS', re.compile('^CD')),
                     (u'ADVERB_STARTS', re.compile('^RB')),
                     (u'PREP_START', re.compile(r'(^IN)')),
                     (u'NNS_START', re.compile(r'^NNS')),
@@ -124,7 +124,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     for article, score_dict in scored_ngrams:
         temp_dict = defaultdict(lambda: 0)
         if article.id not in component_size_dict:
-            dbpedia_graph = article.dbpedia_graph(redirects=False)
+            dbpedia_graph = article.dbpedia_graph(redirects=True)
             for component in nx.connected_components(dbpedia_graph):
                 comp_len = len([node for node in component if 'Category' not in node])
                 for node in component:
@@ -184,12 +184,12 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     feature_names.extend(end_pos_tag_list)
 
     from sklearn.ensemble import ExtraTreesClassifier
-    clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=100)
+    clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=20)
     new_collection = clf.fit(collection, collection_labels).transform(collection)
     print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
                  reverse=True)
     print new_collection.shape
-    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=50)
+    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
     clf.fit(collection, collection_labels)
@@ -216,8 +216,5 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
     scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                               cv=cv_num, score_func=f1_score)
-    print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                              cv=cv_num)
     print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
 
