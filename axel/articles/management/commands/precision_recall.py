@@ -88,7 +88,7 @@ class Command(BaseCommand):
             print obj
             article = obj
             """:type: Article"""
-            graph = article.dbpedia_graph
+            graph = article.dbpedia_graph()
             results = []
             for component in nx.connected_components(graph):
                 component = [node for node in component if 'Category' not in node]
@@ -123,7 +123,7 @@ class Command(BaseCommand):
         for obj in Article.objects.filter(cluster_id=self.cluster_id):
             article = obj
             """:type: Article"""
-            results = article.dbpedia_graph
+            results = article.dbpedia_graph()
             article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
             results_all = article_ngrams.intersection(dbpedia_ngrams)
 
