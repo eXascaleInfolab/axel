@@ -190,7 +190,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=20)
     new_collection = clf.fit(collection, collection_labels).transform(collection)
     print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
-                 reverse=True)
+                 reverse=True)[:new_collection.shape[1]]
     print new_collection.shape
     clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
     #for tag, values in pos_tag_counts.iteritems():
