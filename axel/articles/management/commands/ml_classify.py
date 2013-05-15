@@ -108,7 +108,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     for article, score_dict in scored_ngrams:
         temp_dict = defaultdict(lambda: 0)
         if article.id not in component_size_dict:
-            dbpedia_graph = article.dbpedia_graph
+            dbpedia_graph = article.dbpedia_graph(redirects=False)
             for component in nx.connected_components(dbpedia_graph):
                 comp_len = len([node for node in component if 'Category' not in node])
                 for node in component:

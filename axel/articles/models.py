@@ -64,8 +64,7 @@ class Article(models.Model):
         from axel.stats.models import CLUSTERS_DICT
         return CLUSTERS_DICT[self.cluster_id]
 
-    @property
-    def dbpedia_graph(self):
+    def dbpedia_graph(self, redirects=True):
         """
         Generate a dbpedia category TREE using networkx
         :rtype: list
@@ -74,7 +73,10 @@ class Article(models.Model):
         import requests
         from networkx.readwrite import json_graph
         tmpdir = tempfile.gettempdir()
-        graph_object = tmpdir + '/' + str(self.id) + '.dbpedia.json'
+        if redirects:
+            graph_object = tmpdir + '/' + str(self.id) + 'redirects.' + '.dbpedia.json'
+        else:
+            graph_object = tmpdir + '/' + str(self.id) + '.dbpedia.json'
         if not os.path.exists(graph_object):
 
             stop_uris_set = open(settings.ABS_PATH('stop_uri.txt')).read().split()
@@ -133,7 +135,7 @@ class Article(models.Model):
             ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
             ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
-                if 'dbpedia' in ngram.source or 'wiki_redirect' in ngram.source:
+                if 'dbpedia' in ngram.source or (redirects and 'wiki_redirect' in ngram.source):
                     recurse_populate_graph(ngram.ngram, graph, 2)
 
             json_graph.dump(graph, open(graph_object, 'w'))
