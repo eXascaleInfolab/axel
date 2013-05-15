@@ -105,15 +105,20 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     # Calculate max pos tag count and build pos_tag_list
     start_pos_tag_list = []
     end_pos_tag_list = []
+    pos_tag_list = []
     for ngram in Model.objects.all():
         pos_tag_start = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_START))
         pos_tag_end = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_END))
+        pos_tag = str(ngram.pos_tag)
         if pos_tag_start not in start_pos_tag_list:
             start_pos_tag_list.append(pos_tag_start)
         if pos_tag_end not in end_pos_tag_list:
             end_pos_tag_list.append(pos_tag_end)
+        if pos_tag not in pos_tag_list:
+            pos_tag_list.append(pos_tag)
     max_pos_tag_start = len(start_pos_tag_list)
     max_pos_tag_end = len(end_pos_tag_list)
+    max_pos_tag = len(pos_tag_list)
 
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
@@ -130,6 +135,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         # POS TAG enumeration
         pos_tag_start = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_START))
         pos_tag_end = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_END))
+        pos_tag = str(ngram.pos_tag)
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
@@ -139,7 +145,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
                    ngram._is_wiki,
                    ngram.is_ontological,
                    'dbpedia' in ngram.source,
-                   'wiki_redirect' in ngram.source,
+                   #'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
                    len(ngram.ngram.split())]# score_dict['abs_count'], ngram.count
@@ -148,6 +154,10 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0 for i in range(max_pos_tag_start)]
         feature.extend(extended_feature)
         extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0 for i in range(max_pos_tag_end)]
+        feature.extend(extended_feature)
+
+        # Normal part of speech
+        extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
         feature.extend(extended_feature)
 
         collection.append(feature)
