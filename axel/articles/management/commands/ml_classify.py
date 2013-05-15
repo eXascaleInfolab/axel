@@ -124,7 +124,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     for article, score_dict in scored_ngrams:
         temp_dict = defaultdict(lambda: 0)
         if article.id not in component_size_dict:
-            dbpedia_graph = article.dbpedia_graph(redirects=True)
+            dbpedia_graph = article.dbpedia_graph(redirects=False)
             for component in nx.connected_components(dbpedia_graph):
                 comp_len = len([node for node in component if 'Category' not in node])
                 for node in component:
@@ -140,15 +140,17 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
         feature = [ngram.ngram.isupper(), 'dblp' in ngram.source,
-                   component_size_dict[article.id][ngram.ngram], wiki_edges_count,
+                   component_size_dict[article.id][ngram.ngram],
+                   wiki_edges_count,
                    score_dict['participation_count'],
                    ngram._is_wiki,
                    ngram.is_ontological,
                    'dbpedia' in ngram.source,
-                   #'wiki_redirect' in ngram.source,
+                   'wiki_redirect' in ngram.source,
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
                    bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
-                   len(ngram.ngram.split())]# score_dict['abs_count'], ngram.count
+                   len(ngram.ngram.split())
+        ]
 
         # extend with compressed part of speech
         extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0 for i in range(max_pos_tag_start)]
@@ -157,8 +159,8 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         feature.extend(extended_feature)
 
         # Normal part of speech
-        #extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
-        #feature.extend(extended_feature)
+        # extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
+        # feature.extend(extended_feature)
 
         collection.append(feature)
         collection_labels.append(score_dict['is_rel'])
@@ -182,6 +184,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
                      'dbpedia', 'is_redirect', 'pos_tag_prev', 'pos_tag_after', 'word_len']
     feature_names.extend(start_pos_tag_list)
     feature_names.extend(end_pos_tag_list)
+    # feature_names.extend(pos_tag_list)
 
     from sklearn.ensemble import ExtraTreesClassifier
     clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=20)
