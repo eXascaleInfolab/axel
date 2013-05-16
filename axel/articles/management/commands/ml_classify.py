@@ -119,6 +119,8 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     max_pos_tag_start = len(start_pos_tag_list)
     max_pos_tag_end = len(end_pos_tag_list)
     max_pos_tag = len(pos_tag_list)
+    # from pybrain.datasets import ClassificationDataSet
+    # DS = ClassificationDataSet(29, nb_classes=2, class_labels=['Invalid', 'Valid'])
 
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
@@ -166,7 +168,16 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
 
         collection.append(feature)
         collection_labels.append(score_dict['is_rel'])
+        # DS.appendLinked(feature, [int(score_dict['is_rel'])])
     #clf = svm.SVC(kernel='linear')
+    # print DS.calculateStatistics()
+    # from pybrain.supervised.trainers import BackpropTrainer
+    # from pybrain import TanhLayer
+    # from pybrain.tools.shortcuts import buildNetwork
+    # net = buildNetwork(29, 5, 1, bias=True, hiddenclass=TanhLayer)
+    # trainer = BackpropTrainer(net, DS)
+    # trainer.trainEpochs(5)
+    # print trainer.testOnData(verbose=True)
 
     # from sklearn.feature_selection import RFECV
     # from sklearn.metrics import zero_one_loss
