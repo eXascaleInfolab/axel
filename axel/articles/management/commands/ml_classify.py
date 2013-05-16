@@ -124,7 +124,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     for article, score_dict in scored_ngrams:
         temp_dict = defaultdict(lambda: 0)
         if article.id not in component_size_dict:
-            dbpedia_graph = article.dbpedia_graph(redirects=False)
+            dbpedia_graph = article.dbpedia_graph(redirects=True)
             for component in nx.connected_components(dbpedia_graph):
                 comp_len = len([node for node in component if 'Category' not in node])
                 for node in component:
@@ -139,7 +139,9 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
-        feature = [ngram.ngram.isupper(), 'dblp' in ngram.source,
+        feature = [
+                   ngram.ngram.isupper(),
+                   'dblp' in ngram.source,
                    component_size_dict[article.id][ngram.ngram],
                    wiki_edges_count,
                    score_dict['participation_count'],
@@ -180,8 +182,20 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
     # pl.show()
 
-    feature_names = ['is_upper', 'dblp', 'comp_size', 'wikilinks', 'part_count', 'is_wiki', 'ScienceWISE',
-                     'dbpedia', 'is_redirect', 'pos_tag_prev', 'pos_tag_after', 'word_len']
+    feature_names = [
+        'is_upper',
+        'dblp',
+        'comp_size',
+        'wikilinks',
+        'part_count',
+        'is_wiki',
+        'ScienceWISE',
+        'dbpedia',
+        'is_redirect',
+        'pos_tag_prev',
+        'pos_tag_after',
+        'word_len'
+    ]
     feature_names.extend(start_pos_tag_list)
     feature_names.extend(end_pos_tag_list)
     # feature_names.extend(pos_tag_list)
@@ -192,7 +206,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
                  reverse=True)[:new_collection.shape[1]]
     print new_collection.shape
-    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
+    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=50)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
     clf.fit(collection, collection_labels)
