@@ -24,11 +24,11 @@
                         align: 'left',
                         verticalAlign: 'top',
                         x: 100,
-                        y: 100,
+                        y: 90,
                         borderWidth: 0,
                         floating: true,
                         itemStyle: {
-                            fontSize: '18px'
+                            fontSize: '24px'
                         }
                     },
                     xAxis: {
@@ -63,12 +63,14 @@
                     },
                     series: [
                         {
-                            name: 'Relevant',
+                            name: 'valid',
+                            color: "#8BBC21",
                             data: {{ correct_data }}
 
                         },
                         {
-                            name: 'Irrelevant',
+                            name: 'invalid',
+                            color: "#C42525",
                             data: {{ incorrect_data }}
 
                         }/*,
