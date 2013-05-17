@@ -217,10 +217,10 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
                  reverse=True)[:new_collection.shape[1]]
     print new_collection.shape
-    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=50)
+    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
     #for tag, values in pos_tag_counts.iteritems():
     #    print tag, values[1]/values[0]
-    clf.fit(collection, collection_labels)
+    clf.fit(new_collection, collection_labels)
     import StringIO, pydot
     from sklearn import tree
     dot_data = StringIO.StringIO()
@@ -244,5 +244,8 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
     scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                               cv=cv_num, score_func=f1_score)
+    print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                              cv=cv_num)
     print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
 
