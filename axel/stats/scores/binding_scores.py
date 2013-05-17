@@ -3,6 +3,7 @@ from collections import Counter, defaultdict, OrderedDict
 import re
 from axel.articles.models import Article
 from axel.articles.utils.nlp import build_ngram_index
+import nltk
 
 NGRAM_REGEX = ur'(?:\w|-)'
 
@@ -311,10 +312,13 @@ def populate_article_dict(queryset, score_func, cutoff=1, options=None):
             collection_ngram = queryset.model.objects.get(ngram=ngram.ngram)
             score, ddict1, ddict2 = score_func(collection_ngram, ngram, text, article_dict[article],
                                                ngram_abs_count, corr_dict1, corr_dict2)
+            nl_ngrams = [' '.join(n) for n in nltk.ngrams(ngram.ngram.split(), 2)]
+            support_len = len(set(all_ngrams).intersection(nl_ngrams))
             article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
                                                   'is_rel': is_rel, 'count': ngram.count,
                                                   'ddict1': ddict1, 'ddict2': ddict2,
                                                   'ngram': collection_ngram,
+                                                  'len': support_len,
                                                   'participation_count': part_count}
 
     return article_dict
