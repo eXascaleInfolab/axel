@@ -218,7 +218,7 @@ def _split_sentences(text):
 
 
 @print_timing
-def build_ngram_index(text):
+def build_ngram_index(text, max_split=5):
     """
     Build n-grams from text up to max len in the db, *with actual counts*
     :type text: unicode
@@ -230,9 +230,7 @@ def build_ngram_index(text):
 
     # Second step - ngram generation
     all_ngrams = defaultdict(lambda: 0)
-    # TODO: add real value from db
-    max_db_size = 5
-    for n in range(2, max_db_size + 1):
+    for n in range(2, max_split + 1):
         for sentence in text:
             ngrams = nltk.ngrams(sentence.split(), n)
             for ngram in ngrams:
