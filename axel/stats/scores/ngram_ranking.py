@@ -8,8 +8,8 @@ import math
 import nltk
 
 from axel.articles.models import Article
-from axel.articles.utils import nlp
-from axel.articles.utils.nlp import _update_ngram_counts, _generate_possible_ngrams, _PUNKT_RE
+from axel.libs import nlp
+from axel.libs.nlp import _update_ngram_counts, _generate_possible_ngrams, _PUNKT_RE
 from axel.libs.utils import print_progress
 
 bigram_measures = nltk.collocations.BigramAssocMeasures

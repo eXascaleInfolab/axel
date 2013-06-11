@@ -142,7 +142,7 @@ class Collocation(models.Model):
     def wikipedia_text(self):
         import requests
         from django.utils.html import strip_tags
-        from axel.articles.utils import nlp
+        from axel.libs import nlp
         if not 'dbpedia' in self.source:
             return ''
         query = u'http://en.wikipedia.org/w/api.php?action=parse&page={0}&redirects&format=json'

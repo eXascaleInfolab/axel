@@ -207,7 +207,7 @@ class Article(models.Model):
 
     def create_collocations(self):
         """Create collocation for the article"""
-        from axel.articles.utils import nlp
+        from axel.libs import nlp
         if self.index and not self.articlecollocation_set.exists():
             index = json.loads(self.index)
             # found collocs = found existing + found new

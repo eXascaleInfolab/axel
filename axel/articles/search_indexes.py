@@ -5,7 +5,7 @@ from haystack import indexes
 import re
 
 from axel.articles.models import Article
-from axel.articles.utils import nlp
+from axel.libs import nlp
 
 
 class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):

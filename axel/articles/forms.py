@@ -1,10 +1,10 @@
 """Forms for the articles application"""
 from django import forms
 from haystack import connections
-from axel.articles.utils import nlp
+from axel.libs import nlp
 
 import tempfile
-from axel.articles.utils.nlp import Stemmer
+from axel.libs.nlp import Stemmer
 
 
 def handle_uploaded_file(f):
