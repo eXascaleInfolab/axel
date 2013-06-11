@@ -4,7 +4,7 @@ import sys
 
 from django.core.cache import cache
 from django.conf import settings
-from axel.articles.utils.nlp import build_ngram_index
+from axel.libs.nlp import build_ngram_index
 
 
 _WORD_COUNTS_PREFIX = 'SW_word_counts'
