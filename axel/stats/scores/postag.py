@@ -2,7 +2,7 @@
 from collections import defaultdict
 import nltk
 
-from axel.articles.utils.nlp import Stemmer
+from axel.libs.nlp import Stemmer
 
 
 def compress_pos_tag(max_ngram, rules_dict):
