@@ -41,6 +41,20 @@ class Ngram(models.Model):
                         Ngram.objects.create(vaue=ngram, log_prob=log_prob, pos_seq=pos_seq)
 
 
-class Edit(models.Model):
+class Sentence(models.Model):
     sentence1 = models.TextField()
     sentence2 = models.TextField()
+
+
+class Edit(models.Model):
+    DELETE = 'DEL'
+    INSERT = 'INS'
+    REPLACE = 'REP'
+
+    EDIT_TYPES = (
+        (DELETE, 'delete'),
+        (INSERT, 'insert'),
+        (REPLACE, 'replace'),
+    )
+    edit_type = models.CharField(max_length=3, choices=EDIT_TYPES)
+    sentence = models.ForeignKey(Sentence)
