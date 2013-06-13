@@ -32,9 +32,14 @@ class Ngram(models.Model):
             pos_tag_sent = nltk.pos_tag(nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP))
             # join ngrams with tags
             pos_tag_sent = ['/'.join(x) for x in pos_tag_sent]
-            for i in range(2,6):
+            for i in range(2, 6):
                 for pos_ngram in nltk.ngrams(pos_tag_sent, i):
                     ngram, pos_seq = zip(*[x.split('/') for x in pos_ngram.split()])
                     if ngram not in existing:
                         log_prob = ms_ngram_service.GetJointProbability(ngram)
                         Ngram.objects.create(vaue=ngram, log_prob=log_prob, pos_seq=pos_seq)
+
+
+class Edit(models.Model):
+    sentence1 = models.TextField()
+    sentence2 = models.TextField()
