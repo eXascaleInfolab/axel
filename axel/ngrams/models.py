@@ -5,7 +5,8 @@ import re
 
 from axel.libs import nlp
 
-ms_ngram_service = MicrosoftNgram.LookupService("", "", "")
+ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252534df',
+                                                'bing-body/apr10/5')
 
 
 class Ngram(models.Model):
