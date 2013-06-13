@@ -5,6 +5,7 @@ from collections import Counter
 from django.core.management.base import BaseCommand
 
 import difflib
+from axel.ngrams.models import Sentence, Edit
 
 SENTENCE_REGEX = re.compile(r'[.!?]')
 
@@ -53,8 +54,14 @@ class Command(BaseCommand):
                                 #insertCounter.append(str2)
                                 #deleteCounter.append(str1)
                             elif tag == 'delete':
-                                deleteCounter[str1] = (sentence1, sentence2, 'delete')
+                                deleteCounter[str1] = (sentence1, sentence2, Edit.DELETE)
                             elif tag == 'insert':
-                                insertCounter[str2] = (sentence1, sentence2, 'insert')
+                                insertCounter[str2] = (sentence1, sentence2, Edit.INSERT)
         insertKeys = [x for x in Counter(insertCounter.keys()).iteritems() if x[1] > 1]
         deleteKeys = [x for x in Counter(deleteCounter.keys()).iteritems() if x[1] > 1]
+        totalKeys = insertKeys + deleteKeys
+
+        for key in totalKeys:
+            sentence1, sentence2, edit_type = insertCounter[key]
+            sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
+            Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=key)
