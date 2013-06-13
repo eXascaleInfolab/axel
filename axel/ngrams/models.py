@@ -58,3 +58,6 @@ class Edit(models.Model):
     )
     edit_type = models.CharField(max_length=3, choices=EDIT_TYPES)
     sentence = models.ForeignKey(Sentence)
+    edit1 = models.CharField(max_length=255)
+    # Edit2 is not null when type is REPLACE
+    edit2 = models.CharField(max_length=255, null=True)
