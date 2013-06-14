@@ -16,7 +16,7 @@ class Ngram(models.Model):
     log_prob = models.FloatField()
     pos_seq = models.CharField(max_length=255)
 
-    _PUNKT_RE = re.compile(r'[`~%\*\+\[\]\.?!,":;()\'|]+')
+    _PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\.?!,":;()\'|]+')
 
     class Meta:
         """Meta info"""
