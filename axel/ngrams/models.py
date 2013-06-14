@@ -2,6 +2,7 @@ from django.db import models
 import MicrosoftNgram
 import nltk
 import re
+import itertools
 
 from axel.libs import nlp
 
@@ -14,6 +15,8 @@ class Ngram(models.Model):
     value = models.TextField()
     log_prob = models.FloatField()
     pos_seq = models.CharField(max_length=255)
+
+    _PUNKT_RE = re.compile(r'[`~%\*\+\[\]\.?!,":;()\'|]+')
 
     class Meta:
         """Meta info"""
@@ -30,18 +33,21 @@ class Ngram(models.Model):
             sentence = sentence.strip()
             if not sentence:
                 continue
-            pos_tag_sent = nltk.pos_tag(nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP))
+            pos_tag_sents = nltk.pos_tag(nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP))
             # join ngrams with tags
-            pos_tag_sent = ['/'.join(x) for x in pos_tag_sent]
-            for i in range(2, 6):
-                for pos_ngram in nltk.ngrams(pos_tag_sent, i):
-                    ngram, pos_seq = zip(*[x.split('/') for x in pos_ngram])
-                    ngram = u' '.join(ngram)
-                    pos_seq = u' '.join(pos_seq)
-                    if ngram not in existing:
-                        log_prob = ms_ngram_service.GetJointProbability(ngram)
-                        print ngram, log_prob, pos_seq
-                        Ngram.objects.create(value=ngram, log_prob=log_prob, pos_seq=pos_seq)
+            pos_tag_sents = ['/'.join(x) for x in pos_tag_sents]
+            pos_tag_sents = [list(x[1]) for x in itertools.groupby(pos_tag_sents,
+                                                lambda x: cls._PUNKT_RE.match(x)) if not x[0]]
+            for pos_tag_sent in pos_tag_sents:
+                for i in range(2, 6):
+                    for pos_ngram in nltk.ngrams(pos_tag_sent, i):
+                        ngram, pos_seq = zip(*[x.split('/') for x in pos_ngram])
+                        ngram = u' '.join(ngram)
+                        pos_seq = u' '.join(pos_seq)
+                        if ngram not in existing:
+                            log_prob = ms_ngram_service.GetJointProbability(ngram)
+                            print ngram, log_prob, pos_seq
+                            Ngram.objects.create(value=ngram, log_prob=log_prob, pos_seq=pos_seq)
 
 
 class Sentence(models.Model):
