@@ -35,9 +35,12 @@ class Ngram(models.Model):
             pos_tag_sent = ['/'.join(x) for x in pos_tag_sent]
             for i in range(2, 6):
                 for pos_ngram in nltk.ngrams(pos_tag_sent, i):
-                    ngram, pos_seq = zip(*[x.split('/') for x in pos_ngram.split()])
+                    ngram, pos_seq = zip(*[x.split('/') for x in pos_ngram])
+                    ngram = u' '.join(ngram)
+                    pos_seq = u' '.join(pos_seq)
                     if ngram not in existing:
                         log_prob = ms_ngram_service.GetJointProbability(ngram)
+                        print ngram, log_prob, pos_seq
                         Ngram.objects.create(vaue=ngram, log_prob=log_prob, pos_seq=pos_seq)
 
 
