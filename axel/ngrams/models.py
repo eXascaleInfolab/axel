@@ -41,7 +41,7 @@ class Ngram(models.Model):
                     if ngram not in existing:
                         log_prob = ms_ngram_service.GetJointProbability(ngram)
                         print ngram, log_prob, pos_seq
-                        Ngram.objects.create(vaue=ngram, log_prob=log_prob, pos_seq=pos_seq)
+                        Ngram.objects.create(value=ngram, log_prob=log_prob, pos_seq=pos_seq)
 
 
 class Sentence(models.Model):
