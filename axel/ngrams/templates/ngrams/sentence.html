@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {# display divergence iterator #}
+    <p class="lead">{{ sentence }}</p>
+    <ul class="unstyled">
+        {% for divergence in sentence.divergence_iter %}
+            <li>
+                {{ divergence }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

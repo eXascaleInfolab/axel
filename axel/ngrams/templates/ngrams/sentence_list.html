@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {# display collocations article list #}
+    <h3>Sentences in the database</h3>
+    <ul class="unstyled">
+        {% for sentence in sentence %}
+            <li>
+                <a href="{% url "sentence_detail" sentence.id %}">{{ sentence }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% include "partial/pagination.html" %}
+{% endblock %}
