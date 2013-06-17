@@ -2,7 +2,7 @@ from __future__ import division
 from collections import Counter, defaultdict, OrderedDict
 import re
 from axel.articles.models import Article
-from axel.articles.utils.nlp import build_ngram_index
+from axel.libs.nlp import build_ngram_index
 import nltk
 
 NGRAM_REGEX = ur'(?:\w|-)'
