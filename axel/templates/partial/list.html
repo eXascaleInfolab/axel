@@ -9,7 +9,7 @@
     <div class="pagination">
         <ul>
             <li {% if not page_obj.has_previous %}class="disabled"{% endif %}>
-                <a href="?page={{ page_obj.previous_page_number }}">«</a>
+                <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}">«</a>
             </li>
             {% if page_obj.has_previous %}
                 <li>
@@ -27,7 +27,7 @@
                 </li>
             {% endif %}
             <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
-                <a href="?page={{ page_obj.next_page_number }}">»</a>
+                <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}">»</a>
             </li>
         </ul>
     </div>
