@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url pdf_collocations %}">
+    <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url "pdf_collocations" %}">
         <legend>PDF co-locations</legend>
         {% csrf_token %}
         {% for field in form %}
