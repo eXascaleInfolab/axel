@@ -15,5 +15,5 @@ class SentenceDetailView(DetailView):
     """Display article details"""
     model = Sentence
     context_object_name = "sentence"
-    template_name = 'ngram/sentence.html'
+    template_name = 'ngrams/sentence.html'
 
