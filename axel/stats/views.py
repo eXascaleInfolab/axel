@@ -13,7 +13,7 @@ from test_collection.views import CollectionModelView, _get_model_from_string,\
     TestCollectionOverview
 
 from axel.articles.utils.concepts_index import WORDS_SET, CONCEPT_PREFIX
-from axel.articles.utils.nlp import build_ngram_index
+from axel.libs.nlp import build_ngram_index
 from axel.libs.mixins import AttributeFilterView
 from axel.stats import scores
 from axel.stats.forms import ScoreCacheResetForm, NgramBindingForm
