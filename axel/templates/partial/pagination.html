@@ -1,10 +1,3 @@
-<ul class="unstyled">
-    {% for article in articles %}
-        <li>
-            <a href="{% url "article_detail" article.id %}">{{ article }}</a>
-        </li>
-    {% endfor %}
-</ul>
 {% if is_paginated %}
     <div class="pagination">
         <ul>
