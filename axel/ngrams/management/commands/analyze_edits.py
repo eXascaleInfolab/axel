@@ -20,15 +20,18 @@ class Command(BaseCommand):
 
     def _get_sentence(self, text, sentences, index1):
         for i, index in enumerate(sentences):
-            if i + 1 == len(sentences):
-                return text[sentences[i]:]
             if index1 > index:
                 continue
             if i == 0:
-                return text[:index].strip()
+                return text[:index+1].strip()
             else:
-                return text[sentences[i-1]+1:index].strip()
-        return text
+                return text[sentences[i-1]+1:index+1].strip()
+
+        if not sentences:
+            return text
+        else:
+            # we have sentences but the index is bigger
+            return text[sentences[-1]+1:]
 
     def handle(self, *args, **options):
         totalCounter = []
@@ -75,5 +78,8 @@ class Command(BaseCommand):
 
         for edit, sentence1, sentence2, edit_type in totalCounter:
             if edit in totalKeys:
-                sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
+                try:
+                    sen = Sentence.objects.get(sentence1=sentence1, sentence2=sentence2)
+                except Sentence.DoesNotExist:
+                    sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
                 Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit)

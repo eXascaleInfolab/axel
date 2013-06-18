@@ -7,7 +7,12 @@
     <ul class="unstyled">
         {% for sentence in sentences %}
             <li>
-                <a href="{% url "sentence_detail" sentence.id %}">{{ sentence }}</a>
+                <a href="{% url "sentence_detail" sentence.id %}">Details</a>
+                <br>
+                {{ sentence.sentence1 }}
+                <br>
+                {{ sentence.sentence2 }}
+                <hr>
             </li>
         {% endfor %}
     </ul>
