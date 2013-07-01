@@ -1,3 +1,4 @@
+from __future__ import division
 from collections import defaultdict
 import nltk
 import re
@@ -145,3 +146,12 @@ class Edit(models.Model):
     edit1 = models.CharField(max_length=255)
     # Edit2 is not null when type is REPLACE
     edit2 = models.CharField(max_length=255, null=True)
+
+    @classmethod
+    def calculate_metrics(cls, edit_data):
+        """Calculate precision and recall given the edit data"""
+        orig_edit_data = set(Edit.objects.values_list())
+        precision = len(edit_data - orig_edit_data)/edit_data
+        recall = len(orig_edit_data - edit_data)/ edit_data
+
+        return precision, recall
