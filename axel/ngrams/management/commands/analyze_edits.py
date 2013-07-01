@@ -8,7 +8,7 @@ import difflib
 from axel.ngrams.models import Sentence, Edit
 
 SENTENCE_REGEX = re.compile(r'[.!?]')
-FILTER_REGEX = re.compile(r'[^\w\s\d]')
+FILTER_REGEX = re.compile(r'[^\w]')
 LINE_END_REPLACE_REGEX = re.compile(r'(?P<end>[.?!])(\\r\\n)+')
 MULTIPLE_PUNCT_REGEX = re.compile(r'([.!?])+')
 
@@ -55,12 +55,11 @@ class Command(BaseCommand):
                                 continue
                             str1, str2 = edit1[i1:i2], edit2[j1:j2]
 
-                            # skip edits that contain line breaks and sentence separators
-                            if set('.!?\n') & set(str1 + str2):
-                                continue
-
                             # skip bad edits:
                             if FILTER_REGEX.search(str1) or FILTER_REGEX.search(str2):
+                                continue
+
+                            if str1.lower() == str2.lower():
                                 continue
 
                             sentence1 = self._get_sentence(edit1, sentences1, i1)
@@ -74,6 +73,7 @@ class Command(BaseCommand):
                                 totalCounter.append((str1, sentence1, sentence2, Edit.DELETE))
                             elif tag == 'insert':
                                 totalCounter.append((str2, sentence1, sentence2, Edit.INSERT))
+
         totalKeys = set([x[0] for x in Counter(zip(*totalCounter)[0]).iteritems() if x[1] > 1])
 
         for edit, sentence1, sentence2, edit_type in totalCounter:
