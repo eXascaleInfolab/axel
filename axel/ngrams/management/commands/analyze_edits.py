@@ -65,21 +65,27 @@ class Command(BaseCommand):
                             sentence1 = self._get_sentence(edit1, sentences1, i1)
                             sentence2 = self._get_sentence(edit2, sentences2, j1)
 
+                            edit_info = (i1, i2, j1, j2)
+
                             if tag == 'replace':
                                 pass
                                 #insertCounter.append(str2)
                                 #deleteCounter.append(str1)
                             elif tag == 'delete':
-                                totalCounter.append((str1, sentence1, sentence2, Edit.DELETE))
+                                totalCounter.append((str1, sentence1, sentence2,
+                                                     edit_info, Edit.DELETE))
                             elif tag == 'insert':
-                                totalCounter.append((str2, sentence1, sentence2, Edit.INSERT))
+                                totalCounter.append((str2, sentence1, sentence2,
+                                                     edit_info, Edit.INSERT))
 
         totalKeys = set([x[0] for x in Counter(zip(*totalCounter)[0]).iteritems() if x[1] > 1])
 
-        for edit, sentence1, sentence2, edit_type in totalCounter:
+        for edit, sentence1, sentence2, edit_info, edit_type in totalCounter:
             if edit in totalKeys:
                 try:
                     sen = Sentence.objects.get(sentence1=sentence1, sentence2=sentence2)
                 except Sentence.DoesNotExist:
                     sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
-                Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit)
+                Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit,
+                                    start_pos_orig=edit_info[0], end_pos_orig=edit_info[1],
+                                    start_pos_new=edit_info[2], end_pos_new=edit_info[3])

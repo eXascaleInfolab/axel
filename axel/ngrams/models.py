@@ -2,7 +2,7 @@ from collections import defaultdict
 import nltk
 import re
 import itertools
-import math
+from nltk.metrics.association import BigramAssocMeasures as bigram_assoc
 
 from django.db import models
 import MicrosoftNgram
@@ -83,6 +83,7 @@ class Sentence(models.Model):
 
     def divergence_iter(self):
         """Yields diverging ngrams in the sentence"""
+        # TODO: Exclude 100 most frequent words?
 
         def _recursive_diverge(tokens, i, parent_prob):
             """
@@ -117,6 +118,13 @@ class Sentence(models.Model):
                 #     divergences.append(' '.join(div_ngram))
         return divergences
 
+    def likelihood_ratio(self):
+        """
+        Tries to identify errors using likelihood ration test under binomial distribution assumption
+        """
+        # TODO: here
+        bigram_assoc.likelihood_ratio()
+
 
 class Edit(models.Model):
     DELETE = 'DEL'
@@ -129,6 +137,10 @@ class Edit(models.Model):
         (REPLACE, 'replace'),
     )
     edit_type = models.CharField(max_length=3, choices=EDIT_TYPES)
+    start_pos_orig = models.IntegerField()
+    end_pos_orig = models.IntegerField()
+    start_pos_new = models.IntegerField()
+    end_pos_new = models.IntegerField()
     sentence = models.ForeignKey(Sentence)
     edit1 = models.CharField(max_length=255)
     # Edit2 is not null when type is REPLACE
