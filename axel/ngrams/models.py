@@ -13,6 +13,8 @@ from axel.libs import nlp
 ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252534df',
                                                 'bing-body/apr10/5')
 
+THE_EST_COUNT = 0.07  # Rough percentage of the word "the" in the corpus, to estimate real word count
+
 
 class Ngram(models.Model):
     """Describes ngram"""
@@ -148,10 +150,41 @@ class Edit(models.Model):
     edit2 = models.CharField(max_length=255, null=True)
 
     @classmethod
-    def calculate_metrics(cls, edit_data):
+    def calculate_positional_metrics(cls, position_data):
+        """
+        Calculate precision and recall given the positional data for
+        possible incorrect places in the data.
+        :param position_data: of form {sentence_id: set((start_pos, end_pos), ...), ...}
+        :type position_data: defaultdict
+        """
+        tp = 0
+        fp = 0
+        fn = 0
+        temp_edit_data = cls.objects.values_list('sentence', 'start_pos_orig', 'end_pos_orig')
+        orig_edit_data = defaultdict(set)
+        for sent_id, start_pos, end_pos in temp_edit_data:
+            orig_edit_data[sent_id].add((start_pos, end_pos))
+
+        for sent_id, orig_sent_edit_data in orig_edit_data.iteritems():
+            if sent_id in position_data:
+                sent_edit_data = sorted(position_data[sent_id])
+                print sent_edit_data
+                index = 0
+                for start_pos, end_pos in sorted(orig_sent_edit_data):
+                    if start_pos > sent_edit_data[index][0] and end_pos < sent_edit_data[index][1]:
+                        tp += 1
+                        index += 1
+                    else:
+                        fp += 1
+            else:
+                fn += len(orig_sent_edit_data)
+        return tp, fp, fn
+
+    @classmethod
+    def calculate_final_metrics(cls, edit_data):
         """Calculate precision and recall given the edit data"""
-        orig_edit_data = set(Edit.objects.values_list())
-        precision = len(edit_data - orig_edit_data)/edit_data
-        recall = len(orig_edit_data - edit_data)/ edit_data
+        orig_edit_data = set(cls.objects.values_list())
+        precision = len(edit_data - orig_edit_data) / edit_data
+        recall = len(orig_edit_data - edit_data) / edit_data
 
         return precision, recall
