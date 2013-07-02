@@ -34,6 +34,9 @@ class Ngram(models.Model):
 
     @classmethod
     def create_from_text(cls, text):
+        """
+        :param text: text to parse, can be more than on sentence.
+        """
         existing = set(Ngram.objects.values_list("value", flat=True))
         for sentence in re.split(r'[.?!]', text):
             sentence = sentence.strip()
@@ -66,18 +69,20 @@ class Sentence(models.Model):
         return self.sentence1
 
     @classmethod
-    def tokenize(cls, sentence):
+    def _tokenize(cls, sentence):
         """Tokenize sentence and return lists of tokens."""
+        sentence = re.sub(r'[!.?]', '', sentence)
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
         tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda y: Ngram.PUNKT_RE.match(y))
                   if not x[0]]
         return tokens
 
     @classmethod
-    def tokenize_positions(cls, sentence):
+    def _tokenize_positions(cls, sentence):
         """
         Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
         """
+        sentence = re.sub(r'[!.?]', '', sentence)
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
         index = 0
         positional_tokens = []
@@ -94,8 +99,8 @@ class Sentence(models.Model):
     def get_sentence_scores(cls, sentence):
         """Return averaged probability scores for the sentence using 2- to 5-ngram splits"""
         scores = defaultdict(list)
-        for tokens in Sentence.tokenize(sentence):
-            for i in range(2, 6):
+        for tokens in Sentence._tokenize(sentence):
+            for i in range(1, 6):
                 for ngram in nltk.ngrams(tokens, i):
                     log_prob = Ngram.objects.get(value=' '.join(ngram)).log_prob
                     scores[i].append(log_prob)
@@ -134,8 +139,7 @@ class Sentence(models.Model):
 
         # sentence can contain more than one sequence of tokens
         position_data = []
-        print self.sentence1
-        for tokens in Sentence.tokenize_positions(self.sentence1):
+        for tokens in Sentence._tokenize_positions(self.sentence1):
             for unigram1, unigram2 in nltk.ngrams(tokens, 2):
                 bigram = ' '.join([unigram1[0], unigram2[0]])
                 log_prob = Ngram.objects.get(value=bigram).log_prob
