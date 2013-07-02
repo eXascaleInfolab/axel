@@ -84,30 +84,30 @@ class Sentence(models.Model):
         return dict([(i, sum(probs)/len(probs) if probs else 0) for i, probs in
                      sorted(scores.items(), key=lambda x: x[0])])
 
-    def divergence_iter(self):
-        """Yields diverging ngrams in the sentence"""
+    def less_than_random_ngrams(self):
+        """Returns diverging ngrams in the sentence"""
         # TODO: Exclude 100 most frequent words?
 
-        def _recursive_diverge(tokens, i, parent_prob):
-            """
-            Recursively calculate child ngrams normalized log probabilities
-            (normalization by number of tokens)
-            """
-            if i == 2:
-                yield tokens
-            else:
-                ngram1, ngram2 = nltk.ngrams(tokens, i-1)
-                log_prob = Ngram.objects.get(value=' '.join(ngram1)).log_prob + \
-                           Ngram.objects.get(value=' '.join(ngram2)).log_prob
-                if log_prob > parent_prob:
-                    for div_ngram in _recursive_diverge(ngram2, i-1, log_prob):
-                        yield div_ngram
-                else:
-                    for div_ngram in _recursive_diverge(ngram1, i-1, log_prob):
-                        yield div_ngram
+        # def _recursive_diverge(tokens, i, parent_prob):
+        #     """
+        #     Recursively calculate child ngrams normalized log probabilities
+        #     (normalization by number of tokens)
+        #     """
+        #     if i == 2:
+        #         yield tokens
+        #     else:
+        #         ngram1, ngram2 = nltk.ngrams(tokens, i-1)
+        #         log_prob = Ngram.objects.get(value=' '.join(ngram1)).log_prob + \
+        #                    Ngram.objects.get(value=' '.join(ngram2)).log_prob
+        #         if log_prob > parent_prob:
+        #             for div_ngram in _recursive_diverge(ngram2, i-1, log_prob):
+        #                 yield div_ngram
+        #         else:
+        #             for div_ngram in _recursive_diverge(ngram1, i-1, log_prob):
+        #                 yield div_ngram
 
         # sentence can contain more than one sequence of tokens
-        divergences = []
+        position_data = []
         for tokens in Sentence.tokenize(self.sentence1):
             for bigram in nltk.ngrams(tokens, 2):
                 log_prob = Ngram.objects.get(value=' '.join(bigram)).log_prob
@@ -115,13 +115,13 @@ class Sentence(models.Model):
                                Ngram.objects.get(value=bigram[1]).log_prob
                 if log_prob < sum_log_prob:
                     # report bigram
-                    divergences.append(' '.join(bigram))
+                    position_data.append(' '.join(bigram))
 
                 # for div_ngram in _recursive_diverge(ngram, 5, log_prob):
                 #     divergences.append(' '.join(div_ngram))
-        return divergences
+        return position_data
 
-    def likelihood_ratio(self):
+    def small_likelihood_ratio(self):
         """
         Tries to identify errors using likelihood ration test under binomial distribution assumption
         """

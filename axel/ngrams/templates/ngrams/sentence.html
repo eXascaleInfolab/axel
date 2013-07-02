@@ -5,9 +5,9 @@
     {# display divergence iterator #}
     <p class="lead">{{ sentence }}</p>
     <ul class="unstyled">
-        {% for divergence in sentence.divergence_iter %}
+        {% for ngram in sentence.less_than_random_ngrams %}
             <li>
-                {{ divergence }}
+                {{ ngram }}
             </li>
         {% endfor %}
     </ul>
