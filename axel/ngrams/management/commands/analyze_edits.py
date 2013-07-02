@@ -4,10 +4,11 @@ import re
 from collections import Counter
 from django.core.management.base import BaseCommand
 
+from nltk.data import load
+
 import difflib
 from axel.ngrams.models import Sentence, Edit
 
-SENTENCE_REGEX = re.compile(r'[.!?]')
 FILTER_REGEX = re.compile(r'[^\w]')
 LINE_END_REPLACE_REGEX = re.compile(r'(?P<end>[.?!])(\\r\\n)+')
 MULTIPLE_PUNCT_REGEX = re.compile(r'([.!?])+')
@@ -35,6 +36,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         totalCounter = []
+        tokenizer = load('tokenizers/punkt/english.pickle')
 
         for edit_file in args:
             for line in open(edit_file).read().split('\n'):
@@ -47,8 +49,8 @@ class Command(BaseCommand):
                     continue
                 for edit in line.split('|||'):
                     edit1, edit2 = edit[1:-1].split(';;;')
-                    sentences1 = [c.start() for c in SENTENCE_REGEX.finditer(edit1)]
-                    sentences2 = [c.start() for c in SENTENCE_REGEX.finditer(edit2)]
+                    sentences1 = [s_start for s_start, _ in tokenizer.span_tokenize(edit1)]
+                    sentences2 = [s_start for s_start, _ in tokenizer.span_tokenize(edit2)]
                     for seq in difflib.SequenceMatcher(None, edit1, edit2).get_grouped_opcodes(0):
                         for tag, i1, i2, j1, j2 in seq:
                             if tag == 'equal':
