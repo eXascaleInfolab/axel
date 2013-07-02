@@ -45,7 +45,7 @@ class Ngram(models.Model):
             pos_tag_sents = [list(x[1]) for x in itertools.groupby(pos_tag_sents,
                                                 lambda x: cls.PUNKT_RE.match(x)) if not x[0]]
             for pos_tag_sent in pos_tag_sents:
-                for i in [1]:
+                for i in range(1, 6):
                     for pos_ngram in nltk.ngrams(pos_tag_sent, i):
                         ngram, pos_seq = zip(*[x.rsplit('/', 1) for x in pos_ngram])
                         ngram = u' '.join(ngram)
@@ -54,6 +54,7 @@ class Ngram(models.Model):
                             log_prob = ms_ngram_service.GetJointProbability(ngram.encode('utf-8'))
                             print ngram, log_prob, pos_seq
                             Ngram.objects.create(value=ngram, log_prob=log_prob, pos_seq=pos_seq)
+                            existing.add(ngram)
 
 
 class Sentence(models.Model):
@@ -68,7 +69,7 @@ class Sentence(models.Model):
     def tokenize(cls, sentence):
         """Tokenize sentence and return lists of tokens."""
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
-        tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda x: Ngram.PUNKT_RE.match(x))
+        tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda y: Ngram.PUNKT_RE.match(y))
                   if not x[0]]
         return tokens
 
@@ -85,7 +86,7 @@ class Sentence(models.Model):
             index += len(token)
 
         tokens = [list(x[1]) for x in
-                  itertools.groupby(positional_tokens, lambda x: Ngram.PUNKT_RE.match(x[0]))
+                  itertools.groupby(positional_tokens, lambda y: Ngram.PUNKT_RE.match(y[0]))
                   if not x[0]]
         return tokens
 
@@ -100,6 +101,14 @@ class Sentence(models.Model):
                     scores[i].append(log_prob)
         return dict([(i, sum(probs)/len(probs) if probs else 0) for i, probs in
                      sorted(scores.items(), key=lambda x: x[0])])
+
+    @classmethod
+    def get_positional_metrics_data(cls, function='less_than_random_ngrams'):
+        """Gets positional data to calculate metrics"""
+        positional_data = {}
+        for sentence in cls.objects.all():
+            positional_data[sentence.id] = [(pos_start, pos_end) for _, pos_start, pos_end in
+                                            getattr(sentence, function)()]
 
     def less_than_random_ngrams(self):
         """Returns diverging ngrams in the sentence"""
@@ -125,6 +134,7 @@ class Sentence(models.Model):
 
         # sentence can contain more than one sequence of tokens
         position_data = []
+        print self.sentence1
         for tokens in Sentence.tokenize_positions(self.sentence1):
             for unigram1, unigram2 in nltk.ngrams(tokens, 2):
                 bigram = ' '.join([unigram1[0], unigram2[0]])
@@ -173,7 +183,7 @@ class Edit(models.Model):
         Calculate precision and recall given the positional data for
         possible incorrect places in the data.
         :param position_data: of form {sentence_id: set((start_pos, end_pos), ...), ...}
-        :type position_data: defaultdict
+        :type position_data: dict
         """
         tp = 0
         fp = 0
