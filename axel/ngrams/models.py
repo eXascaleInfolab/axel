@@ -114,6 +114,7 @@ class Sentence(models.Model):
         for sentence in cls.objects.all():
             positional_data[sentence.id] = [(pos_start, pos_end) for _, pos_start, pos_end in
                                             getattr(sentence, function)()]
+        return positional_data
 
     def less_than_random_ngrams(self):
         """Returns diverging ngrams in the sentence"""
