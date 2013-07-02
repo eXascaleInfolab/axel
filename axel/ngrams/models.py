@@ -96,14 +96,14 @@ class Sentence(models.Model):
         return tokens
 
     @classmethod
-    def get_sentence_scores(cls, sentence):
+    def get_sentence_prob(cls, sentence):
         """Return averaged probability scores for the sentence using 2- to 5-ngram splits"""
         scores = defaultdict(list)
         for tokens in Sentence._tokenize(sentence):
             for i in range(1, 6):
                 for ngram in nltk.ngrams(tokens, i):
                     log_prob = Ngram.objects.get(value=' '.join(ngram)).log_prob
-                    scores[i].append(log_prob)
+                    scores[i].append(10**log_prob)
         return dict([(i, sum(probs)/len(probs) if probs else 0) for i, probs in
                      sorted(scores.items(), key=lambda x: x[0])])
 
@@ -201,9 +201,10 @@ class Edit(models.Model):
         for sent_id, orig_sent_edit_data in orig_edit_data.iteritems():
             if sent_id in position_data:
                 sent_edit_data = sorted(position_data[sent_id])
-                print sent_edit_data
                 index = 0
                 for start_pos, end_pos in sorted(orig_sent_edit_data):
+                    if index >= len(sent_edit_data):
+                        fn += 1
                     if start_pos > sent_edit_data[index][0] and end_pos < sent_edit_data[index][1]:
                         tp += 1
                         index += 1
