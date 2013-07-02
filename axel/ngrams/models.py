@@ -66,10 +66,27 @@ class Sentence(models.Model):
 
     @classmethod
     def tokenize(cls, sentence):
-        """Tokenize sentence and return lists of tokens"""
+        """Tokenize sentence and return lists of tokens."""
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
-        tokens = [list(x[1]) for x in itertools.groupby(tokens,
-                                                    lambda x: Ngram.PUNKT_RE.match(x)) if not x[0]]
+        tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda x: Ngram.PUNKT_RE.match(x))
+                  if not x[0]]
+        return tokens
+
+    @classmethod
+    def tokenize_positions(cls, sentence):
+        """
+        Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
+        """
+        tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
+        index = 0
+        positional_tokens = []
+        for token in tokens:
+            positional_tokens.append((token, index, index + len(token)))
+            index += len(token)
+
+        tokens = [list(x[1]) for x in
+                  itertools.groupby(positional_tokens, lambda x: Ngram.PUNKT_RE.match(x[0]))
+                  if not x[0]]
         return tokens
 
     @classmethod
@@ -108,14 +125,15 @@ class Sentence(models.Model):
 
         # sentence can contain more than one sequence of tokens
         position_data = []
-        for tokens in Sentence.tokenize(self.sentence1):
-            for bigram in nltk.ngrams(tokens, 2):
-                log_prob = Ngram.objects.get(value=' '.join(bigram)).log_prob
-                sum_log_prob = Ngram.objects.get(value=bigram[0]).log_prob + \
-                               Ngram.objects.get(value=bigram[1]).log_prob
+        for tokens in Sentence.tokenize_positions(self.sentence1):
+            for unigram1, unigram2 in nltk.ngrams(tokens, 2):
+                bigram = ' '.join([unigram1[0], unigram2[0]])
+                log_prob = Ngram.objects.get(value=bigram).log_prob
+                sum_log_prob = Ngram.objects.get(value=unigram1[0]).log_prob + \
+                               Ngram.objects.get(value=unigram2[0]).log_prob
                 if log_prob < sum_log_prob:
-                    # report bigram
-                    position_data.append(' '.join(bigram))
+                    # report bigram with position
+                    position_data.append((bigram, unigram1[1], unigram2[2]))
 
                 # for div_ngram in _recursive_diverge(ngram, 5, log_prob):
                 #     divergences.append(' '.join(div_ngram))
