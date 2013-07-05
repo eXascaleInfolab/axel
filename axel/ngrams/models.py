@@ -13,8 +13,6 @@ from axel.libs import nlp
 ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252534df',
                                                 'bing-body/apr10/5')
 
-THE_EST_COUNT = 0.07  # Rough percentage of the word "the" in the corpus, to estimate real word count
-
 
 class Ngram(models.Model):
     """Describes ngram"""
@@ -116,42 +114,23 @@ class Sentence(models.Model):
                                             getattr(sentence, function)()]
         return positional_data
 
-    def less_than_random_ngrams(self):
+    def prob_sorted_ngrams(self):
         """Returns diverging ngrams in the sentence"""
         # TODO: Exclude 100 most frequent words?
 
-        # def _recursive_diverge(tokens, i, parent_prob):
-        #     """
-        #     Recursively calculate child ngrams normalized log probabilities
-        #     (normalization by number of tokens)
-        #     """
-        #     if i == 2:
-        #         yield tokens
-        #     else:
-        #         ngram1, ngram2 = nltk.ngrams(tokens, i-1)
-        #         log_prob = Ngram.objects.get(value=' '.join(ngram1)).log_prob + \
-        #                    Ngram.objects.get(value=' '.join(ngram2)).log_prob
-        #         if log_prob > parent_prob:
-        #             for div_ngram in _recursive_diverge(ngram2, i-1, log_prob):
-        #                 yield div_ngram
-        #         else:
-        #             for div_ngram in _recursive_diverge(ngram1, i-1, log_prob):
-        #                 yield div_ngram
-
         # sentence can contain more than one sequence of tokens
-        position_data = []
+        position_data = defaultdict(list)
         for tokens in Sentence._tokenize_positions(self.sentence1):
-            for unigram1, unigram2 in nltk.ngrams(tokens, 2):
-                bigram = ' '.join([unigram1[0], unigram2[0]])
-                log_prob = Ngram.objects.get(value=bigram).log_prob
-                sum_log_prob = Ngram.objects.get(value=unigram1[0]).log_prob + \
-                               Ngram.objects.get(value=unigram2[0]).log_prob
-                if log_prob < sum_log_prob:
-                    # report bigram with position
-                    position_data.append((bigram, unigram1[1], unigram2[2]))
+            for i in range(1, 6):
+                for ngram_pos in nltk.ngrams(tokens, i):
+                    ngram = ' '.join(zip(*ngram_pos)[0])
+                    log_prob = Ngram.objects.get(value=ngram).log_prob
+                    # report ngram with position
+                    position_data[i].append((ngram_pos, log_prob))
 
-                # for div_ngram in _recursive_diverge(ngram, 5, log_prob):
-                #     divergences.append(' '.join(div_ngram))
+        position_data = [(i, sorted(ngrams, key=lambda x: x[1]))
+                         for i, ngrams in position_data.items()]
+
         return position_data
 
     def small_likelihood_ratio(self):
@@ -205,7 +184,7 @@ class Edit(models.Model):
                 for start_pos, end_pos in sorted(orig_sent_edit_data):
                     if index >= len(sent_edit_data):
                         fn += 1
-                    if start_pos > sent_edit_data[index][0] and end_pos < sent_edit_data[index][1]:
+                    elif start_pos > sent_edit_data[index][0] and end_pos < sent_edit_data[index][1]:
                         tp += 1
                         index += 1
                     else:
