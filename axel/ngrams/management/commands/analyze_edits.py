@@ -21,18 +21,18 @@ class Command(BaseCommand):
 
     def _get_sentence(self, text, sentences, index1):
         for i, index in enumerate(sentences):
-            if index1 > index:
+            if index1 >= index:
                 continue
             if i == 0:
-                return text[:index+1].strip()
+                return text[:index].strip()
             else:
-                return text[sentences[i-1]+1:index+1].strip()
+                return text[sentences[i-1]:index].strip()
 
         if not sentences:
             return text
         else:
             # we have sentences but the index is bigger
-            return text[sentences[-1]+1:]
+            return text[sentences[-1]:]
 
     def handle(self, *args, **options):
         totalCounter = []
@@ -51,6 +51,7 @@ class Command(BaseCommand):
                     edit1, edit2 = edit[1:-1].split(';;;')
                     sentences1 = [s_start for s_start, _ in tokenizer.span_tokenize(edit1)]
                     sentences2 = [s_start for s_start, _ in tokenizer.span_tokenize(edit2)]
+
                     for seq in difflib.SequenceMatcher(None, edit1, edit2).get_grouped_opcodes(0):
                         for tag, i1, i2, j1, j2 in seq:
                             if tag == 'equal':
@@ -67,7 +68,12 @@ class Command(BaseCommand):
                             sentence1 = self._get_sentence(edit1, sentences1, i1)
                             sentence2 = self._get_sentence(edit2, sentences2, j1)
 
-                            edit_info = (i1, i2, j1, j2)
+                            # get sentence index and subtract it because index is absolute
+                            sentence1_index = edit1.index(sentence1)
+                            sentence2_index = edit2.index(sentence2)
+
+                            edit_info = (i1-sentence1_index, i2-sentence1_index,
+                                         j1-sentence2_index, j2-sentence2_index)
 
                             if tag == 'replace':
                                 pass
