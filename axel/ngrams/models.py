@@ -106,12 +106,13 @@ class Sentence(models.Model):
                      sorted(scores.items(), key=lambda x: x[0])])
 
     @classmethod
-    def get_positional_metrics_data(cls, function='less_than_random_ngrams'):
+    def get_positional_metrics_data(cls, function='prob_sorted_ngrams'):
         """Gets positional data to calculate metrics"""
         positional_data = {}
         for sentence in cls.objects.all():
-            positional_data[sentence.id] = [(pos_start, pos_end) for _, pos_start, pos_end in
-                                            getattr(sentence, function)()]
+            pos_sent_data = getattr(sentence, function)()
+            if pos_sent_data:
+                positional_data[sentence.id] = [pos_sent_data]
         return positional_data
 
     def prob_sorted_ngrams(self):
@@ -128,10 +129,14 @@ class Sentence(models.Model):
                     # report ngram with position
                     position_data[i].append((ngram_pos, log_prob))
 
-        position_data = [(i, sorted(ngrams, key=lambda x: x[1]))
-                         for i, ngrams in position_data.items()]
+        position_data = dict([(i, sorted(ngrams, key=lambda x: x[1]))
+                              for i, ngrams in position_data.items()])
 
-        return position_data
+        try:
+            lowest_bigram = position_data[2][0][0]
+        except:
+            return
+        return (lowest_bigram[0][1], lowest_bigram[1][2])
 
     def small_likelihood_ratio(self):
         """
