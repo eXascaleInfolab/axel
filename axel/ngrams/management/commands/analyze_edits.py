@@ -4,12 +4,11 @@ import re
 from collections import Counter
 from django.core.management.base import BaseCommand
 
-from nltk.data import load
-
 import difflib
 from axel.ngrams.models import Sentence, Edit
 
 FILTER_REGEX = re.compile(r'[^\w]')
+SENTENCE_REGEX = re.compile(r'([.!?])(?:[A-Z]| [A-Z])')
 LINE_END_REPLACE_REGEX = re.compile(r'(?P<end>[.?!])(\\r\\n)+')
 MULTIPLE_PUNCT_REGEX = re.compile(r'([.!?])+')
 
@@ -34,9 +33,16 @@ class Command(BaseCommand):
             # we have sentences but the index is bigger
             return text[sentences[-1]:]
 
+    def _debug_check_sentence(self, sentences, edit):
+        if sentences:
+            i = sentences[0]
+            for j in sentences[1:]:
+                print edit[i:j]
+                i = j
+        print
+
     def handle(self, *args, **options):
         totalCounter = []
-        tokenizer = load('tokenizers/punkt/english.pickle')
 
         for edit_file in args:
             contents = open(edit_file).read()
@@ -49,10 +55,12 @@ class Command(BaseCommand):
                 line = MULTIPLE_PUNCT_REGEX.sub('\g<1>', line)
                 if not line or line == "null":
                     continue
+                # strip quotes
+                line = line[1:-1]
                 for edit in line.split('|||'):
-                    edit1, edit2 = edit[1:-1].split(';;;')
-                    sentences1 = [s_start for s_start, _ in tokenizer.span_tokenize(edit1)]
-                    sentences2 = [s_start for s_start, _ in tokenizer.span_tokenize(edit2)]
+                    edit1, edit2 = edit.split(';;;')
+                    sentences1 = [c.start()+1 for c in SENTENCE_REGEX.finditer(edit1)]
+                    sentences2 = [c.start()+1 for c in SENTENCE_REGEX.finditer(edit2)]
 
                     for seq in difflib.SequenceMatcher(None, edit1, edit2).get_grouped_opcodes(0):
                         for tag, i1, i2, j1, j2 in seq:
@@ -76,10 +84,6 @@ class Command(BaseCommand):
 
                             edit_info = (i1-sentence1_index, i2-sentence1_index,
                                          j1-sentence2_index, j2-sentence2_index)
-
-                            if len(set(sentence1.split()) - set(sentence2.split())) > 3 or \
-                                len(set(sentence2.split()) - set(sentence1.split())) > 3:
-                                continue
 
                             if tag == 'replace':
                                 pass
