@@ -39,7 +39,9 @@ class Command(BaseCommand):
         tokenizer = load('tokenizers/punkt/english.pickle')
 
         for edit_file in args:
-            for line in open(edit_file).read().split('\n'):
+            contents = open(edit_file).read()
+            contents.replace("I'm ", 'I am ').replace(" don't", " do not").replace(" doesn't", "does not")
+            for line in contents.split('\n'):
                 # treat line breaks as sentences
                 line = line.strip()
                 line = LINE_END_REPLACE_REGEX.sub('\g<end>', line)
@@ -74,6 +76,10 @@ class Command(BaseCommand):
 
                             edit_info = (i1-sentence1_index, i2-sentence1_index,
                                          j1-sentence2_index, j2-sentence2_index)
+
+                            if len(set(sentence1.split()) - set(sentence2.split())) > 3 or \
+                                len(set(sentence2.split()) - set(sentence1.split())) > 3:
+                                continue
 
                             if tag == 'replace':
                                 pass
