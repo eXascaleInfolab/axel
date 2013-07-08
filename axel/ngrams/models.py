@@ -178,27 +178,30 @@ class Edit(models.Model):
         fp = 0
         fn = 0
         temp_edit_data = cls.objects.values_list('sentence', 'start_pos_orig', 'end_pos_orig')
-        orig_edit_data = defaultdict(set)
+        true_edit_data = defaultdict(set)
         for sent_id, start_pos, end_pos in temp_edit_data:
-            orig_edit_data[sent_id].add((start_pos, end_pos))
+            true_edit_data[sent_id].add((start_pos, end_pos))
 
-        for sent_id, orig_sent_edit_data in orig_edit_data.iteritems():
+        for sent_id, true_sent_edit_data in true_edit_data.iteritems():
             if sent_id in position_data:
                 sent_edit_data = sorted(position_data[sent_id])
                 index = 0
-                for start_pos, end_pos in sorted(orig_sent_edit_data):
+                sent_tp_count = 0
+                for true_start_pos, true_end_pos in sorted(true_sent_edit_data):
                     if index >= len(sent_edit_data):
                         fn += 1
-                    elif start_pos >= sent_edit_data[index][0] and end_pos <= sent_edit_data[index][1]:
+                    elif true_start_pos >= sent_edit_data[index][0] and true_end_pos <= sent_edit_data[index][1]:
                         tp += 1
+                        sent_tp_count += 1
                         index += 1
                     else:
                         print sent_edit_data[index]
-                        print start_pos, end_pos
+                        print true_start_pos, true_end_pos
                         print Sentence.objects.get(id=sent_id)
-                        fp += 1
+                        fn += 1
+                fp += len(sent_edit_data) - sent_tp_count
             else:
-                fn += len(orig_sent_edit_data)
+                fn += len(true_sent_edit_data)
         return tp, fp, fn
 
     @classmethod
