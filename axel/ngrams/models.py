@@ -36,7 +36,7 @@ class Ngram(models.Model):
         :param text: text to parse, can be more than on sentence.
         """
         existing = set(Ngram.objects.values_list("value", flat=True))
-        sentence = re.sub(r'[!.?]', '', sent)
+        sentence = re.sub(r'[!.?]', '. ', sent)
         sentence = sentence.strip()
         if not sentence:
             return
@@ -69,7 +69,7 @@ class Sentence(models.Model):
     @classmethod
     def _tokenize(cls, sentence):
         """Tokenize sentence and return lists of tokens."""
-        sentence = re.sub(r'[!.?]', '', sentence)
+        sentence = re.sub(r'[!.?]', '. ', sentence)
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
         tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda y: Ngram.PUNKT_RE.match(y))
                   if not x[0]]
@@ -80,7 +80,7 @@ class Sentence(models.Model):
         """
         Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
         """
-        sentence = re.sub(r'[!.?]', '', sentence)
+        sentence = re.sub(r'[!.?]', '. ', sentence)
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
         index = 0
         positional_tokens = []
@@ -189,7 +189,7 @@ class Edit(models.Model):
                 for start_pos, end_pos in sorted(orig_sent_edit_data):
                     if index >= len(sent_edit_data):
                         fn += 1
-                    elif start_pos > sent_edit_data[index][0] and end_pos < sent_edit_data[index][1]:
+                    elif start_pos >= sent_edit_data[index][0] and end_pos <= sent_edit_data[index][1]:
                         tp += 1
                         index += 1
                     else:
