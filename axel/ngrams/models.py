@@ -166,6 +166,9 @@ class Edit(models.Model):
     # Edit2 is not null when type is REPLACE
     edit2 = models.CharField(max_length=255, null=True)
 
+    class Meta:
+        unique_together = ('sentence', 'start_pos_orig', 'end_pos_orig')
+
     @classmethod
     def calculate_positional_metrics(cls, position_data):
         """
