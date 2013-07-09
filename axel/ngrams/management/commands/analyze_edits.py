@@ -98,6 +98,8 @@ class Command(BaseCommand):
 
         totalKeys = set([x[0] for x in Counter(zip(*totalCounter)[0]).iteritems() if x[1] > 1])
 
+        i = 0
+
         for edit, sentence1, sentence2, edit_info, edit_type in totalCounter:
             if edit in totalKeys:
                 try:
@@ -107,3 +109,5 @@ class Command(BaseCommand):
                 Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit,
                                     start_pos_orig=edit_info[0], end_pos_orig=edit_info[1],
                                     start_pos_new=edit_info[2], end_pos_new=edit_info[3])
+                i += 1
+        print "Total edits created:", i
