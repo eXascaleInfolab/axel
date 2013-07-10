@@ -81,12 +81,9 @@ class Sentence(models.Model):
         Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
         """
         sentence = re.sub(r'[!.?]', '. ', sentence)
-        tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
-        index = 0
         positional_tokens = []
-        for token in tokens:
-            positional_tokens.append((token, index, index + len(token)))
-            index += len(token)
+        for match in re.finditer(nlp.Stemmer.TOKENIZE_REGEXP, sentence):
+            positional_tokens.append((match.group(), match.start(), match.end()))
 
         tokens = [list(x[1]) for x in
                   itertools.groupby(positional_tokens, lambda y: Ngram.PUNKT_RE.match(y[0]))
@@ -182,8 +179,14 @@ class Edit(models.Model):
         fn = 0
         temp_edit_data = cls.objects.values_list('sentence', 'start_pos_orig', 'end_pos_orig')
         true_edit_data = defaultdict(set)
+        true_edit_data1 = defaultdict(list)
         for sent_id, start_pos, end_pos in temp_edit_data:
             true_edit_data[sent_id].add((start_pos, end_pos))
+            true_edit_data1[sent_id].append((start_pos, end_pos))
+
+        for sent_id, true_sent_edit_data in true_edit_data.iteritems():
+            if len(true_sent_edit_data) != len(true_edit_data1[sent_id]):
+                print sent_id
 
         for sent_id, true_sent_edit_data in true_edit_data.iteritems():
             if sent_id in position_data:
