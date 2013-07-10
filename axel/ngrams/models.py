@@ -36,11 +36,9 @@ class Ngram(models.Model):
         :param text: text to parse, can be more than on sentence.
         """
         existing = set(Ngram.objects.values_list("value", flat=True))
-        sentence = re.sub(r'[!.?]', '. ', sent)
-        sentence = sentence.strip()
-        if not sentence:
+        if not sent:
             return
-        pos_tag_sents = nltk.pos_tag(nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP))
+        pos_tag_sents = nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP))
         # join ngrams with tags
         pos_tag_sents = ['/'.join(x) for x in pos_tag_sents]
         pos_tag_sents = [list(x[1]) for x in itertools.groupby(pos_tag_sents,
@@ -69,7 +67,6 @@ class Sentence(models.Model):
     @classmethod
     def _tokenize(cls, sentence):
         """Tokenize sentence and return lists of tokens."""
-        sentence = re.sub(r'[!.?]', '. ', sentence)
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
         tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda y: Ngram.PUNKT_RE.match(y))
                   if not x[0]]
@@ -80,7 +77,6 @@ class Sentence(models.Model):
         """
         Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
         """
-        sentence = re.sub(r'[!.?]', '. ', sentence)
         positional_tokens = []
         for match in re.finditer(nlp.Stemmer.TOKENIZE_REGEXP, sentence):
             positional_tokens.append((match.group(), match.start(), match.end()))

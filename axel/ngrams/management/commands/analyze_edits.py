@@ -8,7 +8,7 @@ import difflib
 from axel.ngrams.models import Sentence, Edit
 
 FILTER_REGEX = re.compile(r'[^\w]')
-SENTENCE_REGEX = re.compile(r'([.!?])(?:[A-Z]| [A-Z])')
+SENTENCE_REGEX = re.compile(r'\?|(?:([.!])(?:[A-Z]| [A-Z]))')
 LINE_END_REPLACE_REGEX = re.compile(r'(?P<end>[.?!])(\\r\\n)+')
 MULTIPLE_PUNCT_REGEX = re.compile(r'([.!?])+')
 
@@ -59,6 +59,7 @@ class Command(BaseCommand):
                 line = line[1:-1]
                 for edit in line.split('|||'):
                     edit1, edit2 = edit.split(';;;')
+
                     sentences1 = [c.start()+1 for c in SENTENCE_REGEX.finditer(edit1)]
                     sentences2 = [c.start()+1 for c in SENTENCE_REGEX.finditer(edit2)]
 
