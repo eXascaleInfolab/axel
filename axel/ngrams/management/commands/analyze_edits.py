@@ -5,6 +5,7 @@ from collections import Counter
 from django.core.management.base import BaseCommand
 
 import difflib
+from django.db import IntegrityError
 from axel.ngrams.models import Sentence, Edit
 
 FILTER_REGEX = re.compile(r'[^\w]')
@@ -79,6 +80,9 @@ class Command(BaseCommand):
                             sentence1 = self._get_sentence(edit1, sentences1, i1)
                             sentence2 = self._get_sentence(edit2, sentences2, j1)
 
+                            if not sentence2:
+                                continue
+
                             # get sentence index and subtract it because index is absolute
                             sentence1_index = edit1.index(sentence1)
                             sentence2_index = edit2.index(sentence2)
@@ -107,8 +111,11 @@ class Command(BaseCommand):
                     sen = Sentence.objects.get(sentence1=sentence1, sentence2=sentence2)
                 except Sentence.DoesNotExist:
                     sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
-                Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit,
+                try:
+                    Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit,
                                     start_pos_orig=edit_info[0], end_pos_orig=edit_info[1],
                                     start_pos_new=edit_info[2], end_pos_new=edit_info[3])
+                except IntegrityError:
+                    print sen, edit_info
                 i += 1
         print "Total edits created:", i
