@@ -136,11 +136,14 @@ class Sentence(models.Model):
 
                     rank_attr = getattr(ngram_obj, config['rank_attr'])
 
+                    add = True
                     for pipeline_func in config['pipeline']:
                         if not getattr(ngram_obj, pipeline_func):
-                            continue
+                            add = False
+                            break
 
-                    position_data[i].append({'position': ngram_pos, 'rank_attr': rank_attr})
+                    if add:
+                        position_data[i].append({'position': ngram_pos, 'rank_attr': rank_attr})
 
         position_data = dict([(i, sorted(ngrams, key=lambda x: x['rank_attr']))
                               for i, ngrams in position_data.items()])
