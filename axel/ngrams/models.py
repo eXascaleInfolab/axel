@@ -111,11 +111,11 @@ class Sentence(models.Model):
                      sorted(scores.items(), key=lambda x: x[0])])
 
     @classmethod
-    def get_positional_metrics_data(cls, function='prob_sorted_ngrams'):
+    def get_positional_metrics_data(cls, config):
         """Gets positional data to calculate metrics"""
         positional_data = {}
         for sentence in cls.objects.all():
-            pos_sent_data = getattr(sentence, function)()
+            pos_sent_data = sentence.prob_sorted_ngrams(config)
             if pos_sent_data:
                 positional_data[sentence.id] = [pos_sent_data]
         return positional_data
