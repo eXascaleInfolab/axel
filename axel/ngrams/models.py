@@ -14,7 +14,7 @@ ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252
                                                 'bing-body/apr10/5')
 
 
-CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},
+CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (123, 205, 272)
                     'filter_NNP': {'rank_attr': 'log_prob',
                     'pipeline': ['is_not_proper_noun']},
                     #  {'name': 'decay_progr_prob+NNP', 'rank_attr': '????', 'pipeline': []}
@@ -90,7 +90,8 @@ class Sentence(models.Model):
         Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
         """
         positional_tokens = []
-        for match in re.finditer(nlp.Stemmer.TOKENIZE_REGEXP, sentence):
+        tokenize_regex = re.compile(nlp.Stemmer.TOKENIZE_REGEXP)
+        for match in tokenize_regex.finditer(sentence):
             positional_tokens.append((match.group(), match.start(), match.end()))
 
         tokens = [list(x[1]) for x in
@@ -119,7 +120,6 @@ class Sentence(models.Model):
             if pos_sent_data:
                 positional_data[sentence.id] = [pos_sent_data]
         return positional_data
-
 
     def prob_sorted_ngrams(self, config):
         """Returns diverging ngrams in the sentence"""
