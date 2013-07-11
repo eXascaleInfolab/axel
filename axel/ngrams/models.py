@@ -14,6 +14,13 @@ ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252
                                                 'bing-body/apr10/5')
 
 
+CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},
+                    'filter_NNP': {'rank_attr': 'log_prob',
+                    'pipeline': ['is_not_proper_noun']},
+                    #  {'name': 'decay_progr_prob+NNP', 'rank_attr': '????', 'pipeline': []}
+                    }
+
+
 class Ngram(models.Model):
     """Describes ngram"""
     value = models.TextField()
@@ -29,6 +36,11 @@ class Ngram(models.Model):
     def __unicode__(self):
         """String representation"""
         return self.value
+
+    @property
+    def is_not_proper_noun(self):
+        """Checks if ngram contains proper noun in it"""
+        return 'NNP' not in self.pos_seq
 
     @classmethod
     def create_from_sentence(cls, sent):
@@ -108,7 +120,8 @@ class Sentence(models.Model):
                 positional_data[sentence.id] = [pos_sent_data]
         return positional_data
 
-    def prob_sorted_ngrams(self):
+
+    def prob_sorted_ngrams(self, config):
         """Returns diverging ngrams in the sentence"""
         # TODO: Exclude 100 most frequent words?
 
@@ -118,20 +131,27 @@ class Sentence(models.Model):
             for i in range(1, 6):
                 for ngram_pos in nltk.ngrams(tokens, i):
                     ngram = ' '.join(zip(*ngram_pos)[0])
-                    log_prob = Ngram.objects.get(value=ngram).log_prob
+                    ngram_obj = Ngram.objects.get(value=ngram)
                     # report ngram with position
-                    position_data[i].append((ngram_pos, log_prob))
 
-        position_data = dict([(i, sorted(ngrams, key=lambda x: x[1]))
+                    rank_attr = getattr(ngram_obj, config['rank_attr'])
+
+                    for pipeline_func in config['pipeline']:
+                        if not getattr(ngram_obj, pipeline_func):
+                            continue
+
+                    position_data[i].append({'position': ngram_pos, 'rank_attr': rank_attr})
+
+        position_data = dict([(i, sorted(ngrams, key=lambda x: x['rank_attr']))
                               for i, ngrams in position_data.items()])
 
         try:
-            lowest_bigram = position_data[2][0][0]
+            lowest_bigram = position_data[2][0]['position']
         except:
             return
         return (lowest_bigram[0][1], lowest_bigram[1][2])
 
-    def small_likelihood_ratio(self):
+    def small_likelihood_ratio(self, ngram_obj):
         """
         Tries to identify errors using likelihood ration test under binomial distribution assumption
         """
