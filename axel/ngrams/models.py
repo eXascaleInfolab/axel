@@ -226,6 +226,9 @@ class Edit(models.Model):
         for sent_id, true_sent_edit_data in true_edit_data.iteritems():
             if sent_id in position_data:
                 sent_edit_data = sorted(position_data[sent_id])
+                # -----DEBUG INFO - for printing FP
+                debug_sent_edit_data = sent_edit_data[:]
+                # ----- END DEBUG
                 index = 0
                 sent_tp_count = 0
                 for true_start_pos, true_end_pos in sorted(true_sent_edit_data):
@@ -235,12 +238,15 @@ class Edit(models.Model):
                         tp += 1
                         sent_tp_count += 1
                         index += 1
+                        del debug_sent_edit_data[index]
                     else:
-                        print sent_edit_data[index]
-                        print true_start_pos, true_end_pos
-                        print Sentence.objects.get(id=sent_id)
                         fn += 1
                 fp += len(sent_edit_data) - sent_tp_count
+                if debug_sent_edit_data:
+                    sent = Sentence.objects.get(id=sent_id).sentence1
+                    print sent
+                    for start_pos, end_pos in debug_sent_edit_data:
+                        print sent[start_pos:end_pos], start_pos, end_pos
             else:
                 fn += len(true_sent_edit_data)
         return tp, fp, fn
