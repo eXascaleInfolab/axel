@@ -5,7 +5,7 @@
     {# display divergence iterator #}
     <p class="lead">{{ sentence }}</p>
     <ul class="unstyled">
-        {% for ngram in sentence.less_than_random_ngrams %}
+        {% for ngram in sentence.prob_sorted_ngrams %}
             <li>
                 {{ ngram }}
             </li>

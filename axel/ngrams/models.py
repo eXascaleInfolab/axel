@@ -13,10 +13,10 @@ from axel.libs import nlp
 ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252534df',
                                                 'bing-body/apr10/5')
 
-
+                                                                          #  TP   FP   TN
 CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (123, 205, 272)
                     'filter_NNP': {'rank_attr': 'log_prob',
-                    'pipeline': ['is_not_proper_noun']},
+                    'pipeline': ['is_not_proper_noun']},                  # (131, 195, 264)
                     #  {'name': 'decay_progr_prob+NNP', 'rank_attr': '????', 'pipeline': []}
                     }
 
@@ -121,7 +121,7 @@ class Sentence(models.Model):
                 positional_data[sentence.id] = [pos_sent_data]
         return positional_data
 
-    def prob_sorted_ngrams(self, config):
+    def prob_sorted_ngrams(self, config=CONFIG_PIPELINES['simple']):
         """Returns diverging ngrams in the sentence"""
         # TODO: Exclude 100 most frequent words?
 
@@ -143,10 +143,26 @@ class Sentence(models.Model):
                             break
 
                     if add:
-                        position_data[i].append({'position': ngram_pos, 'rank_attr': rank_attr})
+                        position_data[i].append({'position': ngram_pos,
+                                                 'ngram': ngram,
+                                                 'rank_attr': rank_attr})
 
-        position_data = dict([(i, sorted(ngrams, key=lambda x: x['rank_attr']))
-                              for i, ngrams in position_data.items()])
+        # add decaying probability to everything
+        for ngrams in position_data.values():
+            prob = 1
+            for ngram_dict in sorted(ngrams, key=lambda x: x['rank_attr']):
+                ngram_dict['dec_score'] = prob
+                prob /= 2
+
+        # update n-1 ngrams with decaying prob from high-order n-grams
+        index_order = sorted(position_data.keys())
+
+        # ngram are ordered in a sentence order
+        for index in index_order[1:]:
+            for j, ngram_dict in enumerate(position_data[index]):
+                prob = ngram_dict['dec_score']
+                for i, _ in enumerate(nltk.ngrams(zip(*ngram_dict['position'])[0], index-1)):
+                    position_data[index-1][i+j]['dec_score'] += prob
 
         try:
             lowest_bigram = position_data[2][0]['position']
