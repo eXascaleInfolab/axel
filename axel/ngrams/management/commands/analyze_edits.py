@@ -52,7 +52,8 @@ class Command(BaseCommand):
                 # treat line breaks as sentences
                 line = line.strip()
                 line = LINE_END_REPLACE_REGEX.sub('\g<end>', line)
-                line = line.replace('\\r\\n', '')
+                # replace line breaks and special formatting
+                line = line.replace('\\r\\n', '').replace('*', '')
                 line = MULTIPLE_PUNCT_REGEX.sub('\g<1>', line)
                 if not line or line == "null":
                     continue
