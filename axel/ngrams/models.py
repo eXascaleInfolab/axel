@@ -87,7 +87,9 @@ class NgramWrapper(dict):
 
 class Sentence(models.Model):
     sentence1 = models.TextField()
+    sentence1_pos_seq = models.CharField(max_length=255)
     sentence2 = models.TextField()
+    sentence2_pos_seq = models.CharField(max_length=255)
 
     def __unicode__(self):
         """String representation"""
