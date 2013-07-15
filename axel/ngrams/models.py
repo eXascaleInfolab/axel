@@ -115,13 +115,14 @@ class Sentence(models.Model):
     def get_positional_metrics_data(cls, config):
         """Gets positional data to calculate metrics"""
         positional_data = {}
+        ngram_dict = dict([(ngram.value, ngram) for ngram in Ngram.objects.all()])
         for sentence in cls.objects.all():
-            pos_sent_data = sentence.prob_sorted_ngrams(config)
+            pos_sent_data = sentence.prob_sorted_ngrams(ngram_dict, config)
             if pos_sent_data:
                 positional_data[sentence.id] = [pos_sent_data]
         return positional_data
 
-    def prob_sorted_ngrams(self, config=CONFIG_PIPELINES['simple']):
+    def prob_sorted_ngrams(self, ngrams_all, config=CONFIG_PIPELINES['simple']):
         """Returns diverging ngrams in the sentence"""
         # TODO: Exclude 100 most frequent words?
 
@@ -131,7 +132,7 @@ class Sentence(models.Model):
             for i in range(1, 6):
                 for ngram_pos in nltk.ngrams(tokens, i):
                     ngram = ' '.join(zip(*ngram_pos)[0])
-                    ngram_obj = Ngram.objects.get(value=ngram)
+                    ngram_obj = ngrams_all[ngram]
                     # report ngram with position
 
                     rank_attr = getattr(ngram_obj, config['rank_attr'])
