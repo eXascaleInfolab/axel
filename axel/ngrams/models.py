@@ -237,8 +237,8 @@ class Edit(models.Model):
                     elif true_start_pos >= sent_edit_data[index][0] and true_end_pos <= sent_edit_data[index][1]:
                         tp += 1
                         sent_tp_count += 1
-                        index += 1
                         del debug_sent_edit_data[index]
+                        index += 1
                     else:
                         fn += 1
                 fp += len(sent_edit_data) - sent_tp_count
