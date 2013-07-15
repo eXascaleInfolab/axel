@@ -248,6 +248,7 @@ class Edit(models.Model):
                     print sent
                     for start_pos, end_pos in debug_sent_edit_data:
                         print sent[start_pos:end_pos], start_pos, end_pos
+                    print
             else:
                 fn += len(true_sent_edit_data)
         return tp, fp, fn
