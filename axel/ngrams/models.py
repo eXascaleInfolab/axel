@@ -14,7 +14,7 @@ ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252
                                                 'bing-body/apr10/5')
 
                                                                           #  TP   FP   TN
-CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (123, 205, 272)
+CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (122, 206, 273)
                     'filter_NNP': {'rank_attr': 'log_prob',
                     'pipeline': ['is_not_proper_noun']},                  # (131, 195, 264)
                     #  {'name': 'decay_progr_prob+NNP', 'rank_attr': '????', 'pipeline': []}
@@ -68,6 +68,18 @@ class Ngram(models.Model):
                         existing.add(ngram)
 
 
+class NgramWrapper(dict):
+    """
+    Dict wrapper that either retrieves objects from the provided dict or from Ngram model.
+    """
+    def __getitem__(self, key):
+        """ return item from the dict, if not present check ngram model """
+        try:
+            return dict.__getitem__(self, key)
+        except KeyError:
+            return Ngram.objects.get(value=key)
+
+
 class Sentence(models.Model):
     sentence1 = models.TextField()
     sentence2 = models.TextField()
@@ -115,16 +127,19 @@ class Sentence(models.Model):
     def get_positional_metrics_data(cls, config):
         """Gets positional data to calculate metrics"""
         positional_data = {}
-        ngram_dict = dict([(ngram.value, ngram) for ngram in Ngram.objects.all()])
+        ngram_dict = NgramWrapper([(ngram.value, ngram) for ngram in Ngram.objects.all()])
         for sentence in cls.objects.all():
             pos_sent_data = sentence.prob_sorted_ngrams(ngram_dict, config)
             if pos_sent_data:
                 positional_data[sentence.id] = [pos_sent_data]
         return positional_data
 
-    def prob_sorted_ngrams(self, ngrams_all, config=CONFIG_PIPELINES['simple']):
+    def prob_sorted_ngrams(self, ngrams_all=None, config=CONFIG_PIPELINES['filter_NNP']):
         """Returns diverging ngrams in the sentence"""
         # TODO: Exclude 100 most frequent words?
+
+        if ngrams_all is None:
+            ngrams_all = NgramWrapper()
 
         # sentence can contain more than one sequence of tokens
         position_data = defaultdict(list)
@@ -166,7 +181,7 @@ class Sentence(models.Model):
                     position_data[index-1][i+j]['dec_score'] += prob
 
         try:
-            lowest_bigram = position_data[2][0]['position']
+            lowest_bigram = sorted(position_data[2], key=lambda x: x['rank_attr'])[0]['position']
         except:
             return
         return (lowest_bigram[0][1], lowest_bigram[1][2])
