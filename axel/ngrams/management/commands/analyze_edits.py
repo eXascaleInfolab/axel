@@ -29,10 +29,10 @@ class Command(BaseCommand):
                 return text[sentences[i-1]:index].strip()
 
         if not sentences:
-            return text
+            return text.strip()
         else:
             # we have sentences but the index is bigger
-            return text[sentences[-1]:]
+            return text[sentences[-1]:].strip()
 
     def _debug_check_sentence(self, sentences, edit):
         if sentences:
