@@ -42,6 +42,11 @@ class Ngram(models.Model):
         """Checks if ngram contains proper noun in it"""
         return 'NNP' not in self.pos_seq
 
+    @property
+    def is_not_digit(self):
+        """Check if ngram contains digit"""
+        return re.search(r'\d', self.value)
+
     @classmethod
     def create_from_sentence(cls, sent):
         """
@@ -165,7 +170,7 @@ class Sentence(models.Model):
 
         # add decaying probability to everything
         for ngrams in position_data.values():
-            prob = 1
+            prob = -1
             for ngram_dict in sorted(ngrams, key=lambda x: x['rank_attr']):
                 ngram_dict['dec_score'] = prob
                 prob /= 2
