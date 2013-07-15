@@ -81,7 +81,7 @@ class Command(BaseCommand):
                             sentence1 = self._get_sentence(edit1, sentences1, i1)
                             sentence2 = self._get_sentence(edit2, sentences2, j1)
 
-                            if not sentence2:
+                            if not sentence2 or not sentence1:
                                 continue
 
                             # get sentence index and subtract it because index is absolute
