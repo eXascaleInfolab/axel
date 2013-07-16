@@ -90,10 +90,6 @@ class Command(BaseCommand):
                             sentence1_index = edit1.index(sentence1)
                             sentence2_index = edit2.index(sentence2)
 
-                            # lowercase first letter to not pos tag improperly
-                            sentence1 = sentence1[0].lower() + sentence1[1:]
-                            sentence2 = sentence2[0].lower() + sentence2[1:]
-
                             edit_info = (i1-sentence1_index, i2-sentence1_index,
                                          j1-sentence2_index, j2-sentence2_index)
 

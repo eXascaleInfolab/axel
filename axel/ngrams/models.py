@@ -1,12 +1,17 @@
+# coding=utf-8
 from __future__ import division
+
 from collections import defaultdict
 import nltk
 import re
 import itertools
+import MicrosoftNgram
+from jsonfield import JSONField
 from nltk.metrics.association import BigramAssocMeasures as bigram_assoc
 
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.db import models
-import MicrosoftNgram
 
 from axel.libs import nlp
 
@@ -25,7 +30,6 @@ class Ngram(models.Model):
     """Describes ngram"""
     value = models.TextField()
     log_prob = models.FloatField()
-    pos_seq = models.CharField(max_length=255)
 
     PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\.?!,":;()\'|]+')
 
@@ -48,29 +52,29 @@ class Ngram(models.Model):
         return re.search(r'\d', self.value)
 
     @classmethod
-    def create_from_sentence(cls, sent):
+    def create_from_sentence(cls, pos_tag_sents):
         """
-        :param text: text to parse, can be more than on sentence.
+        :param pos_tag_sents: sentence to parse, in JSON POS-tagged format, for example:
+                              [('I', 'PRP'), ('have', 'VBP'), ('a', 'DT'), ('dog', 'NN')].
         """
         existing = set(Ngram.objects.values_list("value", flat=True))
-        if not sent:
-            return
-        pos_tag_sents = nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP))
         # join ngrams with tags
         pos_tag_sents = ['/'.join(x) for x in pos_tag_sents]
         pos_tag_sents = [list(x[1]) for x in itertools.groupby(pos_tag_sents,
-                                            lambda x: cls.PUNKT_RE.match(x)) if not x[0]]
+                                                lambda x: cls.PUNKT_RE.match(x)) if not x[0]]
         for pos_tag_sent in pos_tag_sents:
             for i in range(1, 6):
                 for pos_ngram in nltk.ngrams(pos_tag_sent, i):
-                    ngram, pos_seq = zip(*[x.rsplit('/', 1) for x in pos_ngram])
-                    ngram = u' '.join(ngram)
-                    pos_seq = u' '.join(pos_seq)
+                    ngram = zip(*[x.rsplit('/', 1) for x in pos_ngram])[0]
+                    ngram = u' '.join(ngram).lower()
                     if ngram not in existing:
                         log_prob = ms_ngram_service.GetJointProbability(ngram.encode('utf-8'))
-                        print ngram, log_prob, pos_seq
-                        Ngram.objects.create(value=ngram, log_prob=log_prob, pos_seq=pos_seq)
+                        print ngram, log_prob
+                        Ngram.objects.create(value=ngram, log_prob=log_prob)
                         existing.add(ngram)
+
+    def get_POS_tag(self, sentence, position):
+        pass
 
 
 class NgramWrapper(dict):
@@ -100,21 +104,6 @@ class Sentence(models.Model):
         """Tokenize sentence and return lists of tokens."""
         tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
         tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda y: Ngram.PUNKT_RE.match(y))
-                  if not x[0]]
-        return tokens
-
-    @classmethod
-    def _tokenize_positions(cls, sentence):
-        """
-        Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
-        """
-        positional_tokens = []
-        tokenize_regex = re.compile(nlp.Stemmer.TOKENIZE_REGEXP)
-        for match in tokenize_regex.finditer(sentence):
-            positional_tokens.append((match.group(), match.start(), match.end()))
-
-        tokens = [list(x[1]) for x in
-                  itertools.groupby(positional_tokens, lambda y: Ngram.PUNKT_RE.match(y[0]))
                   if not x[0]]
         return tokens
 
@@ -212,24 +201,38 @@ class Edit(models.Model):
         (REPLACE, 'replace'),
     )
     edit_type = models.CharField(max_length=3, choices=EDIT_TYPES)
-    start_pos_orig = models.IntegerField()
-    end_pos_orig = models.IntegerField()
-    start_pos_new = models.IntegerField()
-    end_pos_new = models.IntegerField()
+    edit_data = JSONField()
     sentence = models.ForeignKey(Sentence)
     edit1 = models.CharField(max_length=255)
     # Edit2 is not null when type is REPLACE
     edit2 = models.CharField(max_length=255, null=True)
 
-    class Meta:
-        unique_together = ('sentence', 'start_pos_orig', 'end_pos_orig')
+    def __unicode__(self):
+        orig_ngram = self.edit_data['orig']['word']
+        new_ngram = self.edit_data['new']['word']
+        return orig_ngram + u' → ' + new_ngram
+
+    @classmethod
+    def _tokenize_positions(cls, sentence):
+        """
+        Tokenize sentence and return lists of tokens with corresponding positions in the sentence.
+        """
+        positional_tokens = []
+        tokenize_regex = re.compile(nlp.Stemmer.TOKENIZE_REGEXP)
+        for match in tokenize_regex.finditer(sentence):
+            positional_tokens.append((match.group(), match.start(), match.end()))
+
+        tokens = [list(x[1]) for x in
+                  itertools.groupby(positional_tokens, lambda y: Ngram.PUNKT_RE.match(y[0]))
+                  if not x[0]]
+        return tokens
 
     @classmethod
     def calculate_positional_metrics(cls, position_data):
         """
         Calculate precision and recall given the positional data for
         possible incorrect places in the data.
-        :param position_data: of form {sentence_id: set((start_pos, end_pos), ...), ...}
+        :param position_data: of form {sentence_id: {1: [(GROUP_NUM, NGRAM_NUM), ...], ...}, ...}
         :type position_data: dict
         """
         tp = 0
@@ -283,3 +286,44 @@ class Edit(models.Model):
         recall = len(orig_edit_data - edit_data) / edit_data
 
         return precision, recall
+
+
+@receiver(pre_save, sender=Edit)
+def populate_extra_fields(sender=None, instance=None, **kwargs):
+    """
+    :type instance: Edit
+    """
+    sentence = instance.sentence
+
+    def get_edited_unigram(sentence, start_pos, end_pos):
+        for i, part in enumerate(Edit._tokenize_positions(sentence)):
+            j = 0
+            for word, w_start, w_end in part:
+                if w_start <= start_pos and w_end >= end_pos:
+                    return i, j, word
+                j += 1
+    edit_data = instance.edit_data
+    unigram_data = get_edited_unigram(sentence.sentence1, edit_data['orig']['start_pos'], edit_data['orig']['end_pos'])
+    if unigram_data:
+        edit_data['orig']['group'], edit_data['orig']['serial'], edit_data['orig']['word'] = unigram_data
+    else:
+        edit_data['orig']['word'] = ''
+
+    unigram_data = get_edited_unigram(sentence.sentence2, edit_data['new']['start_pos'], edit_data['new']['end_pos'])
+    if unigram_data:
+        edit_data['new']['group'], edit_data['new']['serial'], edit_data['new']['word'] = unigram_data
+    else:
+        edit_data['new']['word'] = ''
+    instance.edit_data = edit_data
+
+
+@receiver(pre_save, sender=Sentence)
+def extra_sentence_normalization(sender=None, instance=None, **kwargs):
+    """
+    :type instance: Sentence
+    """
+    # lowercase first letter to not pos tag improperly
+    if not instance.sentence1.startswith('I '):
+        instance.sentence1 = instance.sentence1[0].lower() + instance.sentence1[1:]
+    if not instance.sentence2.startswith('I '):
+        instance.sentence2 = instance.sentence2[0].lower() + instance.sentence2[1:]
