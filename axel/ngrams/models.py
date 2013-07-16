@@ -59,9 +59,9 @@ class Ngram(models.Model):
         :param sentence: sentence to parse.
         """
         existing = set(Ngram.objects.values_list("value", flat=True))
-        for tokens in Sentence._tokenize(sentence):
+        for tokens in Sentence._tokenize_pos_tags(sentence):
             for i in range(1, 6):
-                for ngram in nltk.ngrams(tokens, i):
+                for ngram in nltk.ngrams(zip(*tokens)[0], i):
                     ngram = u' '.join(ngram).lower()
                     if ngram not in existing:
                         log_prob = ms_ngram_service.GetJointProbability(ngram.encode('utf-8'))
@@ -76,6 +76,7 @@ class NgramWrapper(dict):
     """
     def __getitem__(self, key):
         """ return item from the dict, if not present check ngram model """
+        key = key.lower()
         try:
             return dict.__getitem__(self, key)
         except KeyError:
@@ -93,10 +94,21 @@ class Sentence(models.Model):
         return self.sentence1
 
     @classmethod
-    def _tokenize(cls, sentence):
-        """Tokenize sentence and return lists of tokens."""
-        tokens = nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP)
-        tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda y: Ngram.PUNKT_RE.match(y))
+    def _tokenize_pos_tags(cls, sentence):
+        """
+        Tokenize sentence and return lists of tokens.
+        :return: list of POS tagged ngrams splitted on punctuation
+         [[('this', 'DT'),
+          ('puts', 'NNS'),
+          ('the', 'DT'),
+          ('calendar', 'NN'),
+          ('into', 'IN')],
+         [('My', 'NNP'), ('Calendars', 'NNP')],
+         [('for', 'IN'), ('both', 'DT'), ('users', 'NNS')],
+         [('calendars', 'NNS')]]
+        """
+        tokens = nltk.pos_tag(nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP))
+        tokens = [list(x[1]) for x in itertools.groupby(tokens, lambda y: Ngram.PUNKT_RE.match(y[0]))
                   if not x[0]]
         return tokens
 
@@ -104,9 +116,9 @@ class Sentence(models.Model):
     def get_sentence_prob(cls, sentence):
         """Return averaged probability scores for the sentence using 2- to 5-ngram splits"""
         scores = defaultdict(list)
-        for tokens in Sentence._tokenize(sentence):
+        for tokens in Sentence._tokenize_pos_tags(sentence):
             for i in range(1, 6):
-                for ngram in nltk.ngrams(tokens, i):
+                for ngram in nltk.ngrams(zip(*tokens)[0], i):
                     log_prob = Ngram.objects.get(value=' '.join(ngram)).log_prob
                     scores[i].append(10**log_prob)
         return dict([(i, sum(probs)/len(probs) if probs else 0) for i, probs in
@@ -132,11 +144,12 @@ class Sentence(models.Model):
 
         # sentence can contain more than one sequence of tokens
         position_data = defaultdict(list)
-        for tokens in Sentence._tokenize(self.sentence1):
+        for tokens in Sentence._tokenize_pos_tags(self.sentence1):
             for i in range(1, 6):
                 for ngram_pos in nltk.ngrams(tokens, i):
                     ngram = ' '.join(zip(*ngram_pos)[0])
                     ngram_obj = ngrams_all[ngram]
+                    ngram_obj.pos_seq = zip(*ngram_pos)[1]
                     # report ngram with position
 
                     rank_attr = getattr(ngram_obj, config['rank_attr'])
@@ -231,12 +244,11 @@ class Edit(models.Model):
         tp = 0
         fp = 0
         fn = 0
-        temp_edit_data = cls.objects.values_list('sentence', 'start_pos_orig', 'end_pos_orig')
         true_edit_data = defaultdict(set)
         true_edit_data1 = defaultdict(list)
-        for sent_id, start_pos, end_pos in temp_edit_data:
-            true_edit_data[sent_id].add((start_pos, end_pos))
-            true_edit_data1[sent_id].append((start_pos, end_pos))
+        for edit in cls.objects.all():
+            true_edit_data[edit.sentence_id].add((start_pos, end_pos))
+            true_edit_data1[edit.sentence_id].append((start_pos, end_pos))
 
         for sent_id, true_sent_edit_data in true_edit_data.iteritems():
             if len(true_sent_edit_data) != len(true_edit_data1[sent_id]):
@@ -321,5 +333,5 @@ def extra_sentence_normalization(sender=None, instance=None, **kwargs):
     if not instance.sentence2.startswith('I '):
         instance.sentence2 = instance.sentence2[0].lower() + instance.sentence2[1:]
 
-    instance.sentence1_pos_seq = nltk.pos_tag(nltk.regexp_tokenize(instance.sentence1, nlp.Stemmer.TOKENIZE_REGEXP))
-    instance.sentence2_pos_seq = nltk.pos_tag(nltk.regexp_tokenize(instance.sentence2, nlp.Stemmer.TOKENIZE_REGEXP))
+    instance.sentence1_pos_seq = Sentence._tokenize_pos_tags(instance.sentence1)
+    instance.sentence2_pos_seq = Sentence._tokenize_pos_tags(instance.sentence2)
