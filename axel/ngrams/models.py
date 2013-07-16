@@ -44,6 +44,7 @@ class Ngram(models.Model):
     @property
     def is_not_proper_noun(self):
         """Checks if ngram contains proper noun in it"""
+        # POS seq attribute need to be set before calling this function
         return 'NNP' not in self.pos_seq
 
     @property
@@ -52,29 +53,21 @@ class Ngram(models.Model):
         return re.search(r'\d', self.value)
 
     @classmethod
-    def create_from_sentence(cls, pos_tag_sents):
+    def create_from_sentence(cls, sentence):
         """
-        :param pos_tag_sents: sentence to parse, in JSON POS-tagged format, for example:
-                              [('I', 'PRP'), ('have', 'VBP'), ('a', 'DT'), ('dog', 'NN')].
+        Generates all possible ngrams from a sentence and stores their probability in the DB.
+        :param sentence: sentence to parse.
         """
         existing = set(Ngram.objects.values_list("value", flat=True))
-        # join ngrams with tags
-        pos_tag_sents = ['/'.join(x) for x in pos_tag_sents]
-        pos_tag_sents = [list(x[1]) for x in itertools.groupby(pos_tag_sents,
-                                                lambda x: cls.PUNKT_RE.match(x)) if not x[0]]
-        for pos_tag_sent in pos_tag_sents:
+        for tokens in Sentence._tokenize(sentence):
             for i in range(1, 6):
-                for pos_ngram in nltk.ngrams(pos_tag_sent, i):
-                    ngram = zip(*[x.rsplit('/', 1) for x in pos_ngram])[0]
+                for ngram in nltk.ngrams(tokens, i):
                     ngram = u' '.join(ngram).lower()
                     if ngram not in existing:
                         log_prob = ms_ngram_service.GetJointProbability(ngram.encode('utf-8'))
                         print ngram, log_prob
                         Ngram.objects.create(value=ngram, log_prob=log_prob)
                         existing.add(ngram)
-
-    def get_POS_tag(self, sentence, position):
-        pass
 
 
 class NgramWrapper(dict):
@@ -91,9 +84,9 @@ class NgramWrapper(dict):
 
 class Sentence(models.Model):
     sentence1 = models.TextField()
-    sentence1_pos_seq = models.CharField(max_length=255)
+    sentence1_pos_seq = JSONField()
     sentence2 = models.TextField()
-    sentence2_pos_seq = models.CharField(max_length=255)
+    sentence2_pos_seq = JSONField()
 
     def __unicode__(self):
         """String representation"""
@@ -139,7 +132,7 @@ class Sentence(models.Model):
 
         # sentence can contain more than one sequence of tokens
         position_data = defaultdict(list)
-        for tokens in Sentence._tokenize_positions(self.sentence1):
+        for tokens in Sentence._tokenize(self.sentence1):
             for i in range(1, 6):
                 for ngram_pos in nltk.ngrams(tokens, i):
                     ngram = ' '.join(zip(*ngram_pos)[0])
@@ -327,3 +320,6 @@ def extra_sentence_normalization(sender=None, instance=None, **kwargs):
         instance.sentence1 = instance.sentence1[0].lower() + instance.sentence1[1:]
     if not instance.sentence2.startswith('I '):
         instance.sentence2 = instance.sentence2[0].lower() + instance.sentence2[1:]
+
+    instance.sentence1_pos_seq = nltk.pos_tag(nltk.regexp_tokenize(instance.sentence1, nlp.Stemmer.TOKENIZE_REGEXP))
+    instance.sentence2_pos_seq = nltk.pos_tag(nltk.regexp_tokenize(instance.sentence2, nlp.Stemmer.TOKENIZE_REGEXP))
