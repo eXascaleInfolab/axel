@@ -11,7 +11,7 @@ from axel.ngrams.models import Sentence, Edit
 FILTER_REGEX = re.compile(r'[^\w]')
 SENTENCE_REGEX = re.compile(r'\?|(?:([.!])(?:[A-Z]| [A-Z]))')
 LINE_END_REPLACE_REGEX = re.compile(r'(?P<end>[.?!])(\\r\\n)+')
-MULTIPLE_PUNCT_REGEX = re.compile(r'([.!?])+')
+MULTIPLE_PUNCT_REGEX = re.compile(r'([.!? ])+')
 
 
 class Command(BaseCommand):
@@ -117,9 +117,10 @@ class Command(BaseCommand):
                 except Sentence.DoesNotExist:
                     sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
                 try:
+                    edit_data = {'orig': {'start_pos': edit_info[0], 'end_pos': edit_info[1]},
+                                 'new': {'start_pos': edit_info[2], 'end_pos': edit_info[3]}}
                     Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit,
-                                    start_pos_orig=edit_info[0], end_pos_orig=edit_info[1],
-                                    start_pos_new=edit_info[2], end_pos_new=edit_info[3])
+                                        edit_data=edit_data)
                 except IntegrityError:
                     print sen, edit_info
                 i += 1
