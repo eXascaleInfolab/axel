@@ -135,7 +135,7 @@ class Sentence(models.Model):
                 positional_data[sentence.id] = [pos_sent_data]
         return positional_data
 
-    def prob_sorted_ngrams(self, ngrams_all=None, config=CONFIG_PIPELINES['filter_NNP']):
+    def prob_sorted_ngrams(self, ngrams_all=None, config=CONFIG_PIPELINES['simple']):
         """Returns diverging ngrams in the sentence"""
         # TODO: Exclude 100 most frequent words?
 
@@ -144,9 +144,9 @@ class Sentence(models.Model):
 
         # sentence can contain more than one sequence of tokens
         position_data = defaultdict(list)
-        for tokens in Sentence._tokenize_pos_tags(self.sentence1):
+        for group, tokens in enumerate(Sentence._tokenize_pos_tags(self.sentence1)):
             for i in range(1, 6):
-                for ngram_pos in nltk.ngrams(tokens, i):
+                for ngram_num, ngram_pos in enumerate(nltk.ngrams(tokens, i)):
                     ngram = ' '.join(zip(*ngram_pos)[0])
                     ngram_obj = ngrams_all[ngram]
                     ngram_obj.pos_seq = zip(*ngram_pos)[1]
@@ -161,7 +161,7 @@ class Sentence(models.Model):
                             break
 
                     if add:
-                        position_data[i].append({'position': ngram_pos,
+                        position_data[i].append({'position': (group, ngram_num),
                                                  'ngram': ngram,
                                                  'rank_attr': rank_attr})
 
@@ -179,14 +179,15 @@ class Sentence(models.Model):
         for index in index_order[1:]:
             for j, ngram_dict in enumerate(position_data[index]):
                 prob = ngram_dict['dec_score']
-                for i, _ in enumerate(nltk.ngrams(zip(*ngram_dict['position'])[0], index-1)):
+                # We always get only 2 n-1 grams out n-gram.
+                for i in range(2):
                     position_data[index-1][i+j]['dec_score'] += prob
 
         try:
-            lowest_bigram = sorted(position_data[2], key=lambda x: x['rank_attr'])[0]['position']
+            lowest_bigram = sorted(position_data[2], key=lambda x: x['rank_attr'])[0]
         except:
             return
-        return (lowest_bigram[0][1], lowest_bigram[1][2])
+        return lowest_bigram
 
     def small_likelihood_ratio(self, ngram_obj):
         """
