@@ -321,6 +321,13 @@ def populate_extra_fields(sender=None, instance=None, **kwargs):
         edit_data['new']['word'] = ''
     instance.edit_data = edit_data
 
+    if edit_data['new']['word'] == '':
+        instance.edit_type = Edit.DELETE
+    elif edit_data['orig']['word'] == '':
+        instance.edit_type = Edit.INSERT
+    else:
+        instance.edit_type = Edit.REPLACE
+
 
 @receiver(pre_save, sender=Sentence)
 def extra_sentence_normalization(sender=None, instance=None, **kwargs):

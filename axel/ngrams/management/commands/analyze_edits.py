@@ -98,11 +98,9 @@ class Command(BaseCommand):
                                 #insertCounter.append(str2)
                                 #deleteCounter.append(str1)
                             elif tag == 'delete':
-                                totalCounter.append((str1, sentence1, sentence2,
-                                                     edit_info, Edit.DELETE))
+                                totalCounter.append((str1, sentence1, sentence2, edit_info))
                             elif tag == 'insert':
-                                totalCounter.append((str2, sentence1, sentence2,
-                                                     edit_info, Edit.INSERT))
+                                totalCounter.append((str2, sentence1, sentence2, edit_info))
 
         totalKeys = set([x[0] for x in Counter(zip(*totalCounter)[0]).iteritems() if x[1] > 1])
 
@@ -117,8 +115,7 @@ class Command(BaseCommand):
                 try:
                     edit_data = {'orig': {'start_pos': edit_info[0], 'end_pos': edit_info[1]},
                                  'new': {'start_pos': edit_info[2], 'end_pos': edit_info[3]}}
-                    Edit.objects.create(sentence=sen, edit_type=edit_type, edit1=edit,
-                                        edit_data=edit_data)
+                    Edit.objects.create(sentence=sen, edit1=edit, edit_data=edit_data)
                 except IntegrityError:
                     print sen, edit_info
                 i += 1
