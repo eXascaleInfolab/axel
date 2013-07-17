@@ -106,7 +106,7 @@ class Command(BaseCommand):
 
         i = 0
 
-        for edit, sentence1, sentence2, edit_info, edit_type in totalCounter:
+        for edit, sentence1, sentence2, edit_info in totalCounter:
             if edit in totalKeys:
                 try:
                     sen = Sentence.objects.get(sentence1=sentence1, sentence2=sentence2)
