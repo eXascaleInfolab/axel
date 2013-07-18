@@ -161,7 +161,7 @@ class Sentence(models.Model):
                             break
 
                     if add:
-                        position_data[i].append({'position': (group, ngram_num),
+                        position_data[i].append({'position': (i, group, ngram_num),
                                                  'ngram': ngram,
                                                  'rank_attr': rank_attr})
 
@@ -184,10 +184,10 @@ class Sentence(models.Model):
                     position_data[index-1][i+j]['dec_score'] += prob
 
         try:
-            lowest_bigram = sorted(position_data[2], key=lambda x: x['rank_attr'])[0]
+            results = [sorted(position_data[2], key=lambda x: x['rank_attr'])[0]]
         except:
             return
-        return lowest_bigram
+        return results
 
     def small_likelihood_ratio(self, ngram_obj):
         """
@@ -248,8 +248,8 @@ class Edit(models.Model):
         true_edit_data = defaultdict(set)
         true_edit_data1 = defaultdict(list)
         for edit in cls.objects.all():
-            true_edit_data[edit.sentence_id].add((start_pos, end_pos))
-            true_edit_data1[edit.sentence_id].append((start_pos, end_pos))
+            true_edit_data[edit.sentence_id].add(edit.edit_data['orig']['serial'])
+            true_edit_data1[edit.sentence_id].append(edit.edit_data['orig']['serial'])
 
         for sent_id, true_sent_edit_data in true_edit_data.iteritems():
             if len(true_sent_edit_data) != len(true_edit_data1[sent_id]):
@@ -257,16 +257,21 @@ class Edit(models.Model):
 
         for sent_id, true_sent_edit_data in true_edit_data.iteritems():
             if sent_id in position_data:
-                sent_edit_data = sorted(position_data[sent_id])
+                sent_edit_data = position_data[sent_id]
                 # -----DEBUG INFO - for printing FP
                 debug_sent_edit_data = sent_edit_data[:]
                 # ----- END DEBUG
                 index = 0
                 sent_tp_count = 0
-                for true_start_pos, true_end_pos in sorted(true_sent_edit_data):
+                for ngram_len, group_num, ngram_position in sorted(true_sent_edit_data):
                     if index >= len(sent_edit_data):
                         fn += 1
-                    elif true_start_pos >= sent_edit_data[index][0] and true_end_pos <= sent_edit_data[index][1]:
+                        continue
+
+                    pred_len, pred_group, pred_pos = sent_edit_data[index]['position']
+                    interval = [ngram_position, ngram_position + ngram_len - pred_len]
+
+                    if group_num == pred_group and min(interval) <= pred_pos <= max(interval):
                         tp += 1
                         sent_tp_count += 1
                         del debug_sent_edit_data[index]
@@ -277,8 +282,8 @@ class Edit(models.Model):
                 if debug_sent_edit_data:
                     sent = Sentence.objects.get(id=sent_id).sentence1
                     print sent
-                    for start_pos, end_pos in debug_sent_edit_data:
-                        print sent[start_pos:end_pos], start_pos, end_pos
+                    for x in debug_sent_edit_data:
+                        print x
                     print
             else:
                 fn += len(true_sent_edit_data)
@@ -306,28 +311,47 @@ def populate_extra_fields(sender=None, instance=None, **kwargs):
             j = 0
             for word, w_start, w_end in part:
                 if w_start <= start_pos and w_end >= end_pos:
-                    return i, j, word
+                    return (1, i, j), word
                 j += 1
     edit_data = instance.edit_data
+    """
+    :type: dict
+    """
+    instance.edit_type = Edit.REPLACE
+
     unigram_data = get_edited_unigram(sentence.sentence1, edit_data['orig']['start_pos'], edit_data['orig']['end_pos'])
     if unigram_data:
-        edit_data['orig']['group'], edit_data['orig']['serial'], edit_data['orig']['word'] = unigram_data
+        edit_data['orig']['serial'], edit_data['orig']['word'] = unigram_data
     else:
         edit_data['orig']['word'] = ''
+        instance.edit_type = Edit.INSERT
 
     unigram_data = get_edited_unigram(sentence.sentence2, edit_data['new']['start_pos'], edit_data['new']['end_pos'])
     if unigram_data:
-        edit_data['new']['group'], edit_data['new']['serial'], edit_data['new']['word'] = unigram_data
+        edit_data['new']['serial'], edit_data['new']['word'] = unigram_data
     else:
         edit_data['new']['word'] = ''
-    instance.edit_data = edit_data
-
-    if edit_data['new']['word'] == '':
+        # trigram
         instance.edit_type = Edit.DELETE
-    elif edit_data['orig']['word'] == '':
-        instance.edit_type = Edit.INSERT
-    else:
-        instance.edit_type = Edit.REPLACE
+
+    if instance.edit_type == Edit.INSERT:
+        _, group, serial = edit_data['new']['serial']
+        if serial == 0:
+            edit_data['orig']['serial'] = (1, group, 0)
+            edit_data['new']['serial'] = (2, group, 0)
+        # TODO: need to check if insert was at the the end
+        edit_data['orig']['serial'] = (2, group, serial-1)
+        edit_data['new']['serial'] = (3, group, serial-1)
+
+    if instance.edit_type == Edit.DELETE:
+        _, group, serial = edit_data['orig']['serial']
+        if serial == 0:
+            edit_data['orig']['serial'] = (2, group, 0)
+            edit_data['new']['serial'] = (1, group, 0)
+        # TODO: need to check if insert was at the the end
+        edit_data['orig']['serial'] = (3, group, serial-1)
+        edit_data['new']['serial'] = (2, group, serial-1)
+    instance.edit_data = edit_data
 
 
 @receiver(pre_save, sender=Sentence)
