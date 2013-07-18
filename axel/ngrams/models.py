@@ -340,18 +340,20 @@ def populate_extra_fields(sender=None, instance=None, **kwargs):
         if serial == 0:
             edit_data['orig']['serial'] = (1, group, 0)
             edit_data['new']['serial'] = (2, group, 0)
-        # TODO: need to check if insert was at the the end
-        edit_data['orig']['serial'] = (2, group, serial-1)
-        edit_data['new']['serial'] = (3, group, serial-1)
+        else:
+            # TODO: need to check if insert was at the the end
+            edit_data['orig']['serial'] = (2, group, serial-1)
+            edit_data['new']['serial'] = (3, group, serial-1)
 
     if instance.edit_type == Edit.DELETE:
         _, group, serial = edit_data['orig']['serial']
         if serial == 0:
             edit_data['orig']['serial'] = (2, group, 0)
             edit_data['new']['serial'] = (1, group, 0)
-        # TODO: need to check if insert was at the the end
-        edit_data['orig']['serial'] = (3, group, serial-1)
-        edit_data['new']['serial'] = (2, group, serial-1)
+        else:
+            # TODO: need to check if insert was at the the end
+            edit_data['orig']['serial'] = (3, group, serial-1)
+            edit_data['new']['serial'] = (2, group, serial-1)
     instance.edit_data = edit_data
 
 
