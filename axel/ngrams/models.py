@@ -56,18 +56,19 @@ class Ngram(models.Model):
     def create_from_sentence(cls, sentence):
         """
         Generates all possible ngrams from a sentence and stores their probability in the DB.
-        :param sentence: sentence to parse.
+        :param sentence: Sentence.
         """
         existing = set(Ngram.objects.values_list("value", flat=True))
-        for tokens in Sentence._tokenize_pos_tags(sentence):
-            for i in range(1, 6):
-                for ngram in nltk.ngrams(zip(*tokens)[0], i):
-                    ngram = u' '.join(ngram).lower()
-                    if ngram not in existing:
-                        log_prob = ms_ngram_service.GetJointProbability(ngram.encode('utf-8'))
-                        print ngram, log_prob
-                        Ngram.objects.create(value=ngram, log_prob=log_prob)
-                        existing.add(ngram)
+        for sent in (sentence.sentence1_pos_seq, sentence.sentence2_pos_seq):
+            for tokens in sent:
+                for i in range(1, 6):
+                    for ngram in nltk.ngrams(zip(*tokens)[0], i):
+                        ngram = u' '.join(ngram).lower()
+                        if ngram not in existing:
+                            log_prob = ms_ngram_service.GetJointProbability(ngram.encode('utf-8'))
+                            print ngram, log_prob
+                            Ngram.objects.create(value=ngram, log_prob=log_prob)
+                            existing.add(ngram)
 
 
 class NgramWrapper(dict):
