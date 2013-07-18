@@ -114,10 +114,10 @@ class Sentence(models.Model):
         return tokens
 
     @classmethod
-    def get_sentence_prob(cls, sentence):
+    def get_sentence_prob(cls, sentence_pos_seq):
         """Return averaged probability scores for the sentence using 2- to 5-ngram splits"""
         scores = defaultdict(list)
-        for tokens in Sentence._tokenize_pos_tags(sentence):
+        for tokens in sentence_pos_seq:
             for i in range(1, 6):
                 for ngram in nltk.ngrams(zip(*tokens)[0], i):
                     log_prob = Ngram.objects.get(value=' '.join(ngram)).log_prob
@@ -145,7 +145,7 @@ class Sentence(models.Model):
 
         # sentence can contain more than one sequence of tokens
         position_data = defaultdict(list)
-        for group, tokens in enumerate(Sentence._tokenize_pos_tags(self.sentence1)):
+        for group, tokens in enumerate(self.sentence1_pos_seq):
             for i in range(1, 6):
                 for ngram_num, ngram_pos in enumerate(nltk.ngrams(tokens, i)):
                     ngram = ' '.join(zip(*ngram_pos)[0])
