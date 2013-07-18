@@ -133,7 +133,7 @@ class Sentence(models.Model):
         for sentence in cls.objects.all():
             pos_sent_data = sentence.prob_sorted_ngrams(ngram_dict, config)
             if pos_sent_data:
-                positional_data[sentence.id] = [pos_sent_data]
+                positional_data[sentence.id] = pos_sent_data
         return positional_data
 
     def prob_sorted_ngrams(self, ngrams_all=None, config=CONFIG_PIPELINES['simple']):
@@ -249,7 +249,7 @@ class Edit(models.Model):
         true_edit_data = defaultdict(set)
         true_edit_data1 = defaultdict(list)
         for edit in cls.objects.all():
-            true_edit_data[edit.sentence_id].add(edit.edit_data['orig']['serial'])
+            true_edit_data[edit.sentence_id].add(tuple(edit.edit_data['orig']['serial']))
             true_edit_data1[edit.sentence_id].append(edit.edit_data['orig']['serial'])
 
         for sent_id, true_sent_edit_data in true_edit_data.iteritems():
