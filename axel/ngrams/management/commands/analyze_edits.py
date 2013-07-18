@@ -120,3 +120,5 @@ class Command(BaseCommand):
                     print sen, edit_info
                 i += 1
         print "Total edits created:", i
+
+        # TODO: may be filter EDITS afterwards to delete grouped edits
