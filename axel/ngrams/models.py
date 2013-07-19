@@ -186,7 +186,9 @@ class Sentence(models.Model):
 
         try:
             results = [sorted(position_data[2], key=lambda x: x['rank_attr'])[0]]
-        except:
+        except Exception, e:
+            print self.sentence1
+            print self.sentence2
             return
         return results
 
