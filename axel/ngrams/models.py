@@ -18,10 +18,12 @@ from axel.libs import nlp
 ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252534df',
                                                 'bing-body/apr10/5')
 
-                                                                          #  TP   FP   TN
-CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (122, 206, 273)
+                                                                          #  TP   FP   FN
+CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (133, 246, 255)
                     'filter_NNP': {'rank_attr': 'log_prob',
-                    'pipeline': ['is_not_proper_noun']},                  # (131, 195, 264)
+                    'pipeline': ['is_not_proper_noun']},                  # (143, 233, 245)
+                    'filter_NNP_digit': {'rank_attr': 'log_prob',
+                    'pipeline': ['is_not_proper_noun', 'is_not_digit']}   # (145, 231, 243)
                     #  {'name': 'decay_progr_prob+NNP', 'rank_attr': '????', 'pipeline': []}
                     }
 
@@ -50,7 +52,7 @@ class Ngram(models.Model):
     @property
     def is_not_digit(self):
         """Check if ngram contains digit"""
-        return re.search(r'\d', self.value)
+        return not re.search(r'\d', self.value)
 
     @classmethod
     def create_from_sentence(cls, sentence):
