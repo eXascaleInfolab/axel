@@ -285,8 +285,9 @@ class Edit(models.Model):
                         fn += 1
                 fp += len(sent_edit_data) - sent_tp_count
                 if debug_sent_edit_data:
-                    sent = Sentence.objects.get(id=sent_id).sentence1
-                    print sent
+                    sent = Sentence.objects.get(id=sent_id)
+                    print sent.sentence1
+                    print sent.sentence2
                     for x in debug_sent_edit_data:
                         print x
                     print
