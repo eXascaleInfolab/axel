@@ -48,7 +48,7 @@ class Command(BaseCommand):
 
         for edit_file in args:
             contents = open(edit_file).read()
-            contents.replace("I'm ", 'I am ').replace(" don't", " do not").replace(" doesn't", "does not")
+            contents.replace("I'm ", 'I am ').replace(" don't", " do not").replace(" doesn't", "does not").replace("can't ", 'can not')
             for line in contents.split('\n'):
                 # treat line breaks as sentences
                 line = line.strip()
@@ -102,23 +102,22 @@ class Command(BaseCommand):
                             elif tag == 'insert':
                                 totalCounter.append((str2, sentence1, sentence2, edit_info))
 
-        totalKeys = set([x[0] for x in Counter(zip(*totalCounter)[0]).iteritems() if x[1] > 1])
+        # totalKeys = set([x[0] for x in Counter(zip(*totalCounter)[0]).iteritems() if x[1] > 1])
 
         i = 0
 
         for edit, sentence1, sentence2, edit_info in totalCounter:
-            if edit in totalKeys:
-                try:
-                    sen = Sentence.objects.get(sentence1=sentence1, sentence2=sentence2)
-                except Sentence.DoesNotExist:
-                    sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
-                try:
-                    edit_data = {'orig': {'start_pos': edit_info[0], 'end_pos': edit_info[1]},
-                                 'new': {'start_pos': edit_info[2], 'end_pos': edit_info[3]}}
-                    Edit.objects.create(sentence=sen, edit1=edit, edit_data=edit_data)
-                except IntegrityError:
-                    print sen, edit_info
-                i += 1
+            try:
+                sen = Sentence.objects.get(sentence1=sentence1, sentence2=sentence2)
+            except Sentence.DoesNotExist:
+                sen = Sentence.objects.create(sentence1=sentence1, sentence2=sentence2)
+            try:
+                edit_data = {'orig': {'start_pos': edit_info[0], 'end_pos': edit_info[1]},
+                             'new': {'start_pos': edit_info[2], 'end_pos': edit_info[3]}}
+                Edit.objects.create(sentence=sen, edit1=edit, edit_data=edit_data)
+            except IntegrityError:
+                print sen, edit_info
+            i += 1
         print "Total edits created:", i
 
         # TODO: may be filter EDITS afterwards to delete grouped edits
