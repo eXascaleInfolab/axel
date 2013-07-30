@@ -19,11 +19,11 @@ ms_ngram_service = MicrosoftNgram.LookupService('37a80cca-9fee-487f-9bbd-c45f252
                                                 'bing-body/apr10/5')
 
                                                                           #  TP   FP   FN
-CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (127, 203, 249)
+CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (143, 225, 296)
                     'filter_NNP': {'rank_attr': 'log_prob',
-                    'pipeline': ['is_not_proper_noun']},                  # (135, 192, 241)
+                    'pipeline': ['is_not_proper_noun']},                  # (153, 212, 286)
                     'filter_NNP_digit': {'rank_attr': 'log_prob',
-                    'pipeline': ['is_not_proper_noun', 'is_not_digit']}   # (137, 190, 239)
+                    'pipeline': ['is_not_proper_noun', 'is_not_digit']}   # (155, 210, 284)
                     #  {'name': 'decay_progr_prob+NNP', 'rank_attr': '????', 'pipeline': []}
                     }
 
