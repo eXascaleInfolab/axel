@@ -86,15 +86,33 @@ class NgramWrapper(dict):
             return Ngram.objects.get(value=key)
 
 
+class SentenceManager(models.Manager):
+
+    def get(self, *args, **kwargs):
+        if 'sentence1' in kwargs:
+            if not kwargs['sentence1'].startswith('I '):
+                kwargs['sentence1'] = kwargs['sentence1'][0].lower() + kwargs['sentence1'][1:]
+        if 'sentence2' in kwargs:
+            if not kwargs['sentence2'].startswith('I '):
+                kwargs['sentence2'] = kwargs['sentence2'][0].lower() + kwargs['sentence2'][1:]
+
+        return self.get_query_set().get(*args, **kwargs)
+
+
 class Sentence(models.Model):
     sentence1 = models.TextField()
     sentence1_pos_seq = JSONField()
     sentence2 = models.TextField()
     sentence2_pos_seq = JSONField()
 
+    objects = SentenceManager()
+
     def __unicode__(self):
         """String representation"""
         return self.sentence1
+
+    class Meta:
+        unique_together = ('sentence1', 'sentence2')
 
     @classmethod
     def _tokenize_pos_tags(cls, sentence):
