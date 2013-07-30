@@ -28,10 +28,29 @@ CONFIG_PIPELINES = {'simple': {'rank_attr': 'log_prob', 'pipeline': []},  # (127
                     }
 
 
+class NgramManager(models.Manager):
+    """Custom manager that requests MS ngram service seamlessly and saves in to DB"""
+
+    def get(self, *args, **kwargs):
+        try:
+            result = self.get_query_set().get(*args, **kwargs)
+        except Ngram.DoesNotExist:
+            if 'value' in kwargs:
+                ngram = kwargs['value']
+                log_prob = ms_ngram_service.GetJointProbability(ngram.encode('utf-8'))
+                print ngram, log_prob
+                result = Ngram.objects.create(value=ngram, log_prob=log_prob)
+            else:
+                raise
+        return result
+
+
 class Ngram(models.Model):
     """Describes ngram"""
     value = models.TextField()
     log_prob = models.FloatField()
+
+    objects = NgramManager()
 
     PUNKT_RE = re.compile(r'[`~/%\*\+\[\]\.?!,":;()\'|]+')
 
@@ -87,6 +106,7 @@ class NgramWrapper(dict):
 
 
 class SentenceManager(models.Manager):
+    """Normalize sentence on GET to not create duplicates"""
 
     def get(self, *args, **kwargs):
         if 'sentence1' in kwargs:
