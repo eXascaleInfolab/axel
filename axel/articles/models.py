@@ -2,12 +2,14 @@ import json
 import os
 
 from django.conf import settings
+from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models import F, Sum
 from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 
 from haystack.query import SearchQuerySet
+from test_collection.models import TaggedCollection
 
 
 class Venue(models.Model):
@@ -258,6 +260,7 @@ class ArticleCollocation(models.Model):
     ngram = models.CharField(max_length=255)
     count = models.IntegerField()
     article = models.ForeignKey(Article)
+    tags = generic.GenericRelation(TaggedCollection)
 
     class Meta:
         """Meta info"""
