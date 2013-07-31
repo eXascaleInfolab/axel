@@ -58,7 +58,6 @@ class Collocation(models.Model):
     """Aggregated collocation statistics model"""
     ngram = models.CharField(max_length=255)
     count = models.IntegerField(default=1)
-    tags = generic.GenericRelation(TaggedCollection)
     # extra fields will store pre-computed scores
     _extra_fields = models.TextField(default='{}')
     _pos_tag = models.CharField(max_length=255, null=True, blank=True)
