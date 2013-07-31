@@ -254,6 +254,13 @@ class Article(models.Model):
                                 article=article, count=correct_count)
 
 
+class ArticleCollocationsManager(models.Manager):
+
+    def get_query_set(self):
+        return super(ArticleCollocationsManager, self).get_query_set()\
+            .filter(article__cluster_id=self.model.CLUSTER_ID)
+
+
 class ArticleCollocation(models.Model):
     """Model contains collocation for each article and their count"""
     ngram = models.CharField(max_length=255)
@@ -292,6 +299,7 @@ class ArticleCollocation(models.Model):
 
 class CSArticleCollocations(ArticleCollocation):
     CLUSTER_ID = 'CS_COLLOCS'
+    objects = ArticleCollocationsManager()
 
     class Meta:
         proxy = True
@@ -299,6 +307,7 @@ class CSArticleCollocations(ArticleCollocation):
 
 class SWArticleCollocations(ArticleCollocation):
     CLUSTER_ID = 'SW_COLLOCS'
+    objects = ArticleCollocationsManager()
 
     class Meta:
         proxy = True
