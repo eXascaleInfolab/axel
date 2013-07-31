@@ -8,48 +8,9 @@ from django import forms
 
 import operator
 from axel.articles.models import ArticleCollocation
+from axel.articles.utils.db import db_cache_simple, db_cache
 import axel.stats.scores as scores
 from axel.libs.utils import get_contexts, get_contexts_ngrams
-
-
-# TODO: make a blog post out of a technique
-class db_cache(object):
-    """
-    Decorator to cache the expensively computed field in some other field
-    that supports dict-like assignment
-    """
-
-    def __init__(self, model_field):
-        """
-        :param model_field: field of the model to store and retrieve field from
-        """
-        self.model_field = model_field
-
-    def __call__(self, f):
-        def wrapper(object):
-            fields = getattr(object, self.model_field)
-            if f.__name__ in fields:
-                return fields[f.__name__]
-            else:
-                value = f(object)
-                fields[f.__name__] = value
-                setattr(object, self.model_field, fields)
-                object.save()
-                return value
-        return wrapper
-
-
-def db_cache_simple(func):
-    def wrapper(self):
-        value = getattr(self, '_' + func.__name__)
-        if value:
-            return value
-        else:
-            value = func(self)
-            setattr(self, '_' + func.__name__, value)
-            self.save_base(raw=True)
-            return value
-    return wrapper
 
 
 class Collocation(models.Model):
@@ -94,22 +55,6 @@ class Collocation(models.Model):
     def extra_fields(self, value):
         """Convert to json"""
         self._extra_fields = json.dumps(value)
-
-    @property
-    @db_cache('extra_fields')
-    def context(self):
-        """
-        Get random context for collocation, used in collocation list view,
-        :rtype: unicode
-        :returns: context if found, ngram itself otherwise
-        """
-        article = self._articlecollocations.filter(ngram=self.ngram)[0].article
-        # prevent contexts from bigger ngrams
-        bigger_ngrams = self._articlecollocations.filter(article=article,
-            ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
-        context = next(get_contexts(article.text, self.ngram, bigger_ngrams),
-           self.ngram)
-        return context
 
     @property
     @db_cache('extra_fields')

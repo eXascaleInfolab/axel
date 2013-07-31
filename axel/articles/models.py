@@ -9,7 +9,10 @@ from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 
 from haystack.query import SearchQuerySet
+from jsonfield import JSONField
 from test_collection.models import TaggedCollection
+from axel.articles.utils.db import db_cache
+from axel.libs.utils import get_contexts
 
 
 class Venue(models.Model):
@@ -265,17 +268,21 @@ class ArticleCollocation(models.Model):
     """Model contains collocation for each article and their count"""
     ngram = models.CharField(max_length=255)
     count = models.IntegerField()
+    # duplication to efficiently perform ordering
+    total_count = models.IntegerField()
     article = models.ForeignKey(Article)
     tags = generic.GenericRelation(TaggedCollection)
 
+    extra_fields = JSONField()
+
     class Meta:
         """Meta info"""
-        ordering = ['-count']
+        ordering = ['-total_count', '-count']
         unique_together = ('ngram', 'article')
 
     def __unicode__(self):
         """String representation"""
-        return u"{0}: {1}".format(self.article, self.ngram)
+        return u"{0}: {1}".format(self.ngram, self.article)
 
     @property
     def is_relevant(self):
@@ -287,6 +294,20 @@ class ArticleCollocation(models.Model):
             return self.tags.all()[0].is_relevant
         except IndexError:
             return -1
+
+    @property
+    @db_cache('extra_fields')
+    def context(self):
+        """
+        Get random context for collocation, used in collocation list view,
+        :rtype: unicode
+        :returns: context if found, ngram itself otherwise
+        """
+        # prevent contexts from bigger ngrams
+        bigger_ngrams = self.article.articlecollocation_set.filter(ngram__contains=self.ngram)\
+            .exclude(ngram=self.ngram).values_list('ngram', flat=True)
+        context = next(get_contexts(self.article.text, self.ngram, bigger_ngrams), self.ngram)
+        return context
 
     @classmethod
     def scores(cls):
