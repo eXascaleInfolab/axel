@@ -247,5 +247,6 @@ else:
     LOGGING = BASE_LOGGING
 
 
-TEST_COLLECTION_MODELS = ("axel.stats.models.Collocations", "axel.stats.models.SWCollocations")
+TEST_COLLECTION_MODELS = ("axel.articles.models.CSArticleCollocations",
+                          "axel.articles.models.SWArticleCollocations")
 BUILD_DBPEDIA_GRAPHS = True

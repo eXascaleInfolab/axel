@@ -48,7 +48,7 @@ class Command(BaseCommand):
         # get model
         app_label, model = options['model'].split('.')[1::2]
         Model = get_model(app_label, model)
-        ct = ContentType.objects.get_for_model(Model)
+        ct = ContentType.objects.get_for_model(Model, for_concrete_model=False)
 
         tagged_objects = set(TaggedCollection.objects.filter(content_type=ct).values_list(
             'object_id', flat=True))

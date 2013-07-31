@@ -284,6 +284,16 @@ class ArticleCollocation(models.Model):
             return -1
 
 
+class CSArticleCollocations(ArticleCollocation):
+    class Meta:
+        proxy = True
+
+
+class SWArticleCollocations(ArticleCollocation):
+    class Meta:
+        proxy = True
+
+
 class Author(models.Model):
     """Basic author model"""
     name = models.CharField(max_length=255)

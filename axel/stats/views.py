@@ -155,7 +155,7 @@ class NgramPOSView(TemplateView):
         """Add nodes and links to the context"""
         context = super(NgramPOSView, self).get_context_data(**kwargs)
         model = _get_model_from_string(self.kwargs['model_name'])
-        ct = ContentType.objects.get_for_model(model)
+        ct = ContentType.objects.get_for_model(model, for_concrete_model=False)
 
         rules_dict = self._parse_rules()
 
