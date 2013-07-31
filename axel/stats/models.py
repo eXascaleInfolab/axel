@@ -2,13 +2,11 @@ from __future__ import division
 import json
 
 from collections import defaultdict
-from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models import Q, Sum
 from django import forms
 
 import operator
-from test_collection.models import TaggedCollection
 from axel.articles.models import ArticleCollocation
 import axel.stats.scores as scores
 from axel.libs.utils import get_contexts, get_contexts_ngrams
