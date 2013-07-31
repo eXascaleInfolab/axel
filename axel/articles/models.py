@@ -63,7 +63,6 @@ class Article(models.Model):
         Get correct collocation model according to the desired split
         :rtype Collocation
         """
-        from axel.stats.models import CLUSTERS_DICT
         return CLUSTERS_DICT[self.cluster_id]
 
     def dbpedia_graph(self, redirects=True):
@@ -292,11 +291,15 @@ class ArticleCollocation(models.Model):
 
 
 class CSArticleCollocations(ArticleCollocation):
+    CLUSTER_ID = 'CS_COLLOCS'
+
     class Meta:
         proxy = True
 
 
 class SWArticleCollocations(ArticleCollocation):
+    CLUSTER_ID = 'SW_COLLOCS'
+
     class Meta:
         proxy = True
 
@@ -394,3 +397,6 @@ def create_collocations(sender, instance, **kwargs):
 #            if not created:
 #                colloc.count = F('count') + 1
 #                colloc.save()
+
+
+CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (CSArticleCollocations, SWArticleCollocations)])

@@ -233,18 +233,8 @@ class Collocation(models.Model):
 
 class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
-    CLUSTER_ID = 'CS_COLLOCS'
     CACHED_FIELDS = ('context', 'acm_score')
     FILTERED_FIELDS = (('_pos_tag', 'Part of Speech', forms.CharField),)
-
-    @property
-    @db_cache('extra_fields')
-    def acm_score(self):
-        """
-        Get ACM search score
-        """
-        return 0
-        #return scores.acm_search_result_count(self.ngram)
 
 
 class SWCollocations(Collocation):
@@ -252,7 +242,6 @@ class SWCollocations(Collocation):
     collocation for ScienceWISE
     everything is the same except table name
     """
-    CLUSTER_ID = 'SW_COLLOCS'
     CACHED_FIELDS = ('context', 'partial_word_score', 'partial_ngram_score',
                      'partial_ont_score')
 
@@ -287,7 +276,3 @@ class SWCollocations(Collocation):
     def partial_ont_score(self):
         """How often does any concept from the ontology occur in the NGRAM"""
         return scores.get_concept_ngram_score(self.ngram)
-
-
-CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (Collocations, SWCollocations)])
-
