@@ -2,7 +2,7 @@
 {% load ngram_contexts %}
 
 <div class="object">
-<a href="{% url "testcollection_model_detail" model_name object.id %}">{{ object }}</a>
+<a href="{% url "testcollection_model_detail" model_name object.id %}"><b>{{ object.ngram }}</b>: {{ object.article }}</a>
 <span class="badge">Total count: {{ object.total_count }}</span>
 <span class="badge">Count: {{ object.count }}</span>
 {% with partial_word_score=object.partial_word_score %}
