@@ -282,7 +282,7 @@ class ArticleCollocation(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return u"{0}: {1}".format(self.ngram, self.article)
+        return u"{0},{1},{2}".format(self.ngram, self.article, self.article_id)
 
     @property
     def is_relevant(self):
@@ -308,6 +308,20 @@ class ArticleCollocation(models.Model):
             .exclude(ngram=self.ngram).values_list('ngram', flat=True)
         context = next(get_contexts(self.article.text, self.ngram, bigger_ngrams), self.ngram)
         return context
+
+    def all_contexts(self, func=get_contexts):
+        """
+        Get all contexts for detailed view page
+        :rtype: list
+        :returns: contexts if found, [ngram] otherwise
+        """
+        contexts = []
+        text = self.article.text
+        bigger_ngrams = self.article.articlecollocation_set.filter(ngram__contains=self.ngram)\
+            .exclude(ngram=self.ngram).values_list('ngram', flat=True)
+        for context in func(text, self.ngram, bigger_ngrams):
+            contexts.append(context)
+        return contexts
 
     @classmethod
     def scores(cls):

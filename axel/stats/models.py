@@ -65,21 +65,6 @@ class Collocation(models.Model):
         """
         return []
 
-    def all_contexts(self, func=get_contexts):
-        """
-        Get all contexts for detailed view page
-        :rtype: list
-        :returns: contexts if found, [ngram] otherwise
-        """
-        contexts = []
-        for text, article_id in self._articlecollocations.filter(ngram=self.ngram).values_list(
-            'article__text', 'article'):
-            bigger_ngrams = self._articlecollocations.filter(article__id=article_id,
-                ngram__contains=self.ngram).exclude(ngram=self.ngram).values_list('ngram', flat=True)
-            for context in func(text, self.ngram, bigger_ngrams):
-                contexts.append(context)
-        return contexts
-
     @property
     def wikipedia_text(self):
         import requests
