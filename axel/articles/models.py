@@ -347,6 +347,10 @@ class SWArticleCollocations(ArticleCollocation):
     class Meta:
         proxy = True
 
+    def __unicode__(self):
+        """String representation"""
+        return u"{0},{1}".format(self.ngram, os.path.split(self.article.pdf.name)[-1][:-4])
+
 
 class Author(models.Model):
     """Basic author model"""
