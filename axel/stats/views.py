@@ -38,7 +38,7 @@ class FilteredCollectionModelView(CollectionModelView):
 
     def generate_queryset(self, model):
         """filter ngram by query here, filter only unjudged results"""
-        return self.total_queryset.filter(ngram__icontains=self.query)
+        return model.objects.filter(ngram__icontains=self.query)
 
 
 class CollocationAttributeFilterView(AttributeFilterView):
