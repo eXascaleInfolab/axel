@@ -73,12 +73,13 @@ class Command(BaseCommand):
         self.Model = Model = CLUSTERS_DICT[cluster_id]
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
-            if os.path.exists('article_dict.pcl'):
+            cached_file = cluster_id + '_article_dict.pcl'
+            if os.path.exists(cached_file):
                 print 'File found, loading...'
-                article_dict = pickle.load(open('article_dict.pcl'))
+                article_dict = pickle.load(open(cached_file))
             else:
                 article_dict = dict(populate_article_dict(Model, getattr(binding_scores, score_name), cutoff=0))
-                pickle.dump(article_dict, open('article_dict.pcl', 'wb'))
+                pickle.dump(article_dict, open(cached_file, 'wb'))
             # Calculate total valid for recall
             total_valid = self._total_valid(article_dict)
 
