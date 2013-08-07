@@ -13,7 +13,7 @@ import networkx as nx
 
 from django.core.management.base import BaseCommand, CommandError
 
-from axel.articles.models import Article
+from axel.articles.models import CLUSTERS_DICT
 from axel.stats.scores.binding_scores import populate_article_dict
 from axel.stats.scores import binding_scores
 
@@ -70,7 +70,7 @@ class Command(BaseCommand):
         if not cluster_id:
             raise CommandError("need to specify cluster id")
         cv_num = options['cv_num']
-        self.Model = Model = Article.objects.filter(cluster_id=cluster_id)[0].CollocationModel
+        self.Model = Model = CLUSTERS_DICT[cluster_id]
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
             if os.path.exists('article_dict.pcl'):
@@ -89,7 +89,7 @@ class Command(BaseCommand):
                     scored_ngrams.append((article, scores))
 
             print 'Fitting classifier...'
-            #fit_ml_algo(scored_ngrams, cv_num, self.Model)
+            fit_ml_algo(scored_ngrams, cv_num, self.Model)
 
 
 def fit_ml_algo(scored_ngrams, cv_num, Model):
