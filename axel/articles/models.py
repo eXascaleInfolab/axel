@@ -11,9 +11,11 @@ from django.dispatch import receiver
 from haystack.query import SearchQuerySet
 from jsonfield import JSONField
 from test_collection.models import TaggedCollection
+
 from axel.articles.utils.db import db_cache
-from axel.libs.utils import get_contexts
+from axel.libs.utils import get_contexts, get_contexts_ngrams
 from axel.stats.models import SWCollocations, Collocations
+import axel.stats.scores as scores
 
 
 class Venue(models.Model):
@@ -324,6 +326,36 @@ class ArticleCollocation(models.Model):
             contexts.append(context)
         return contexts
 
+    @property
+    @db_cache('extra_fields')
+    def pos_tag(self):
+        """
+        Defines part-of-speech tag for ngram
+        :return: Part-of-Speech tag
+        :rtype: unicode
+        """
+        return scores.pos_tag(self.ngram, self.all_contexts(func=get_contexts_ngrams))
+
+    @property
+    @db_cache('extra_fields')
+    def pos_tag_prev(self):
+        """
+        Retrieves part-of-speech tag for the word before ngram
+        :return: dict of Part-of-Speech tags with scores
+        :rtype: dict
+        """
+        return scores.pos_tag_pos(self.ngram, self.all_contexts(func=get_contexts_ngrams))
+
+    @property
+    @db_cache('extra_fields')
+    def pos_tag_after(self):
+        """
+        Retrieves part-of-speech tag for the word before ngram
+        :return: dict of Part-of-Speech tags with scores
+        :rtype: dict
+        """
+        return scores.pos_tag_pos(self.ngram, self.all_contexts(func=get_contexts_ngrams), tag_pos=1)
+
     @classmethod
     def scores(cls):
         result = []
@@ -405,6 +437,8 @@ def update_global_collocations(sender, instance, created, **kwargs):
     Increment collocation count on create for ArticleCollocation
     :type instance: ArticleCollocation
     """
+    if kwargs.get('raw'):
+        return
     if created:
         colloc, created_local = instance.article.CollocationModel.objects.get_or_create(
             ngram=instance.ngram, defaults={'count': instance.count})
@@ -413,7 +447,7 @@ def update_global_collocations(sender, instance, created, **kwargs):
             colloc.save()
     else:
         # Recalculate count otherwise
-        colloc = instance.article.CollocationModel.objects.get(ngram=instance.ngram)
+        colloc = instance.COLLECTION_MODEL.objects.get(ngram=instance.ngram)
         colloc.count = sender.objects.filter(ngram=instance.ngram).aggregate(count=Sum('count'))['count']
         colloc.save()
 

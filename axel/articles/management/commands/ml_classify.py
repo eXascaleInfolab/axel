@@ -118,8 +118,6 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     max_pos_tag_start = len(start_pos_tag_list)
     max_pos_tag_end = len(end_pos_tag_list)
     max_pos_tag = len(pos_tag_list)
-    # from pybrain.datasets import ClassificationDataSet
-    # DS = ClassificationDataSet(29, nb_classes=2, class_labels=['Invalid', 'Valid'])
 
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
