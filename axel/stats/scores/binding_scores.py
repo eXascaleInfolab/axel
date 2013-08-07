@@ -310,7 +310,8 @@ def populate_article_dict(model, score_func, cutoff=1):
             article_dict[article][ngram.ngram] = {'abs_count': ngram_abs_count, 'score': score,
                                                   'is_rel': is_rel, 'count': ngram.count,
                                                   'ddict1': ddict1, 'ddict2': ddict2,
-                                                  'ngram': collection_ngram,
+                                                  'collection_ngram': collection_ngram,
+                                                  'ngram': ngram,
                                                   'len': support_len,
                                                   'participation_count': part_count}
 

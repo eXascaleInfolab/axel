@@ -130,6 +130,7 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
                     temp_dict[node] = comp_len
             component_size_dict[article.id] = temp_dict
         ngram = score_dict['ngram']
+        collection_ngram = score_dict['collection_ngram']
 
         # POS TAG enumeration
         pos_tag_start = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_START))
@@ -139,24 +140,26 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
         feature = [
-                   ngram.ngram.isupper(),
-                   'dblp' in ngram.source,
-                   component_size_dict[article.id][ngram.ngram],
-                   wiki_edges_count,
-                   score_dict['participation_count'],
-                   ngram._is_wiki,
-                   ngram.is_ontological,
-                   'dbpedia' in ngram.source,
-                   'wiki_redirect' in ngram.source,
-                   bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
-                   bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
-                   len(ngram.ngram.split())
+            ngram.ngram.isupper(),
+            'dblp' in collection_ngram.source,
+            component_size_dict[article.id][ngram.ngram],
+            wiki_edges_count,
+            score_dict['participation_count'],
+            ngram._is_wiki,
+            ngram.is_ontological,
+            'dbpedia' in collection_ngram.source,
+            'wiki_redirect' in collection_ngram.source,
+            bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
+            bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
+            len(ngram.ngram.split())
         ]
 
         # extend with compressed part of speech
-        extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0 for i in range(max_pos_tag_start)]
+        extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0
+                            for i in range(max_pos_tag_start)]
         feature.extend(extended_feature)
-        extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0 for i in range(max_pos_tag_end)]
+        extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0
+                            for i in range(max_pos_tag_end)]
         feature.extend(extended_feature)
 
         # Normal part of speech
