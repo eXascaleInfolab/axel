@@ -13,6 +13,7 @@ from jsonfield import JSONField
 from test_collection.models import TaggedCollection
 from axel.articles.utils.db import db_cache
 from axel.libs.utils import get_contexts
+from axel.stats.models import SWCollocations, Collocations
 
 
 class Venue(models.Model):
@@ -334,6 +335,7 @@ class ArticleCollocation(models.Model):
 
 class CSArticleCollocations(ArticleCollocation):
     CLUSTER_ID = 'CS_COLLOCS'
+    COLLECTION_MODEL = Collocations
     objects = ArticleCollocationsManager()
 
     class Meta:
@@ -342,6 +344,7 @@ class CSArticleCollocations(ArticleCollocation):
 
 class SWArticleCollocations(ArticleCollocation):
     CLUSTER_ID = 'SW_COLLOCS'
+    COLLECTION_MODEL = SWCollocations
     objects = ArticleCollocationsManager()
 
     class Meta:

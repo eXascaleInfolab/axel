@@ -77,8 +77,7 @@ class Command(BaseCommand):
                 print 'File found, loading...'
                 article_dict = pickle.load(open('article_dict.pcl'))
             else:
-                article_dict = dict(populate_article_dict(Model.objects.values_list('ngram', flat=True),
-                                                 getattr(binding_scores, score_name), cutoff=0))
+                article_dict = dict(populate_article_dict(Model, getattr(binding_scores, score_name), cutoff=0))
                 pickle.dump(article_dict, open('article_dict.pcl', 'wb'))
             # Calculate total valid for recall
             total_valid = self._total_valid(article_dict)
@@ -90,7 +89,7 @@ class Command(BaseCommand):
                     scored_ngrams.append((article, scores))
 
             print 'Fitting classifier...'
-            fit_ml_algo(scored_ngrams, cv_num, self.Model)
+            #fit_ml_algo(scored_ngrams, cv_num, self.Model)
 
 
 def fit_ml_algo(scored_ngrams, cv_num, Model):

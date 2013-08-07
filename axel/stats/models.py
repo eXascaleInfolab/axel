@@ -7,10 +7,9 @@ from django.db.models import Q, Sum
 from django import forms
 
 import operator
-from axel.articles.models import ArticleCollocation
 from axel.articles.utils.db import db_cache_simple, db_cache
 import axel.stats.scores as scores
-from axel.libs.utils import get_contexts, get_contexts_ngrams
+from axel.libs.utils import get_contexts_ngrams
 
 
 class Collocation(models.Model):
@@ -44,6 +43,7 @@ class Collocation(models.Model):
         """
         :rtype: QuerySet
         """
+        from axel.articles.models import ArticleCollocation
         return ArticleCollocation.objects.filter(article__cluster_id=self.CLUSTER_ID)
 
     @property
@@ -91,6 +91,7 @@ class Collocation(models.Model):
         Document frequency
         :rtype: int
         """
+        from axel.articles.models import ArticleCollocation
         return ArticleCollocation.objects.filter(ngram=self.ngram).count()
 
     @property

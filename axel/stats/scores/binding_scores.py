@@ -274,16 +274,12 @@ class NgramBindings(object):
         return score / denominator
 
 
-def populate_article_dict(queryset, score_func, cutoff=1, options=None):
+def populate_article_dict(model, score_func, cutoff=1):
     """
-    :type queryset: QuerySet
+    :type model: Model
     """
-    if options is None:
-        options = {}
     article_dict = defaultdict(dict)
-    rel_ngram_set = set(queryset.filter(tags__is_relevant=True))
-    irrel_ngram_set = set(queryset.filter(tags__is_relevant=False))
-    for article in Article.objects.filter(cluster_id=queryset.model.CLUSTER_ID):
+    for article in Article.objects.filter(cluster_id=model.CLUSTER_ID):
         text = article.stemmed_text
         # create correspondence dict
         corr_dict1 = defaultdict(set)
@@ -300,16 +296,13 @@ def populate_article_dict(queryset, score_func, cutoff=1, options=None):
             for p_ngram in all_ngrams:
                 if p_ngram != ngram.ngram and ngram.ngram in p_ngram:
                     part_count += 1
-            if ngram.ngram in rel_ngram_set:
-                is_rel = True
-            elif ngram.ngram in irrel_ngram_set:
-                is_rel = False
-            else:
+            is_rel = ngram.is_relevant
+            if is_rel == -1:
                 continue
             ngram_abs_count = text.count(ngram.ngram)
             if ngram_abs_count <= cutoff:
                 continue
-            collection_ngram = queryset.model.objects.get(ngram=ngram.ngram)
+            collection_ngram = model.COLLECTION_MODEL.objects.get(ngram=ngram.ngram)
             score, ddict1, ddict2 = score_func(collection_ngram, ngram, text, article_dict[article],
                                                ngram_abs_count, corr_dict1, corr_dict2)
             nl_ngrams = [' '.join(n) for n in nltk.ngrams(ngram.ngram.split(), 2)]
