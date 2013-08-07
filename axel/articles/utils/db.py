@@ -21,7 +21,7 @@ class db_cache(object):
                 value = f(object)
                 fields[f.__name__] = value
                 setattr(object, self.model_field, fields)
-                object.save()
+                object.save_base(raw=True)
                 return value
         return wrapper
 
