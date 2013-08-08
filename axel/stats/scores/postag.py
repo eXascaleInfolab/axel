@@ -48,7 +48,7 @@ def pos_tag_pos(ngram, contexts, tag_pos=-1):
         if tag:
             ngram_tags[tag] += 1
 
-    return ngram_tags
+    return ngram_tags.items()
 
 
 def pos_tag(ngram, contexts):
