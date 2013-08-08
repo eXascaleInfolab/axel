@@ -140,7 +140,7 @@ class Article(models.Model):
 
             graph = nx.Graph()
             ngrams = set(self.articlecollocation_set.values_list('ngram', flat=True))
-            ngrams = self.CollocationModel.objects.filter(ngram__in=ngrams)
+            ngrams = self.CollocationModel.COLLECTION_MODEL.objects.filter(ngram__in=ngrams)
             for ngram in ngrams:
                 if 'dbpedia' in ngram.source or (redirects and 'wiki_redirect' in ngram.source):
                     recurse_populate_graph(ngram.ngram, graph, 2)
