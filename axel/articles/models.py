@@ -71,10 +71,10 @@ class Article(models.Model):
         """
         return CLUSTERS_DICT[self.cluster_id]
 
-    def dbpedia_graph(self, redirects=True):
+    def dbpedia_graph(self, redirects=True, ):
         """
         Generate a dbpedia category TREE using networkx
-        :rtype: list
+        :rtype: nx.Graph
         """
         import tempfile
         import requests
@@ -146,19 +146,18 @@ class Article(models.Model):
                     recurse_populate_graph(ngram.ngram, graph, 2)
 
             json_graph.dump(graph, open(graph_object, 'w'))
-            return graph
-            # BELOW CODE RETURNS 2 max connected components
-            # results = []
-            # for component in nx.connected_components(graph):
-            #     component = [node for node in component if 'Category' not in node]
-            #     results.append(component)
-            #
-            # # select 2 max clusters
-            # results.sort(key=lambda x: len(x), reverse=True)
-            # return [item for sublist in results[:1] for item in sublist]
         else:
             graph = json_graph.load(open(graph_object))
-            return graph
+        # BELOW CODE RETURNS 2 max connected components
+        # results = []
+        # for component in nx.connected_components(graph):
+        #     component = [node for node in component if 'Category' not in node]
+        #     results.append(component)
+        #
+        # # select 2 max clusters
+        # results.sort(key=lambda x: len(x), reverse=True)
+        # return [item for sublist in results[:1] for item in sublist]
+        return graph
 
     @property
     def wikilinks_graph(self):
