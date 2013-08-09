@@ -18,7 +18,13 @@ class Command(BaseCommand):
                     action='store',
                     dest='cluster',
                     help='cluster id for article type'),
+        make_option('--redirects',
+                    action='store_true',
+                    dest='redirects',
+                    default=False,
+                    help='[DBPedia only] Calculate with/without redirects'),
     )
+
     args = '<method1> <method2> ...'
     help = 'Calculated P/R metrics between extracted collocations and chosen method'
 
@@ -28,6 +34,7 @@ class Command(BaseCommand):
         if not cluster_id:
             raise CommandError("need to specify cluster id")
         self.Model = CLUSTERS_DICT[cluster_id]
+        self.redirects = options['redirects']
 
         for arg in args:
             eval_method = getattr(self, '_' + arg + '_calculation')
@@ -108,6 +115,11 @@ class Command(BaseCommand):
         print 'INVALID', str(cc_size_distibution['invalid'].items()).replace('(','[').replace(')', ']')
 
     def _dbpedia_calculation(self):
+        """
+        Calculates P/R for dbpedia concepts, it is possible to exclude different concepts based
+        on their biggest connected component for example. Then it will print which correct concepts
+        were incorrectly excluded.
+        """
         print 'Calculating Precision/Recall using dbpedia graph method'
         precision = []
         recall = []
@@ -119,7 +131,7 @@ class Command(BaseCommand):
 
         top_false_counter = Counter()
         for article in Article.objects.filter(cluster_id=self.cluster_id):
-            results = set(article.dbpedia_graph().nodes())
+            results = set(article.dbpedia_graph(redirects=self.redirects).nodes())
 
             article_ngrams = self.Model.objects.filter(article=article).values_list('ngram',
                                                                         'tags__is_relevant')
@@ -194,7 +206,43 @@ class Command(BaseCommand):
 
 
     def _maxent_calculation(self):
+        print 'Calculating Precision/Recall using MaxEntropy NE recognition'
+        precision = []
+        recall = []
+
         for article in Article.objects.filter(cluster_id=self.cluster_id):
+            print article
             text = article.text
-            # TODO: split sentence
-            results = nltk.ne_chunk(nltk.pos_tag(nltk.regexp_tokenize(text, nlp.Stemmer.TOKENIZE_REGEXP)))
+            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram', 'tags__is_relevant')
+            correct_objects = [ngram for ngram, rel in article_ngrams if rel]
+            incorrect_objects = [ngram for ngram, rel in article_ngrams if rel is False]
+
+            sentences = [nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP)) for sent in nltk.sent_tokenize(text)]
+            results = nltk.batch_ne_chunk(sentences)
+            """:type: nltk.tree.Tree"""
+
+            ne_set = set()
+            for result in results:
+                for tree in result.subtrees():
+                    if tree.node != 'S' and len(tree) > 1:
+                        ne_set.add(' '.join(zip(*tree)[0]).lower())
+            true_pos = [x for x in ne_set if x in correct_objects]
+            false_pos = [x for x in ne_set if x in incorrect_objects]
+            print colored(true_pos, 'green')
+            print colored(false_pos, 'red')
+            print
+
+            local_precision = len(true_pos) / len([x for x in ne_set if x in correct_objects or
+                                                                         x in incorrect_objects])
+            local_recall = len(true_pos) / len([x for x, _ in article_ngrams if x in correct_objects])
+
+            precision.append(local_precision)
+            recall.append(local_recall)
+
+        print precision
+        print recall
+        precision = sum(precision) / len(precision)
+        recall = sum(recall) / len(recall)
+        print 'Precision: ', precision
+        print 'Recall', recall
+        print 'F1 measure', 2 * (precision * recall) / (precision + recall)

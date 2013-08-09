@@ -71,7 +71,7 @@ class Article(models.Model):
         """
         return CLUSTERS_DICT[self.cluster_id]
 
-    def dbpedia_graph(self, redirects=True, ):
+    def dbpedia_graph(self, redirects=True):
         """
         Generate a dbpedia category TREE using networkx
         :rtype: nx.Graph
