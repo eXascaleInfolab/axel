@@ -3,10 +3,12 @@ from __future__ import division
 from collections import Counter, defaultdict
 from optparse import make_option
 from termcolor import colored
+import nltk
 
 from django.core.management.base import BaseCommand, CommandError
 
-from axel.articles.models import Article
+from axel.articles.models import Article, CLUSTERS_DICT
+from axel.libs import nlp
 from axel.libs.utils import print_progress
 
 
@@ -18,23 +20,20 @@ class Command(BaseCommand):
                     help='cluster id for article type'),
     )
     args = '<method1> <method2> ...'
-    help = 'Produce match between collocation and DBPeadia concepts'
+    help = 'Calculated P/R metrics between extracted collocations and chosen method'
 
     def handle(self, *args, **options):
 
         self.cluster_id = cluster_id = options['cluster']
         if not cluster_id:
             raise CommandError("need to specify cluster id")
-        self.Model = Model = Article.objects.filter(cluster_id=cluster_id)[0].CollocationModel
-
-        correct_objects = set(Model.objects.filter(tags__is_relevant=True).values_list('ngram', flat=True))
-        incorrect_objects = set(Model.objects.filter(tags__is_relevant=False).values_list('ngram', flat=True))
+        self.Model = CLUSTERS_DICT[cluster_id]
 
         for arg in args:
             eval_method = getattr(self, '_' + arg + '_calculation')
-            eval_method(correct_objects, incorrect_objects)
+            eval_method()
 
-    def _wikilinks_calculation(self, correct_objects, incorrect_objects):
+    def _wikilinks_calculation(self):
         print 'Generating wikilinks Histogram'
         relation_distibution = {'valid': 0, 'invalid': 0, 'multi': 0}
 
@@ -77,7 +76,7 @@ class Command(BaseCommand):
         print relation_distibution
 
 
-    def _dbpedia_cc_size_calculation(self, correct_objects, incorrect_objects):
+    def _dbpedia_cc_size_calculation(self):
         print 'Generating DBPedia Connected Component size Histogram'
         import networkx as nx
 
@@ -109,26 +108,28 @@ class Command(BaseCommand):
         print 'INVALID', str(cc_size_distibution['invalid'].items()).replace('(','[').replace(')', ']')
 
 
-    def _dbpedia_calculation(self, correct_objects, incorrect_objects):
+    def _dbpedia_calculation(self):
         print 'Calculating Precision/Recall using dbpedia graph method'
         precision = []
         recall = []
 
         dbpedia_ngrams = set()
-        for colloc in self.Model.objects.all():
+        for colloc in self.Model.COLLECTION_MODEL.objects.all():
             if 'dbpedia' in colloc.source:
                 dbpedia_ngrams.add(colloc.ngram)
 
         top_false_counter = Counter()
-        for obj in Article.objects.filter(cluster_id=self.cluster_id):
-            article = obj
-            """:type: Article"""
-            results = article.dbpedia_graph()
-            article_ngrams = set(article.articlecollocation_set.values_list('ngram', flat=True))
-            results_all = article_ngrams.intersection(dbpedia_ngrams)
+        for article in Article.objects.filter(cluster_id=self.cluster_id):
+            results = set(article.dbpedia_graph().nodes())
+
+            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram',
+                                                                        'tags__is_relevant')
+            correct_objects = [ngram for ngram, rel in article_ngrams if rel]
+            incorrect_objects = [ngram for ngram, rel in article_ngrams if rel is False]
+            all_dbpedia_ngrams = [ngram for ngram, _ in article_ngrams if ngram in dbpedia_ngrams]
 
             true_pos = [x for x in results if x in correct_objects]
-            good_removed = [x for x in results_all if x in correct_objects and x not in true_pos]
+            good_removed = [x for x in all_dbpedia_ngrams if x in correct_objects and x not in true_pos]
             false_pos = [x for x in results if x in incorrect_objects]
             top_false_counter.update(false_pos)
             local_precision = len(true_pos) / len([x for x in results if x in correct_objects or
@@ -138,7 +139,7 @@ class Command(BaseCommand):
 
             precision.append(local_precision)
             recall.append(local_recall)
-            print obj.id
+            print article.id
             print colored(true_pos, 'green')
             print colored(good_removed, 'yellow')
             print colored(false_pos, 'red')
@@ -154,7 +155,7 @@ class Command(BaseCommand):
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
         print colored(str(top_false_counter), 'red')
 
-    def _dblp_calculation(self, correct_objects, incorrect_objects):
+    def _dblp_calculation(self):
         print 'Calculating Precision/Recall using DBLP match'
         precision = []
         recall = []
@@ -191,3 +192,9 @@ class Command(BaseCommand):
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
 
+
+    def _maxent_calculation(self):
+        for article in Article.objects.filter(cluster_id=self.cluster_id):
+            text = article.text
+            # TODO: split sentence
+            results = nltk.ne_chunk(nltk.pos_tag(nltk.regexp_tokenize(text, nlp.Stemmer.TOKENIZE_REGEXP)))
