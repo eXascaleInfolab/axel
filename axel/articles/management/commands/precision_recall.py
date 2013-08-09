@@ -49,14 +49,15 @@ class Command(BaseCommand):
             if 'dbpedia' in colloc.source:
                 dbpedia_ngrams.add(colloc.ngram)
 
-        for obj in Article.objects.filter(cluster_id=self.cluster_id):
-            print obj
-            article = obj
-            """:type: Article"""
+        for article in Article.objects.filter(cluster_id=self.cluster_id):
+            print article
 
-            article_ngrams = list(article.articlecollocation_set.values_list('ngram', flat=True))
+            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram',
+                                                                        'tags__is_relevant')
+            correct_objects = set([ngram for ngram, rel in article_ngrams if rel])
+            incorrect_objects = set([ngram for ngram, rel in article_ngrams if rel is False])
+            article_ngrams = [ngram for ngram, _ in article_ngrams]
             links_graph = article.wikilinks_graph
-            #article_ngrams = list(article_ngrams.intersection(dbpedia_ngrams))
 
             for i, ngram1 in enumerate(article_ngrams):
                 try:
@@ -203,7 +204,6 @@ class Command(BaseCommand):
         print 'Precision: ', precision
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
-
 
     def _maxent_calculation(self):
         print 'Calculating Precision/Recall using MaxEntropy NE recognition'
