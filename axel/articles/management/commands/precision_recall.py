@@ -75,7 +75,6 @@ class Command(BaseCommand):
                         relation_distibution[attr] += 1
         print relation_distibution
 
-
     def _dbpedia_cc_size_calculation(self):
         print 'Generating DBPedia Connected Component size Histogram'
         import networkx as nx
@@ -83,12 +82,13 @@ class Command(BaseCommand):
         cc_size_distibution = {'valid': defaultdict(lambda: 0), 'invalid': defaultdict(lambda: 0)}
         percentage_distribution = defaultdict(list)
 
-        for obj in Article.objects.filter(cluster_id=self.cluster_id):
-            print obj
-            article = obj
-            """:type: Article"""
+        for article in Article.objects.filter(cluster_id=self.cluster_id):
+            print article
             graph = article.dbpedia_graph()
             results = []
+
+            correct_objects = set(self.Model.objects.filter(article=article, tags__is_relevant=True).values_list('ngram', flat=True))
+            incorrect_objects = set(self.Model.objects.filter(article=article, tags__is_relevant=False).values_list('ngram', flat=True))
             for component in nx.connected_components(graph):
                 component = [node for node in component if 'Category' not in node]
                 results.append(component)
@@ -107,7 +107,6 @@ class Command(BaseCommand):
         print 'VALID', str(cc_size_distibution['valid'].items()).replace('(','[').replace(')', ']')
         print 'INVALID', str(cc_size_distibution['invalid'].items()).replace('(','[').replace(')', ']')
 
-
     def _dbpedia_calculation(self):
         print 'Calculating Precision/Recall using dbpedia graph method'
         precision = []
@@ -124,8 +123,8 @@ class Command(BaseCommand):
 
             article_ngrams = self.Model.objects.filter(article=article).values_list('ngram',
                                                                         'tags__is_relevant')
-            correct_objects = [ngram for ngram, rel in article_ngrams if rel]
-            incorrect_objects = [ngram for ngram, rel in article_ngrams if rel is False]
+            correct_objects = set([ngram for ngram, rel in article_ngrams if rel])
+            incorrect_objects = set([ngram for ngram, rel in article_ngrams if rel is False])
             all_dbpedia_ngrams = [ngram for ngram, _ in article_ngrams if ngram in dbpedia_ngrams]
 
             true_pos = [x for x in results if x in correct_objects]
