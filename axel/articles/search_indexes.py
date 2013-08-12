@@ -47,7 +47,15 @@ class ArticleIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
         result = nlp.get_full_text(extracted_data['contents'])
         # get rid of multiple whitespaces
         obj.text = self.MULTI_SPACE_REGEX.sub(' ', result['text'])
-        obj.stemmed_text = nlp.Stemmer.stem_wordnet(obj.stemmed_text)
+        # get rid of references
+        ind1 = obj.text.find('ACKNOWLEDGMENT')
+        ind2 = obj.text.find('REFERENCES')
+        if ind1 != -1:
+            obj.text = obj.text[:ind1]
+        elif ind2 != -1:
+            obj.text = obj.text[:ind2]
+
+        obj.stemmed_text = nlp.Stemmer.stem_wordnet(obj.text)
         obj.index = json.dumps(nlp.build_ngram_index(obj.stemmed_text))
 
         if result['abstract']:
