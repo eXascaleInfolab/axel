@@ -457,6 +457,8 @@ def create_collocations(sender, instance, **kwargs):
     Add collocations on create
     :type instance: Article
     """
+    if kwargs.get('raw'):
+        return
     instance.create_collocations()
 
 
