@@ -1544,7 +1544,7 @@ trusted lexicon,1,SIGIR 2012: A generalized hidden Markov model with discriminat
 type operation spelling error deletion,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611
 weighted edit distance,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611
 act of wand,0,SIGIR 2012: Learning to predict response times for online query scheduling,621
-actual execution,0,SIGIR 2012: Learning to predict response times for online query scheduling,621
+actual execution,1,SIGIR 2012: Learning to predict response times for online query scheduling,621
 aquery efficiency,0,SIGIR 2012: Learning to predict response times for online query scheduling,621
 broker queue,0,SIGIR 2012: Learning to predict response times for online query scheduling,621
 craig macdonald,0,SIGIR 2012: Learning to predict response times for online query scheduling,621
@@ -2434,7 +2434,7 @@ goodwin avenue urbana,0,SIGIR 2012: Confidence-aware graph regularization with h
 graph we,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
 heterogeneous pairwise feature yuan fang,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
 hsu microsoft,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
-lexical edge model,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
+lexical edge model,1,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
 microsoft way redmond,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
 neighbor given,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
 optimal f-score,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951
