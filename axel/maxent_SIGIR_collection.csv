@@ -720,38 +720,38 @@ trec data,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZA
 user behavior,1,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 yanan qian,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 yunhua hu microsoft research asia beijing,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
-_and_bisexual business,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-abstract many,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-animal society,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-average agreement,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-average gain,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-bennett microsoft research redmond,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-boosted tree,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-emory university atlanta,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-engagement effort,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-feature ablation analysis,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-fleiss kappa,1,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-focus avgclickposquery,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-focus with,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-human annotation,1,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-introduction a web,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-kappa intent,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-label baseline,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-logistic regression,1,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-method table,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-metric to,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-microsoft research,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-museum society,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-music adult,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-recall human,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-social support,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-study limitation to,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-subject descriptor,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON
-task continuation,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-task continuation eugene agichtein,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
-terminated continued,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON,PERSON,PERSON,PERSON,PERSON,PERSON,PERSON
-user profile,1,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,PERSON,PERSON
-work prior,0,SIGIR 2012: Search, interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+_and_bisexual business,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+abstract many,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+animal society,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+average agreement,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+average gain,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+bennett microsoft research redmond,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+boosted tree,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+emory university atlanta,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+engagement effort,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+feature ablation analysis,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+fleiss kappa,1,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+focus avgclickposquery,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+focus with,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+human annotation,1,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+introduction a web,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+kappa intent,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+label baseline,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+logistic regression,1,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+method table,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+metric to,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+microsoft research,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+museum society,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+music adult,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+recall human,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+social support,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+study limitation to,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+subject descriptor,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON
+task continuation,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+task continuation eugene agichtein,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
+terminated continued,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON,PERSON,PERSON,PERSON,PERSON,PERSON,PERSON
+user profile,1,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,PERSON,PERSON
+work prior,0,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,315,ORGANIZATION
 abstract conventional,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 aspect query aspect word query aspect word query aspect word global background word,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
 aspect word,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
@@ -1122,43 +1122,43 @@ support medium,0,SIGIR 2012: A subjunctive exploratory search interface to suppo
 the netherlands,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,ORGANIZATION,ORGANIZATION
 utrecht university,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,PERSON
 vector space model,1,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,ORGANIZATION
-abstract aggregated,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-alpha focused,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-aol search,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-ashlee edward school,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-blended focused,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-blended interface,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-chapel hill,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-diane kelly,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-discussion with,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-engagement scale,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION,ORGANIZATION,ORGANIZATION
-exit questionnaire,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-exit questionnaire flow diagram,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-felt involvement,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON,PERSON,PERSON
-human factor,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-hypothesis research question hypothesis,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-interaction with,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-item cronbach,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-learning objective,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-library science university,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-low how,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-north carolina,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,GPE,GPE
-perceived usability,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON,PERSON,PERSON
-question this,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-r bonferroni,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-retrieval general term performance,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-search effectiveness,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON,ORGANIZATION,PERSON
-serp click,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-subject descriptor,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-system user experience,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-task complexity tom,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-type complexity health science,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-u census,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION,ORGANIZATION
-user experience,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-user experience questionnaire,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,ORGANIZATION
-vertical display,1,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-vertical usage with,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
-yahoo search,0,SIGIR 2012: Task complexity, vertical display and user interaction in aggregated search,435,PERSON
+abstract aggregated,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+alpha focused,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+aol search,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+ashlee edward school,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+blended focused,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+blended interface,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+chapel hill,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+diane kelly,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+discussion with,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+engagement scale,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION,ORGANIZATION,ORGANIZATION
+exit questionnaire,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+exit questionnaire flow diagram,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+felt involvement,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON,PERSON,PERSON
+human factor,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+hypothesis research question hypothesis,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+interaction with,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+item cronbach,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+learning objective,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+library science university,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+low how,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+north carolina,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,GPE,GPE
+perceived usability,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON,PERSON,PERSON
+question this,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+r bonferroni,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+retrieval general term performance,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+search effectiveness,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON,ORGANIZATION,PERSON
+serp click,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+subject descriptor,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+system user experience,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+task complexity tom,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+type complexity health science,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+u census,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION,ORGANIZATION
+user experience,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+user experience questionnaire,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
+vertical display,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+vertical usage with,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
+yahoo search,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
 alejandro jaimes,0,SIGIR 2012: Image ranking based on user browsing behavior,445,PERSON
 art event series peculiar,0,SIGIR 2012: Image ranking based on user browsing behavior,445,PERSON
 browserank permission,0,SIGIR 2012: Image ranking based on user browsing behavior,445,ORGANIZATION
@@ -2306,29 +2306,29 @@ rxquad qrels,0,SIGIR 2012: Explicit relevance models in intent-oriented informat
 subject descriptor,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,PERSON
 theory keywords diversity,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,PERSON
 xquad for,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION
-average precision,1,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-complexity analysis,1,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,ORGANIZATION
-computing technology,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,ORGANIZATION
-data set,1,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-denote pi,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-evaluation measure a,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-expected reciprocal rank,1,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-experimental setting for,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,ORGANIZATION
-general term algorithm,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,ORGANIZATION
-graded mq2007,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON,PERSON,PERSON,PERSON
-graded td2003,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON,PERSON
-jiafeng guo,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-mean average,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-method time,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,ORGANIZATION
-nir ailon,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-normalized discounted,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,ORGANIZATION
-step1 randomly,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-step2 randomly,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-subject descriptor,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-theory keywords,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-trec2003 topic distillation,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,ORGANIZATION
-xueqi cheng,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
-yanyan lan,0,SIGIR 2012: Top-k learning to rank: labeling, ranking and evaluation,751,PERSON
+average precision,1,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+complexity analysis,1,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,ORGANIZATION
+computing technology,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,ORGANIZATION
+data set,1,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+denote pi,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+evaluation measure a,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+expected reciprocal rank,1,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+experimental setting for,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,ORGANIZATION
+general term algorithm,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,ORGANIZATION
+graded mq2007,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON,PERSON,PERSON,PERSON
+graded td2003,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON,PERSON
+jiafeng guo,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+mean average,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+method time,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,ORGANIZATION
+nir ailon,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+normalized discounted,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,ORGANIZATION
+step1 randomly,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+step2 randomly,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+subject descriptor,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+theory keywords,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+trec2003 topic distillation,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,ORGANIZATION
+xueqi cheng,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
+yanyan lan,0,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,751,PERSON
 abstract many,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,ORGANIZATION
 baseline ranking,1,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,PERSON
 bennett microsoft,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,PERSON
@@ -2448,51 +2448,51 @@ support vector machine,1,SIGIR 2012: Category hierarchy maintenance: a data-driv
 topic tree,0,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,791,PERSON
 total sum,0,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,791,ORGANIZATION
 work hierarchy generation,0,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,791,ORGANIZATION
-abstract while web,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-ask search avg,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-avg max,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-baby how,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-baidu know,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON,PERSON
-basketball greatest,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-car make,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-community question,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION,ORGANIZATION,ORGANIZATION
-emory university,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-ethic religion,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-eugene agichtein,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-fitness account,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-frequency distribution,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-gideon dror,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-higher education,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-homework help algebra,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-idan szpektor,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-introduction while web,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-la boulanger,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-landscape adolescent cooking,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-length distribution,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-mathematics renting,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-maximum likelihood,1,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-menlo park,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-need help pls,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-query characteristic,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-query click,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-query question,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-query serp,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON,PERSON
-query word distribution,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-real estate diet,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-result distribution,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-retrieval keywords,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-san jose,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-searchask ask,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-searchask ask search,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-sequence before question asking,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-service baby name garden,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-size distribution,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-style military basketball problem,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-subject descriptor,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-transgendered other,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,ORGANIZATION
-united state,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,GPE,GPE
-webscope program3,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
-yoelle maarek,0,SIGIR 2012: When web search fails, searchers become askers: understanding the transition,801,PERSON
+abstract while web,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+ask search avg,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+avg max,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+baby how,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+baidu know,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON,PERSON
+basketball greatest,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+car make,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+community question,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION,ORGANIZATION,ORGANIZATION
+emory university,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+ethic religion,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+eugene agichtein,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+fitness account,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+frequency distribution,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+gideon dror,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+higher education,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+homework help algebra,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+idan szpektor,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+introduction while web,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+la boulanger,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+landscape adolescent cooking,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+length distribution,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+mathematics renting,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+maximum likelihood,1,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+menlo park,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+need help pls,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+query characteristic,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+query click,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+query question,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+query serp,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON,PERSON
+query word distribution,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+real estate diet,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+result distribution,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+retrieval keywords,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+san jose,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+searchask ask,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+searchask ask search,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+sequence before question asking,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+service baby name garden,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+size distribution,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+style military basketball problem,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+subject descriptor,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+transgendered other,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
+united state,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,GPE,GPE
+webscope program3,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
+yoelle maarek,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
 collection in,0,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,811,ORGANIZATION
 domain adaptation necessary,0,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,811,PERSON
 effective is domain adaptation,0,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,811,PERSON
