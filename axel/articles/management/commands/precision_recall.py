@@ -6,6 +6,7 @@ from termcolor import colored
 import nltk
 
 from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
 
 from axel.articles.models import Article, CLUSTERS_DICT
 from axel.libs import nlp
@@ -144,8 +145,7 @@ class Command(BaseCommand):
             good_removed = [x for x in all_dbpedia_ngrams if x in correct_objects and x not in true_pos]
             false_pos = [x for x in results if x in incorrect_objects]
             top_false_counter.update(false_pos)
-            local_precision = len(true_pos) / len([x for x in results if x in correct_objects or
-                                                                         x in incorrect_objects])
+            local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
             local_recall = len(true_pos) / len([x for x in article.articlecollocation_set
             .values_list('ngram', flat=True) if x in correct_objects])
 
@@ -189,8 +189,7 @@ class Command(BaseCommand):
             print colored(true_pos, 'green')
             print colored(false_pos, 'red')
             print
-            local_precision = len(true_pos) / len([x for x in results if x in correct_objects or
-                                                                         x in incorrect_objects])
+            local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
             local_recall = len(true_pos) / len([x for x, _ in article_ngrams if x in correct_objects])
 
             precision.append(local_precision)
@@ -210,37 +209,59 @@ class Command(BaseCommand):
         precision = []
         recall = []
 
+        extra_source = open(settings.ABS_PATH('maxent_SIGIR_collection.csv')).read().split('\n')
+        results_dict = defaultdict(lambda: {'true_pos': set(), 'false_pos': set()})
+        for line in extra_source:
+            line = line.split(',')
+            if line[1] == '0':
+                results_dict[line[-1]]['false_pos'].add(line[0])
+            else:
+                results_dict[line[-1]]['true_pos'].add(line[0])
+
         for article in Article.objects.filter(cluster_id=self.cluster_id):
-            print article
-            text = article.text
-            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram', 'tags__is_relevant')
-            correct_objects = [ngram for ngram, rel in article_ngrams if rel]
-            incorrect_objects = [ngram for ngram, rel in article_ngrams if rel is False]
+            false_negs = set(self.Model.objects.filter(article=article, tags__is_relevant=True).values_list('ngram', flat=True))
+            pdf_id = str(article.pdf)[12:-4]
 
-            sentences = [nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP)) for sent in nltk.sent_tokenize(text)]
-            results = nltk.batch_ne_chunk(sentences)
-            """:type: nltk.tree.Tree"""
-
-            ne_set = set()
-            for result in results:
-                for tree in result.subtrees():
-                    if tree.node != 'S' and len(tree) > 1:
-                        ne_set.add(' '.join(zip(*tree)[0]).lower())
-            true_pos = [x for x in ne_set if x in correct_objects]
-            false_pos = [x for x in ne_set if x in incorrect_objects]
-            print colored(true_pos, 'green')
-            print colored(false_pos, 'red')
-            print
-
-            local_precision = len(true_pos) / len([x for x in ne_set if x in correct_objects or
-                                                                         x in incorrect_objects])
-            local_recall = len(true_pos) / len([x for x, _ in article_ngrams if x in correct_objects])
-
+            true_pos = results_dict[pdf_id]['true_pos']
+            false_pos = results_dict[pdf_id]['false_pos']
+            results_dict[pdf_id]['false_negs'] = false_negs.difference(true_pos)
+            local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
+            local_recall = len(true_pos) / (len(true_pos) + len(false_negs))
             precision.append(local_precision)
             recall.append(local_recall)
 
-        print precision
-        print recall
+        # We already have judgments, no need to extract
+        # for article in Article.objects.filter(cluster_id=self.cluster_id):
+        #     #print article
+        #     text = article.text
+        #     article_ngrams = self.Model.objects.filter(article=article).values_list('ngram', 'tags__is_relevant')
+        #     correct_objects = [ngram for ngram, rel in article_ngrams if rel]
+        #     incorrect_objects = [ngram for ngram, rel in article_ngrams if rel is False]
+        #
+        #     sentences = [nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP)) for sent in nltk.sent_tokenize(text)]
+        #     results = nltk.batch_ne_chunk(sentences)
+        #     """:type: nltk.tree.Tree"""
+        #
+        #     ne_set = set()
+        #     for result in results:
+        #         for tree in result.subtrees():
+        #             if tree.node != 'S' and len(tree) > 1:
+        #                 ne_set.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*tree)[0]).lower()))
+        #     true_pos = [x for x in ne_set if x in correct_objects]
+        #     false_pos = [x for x in ne_set if x in incorrect_objects]
+        #
+        #     if len(true_pos) + len(false_pos) == 0:
+        #         continue
+        #
+        #     local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
+        #     local_recall = len(true_pos) / len([x for x, _ in article_ngrams if x in correct_objects])
+        #
+        #     precision.append(local_precision)
+        #     recall.append(local_recall)
+
+        #     precision.append(local_precision)
+        #     recall.append(local_recall)
+
         precision = sum(precision) / len(precision)
         recall = sum(recall) / len(recall)
         print 'Precision: ', precision
