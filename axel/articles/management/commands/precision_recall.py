@@ -214,9 +214,9 @@ class Command(BaseCommand):
         for line in extra_source:
             line = line.split(',')
             if line[1] == '0':
-                results_dict[line[-1]]['false_pos'].add(line[0])
+                results_dict[line[3]]['false_pos'].add(line[0])
             else:
-                results_dict[line[-1]]['true_pos'].add(line[0])
+                results_dict[line[3]]['true_pos'].add(line[0])
 
         for article in Article.objects.filter(cluster_id=self.cluster_id):
             false_negs = set(self.Model.objects.filter(article=article, tags__is_relevant=True).values_list('ngram', flat=True))
