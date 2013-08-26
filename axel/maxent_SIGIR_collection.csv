@@ -6,7 +6,7 @@ norbert fuhr faculty,0,SIGIR 2012: Salton award lecture: information retrieval a
 subject descriptor,0,SIGIR 2012: Salton award lecture: information retrieval as engineering science,1,PERSON
 term theory,0,SIGIR 2012: Salton award lecture: information retrieval as engineering science,1,PERSON
 abstract real,0,SIGIR 2012: Time drives interaction: simulating sessions in diverse searching environments,105,ORGANIZATION
-"averaged cg",0,"SIGIR 2012: Time drives interaction: simulating sessions in diverse searching environments",105,PERSON
+"averaged cg",0,"SIGIR 2012: Time drives interaction: simulating sessions in diverse searching environments,105,PERSON
 cumulated gain,1,SIGIR 2012: Time drives interaction: simulating sessions in diverse searching environments,105,ORGANIZATION
 desktop pc,0,SIGIR 2012: Time drives interaction: simulating sessions in diverse searching environments,105,PERSON
 heikki keskustalo,0,SIGIR 2012: Time drives interaction: simulating sessions in diverse searching environments,105,PERSON
@@ -33,7 +33,7 @@ ireland galway,0,SIGIR 2012: Evaluating aggregated search pages,115,GPE
 item selection,1,SIGIR 2012: Evaluating aggregated search pages,115,PERSON
 jose university,0,SIGIR 2012: Evaluating aggregated search pages,115,PERSON
 lemur toolkit,1,SIGIR 2012: Evaluating aggregated search pages,115,ORGANIZATION
-metric agreement,1,SIGIR 2012: Evaluating aggregated search pages,115,ORGANIZATION,ORGANIZATION
+metric agreement,1,SIGIR 2012: Evaluating aggregated search pages,115,ORGANIZATION
 metric previous,0,SIGIR 2012: Evaluating aggregated search pages,115,PERSON
 millionquery track,1,SIGIR 2012: Evaluating aggregated search pages,115,ORGANIZATION
 mounia lalmas yahoo,0,SIGIR 2012: Evaluating aggregated search pages,115,PERSON
@@ -80,7 +80,7 @@ hybrid search,1,SIGIR 2012: Combining inverted indices and structured search for
 inex entity,0,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,ORGANIZATION
 jaguar car,0,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,PERSON
 jimi hendrix,0,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,PERSON
-linked open data,1,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,ORGANIZATION,ORGANIZATION
+linked open data,1,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,ORGANIZATION
 lod cloud,1,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,ORGANIZATION
 mean average,0,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,ORGANIZATION
 natural language,0,SIGIR 2012: Combining inverted indices and structured search for ad-hoc object retrieval,125,ORGANIZATION
@@ -123,7 +123,7 @@ first post,0,SIGIR 2012: Retrieving similar discussion forum threads: a structur
 google news5,0,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,PERSON
 hierarchical agglomerative clustering,1,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,PERSON
 jaccard similarity,1,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,PERSON
-maximum weighted,0,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,ORGANIZATION,ORGANIZATION
+maximum weighted,0,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,ORGANIZATION
 method since,0,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,ORGANIZATION
 post since,0,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,PERSON
 pseudo cluster selection,0,SIGIR 2012: Retrieving similar discussion forum threads: a structure based approach,135,PERSON,ORGANIZATION
@@ -137,7 +137,7 @@ abstract a,0,SIGIR 2012: Summarizing highly structured documents for effective s
 amazon mechanical turk,1,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,PERSON
 amazon search,0,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,PERSON
 approach in,0,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,ORGANIZATION
-avgidf average,0,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,ORGANIZATION,ORGANIZATION
+avgidf average,0,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,ORGANIZATION
 cossim cosine,0,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,ORGANIZATION
 data set,1,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,ORGANIZATION
 different summarization approach,0,SIGIR 2012: Summarizing highly structured documents for effective search interaction,145,ORGANIZATION
@@ -233,7 +233,7 @@ telefonica research,0,SIGIR 2012: TFMAP: optimizing MAP for top-n context-aware 
 yue shia,0,SIGIR 2012: TFMAP: optimizing MAP for top-n context-aware recommendation,155,PERSON
 analysis we,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
 build model,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
-conversion rate,1,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION,ORGANIZATION,ORGANIZATION
+conversion rate,1,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 ddr5 graphic,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 dell laptop,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 distinct product,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
@@ -251,12 +251,12 @@ purchase interval cube,1,SIGIR 2012: Increasing temporal diversity with purchase
 purchase interval due,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 purchase interval matrix,1,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 purchase interval permission,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
-qq rw,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION,ORGANIZATION,ORGANIZATION
+qq rw,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 sample product product,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 sample purchase interval,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
 subject descriptor,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
-sv dpi,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
-sv dutil,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+sv dpi,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
+sv dutil,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 taxonomy finally,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 temporal diversity,1,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 term algorithm,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
@@ -265,7 +265,7 @@ utility surplus utility,0,SIGIR 2012: Increasing temporal diversity with purchas
 utility theory,1,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
 wei chen school,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
 window size,1,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
-wireless router,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION,ORGANIZATION
+wireless router,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,ORGANIZATION
 wynne hsu,0,SIGIR 2012: Increasing temporal diversity with purchase intervals,165,PERSON
 adelft university,0,SIGIR 2012: Adaptive diversification of recommendation results via latent factor portfolio,175,ORGANIZATION
 alan hanjalica,0,SIGIR 2012: Adaptive diversification of recommendation results via latent factor portfolio,175,PERSON
@@ -327,7 +327,7 @@ volume impacted,0,SIGIR 2012: Modeling the impact of short- and long-term behavi
 wei chu2,0,SIGIR 2012: Modeling the impact of short- and long-term behavior on search personalization,185,PERSON
 xiaoyuan cui2 microsoft,0,SIGIR 2012: Modeling the impact of short- and long-term behavior on search personalization,185,PERSON
 abstract web,0,SIGIR 2012: Improving searcher models using mouse cursor activity,195,ORGANIZATION
-cascade model,1,SIGIR 2012: Improving searcher models using mouse cursor activity,195,ORGANIZATION,ORGANIZATION
+cascade model,1,SIGIR 2012: Improving searcher models using mouse cursor activity,195,ORGANIZATION
 click chain model,1,SIGIR 2012: Improving searcher models using mouse cursor activity,195,PERSON
 click data searcher,0,SIGIR 2012: Improving searcher models using mouse cursor activity,195,PERSON
 click model,1,SIGIR 2012: Improving searcher models using mouse cursor activity,195,PERSON
@@ -363,12 +363,12 @@ chang liu school,0,SIGIR 2012: Personalization of search results using interacti
 clueweb09 english,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
 cole school,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 definition behavioral,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
-document level,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON,ORGANIZATION,ORGANIZATION
+document level,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON,ORGANIZATION
 document usefulness,1,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
 evaluation of,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
 expected reciprocal rank,1,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 generation of,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
-goal quality,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION,ORGANIZATION
+goal quality,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
 graded average,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 human factor keywords implicit,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 huntington street,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,FACILITY,FACILITY,FACILITY
@@ -390,16 +390,16 @@ positive rf,0,SIGIR 2012: Personalization of search results using interaction be
 pseudo relevance feedback,1,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 run measure gp,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 segment level,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
-session track,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION,ORGANIZATION
+session track,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
 south korea,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,GPE
 south korean,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,GPE
-specific goal,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION,ORGANIZATION
+specific goal,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 task naming product level goal,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 term measurement,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 trec dataset,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
-trec session,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION,ORGANIZATION
-trec session track,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION,ORGANIZATION
+trec session,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
+trec session track,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,ORGANIZATION
 trevor malcolm week,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 unnamed factual document,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
 unnamed named named product factual factual factual factual model,0,SIGIR 2012: Personalization of search results using interaction behaviors in search sessions,205,PERSON
@@ -425,7 +425,7 @@ problem reciprocal rank,0,SIGIR 2012: User evaluation of query quality,215,PERSO
 query eight,0,SIGIR 2012: User evaluation of query quality,215,ORGANIZATION
 reciprocal rank,1,SIGIR 2012: User evaluation of query quality,215,ORGANIZATION
 scale how,0,SIGIR 2012: User evaluation of query quality,215,PERSON
-sils university,0,SIGIR 2012: User evaluation of query quality,215,ORGANIZATION,ORGANIZATION
+sils university,0,SIGIR 2012: User evaluation of query quality,215,ORGANIZATION
 subject descriptor,0,SIGIR 2012: User evaluation of query quality,215,PERSON
 term experimentation,0,SIGIR 2012: User evaluation of query quality,215,PERSON
 trec aquaint,0,SIGIR 2012: User evaluation of query quality,215,ORGANIZATION
@@ -444,7 +444,7 @@ intel xeon,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,ORGANI
 la time,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,ORGANIZATION
 matthias petri school,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,PERSON
 query length we,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,PERSON
-rmit university melbourne,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,ORGANIZATION,ORGANIZATION,ORGANIZATION
+rmit university melbourne,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,ORGANIZATION
 shane culpepper school,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,PERSON
 subject descriptor,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,PERSON
 term map,0,SIGIR 2012: Efficient in-memory top-k document retrieval,225,ORGANIZATION
@@ -463,7 +463,7 @@ bounded subsumption,1,SIGIR 2012: Index maintenance for time-travel text search,
 crawl figure,0,SIGIR 2012: Index maintenance for time-travel text search,235,PERSON
 dataset coverage size,0,SIGIR 2012: Index maintenance for time-travel text search,235,PERSON
 difsharding dataset,0,SIGIR 2012: Index maintenance for time-travel text search,235,ORGANIZATION
-english wikipedia,1,SIGIR 2012: Index maintenance for time-travel text search,235,ORGANIZATION,ORGANIZATION
+english wikipedia,1,SIGIR 2012: Index maintenance for time-travel text search,235,ORGANIZATION
 european archive,0,SIGIR 2012: Index maintenance for time-travel text search,235,ORGANIZATION
 framework programme,0,SIGIR 2012: Index maintenance for time-travel text search,235,PERSON
 general term experimentation,0,SIGIR 2012: Index maintenance for time-travel text search,235,ORGANIZATION
@@ -557,7 +557,7 @@ international classification,0,SIGIR 2012: Studies of the onset and persistence 
 keywords health,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,ORGANIZATION
 lou gehrig,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,PERSON
 medical concern,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,ORGANIZATION
-microsoft way redmond,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,ORGANIZATION,ORGANIZATION
+microsoft way redmond,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,ORGANIZATION
 net foundation,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,PERSON
 united state,0,SIGIR 2012: Studies of the onset and persistence of medical concerns in search logs,265,GPE
@@ -573,13 +573,13 @@ conditional random field,1,SIGIR 2012: A semi-supervised approach to modeling we
 expectation maximization,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,PERSON
 experimental setup,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION
 feature number,0,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,PERSON
-generative model,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION,ORGANIZATION,ORGANIZATION
+generative model,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION
 harmonic function,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION
 hassan microsoft research redmond,0,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,PERSON
 majority baseline,0,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION
 markov model,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,PERSON
 mean average,0,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,PERSON
-normalized discounted cumulative gain,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION,ORGANIZATION
+normalized discounted cumulative gain,1,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION
 reciprocal rank,0,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,ORGANIZATION
 search process keywords,0,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,PERSON
 split w,0,SIGIR 2012: A semi-supervised approach to modeling web search satisfaction,275,PERSON
@@ -646,13 +646,13 @@ suggestfeatures imp,0,SIGIR 2012: An exploration of ranking heuristics in mobile
 term algorithm,0,SIGIR 2012: An exploration of ranking heuristics in mobile local search,295,PERSON
 yuanhua lv department,0,SIGIR 2012: An exploration of ranking heuristics in mobile local search,295,PERSON
 american board,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
-american college,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION,ORGANIZATION
+american college,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 biomedical communication,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
-biomedical informatics,1,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION,ORGANIZATION,ORGANIZATION
+biomedical informatics,1,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 data bank,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,PERSON
 health informatics,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,PERSON
 health informatics university,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,PERSON
-internal medicine,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION,ORGANIZATION
+internal medicine,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 international cancer,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 jeopardy daniel,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 lister hill national center,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
@@ -660,7 +660,7 @@ masys affiliate professor biomedical,0,SIGIR 2012: Keynote talk: Retrieving Info
 medical education,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 medical informatics,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 medical information system,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,PERSON
-medical oncology,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION,ORGANIZATION
+medical oncology,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 medical science,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 national academy,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
 national cancer institute,0,SIGIR 2012: Keynote talk: Retrieving Information from the Book of Humanity: The Personalized Medicine Data Tsunami Crashes on the Beach of Jeopardy,3,ORGANIZATION
@@ -686,14 +686,14 @@ click interval,0,SIGIR 2012: Mining query subtopics from search log data,305,PER
 cluster id,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 data set,1,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION
 data set query type,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
-dataseta multifaceted,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION,ORGANIZATION
+dataseta multifaceted,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION
 daxin jiang microsoft research asia beijing,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 experimentation keywords search log mining,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 grant no,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 hang li microsoft research asia beijing,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 harry shum,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 jian pei simon fraser university burnaby,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
-jiaotong university,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION,ORGANIZATION
+jiaotong university,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION
 method baseline our method baseline our method baseline,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 method our,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 microsoft harry shum,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION
@@ -713,10 +713,10 @@ retrieval permission,0,SIGIR 2012: Mining query subtopics from search log data,3
 same different all,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 search result,1,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 similarity function,1,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION
-spklstn lab,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION,ORGANIZATION,ORGANIZATION
+spklstn lab,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 term algorithm,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
-trec data,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION,ORGANIZATION
+trec data,0,SIGIR 2012: Mining query subtopics from search log data,305,ORGANIZATION
 user behavior,1,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 yanan qian,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
 yunhua hu microsoft research asia beijing,0,SIGIR 2012: Mining query subtopics from search log data,305,PERSON
@@ -756,9 +756,9 @@ abstract conventional,0,SIGIR 2012: Multi-aspect query summarization by composit
 aspect query aspect word query aspect word query aspect word global background word,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
 aspect word,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
 barry pepper,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
-bing search,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION,ORGANIZATION
+bing search,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 captain john,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
-composite query,1,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+composite query,1,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 computer science,1,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 data set,1,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 development program,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
@@ -783,7 +783,7 @@ natural language,0,SIGIR 2012: Multi-aspect query summarization by composite que
 origin remove5,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
 original query,1,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 parameter setting,1,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
-private ryan,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+private ryan,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 private ryan cast,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,ORGANIZATION
 qing yu2,0,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
 query common word,1,SIGIR 2012: Multi-aspect query summarization by composite query,325,PERSON
@@ -874,12 +874,12 @@ textual feature,1,SIGIR 2012: Privacy-aware image classification and search,35,P
 textual image privacy feature,0,SIGIR 2012: Privacy-aware image classification and search,35,PERSON
 visual feature,1,SIGIR 2012: Privacy-aware image classification and search,35,PERSON
 work with,0,SIGIR 2012: Privacy-aware image classification and search,35,ORGANIZATION
-additional space,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+additional space,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 chen li,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 christos faloutsos,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
-computer science,1,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION,ORGANIZATION
+computer science,1,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 enron figure,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
-forward list,1,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION,ORGANIZATION,ORGANIZATION
+forward list,1,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 foward list,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 general term algorithm,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 guoliang li,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
@@ -888,9 +888,9 @@ intel core,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search
 jianan wang,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 jianhua feng,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 jiannan wang,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
-leaf node,1,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION,ORGANIZATION,ORGANIZATION
+leaf node,1,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 national grand fundamental,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
-national natural science foundation,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION,ORGANIZATION
+national natural science foundation,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 performance keywords,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 query id,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 query keywords inverted,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
@@ -906,7 +906,7 @@ threshold algorithm,1,SIGIR 2012: Supporting efficient top-k queries in type-ahe
 trie leaf node,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 trie partial,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
 tsinghua national laboratory,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,PERSON
-tsinghua university,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION,ORGANIZATION
+tsinghua university,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 ubuntu linux,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 uc irvine,0,SIGIR 2012: Supporting efficient top-k queries in type-ahead search,355,ORGANIZATION
 academic research,0,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,ORGANIZATION
@@ -938,8 +938,8 @@ normalized discounted cumulative gain,1,SIGIR 2012: SimFusion+: extending simfus
 query webpage,0,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,PERSON
 subject descriptor,0,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,PERSON
 synthetic data,1,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,ORGANIZATION
-unified adjacency matrix,1,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,ORGANIZATION,ORGANIZATION,ORGANIZATION,PERSON
-unified relationship matrix,1,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,ORGANIZATION,ORGANIZATION
+unified adjacency matrix,1,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,ORGANIZATION,PERSON
+unified relationship matrix,1,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,ORGANIZATION
 unified similarity matrix,1,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,ORGANIZATION
 united state,0,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,GPE
 web ranking,0,SIGIR 2012: SimFusion+: extending simfusion towards efficient estimation on large and dynamic networks,365,PERSON
@@ -972,7 +972,7 @@ matrix u0 holding u1,0,SIGIR 2012: Group matrix factorization for scalable topic
 matrix up,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,PERSON
 matrix vp,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,PERSON
 min max,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION
-new document,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION,ORGANIZATION
+new document,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION
 nonnegative matrix factorization,1,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION
 partially labeled,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION
 r k,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION
@@ -981,7 +981,7 @@ regularized latent semantic indexing,1,SIGIR 2012: Group matrix factorization fo
 subject descriptor,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,PERSON
 supervised latent dirichlet allocation,1,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,PERSON
 topic modeling,1,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,PERSON
-utp dp,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION,ORGANIZATION
+utp dp,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,ORGANIZATION
 wp component,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,PERSON
 zheng cao dept,0,SIGIR 2012: Group matrix factorization for scalable topic modeling,375,PERSON
 avenida mountain view,0,SIGIR 2012: Detecting quilted web pages at scale,385,PERSON
@@ -1024,7 +1024,7 @@ associated press,0,SIGIR 2012: Learning hash codes for efficient content reuse d
 baidu zhidao,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
 baidu zhidao5,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
 blogosphere report,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,ORGANIZATION
-catalog no,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,ORGANIZATION,ORGANIZATION
+catalog no,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,ORGANIZATION
 chen guang,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
 computer science,1,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,ORGANIZATION
 corpus language,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
@@ -1045,7 +1045,7 @@ query candidate reuse,0,SIGIR 2012: Learning hash codes for efficient content re
 query google,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
 recall gol,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
 reference sentence,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,ORGANIZATION
-reuse detection,1,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,ORGANIZATION,ORGANIZATION
+reuse detection,1,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,ORGANIZATION
 setup we,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
 shanghai education development foundation,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
 shanghai leading academic discipline project,0,SIGIR 2012: Learning hash codes for efficient content reuse detection,405,PERSON
@@ -1119,7 +1119,7 @@ rijke1 andrei,0,SIGIR 2012: A subjunctive exploratory search interface to suppor
 science park,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,PERSON
 subject descriptor,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,PERSON
 support medium,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,PERSON
-the netherlands,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,ORGANIZATION,ORGANIZATION
+the netherlands,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,ORGANIZATION
 utrecht university,0,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,PERSON
 vector space model,1,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,425,ORGANIZATION
 abstract aggregated,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
@@ -1131,7 +1131,7 @@ blended interface,1,SIGIR 2012: Task complexity vertical display and user intera
 chapel hill,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
 diane kelly,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
 discussion with,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
-engagement scale,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION,ORGANIZATION,ORGANIZATION
+engagement scale,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
 exit questionnaire,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
 exit questionnaire flow diagram,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
 felt involvement,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
@@ -1153,7 +1153,7 @@ subject descriptor,0,SIGIR 2012: Task complexity vertical display and user inter
 system user experience,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
 task complexity tom,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
 type complexity health science,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
-u census,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION,ORGANIZATION
+u census,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
 user experience,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
 user experience questionnaire,0,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,ORGANIZATION
 vertical display,1,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,435,PERSON
@@ -1194,7 +1194,7 @@ view view,0,SIGIR 2012: Image ranking based on user browsing behavior,445,PERSON
 abstract hashing,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
 approximate nearest neighbor search,1,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
 changjiang scholar,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
-computer science,1,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION,ORGANIZATION,ORGANIZATION
+computer science,1,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
 data set,1,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
 hamming distance,1,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
 image retrieval,1,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,PERSON
@@ -1208,7 +1208,7 @@ retrieval general term algorithm,0,SIGIR 2012: Manhattan hashing for large-scale
 shanghai jiao tong university shanghai,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,PERSON
 shanghai key laboratory,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,PERSON
 subject descriptor,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,PERSON
-system department,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION,ORGANIZATION,ORGANIZATION
+system department,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
 use mq,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,PERSON
 work due,0,SIGIR 2012: Manhattan hashing for large-scale image retrieval,45,ORGANIZATION
 acoustic feature extraction raw music segment time concept dynamic,0,SIGIR 2012: Modeling concept dynamics for large scale music search,455,ORGANIZATION
@@ -1278,7 +1278,7 @@ van morrison,0,SIGIR 2012: Modeling concept dynamics for large scale music searc
 vocal rock,0,SIGIR 2012: Modeling concept dynamics for large scale music search,455,PERSON
 average precision,1,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
 bibliographic record,0,SIGIR 2012: Finding translations in scanned book collections,465,ORGANIZATION
-computer science university,0,SIGIR 2012: Finding translations in scanned book collections,465,ORGANIZATION,ORGANIZATION
+computer science university,0,SIGIR 2012: Finding translations in scanned book collections,465,ORGANIZATION
 egmont egmont,0,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
 english oscar wilde,0,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
 european parliament,0,SIGIR 2012: Finding translations in scanned book collections,465,ORGANIZATION
@@ -1289,7 +1289,7 @@ google book,0,SIGIR 2012: Finding translations in scanned book collections,465,P
 immanuel kant,0,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
 johann wolfgang,0,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
 longest common,0,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
-longest common subsequence,1,SIGIR 2012: Finding translations in scanned book collections,465,ORGANIZATION,ORGANIZATION
+longest common subsequence,1,SIGIR 2012: Finding translations in scanned book collections,465,ORGANIZATION
 manmatha dept,0,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
 massachusetts amherst,0,SIGIR 2012: Finding translations in scanned book collections,465,GPE,GPE
 mean average,0,SIGIR 2012: Finding translations in scanned book collections,465,PERSON
@@ -1321,13 +1321,13 @@ l sim,0,SIGIR 2012: Predicting the ratings of multimedia items for making person
 level movie,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
 mean absolute error,1,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
 metric root mean square error,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
-multimedia item,1,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION,ORGANIZATION
+multimedia item,1,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 netflix prize,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 pf rated,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 player analysis,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
 polarity feature score,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 popularity computation,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
-popularity score,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION,ORGANIZATION
+popularity score,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 portrait table,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
 rani qumsiyeh computer science,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
 rating score,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
@@ -1350,9 +1350,9 @@ subject descriptor,0,SIGIR 2012: Predicting the ratings of multimedia items for 
 system multimedia,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 total count,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 u total,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
-university provo,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION,ORGANIZATION
+university provo,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 will smith,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON
-word sim,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON,ORGANIZATION,PERSON,ORGANIZATION,ORGANIZATION
+word sim,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,PERSON,ORGANIZATION,PERSON,ORGANIZATION
 word476 multimedia sample genre item movie action,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 work machine,0,SIGIR 2012: Predicting the ratings of multimedia items for making personalized recommendations,475,ORGANIZATION
 abstract online,0,SIGIR 2012: Personalized click shaping through lagrangian duality for online recommendation,485,ORGANIZATION
@@ -1430,7 +1430,7 @@ albakour school,0,SIGIR 2012: Adaptation of the concept hierarchy model with sea
 anne de roeck centre,0,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,PERSON
 apache solr3,0,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,PERSON
 average mrr,0,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,PERSON
-computer science,1,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,ORGANIZATION,ORGANIZATION,ORGANIZATION
+computer science,1,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,ORGANIZATION
 computer science tianjin university,0,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,ORGANIZATION
 computing open university,0,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,ORGANIZATION
 concept hierarchy,1,SIGIR 2012: Adaptation of the concept hierarchy model with search logs for query recommendation on intranets,5,PERSON
@@ -1464,7 +1464,7 @@ feature qc query clarity tc topical clarity,0,SIGIR 2012: Automatic refinement o
 intellectual property,1,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,ORGANIZATION
 international patent,0,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,ORGANIZATION
 linda andersson,0,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,PERSON
-map recall,0,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,ORGANIZATION,ORGANIZATION,ORGANIZATION
+map recall,0,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,ORGANIZATION
 mean average,0,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,PERSON
 measurement keywords,0,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,ORGANIZATION
 parvaz mahdabi,0,SIGIR 2012: Automatic refinement of patent queries using concept importance predictors,505,PERSON
@@ -1506,8 +1506,8 @@ relevance model,1,SIGIR 2012: Automatic term mismatch diagnosis for selective qu
 retrieval model keywords query,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,PERSON
 selective query expansion le zhao language technology institute carnegie mellon university pittsburgh,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,PERSON
-trec ad,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,ORGANIZATION,ORGANIZATION,ORGANIZATION
-trec legal,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+trec ad,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,ORGANIZATION
+trec legal,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,ORGANIZATION
 vector regression,0,SIGIR 2012: Automatic term mismatch diagnosis for selective query expansion,515,PERSON
 abstract search,0,SIGIR 2012: Generating reformulation trees for complex queries,525,ORGANIZATION
 bruce croft center,0,SIGIR 2012: Generating reformulation trees for complex queries,525,PERSON
@@ -1576,7 +1576,7 @@ graphical framework,0,SIGIR 2012: Modeling user posting behavior on social media
 labeled result,0,SIGIR 2012: Modeling user posting behavior on social media,545,PERSON
 laden figure,0,SIGIR 2012: Modeling user posting behavior on social media,545,PERSON
 latent dirichlet allocation,1,SIGIR 2012: Modeling user posting behavior on social media,545,ORGANIZATION
-latent topic,1,SIGIR 2012: Modeling user posting behavior on social media,545,ORGANIZATION,ORGANIZATION
+latent topic,1,SIGIR 2012: Modeling user posting behavior on social media,545,ORGANIZATION
 mention behavior,0,SIGIR 2012: Modeling user posting behavior on social media,545,ORGANIZATION
 mixture latent topic model framework we,0,SIGIR 2012: Modeling user posting behavior on social media,545,PERSON
 mixture model,1,SIGIR 2012: Modeling user posting behavior on social media,545,ORGANIZATION
@@ -1625,10 +1625,10 @@ u army research,0,SIGIR 2012: Boosting multi-kernel locality-sensitive hashing f
 wapt zt,0,SIGIR 2012: Boosting multi-kernel locality-sensitive hashing for scalable image retrieval,55,ORGANIZATION
 weighted bit allocation,0,SIGIR 2012: Boosting multi-kernel locality-sensitive hashing for scalable image retrieval,55,ORGANIZATION
 alex smola yahoo,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,PERSON
-behavior relation interplay,1,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION,ORGANIZATION
+behavior relation interplay,1,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
 bri model similar,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
 chang yahoo,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,PERSON
-computing georgia tech,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION,ORGANIZATION
+computing georgia tech,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
 discounted cumulative gain,1,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
 epinion yahoo,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,PERSON
 friendshipinterest propagation,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
@@ -1639,7 +1639,7 @@ network shuang hong yang college,0,SIGIR 2012: Friend or frenemy?: predicting si
 nsf grant,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
 performance keywords,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,PERSON
 rand fip corr,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
-relation analysis,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION,ORGANIZATION
+relation analysis,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
 semisupervised bri,1,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,PERSON
 social tie,1,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Friend or frenemy?: predicting signed ties in social networks,555,PERSON
@@ -1733,7 +1733,7 @@ technology iphone,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts i
 tie query linux,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,ORGANIZATION
 time soccer,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,PERSON
 tuaw unofficial apple weblog,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,ORGANIZATION
-twitter list,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,ORGANIZATION,ORGANIZATION,PERSON
+twitter list,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,ORGANIZATION,PERSON
 twitter wtf,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,PERSON
 u national team,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,ORGANIZATION
 uscg u coast,0,SIGIR 2012: Cognos: crowdsourcing search for topic experts in microblogs,575,ORGANIZATION
@@ -1745,18 +1745,18 @@ abstract enterprise,0,SIGIR 2012: Automatic suggestion of query-rewrite rules fo
 almaden san jose,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,PERSON
 benny kimelfeld,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,PERSON
 corpus statistic,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,PERSON
-discounted cumulative gain,1,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION,ORGANIZATION
+discounted cumulative gain,1,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 enterprise search zhuowei bao university,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 extended dataset,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 globally greedy,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
-ibm research,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION,ORGANIZATION
+ibm research,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 index query,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,PERSON
 intel xeon,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 intelligent information system,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 introduction while,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 labeled dataset,1,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 locally greedy,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
-mean reciprocal rank,1,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION,ORGANIZATION
+mean reciprocal rank,1,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,ORGANIZATION
 pennsylvania philadelphia,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,GPE
 query final,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,PERSON
 standard software installer,0,SIGIR 2012: Automatic suggestion of query-rewrite rules for enterprise search,591,PERSON
@@ -1788,7 +1788,7 @@ channel model,0,SIGIR 2012: A generalized hidden Markov model with discriminativ
 chengxiang zhai department,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
 component besides,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
 computer science,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
-conditional random field,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION,ORGANIZATION
+conditional random field,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
 correction result,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
 dataset error type,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,PERSON
 discriminative training,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,PERSON
@@ -1811,7 +1811,7 @@ lexicon l0,0,SIGIR 2012: A generalized hidden Markov model with discriminative t
 lexicon size,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
 merge multiple splitting word splitting,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,PERSON
 microsoft live lab,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
-microsoft speller,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION,ORGANIZATION
+microsoft speller,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
 microsoft web,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,PERSON
 microsoft wrod breaker service,1,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,ORGANIZATION
 model another,0,SIGIR 2012: A generalized hidden Markov model with discriminative training for query spelling correction,611,PERSON
@@ -1843,14 +1843,14 @@ national research council,0,SIGIR 2012: Learning to predict response times for o
 nicola tonellotto2,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
 num628 scheduling full algorithm,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,ORGANIZATION
 online query scheduling craig macdonald1,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
-posting re,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+posting re,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,ORGANIZATION
 query efficiency,1,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
 query length agg,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
 query length feat,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
 queue length,1,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
 retrieval keywords,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
 retrieval strategy full maxscore wand,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
-rmse full sum,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,ORGANIZATION,ORGANIZATION
+rmse full sum,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,ORGANIZATION
 root mean square error,1,SIGIR 2012: Learning to predict response times for online query scheduling,621,ORGANIZATION
 server we,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,PERSON
 setup all,0,SIGIR 2012: Learning to predict response times for online query scheduling,621,ORGANIZATION
@@ -1885,7 +1885,7 @@ addition modification deletion,0,SIGIR 2012: Online result cache invalidation fo
 bai yahoo,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,ORGANIZATION
 cache invalidation,1,SIGIR 2012: Online result cache invalidation for real-time web search,641,PERSON
 cip fr,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,ORGANIZATION
-cip online,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+cip online,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,ORGANIZATION
 crawler document,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,PERSON
 general term algorithm,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,ORGANIZATION
 hit hit,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,PERSON
@@ -1902,7 +1902,7 @@ stale likely,0,SIGIR 2012: Online result cache invalidation for real-time web se
 subject descriptor,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,PERSON
 work caching,0,SIGIR 2012: Online result cache invalidation for real-time web search,641,ORGANIZATION
 bruce croft center,0,SIGIR 2012: Diversity by proportionality: an election-based approach to search result diversification,65,PERSON
-clueweb09 category,0,SIGIR 2012: Diversity by proportionality: an election-based approach to search result diversification,65,ORGANIZATION,ORGANIZATION
+clueweb09 category,0,SIGIR 2012: Diversity by proportionality: an election-based approach to search result diversification,65,ORGANIZATION
 computer science university,0,SIGIR 2012: Diversity by proportionality: an election-based approach to search result diversification,65,ORGANIZATION
 cpr win,0,SIGIR 2012: Diversity by proportionality: an election-based approach to search result diversification,65,ORGANIZATION
 cumulative proportionality,1,SIGIR 2012: Diversity by proportionality: an election-based approach to search result diversification,65,ORGANIZATION
@@ -2027,10 +2027,10 @@ new wave,0,SIGIR 2012: Exploring social influence for recommendation: a generati
 recall figure,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,PERSON
 robbie williams,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,PERSON
 selection in,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION
-si average,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION,ORGANIZATION
+si average,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION
 si here,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION
 si model,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION
-sig least misery,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION,ORGANIZATION
+sig least misery,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION
 social influence study,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,ORGANIZATION
 social network,1,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,PERSON
 subject descriptor,0,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,671,PERSON
@@ -2047,7 +2047,7 @@ data set,1,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual ke
 definition let,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,ORGANIZATION
 experimentation keywords,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
 file gothic church baroque if1,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
-france bakery,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,ORGANIZATION,ORGANIZATION
+france bakery,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,ORGANIZATION
 highland club,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
 hudson hotel,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
 incremental object retrieval,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,ORGANIZATION
@@ -2063,7 +2063,7 @@ papal basilica,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-vis
 parameter range,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
 park hotel,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
 pasadena inn,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
-radisson hotel,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,ORGANIZATION,ORGANIZATION
+radisson hotel,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,ORGANIZATION
 retrieval algorithm,1,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
 rose bowl motel,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
 saint peter,0,SIGIR 2012: See-to-retrieve: efficient processing of spatio-visual keyword queries,681,PERSON
@@ -2103,9 +2103,9 @@ parameter setting,1,SIGIR 2012: Placing images on the world map: a microblog-bas
 retrieval general term,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,PERSON
 space needle,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,PERSON
-technology delft,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,ORGANIZATION,ORGANIZATION
+technology delft,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,ORGANIZATION
 term extracted,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,PERSON
-the netherlands,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,ORGANIZATION,ORGANIZATION
+the netherlands,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,ORGANIZATION
 tweet only,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,ORGANIZATION
 twitter term,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,PERSON
 work approach,0,SIGIR 2012: Placing images on the world map: a microblog-based enrichment approach,691,ORGANIZATION
@@ -2138,7 +2138,7 @@ adrian popescu,0,SIGIR 2012: Mining the web for points of interest,711,PERSON
 article check-in,0,SIGIR 2012: Mining the web for points of interest,711,PERSON
 automatic content extraction program,1,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
 averaged perceptron,0,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
-cascade model,1,SIGIR 2012: Mining the web for points of interest,711,PERSON,ORGANIZATION,ORGANIZATION
+cascade model,1,SIGIR 2012: Mining the web for points of interest,711,PERSON,ORGANIZATION
 cascade model geo scope model number,0,SIGIR 2012: Mining the web for points of interest,711,PERSON
 conll english,0,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
 conll shared task,1,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
@@ -2157,7 +2157,7 @@ hugues bouchard yahoo,0,SIGIR 2012: Mining the web for points of interest,711,PE
 la vega,0,SIGIR 2012: Mining the web for points of interest,711,PERSON
 list vision,0,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
 location match true,0,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
-location model,1,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION,ORGANIZATION,ORGANIZATION
+location model,1,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
 named entity,0,SIGIR 2012: Mining the web for points of interest,711,PERSON
 national park,0,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
 natural history,0,SIGIR 2012: Mining the web for points of interest,711,ORGANIZATION
@@ -2227,7 +2227,7 @@ tweet segmentation tweet,0,SIGIR 2012: TwiNER: named entity recognition in targe
 united state,0,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,721,GPE,GPE,GPE
 vincent wijeysingha,0,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,721,PERSON
 work tweet,0,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,721,ORGANIZATION
-world wide,0,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,721,ORGANIZATION,ORGANIZATION,PERSON
+world wide,0,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,721,ORGANIZATION,PERSON
 yuxia yao,0,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,721,PERSON
 abstract news,0,SIGIR 2012: Adaptive context features for toponym resolution in streaming news,731,ORGANIZATION
 advanced computer study,0,SIGIR 2012: Adaptive context features for toponym resolution in streaming news,731,ORGANIZATION
@@ -2258,13 +2258,13 @@ aliaksei severyn department,0,SIGIR 2012: Structural relationships for large-sca
 answerbag table,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
 berkeley aligner,1,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
 berkeley aligner15,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
-computer science,1,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION,ORGANIZATION
+computer science,1,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 conditional random field,1,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 corpus answerbag,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 cpu intel,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 cutting plane algorithm,1,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 experimentation keywords question answering,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
-ibm watson,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+ibm watson,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 kernel convolution tree kernel,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
 kernel method,1,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
 limosine linguistically,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
@@ -2285,7 +2285,7 @@ shallow syntactic,0,SIGIR 2012: Structural relationships for large-scale learnin
 structural kernel permission,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
 support vector machine,1,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
-syntactic tree kernel,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION,ORGANIZATION
+syntactic tree kernel,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,ORGANIZATION
 term algorithm,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
 textual entailment,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
 trustworthy eternal system,0,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,741,PERSON
@@ -2294,7 +2294,7 @@ david vallet universidad,0,SIGIR 2012: Explicit relevance models in intent-orien
 general term algorithm,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION
 information retrieval,1,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION
 language modeling,1,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION
-lemur indri,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION,ORGANIZATION
+lemur indri,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION
 madrid escuela,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,PERSON
 management beyond,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION
 model v,0,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,75,ORGANIZATION
@@ -2342,7 +2342,7 @@ maryland college park,0,SIGIR 2012: Robust ranking models via risk-sensitive opt
 mb case b1,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,PERSON
 mean reciprocal rank,1,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,PERSON
 microsoft research,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,PERSON
-microsoft way redmond,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,ORGANIZATION,ORGANIZATION
+microsoft way redmond,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,ORGANIZATION
 motivation before,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,ORGANIZATION
 percentage query measurably,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,ORGANIZATION
 rank challenge,0,SIGIR 2012: Robust ranking models via risk-sensitive optimization,761,PERSON
@@ -2455,7 +2455,7 @@ baby how,0,SIGIR 2012: When web search fails searchers become askers: understand
 baidu know,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
 basketball greatest,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
 car make,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
-community question,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION,ORGANIZATION,ORGANIZATION
+community question,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,ORGANIZATION
 emory university,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
 ethic religion,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
 eugene agichtein,0,SIGIR 2012: When web search fails searchers become askers: understanding the transition,801,PERSON
@@ -2511,7 +2511,7 @@ term algorithm,0,SIGIR 2012: Content-based retrieval for heterogeneous domains: 
 work domain,0,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,811,ORGANIZATION
 abstract result,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 clueweb wikipedia dataset,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
-computer science purdue,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION,ORGANIZATION
+computer science purdue,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 different number,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,PERSON
 dzung hong department,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,PERSON
 em algorithm,1,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
@@ -2519,8 +2519,8 @@ expectation maximization,1,SIGIR 2012: Mixture model with multiple centralized r
 federated search,1,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 framework in,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,PERSON
 information source,1,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
-latent variable,1,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION,ORGANIZATION
-learning comparable,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION,ORGANIZATION
+latent variable,1,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
+learning comparable,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 lemur toolkit,1,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 logistic regression,1,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 luo si department,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,PERSON
@@ -2541,7 +2541,7 @@ subject descriptor,0,SIGIR 2012: Mixture model with multiple centralized retriev
 three testbeds size,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,PERSON
 transformation function name,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 trec123 rank,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
-university street west lafayette,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION,ORGANIZATION
+university street west lafayette,0,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,821,ORGANIZATION
 abstract distributed,0,SIGIR 2012: Reactive index replication for distributed search engines,831,ORGANIZATION
 european community,0,SIGIR 2012: Reactive index replication for distributed search engines,831,ORGANIZATION
 european social fund,0,SIGIR 2012: Reactive index replication for distributed search engines,831,ORGANIZATION
@@ -2587,14 +2587,14 @@ france hodgson burnett,0,SIGIR 2012: AspecTiles: tile-based visualization of div
 human factor keywords diversified search,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
 microsoft research asia,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
 new jersey,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,GPE
-orange county convention center,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,ORGANIZATION,ORGANIZATION
+orange county convention center,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,ORGANIZATION
 osaka university,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,ORGANIZATION
 relevance estimation accuracy,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
 research question,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
 rick warren,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
 search engine result page,1,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,ORGANIZATION
 search result,1,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
-secret garden,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,ORGANIZATION,ORGANIZATION
+secret garden,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,ORGANIZATION
 subject descriptor,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
 takehiro yamamoto microsoft research asia,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
 term experimentation,0,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,85,PERSON
@@ -2637,7 +2637,7 @@ harris padmini srinivasan the university,0,SIGIR 2012: Quality through flow and 
 informatica netherlands,0,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,ORGANIZATION
 iowa usa,0,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,PERSON
 jiyin he,0,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,PERSON
-machine system,0,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,ORGANIZATION,ORGANIZATION
+machine system,0,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,ORGANIZATION
 observation game,0,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,ORGANIZATION
 relevance assessment,1,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,PERSON
 relevance assessment carsten eickhoff delft university,0,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,871,PERSON
@@ -2662,7 +2662,7 @@ monojit choudhury,0,SIGIR 2012: An IR-based evaluation framework for web search 
 mutual information,1,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,PERSON
 natural language,1,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,ORGANIZATION
 niloy ganguly indian institute,0,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,PERSON
-quoted version retrieval score,0,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,ORGANIZATION,ORGANIZATION
+quoted version retrieval score,0,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,ORGANIZATION
 srivatsan laxman microsoft research india bangalore,0,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,PERSON
 subject descriptor,0,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,PERSON
 technology kharagpur kharagpur,0,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,881,ORGANIZATION
@@ -2685,7 +2685,7 @@ kernel density estimation,1,SIGIR 2012: On per-topic variance in IR evaluation,8
 log likelihood,0,SIGIR 2012: On per-topic variance in IR evaluation,891,PERSON
 lynam in,0,SIGIR 2012: On per-topic variance in IR evaluation,891,PERSON
 performance keywords,0,SIGIR 2012: On per-topic variance in IR evaluation,891,PERSON
-reml data,0,SIGIR 2012: On per-topic variance in IR evaluation,891,ORGANIZATION,ORGANIZATION
+reml data,0,SIGIR 2012: On per-topic variance in IR evaluation,891,ORGANIZATION
 robertson in,0,SIGIR 2012: On per-topic variance in IR evaluation,891,PERSON
 robertson microsoft,0,SIGIR 2012: On per-topic variance in IR evaluation,891,PERSON
 school university,0,SIGIR 2012: On per-topic variance in IR evaluation,891,PERSON
@@ -2697,11 +2697,11 @@ adaptive adaptive,0,SIGIR 2012: An uncertainty-aware query selection model for e
 alternative performance,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION
 cox computer science department university college,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,PERSON
 emine yilmaz microsoft research,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,PERSON
-iqp adaptive random oracle,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION,ORGANIZATION
+iqp adaptive random oracle,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION
 ir system mehdi hosseini,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION
 metric evaluation metric,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION
 milad shokouhi,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,PERSON
-million query,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION,ORGANIZATION
+million query,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION
 national institute,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,ORGANIZATION
 oracle random query,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901,PERSON
 pearson kendall-τ pearson,0,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,901
@@ -2777,7 +2777,7 @@ gilbert island,0,SIGIR 2012: Rhetorical relations for information retrieval,931,
 girl shy,0,SIGIR 2012: Rhetorical relations for information retrieval,931,PERSON
 hot water,0,SIGIR 2012: Rhetorical relations for information retrieval,931,PERSON
 information management wuhan university china,0,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
-information retrieval,1,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION,ORGANIZATION
+information retrieval,1,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
 information science copenhagen denmark,0,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
 lioma computer science university,0,SIGIR 2012: Rhetorical relations for information retrieval,931,PERSON
 mark smith,0,SIGIR 2012: Rhetorical relations for information retrieval,931,PERSON
@@ -2785,7 +2785,7 @@ mean average,0,SIGIR 2012: Rhetorical relations for information retrieval,931,PE
 normalised discounted,0,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
 ranking exactly,0,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
 retrieval model,1,SIGIR 2012: Rhetorical relations for information retrieval,931,PERSON
-rhetorical relation,1,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION
+rhetorical relation,1,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
 safety last,0,SIGIR 2012: Rhetorical relations for information retrieval,931,PERSON
 stanford parser8,0,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
 subject descriptor,0,SIGIR 2012: Rhetorical relations for information retrieval,931,PERSON
@@ -2794,7 +2794,7 @@ wei lu school,0,SIGIR 2012: Rhetorical relations for information retrieval,931,P
 work discourse,0,SIGIR 2012: Rhetorical relations for information retrieval,931,ORGANIZATION
 abstract many,0,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,941,ORGANIZATION
 bruce croft dept,0,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,941,PERSON
-computer science univ,0,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,941,ORGANIZATION,ORGANIZATION
+computer science univ,0,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,941,ORGANIZATION
 description gf,0,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,941,ORGANIZATION
 doc topic number,0,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,941,PERSON
 experimental setup,1,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,941,ORGANIZATION
@@ -2837,7 +2837,7 @@ sip mp mp,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,PERS
 smucker department,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,PERSON
 subject descriptor,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,PERSON
 term experimentation,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,PERSON
-trec robust track,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,ORGANIZATION,ORGANIZATION
+trec robust track,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,ORGANIZATION
 value given,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,PERSON
 value p,0,SIGIR 2012: Time-based calibration of effectiveness measures,95,PERSON
 abstract conventional,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,ORGANIZATION
@@ -2860,7 +2860,7 @@ performance keywords,0,SIGIR 2012: Confidence-aware graph regularization with he
 recall unigram,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,PERSON
 retrieval general term algorithm,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,PERSON
 subject descriptor,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,PERSON
-t gerr,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,ORGANIZATION,ORGANIZATION
+t gerr,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,ORGANIZATION
 target application scenario a,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,PERSON
 vertex model,1,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,PERSON
 work pairwise,0,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,951,ORGANIZATION
@@ -2901,7 +2901,7 @@ wsa let,0,SIGIR 2012: Improving tweet stream classification by detecting changes
 apache hadoop,1,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,PERSON
 benno stein,0,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,PERSON
 content analysis,1,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,ORGANIZATION
-english wikipedia,1,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,ORGANIZATION,ORGANIZATION,ORGANIZATION,ORGANIZATION,PERSON,ORGANIZATION,ORGANIZATION
+english wikipedia,1,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,ORGANIZATION,PERSON,ORGANIZATION
 information quality,1,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,ORGANIZATION
 jimmy wale,0,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,PERSON
 nedim lipka,0,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,981,PERSON
