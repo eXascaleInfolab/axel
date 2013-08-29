@@ -170,7 +170,8 @@ class NgramPOSView(TemplateView):
         incorrect_data = defaultdict(lambda: 0)
         unjudged_data = defaultdict(lambda: 0)
         for obj in model.objects.all():
-            tag = str(scores.compress_pos_tag(obj.pos_tag, rules_dict))
+            max_pos_tag = ' '.join(max(obj.pos_tag, key=lambda x: x[1])[0])
+            tag = str(scores.compress_pos_tag(max_pos_tag, rules_dict))
             all_tags.add(tag)
             if obj.id in relevant_ids:
                 correct_data[tag] += 1
