@@ -284,13 +284,13 @@ def populate_article_dict(model, score_func, cutoff=1):
         # create correspondence dict
         corr_dict1 = defaultdict(set)
         corr_dict2 = defaultdict(set)
-        all_ngrams = list(article.articlecollocation_set.values_list('ngram', flat=True))
+        all_ngrams = list(model.objects.filter(article=article).values_list('ngram', flat=True))
         for ngram in all_ngrams:
             if len(ngram.split()) == 2:
                 w1, w2 = ngram.split()
                 corr_dict1[w2].add(w1)
                 corr_dict2[w1].add(w2)
-        for ngram in sorted(article.articlecollocation_set.all(),
+        for ngram in sorted(model.objects.filter(article=article),
                             key=lambda x: len(x.ngram.split())):
             part_count = 0
             for p_ngram in all_ngrams:
