@@ -106,19 +106,20 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     start_pos_tag_list = []
     end_pos_tag_list = []
     pos_tag_list = []
+
     for ngram in Model.objects.all():
-        pos_tag_start = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_START))
-        pos_tag_end = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_END))
-        pos_tag = str(ngram.pos_tag)
+        max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+        pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
+        pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
         if pos_tag_start not in start_pos_tag_list:
             start_pos_tag_list.append(pos_tag_start)
         if pos_tag_end not in end_pos_tag_list:
             end_pos_tag_list.append(pos_tag_end)
-        if pos_tag not in pos_tag_list:
-            pos_tag_list.append(pos_tag)
-    max_pos_tag_start = len(start_pos_tag_list)
-    max_pos_tag_end = len(end_pos_tag_list)
-    max_pos_tag = len(pos_tag_list)
+        if max_pos_tag not in pos_tag_list:
+            pos_tag_list.append(max_pos_tag)
+    max_pos_tag_start_len = len(start_pos_tag_list)
+    max_pos_tag_end_len = len(end_pos_tag_list)
+    max_pos_tag_len = len(pos_tag_list)
 
     # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
     for article, score_dict in scored_ngrams:
@@ -134,9 +135,9 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         collection_ngram = score_dict['collection_ngram']
 
         # POS TAG enumeration
-        pos_tag_start = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_START))
-        pos_tag_end = str(compress_pos_tag(ngram.pos_tag, RULES_DICT_END))
-        pos_tag = str(ngram.pos_tag)
+        max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+        pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
+        pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
 
@@ -157,10 +158,10 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
 
         # extend with compressed part of speech
         extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0
-                            for i in range(max_pos_tag_start)]
+                            for i in range(max_pos_tag_start_len)]
         feature.extend(extended_feature)
         extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0
-                            for i in range(max_pos_tag_end)]
+                            for i in range(max_pos_tag_end_len)]
         feature.extend(extended_feature)
 
         # Normal part of speech
