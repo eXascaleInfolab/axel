@@ -147,7 +147,6 @@ class Command(BaseCommand):
                 'dblp' in collection_ngram.source,
                 component_size_dict[article.id][ngram.ngram],
                 wiki_edges_count,
-                score_dict['participation_count'],
                 #collection_ngram.is_ontological,
                 'dbpedia' in collection_ngram.source,
                 'wiki_redirect' in collection_ngram.source,
@@ -202,7 +201,6 @@ class Command(BaseCommand):
             'dblp',
             'comp_size',
             'wikilinks',
-            'part_count',
             #'ScienceWISE',
             'is_wiki',
             'is_redirect',
@@ -215,7 +213,7 @@ class Command(BaseCommand):
         # feature_names.extend(pos_tag_list)
 
         from sklearn.ensemble import ExtraTreesClassifier
-        clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=20)
+        clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=100)
         new_collection = clf.fit(collection, collection_labels).transform(collection)
         print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
                      reverse=True)[:new_collection.shape[1]]
