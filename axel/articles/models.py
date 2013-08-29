@@ -355,6 +355,16 @@ class ArticleCollocation(models.Model):
         """
         return scores.pos_tag_pos(self.ngram, self.all_contexts(func=get_contexts_ngrams), tag_pos=1)
 
+    @property
+    def _is_wiki(self):
+        """Proxy to collection-wide model"""
+        return self.COLLECTION_MODEL.objects.get(ngram=self.ngram)._is_wiki
+
+    @property
+    def is_ontological(self):
+        """Stub"""
+        return False
+
     @classmethod
     def scores(cls):
         result = []

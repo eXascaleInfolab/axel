@@ -140,7 +140,6 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
 
         wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
-
         feature = [
             ngram.ngram.isupper(),
             'dblp' in collection_ngram.source,
@@ -151,8 +150,8 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
             ngram.is_ontological,
             'dbpedia' in collection_ngram.source,
             'wiki_redirect' in collection_ngram.source,
-            bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_prev.keys())),
-            bool({'.', ',', ':', ';'}.intersection(ngram.pos_tag_after.keys())),
+            bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0])),
+            bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0])),
             len(ngram.ngram.split())
         ]
 
@@ -205,8 +204,8 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
         'ScienceWISE',
         'dbpedia',
         'is_redirect',
-        'pos_tag_prev',
-        'pos_tag_after',
+        'punkt_prev',
+        'punkt_after',
         'word_len'
     ]
     feature_names.extend(start_pos_tag_list)
@@ -226,7 +225,6 @@ def fit_ml_algo(scored_ngrams, cv_num, Model):
     import StringIO, pydot
     from sklearn import tree
     dot_data = StringIO.StringIO()
-    #feature_names = ['dblp', 'comp_size', 'NN_STARTS', 'NN_STARTS', 'test', 'test', 'test']
     tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
     graph = pydot.graph_from_dot_data(dot_data.getvalue())
     graph.write_pdf("decision.pdf")
