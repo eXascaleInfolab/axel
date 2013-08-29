@@ -141,12 +141,13 @@ class Command(BaseCommand):
 
             wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
             feature = [
+                'NNP' in set([' '.join(set(tags)) for tags in zip(*ngram.pos_tag)[0]]),
+                ngram.ngram.endswith('ed'),
                 ngram.ngram.isupper(),
                 'dblp' in collection_ngram.source,
                 component_size_dict[article.id][ngram.ngram],
                 wiki_edges_count,
                 score_dict['participation_count'],
-                collection_ngram._is_wiki,
                 #collection_ngram.is_ontological,
                 'dbpedia' in collection_ngram.source,
                 'wiki_redirect' in collection_ngram.source,
@@ -195,14 +196,15 @@ class Command(BaseCommand):
         # pl.show()
 
         feature_names = [
+            'PROPER',
+            'ED-ending',
             'is_upper',
             'dblp',
             'comp_size',
             'wikilinks',
             'part_count',
+            #'ScienceWISE',
             'is_wiki',
-            'ScienceWISE',
-            'dbpedia',
             'is_redirect',
             'punkt_prev',
             'punkt_after',

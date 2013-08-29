@@ -18,7 +18,6 @@ class Collocation(models.Model):
     # extra fields will store pre-computed scores
     _extra_fields = models.TextField(default='{}')
     _df_score = models.IntegerField(null=True, blank=True)
-    _is_wiki = models.BooleanField(default=False)
     _ms_ngram_score = models.DecimalField(default=0, decimal_places=6, max_digits=9)
 
     # required for TestCollection upload
