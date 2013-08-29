@@ -3,7 +3,7 @@ import os
 import re
 import pickle
 from collections import defaultdict
-from sklearn import cross_validation, svm
+from sklearn import cross_validation
 from sklearn.metrics import *
 from sklearn.tree import DecisionTreeClassifier
 from axel.stats.scores import compress_pos_tag
@@ -42,11 +42,11 @@ class Command(BaseCommand):
                     action='store',
                     dest='cluster',
                     help='cluster id for article type'),
-        make_option('--classify',
+        make_option('--redirects',
                     action='store_true',
-                    dest='classify',
+                    dest='redirects',
                     default=False,
-                    help='whether to classify collection instead of MAP calculation'),
+                    help='whether to use redicrects property from wikipedia or not'),
         make_option('--cvnum', '-n',
                     action='store',
                     dest='cv_num',
@@ -70,6 +70,7 @@ class Command(BaseCommand):
         if not cluster_id:
             raise CommandError("need to specify cluster id")
         cv_num = options['cv_num']
+        self.redirects = options['redirects']
         self.Model = Model = CLUSTERS_DICT[cluster_id]
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
@@ -90,162 +91,161 @@ class Command(BaseCommand):
                     scored_ngrams.append((article, scores))
 
             print 'Fitting classifier...'
-            fit_ml_algo(scored_ngrams, cv_num, self.Model)
+            self.fit_ml_algo(scored_ngrams, cv_num)
 
+    def fit_ml_algo(self, scored_ngrams, cv_num):
+        """
+        :param scored_ngrams: list of tuple of type (ngram, score) after initial scoring
+        """
+        # 1. Calculate scores with float numbers for ngram bindings, as a dict
+        collection = []
+        collection_labels = []
+        component_size_dict = {}
 
-def fit_ml_algo(scored_ngrams, cv_num, Model):
-    """
-    :param scored_ngrams: list of tuple of type (ngram, score) after initial scoring
-    """
-    # 1. Calculate scores with float numbers for ngram bindings, as a dict
-    collection = []
-    collection_labels = []
-    component_size_dict = {}
+        # Calculate max pos tag count and build pos_tag_list
+        start_pos_tag_list = []
+        end_pos_tag_list = []
+        pos_tag_list = []
 
-    # Calculate max pos tag count and build pos_tag_list
-    start_pos_tag_list = []
-    end_pos_tag_list = []
-    pos_tag_list = []
+        for ngram in self.Model.objects.all():
+            max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+            pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
+            pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
+            if pos_tag_start not in start_pos_tag_list:
+                start_pos_tag_list.append(pos_tag_start)
+            if pos_tag_end not in end_pos_tag_list:
+                end_pos_tag_list.append(pos_tag_end)
+            if max_pos_tag not in pos_tag_list:
+                pos_tag_list.append(max_pos_tag)
+        max_pos_tag_start_len = len(start_pos_tag_list)
+        max_pos_tag_end_len = len(end_pos_tag_list)
+        max_pos_tag_len = len(pos_tag_list)
 
-    for ngram in Model.objects.all():
-        max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
-        pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
-        pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
-        if pos_tag_start not in start_pos_tag_list:
-            start_pos_tag_list.append(pos_tag_start)
-        if pos_tag_end not in end_pos_tag_list:
-            end_pos_tag_list.append(pos_tag_end)
-        if max_pos_tag not in pos_tag_list:
-            pos_tag_list.append(max_pos_tag)
-    max_pos_tag_start_len = len(start_pos_tag_list)
-    max_pos_tag_end_len = len(end_pos_tag_list)
-    max_pos_tag_len = len(pos_tag_list)
+        # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
+        for article, score_dict in scored_ngrams:
+            temp_dict = defaultdict(lambda: 0)
+            if article.id not in component_size_dict:
+                dbpedia_graph = article.dbpedia_graph(redirects=self.redirects)
+                for component in nx.connected_components(dbpedia_graph):
+                    comp_len = len([node for node in component if 'Category' not in node])
+                    for node in component:
+                        temp_dict[node] = comp_len
+                component_size_dict[article.id] = temp_dict
+            ngram = score_dict['ngram']
+            collection_ngram = score_dict['collection_ngram']
 
-    # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
-    for article, score_dict in scored_ngrams:
-        temp_dict = defaultdict(lambda: 0)
-        if article.id not in component_size_dict:
-            dbpedia_graph = article.dbpedia_graph(redirects=True)
-            for component in nx.connected_components(dbpedia_graph):
-                comp_len = len([node for node in component if 'Category' not in node])
-                for node in component:
-                    temp_dict[node] = comp_len
-            component_size_dict[article.id] = temp_dict
-        ngram = score_dict['ngram']
-        collection_ngram = score_dict['collection_ngram']
+            # POS TAG enumeration
+            max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+            pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
+            pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
 
-        # POS TAG enumeration
-        max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
-        pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
-        pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
+            wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
+            feature = [
+                ngram.ngram.isupper(),
+                'dblp' in collection_ngram.source,
+                component_size_dict[article.id][ngram.ngram],
+                wiki_edges_count,
+                score_dict['participation_count'],
+                collection_ngram._is_wiki,
+                #collection_ngram.is_ontological,
+                'dbpedia' in collection_ngram.source,
+                'wiki_redirect' in collection_ngram.source,
+                bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0])),
+                bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0])),
+                len(ngram.ngram.split())
+            ]
 
-        wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
-        feature = [
-            ngram.ngram.isupper(),
-            'dblp' in collection_ngram.source,
-            component_size_dict[article.id][ngram.ngram],
-            wiki_edges_count,
-            score_dict['participation_count'],
-            collection_ngram._is_wiki,
-            collection_ngram.is_ontological,
-            'dbpedia' in collection_ngram.source,
-            'wiki_redirect' in collection_ngram.source,
-            bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0])),
-            bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0])),
-            len(ngram.ngram.split())
+            # extend with compressed part of speech
+            extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0
+                                for i in range(max_pos_tag_start_len)]
+            feature.extend(extended_feature)
+            extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0
+                                for i in range(max_pos_tag_end_len)]
+            feature.extend(extended_feature)
+
+            # Normal part of speech
+            # extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
+            # feature.extend(extended_feature)
+
+            collection.append(feature)
+            collection_labels.append(score_dict['is_rel'])
+            # DS.appendLinked(feature, [int(score_dict['is_rel'])])
+        #clf = svm.SVC(kernel='linear')
+        # print DS.calculateStatistics()
+        # from pybrain.supervised.trainers import BackpropTrainer
+        # from pybrain import TanhLayer
+        # from pybrain.tools.shortcuts import buildNetwork
+        # net = buildNetwork(29, 5, 1, bias=True, hiddenclass=TanhLayer)
+        # trainer = BackpropTrainer(net, DS)
+        # trainer.trainEpochs(5)
+        # print trainer.testOnData(verbose=True)
+
+        # from sklearn.feature_selection import RFECV
+        # from sklearn.metrics import zero_one_loss
+        # svc = svm.SVC(kernel="linear")
+        # rfecv = RFECV(estimator=svc, step=1, cv=2, loss_func=zero_one_loss)
+        # rfecv.fit(collection, collection_labels)
+        # print("Optimal number of features : %d" % rfecv.n_features_)
+        # print rfecv.ranking_
+        # import pylab as pl
+        # pl.figure()
+        # pl.xlabel("Number of features selected")
+        # pl.ylabel("Cross validation score (N of misclassifications)")
+        # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
+        # pl.show()
+
+        feature_names = [
+            'is_upper',
+            'dblp',
+            'comp_size',
+            'wikilinks',
+            'part_count',
+            'is_wiki',
+            'ScienceWISE',
+            'dbpedia',
+            'is_redirect',
+            'punkt_prev',
+            'punkt_after',
+            'word_len'
         ]
+        feature_names.extend(start_pos_tag_list)
+        feature_names.extend(end_pos_tag_list)
+        # feature_names.extend(pos_tag_list)
 
-        # extend with compressed part of speech
-        extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0
-                            for i in range(max_pos_tag_start_len)]
-        feature.extend(extended_feature)
-        extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0
-                            for i in range(max_pos_tag_end_len)]
-        feature.extend(extended_feature)
+        from sklearn.ensemble import ExtraTreesClassifier
+        clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=20)
+        new_collection = clf.fit(collection, collection_labels).transform(collection)
+        print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
+                     reverse=True)[:new_collection.shape[1]]
+        print new_collection.shape
+        clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
+        #for tag, values in pos_tag_counts.iteritems():
+        #    print tag, values[1]/values[0]
+        clf.fit(new_collection, collection_labels)
+        import StringIO, pydot
+        from sklearn import tree
+        dot_data = StringIO.StringIO()
+        tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
+        graph = pydot.graph_from_dot_data(dot_data.getvalue())
+        graph.write_pdf("decision.pdf")
+        #
+        # for i, vector in enumerate(collection):
+        #     value = clf.predict(vector)[0]
+        #     if value != collection_labels[i] and value:
+        #         print scored_ngrams[i][1]['ngram'], vector, value, collection_labels[i]
 
-        # Normal part of speech
-        # extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
-        # feature.extend(extended_feature)
-
-        collection.append(feature)
-        collection_labels.append(score_dict['is_rel'])
-        # DS.appendLinked(feature, [int(score_dict['is_rel'])])
-    #clf = svm.SVC(kernel='linear')
-    # print DS.calculateStatistics()
-    # from pybrain.supervised.trainers import BackpropTrainer
-    # from pybrain import TanhLayer
-    # from pybrain.tools.shortcuts import buildNetwork
-    # net = buildNetwork(29, 5, 1, bias=True, hiddenclass=TanhLayer)
-    # trainer = BackpropTrainer(net, DS)
-    # trainer.trainEpochs(5)
-    # print trainer.testOnData(verbose=True)
-
-    # from sklearn.feature_selection import RFECV
-    # from sklearn.metrics import zero_one_loss
-    # svc = svm.SVC(kernel="linear")
-    # rfecv = RFECV(estimator=svc, step=1, cv=2, loss_func=zero_one_loss)
-    # rfecv.fit(collection, collection_labels)
-    # print("Optimal number of features : %d" % rfecv.n_features_)
-    # print rfecv.ranking_
-    # import pylab as pl
-    # pl.figure()
-    # pl.xlabel("Number of features selected")
-    # pl.ylabel("Cross validation score (N of misclassifications)")
-    # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
-    # pl.show()
-
-    feature_names = [
-        'is_upper',
-        'dblp',
-        'comp_size',
-        'wikilinks',
-        'part_count',
-        'is_wiki',
-        'ScienceWISE',
-        'dbpedia',
-        'is_redirect',
-        'punkt_prev',
-        'punkt_after',
-        'word_len'
-    ]
-    feature_names.extend(start_pos_tag_list)
-    feature_names.extend(end_pos_tag_list)
-    # feature_names.extend(pos_tag_list)
-
-    from sklearn.ensemble import ExtraTreesClassifier
-    clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=20)
-    new_collection = clf.fit(collection, collection_labels).transform(collection)
-    print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
-                 reverse=True)[:new_collection.shape[1]]
-    print new_collection.shape
-    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
-    #for tag, values in pos_tag_counts.iteritems():
-    #    print tag, values[1]/values[0]
-    clf.fit(new_collection, collection_labels)
-    import StringIO, pydot
-    from sklearn import tree
-    dot_data = StringIO.StringIO()
-    tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
-    graph = pydot.graph_from_dot_data(dot_data.getvalue())
-    graph.write_pdf("decision.pdf")
-    #
-    # for i, vector in enumerate(collection):
-    #     value = clf.predict(vector)[0]
-    #     if value != collection_labels[i] and value:
-    #         print scored_ngrams[i][1]['ngram'], vector, value, collection_labels[i]
-
-    # K-fold cross-validation
-    print 'Performing cross validation'
-    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                              cv=cv_num, score_func=precision_score)
-    print("Precision: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                              cv=cv_num, score_func=recall_score)
-    print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                              cv=cv_num, score_func=f1_score)
-    print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-    scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                              cv=cv_num)
-    print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        # K-fold cross-validation
+        print 'Performing cross validation'
+        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                  cv=cv_num, score_func=precision_score)
+        print("Precision: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                  cv=cv_num, score_func=recall_score)
+        print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                  cv=cv_num, score_func=f1_score)
+        print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                  cv=cv_num)
+        print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
 
