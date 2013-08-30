@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.files import File
 from test_collection.models import TaggedCollection
 from axel.articles.models import Article, Venue, ArticleCollocation
-from axel.articles.utils.nlp import _update_ngram_counts
+from axel.libs.nlp import _update_ngram_counts
 from axel.libs.utils import print_progress
 from axel.stats.models import SWCollocations
 
