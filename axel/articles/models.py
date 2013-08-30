@@ -211,52 +211,61 @@ class Article(models.Model):
             graph = json_graph.load(open(graph_object))
             return graph
 
-    def create_collocations(self):
+    def _create_collocations(self):
         """Create collocation for the article"""
         from axel.libs import nlp
         if self.index and not self.articlecollocation_set.exists():
             index = json.loads(self.index)
             # found collocs = found existing + found new
             collocs = nlp.collocations(index)
-            # all previously existing collocs
-            all_collocs = set(self.CollocationModel.objects.values_list('ngram', flat=True))
-            # get all new
-            new_collocs = set(collocs.keys()).difference(all_collocs)
-
-            # get all existing not found, (those that have score <= 2)
-            # we do not need to check <=2 condition here, is should be automatically satisfied
-            for colloc in all_collocs.difference(collocs.keys()).intersection(index.keys()):
-                ArticleCollocation.objects.get_or_create(ngram=colloc,
-                    article=self, defaults={'count': index[colloc]})
 
             # Create other collocations
             for name, score in collocs.iteritems():
                 if score > 0:
-                    acolloc, created = ArticleCollocation.objects.get_or_create(ngram=name,
-                        article=self, defaults={'count': score})
-                    if not created:
-                        acolloc.score = score
-                        acolloc.save()
+                    ArticleCollocation.objects.create(ngram=name, article=self, count=score)
 
-            # Scan existing articles for new collocations
-            for colloc in new_collocs:
-                new_articles = SearchQuerySet().filter(content__exact=colloc)\
-                .exclude(id='articles.article.'+str(self.id)).values_list('id', flat=True)
-                new_articles = set([a_id.split('.')[-1] for a_id in new_articles])
-                for article in Article.objects.filter(id__in=new_articles):
-                    if article.cluster_id != self.cluster_id:
-                        continue
-                    index = json.loads(article.index)
-                    # Check that collocation is in index and
-                    # second check that we don't already have bigger collocations
-                    # This is incorrect to run alone, we need a full update after new collocations
-                    # found!!!!!!!
-                    if colloc in index:
-                        correct_count = index[colloc] - int(article.articlecollocation_set.filter(
-                            ngram__contains=colloc).aggregate(count=Sum('count'))['count'] or 0)
-                        if correct_count > 0:
-                            ArticleCollocation.objects.create(ngram=colloc,
-                                article=article, count=correct_count)
+    @classmethod
+    def create_collocations(cls, cluster_id):
+        """
+        Populates collocation for the specified article collection
+        :param cluster_id: cluster id to specify article collection
+        """
+        print 'Initial population...'
+        for article in cls.objects.filter(cluster_id=cluster_id):
+            # create all found collocations inside single article
+            article._create_collocations()
+        # then rescan all given already existing
+        all_collocs = set(CLUSTERS_DICT[cluster_id].objects.values_list('ngram', flat=True))
+
+        print 'Existing population...'
+        # add existing if do not exist yet
+        for article in cls.objects.filter(cluster_id=cluster_id):
+            index = json.loads(article.index)
+            for colloc in all_collocs.intersection(index.keys()):
+                # get or create because we are not filtrating old ones
+                ArticleCollocation.objects.get_or_create(ngram=colloc,
+                                                         article=article,
+                                                         defaults={'count': index[colloc]})
+
+        # we could screw up counts completely, need to update them
+        print 'Starting updates...'
+        from axel.libs.utils import print_progress
+        from axel.libs.nlp import _update_ngram_counts
+        for article in print_progress(cls.objects.filter(cluster_id=cluster_id)):
+            ngrams = sorted(article.articlecollocation_set.values_list('ngram', 'count'),
+                            key=lambda x: (x[1], x[0]))
+            if not ngrams:
+                continue
+            new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]],
+                json.loads(article.index))
+            new_ngrams = sorted(new_ngrams.items(), key=lambda x: (x[1], x[0]))
+            new_ngrams = [k for k in new_ngrams if k[1] > 0]
+            if new_ngrams != ngrams:
+                obsolete_ngrams = set(ngrams).difference(new_ngrams)
+                article.articlecollocation_set.filter(ngram__in=zip(*obsolete_ngrams)[0]) \
+                    .delete()
+                for ngram, score in set(new_ngrams).difference(ngrams):
+                    ArticleCollocation.objects.create(ngram=ngram, count=score, article=article)
 
 
 class ArticleCollocationsManager(models.Manager):
@@ -449,17 +458,6 @@ def update_global_collocations(sender, instance, created, **kwargs):
         colloc = instance.COLLECTION_MODEL.objects.get(ngram=instance.ngram)
         colloc.count = sender.objects.filter(ngram=instance.ngram).aggregate(count=Sum('count'))['count']
         colloc.save()
-
-
-@receiver(post_save, sender=Article)
-def create_collocations(sender, instance, **kwargs):
-    """
-    Add collocations on create
-    :type instance: Article
-    """
-    if kwargs.get('raw'):
-        return
-    instance.create_collocations()
 
 
 #@receiver(post_save, sender=Article)

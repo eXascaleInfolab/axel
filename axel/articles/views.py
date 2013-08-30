@@ -69,16 +69,6 @@ class ConceptAutocompleteView(JSONResponseMixin, TemplateView):
 
 
 @require_POST
-def article_rescan_view(request, article_id):
-    """Rescan article collocations and other things"""
-    article = get_object_or_404(Article, id=article_id)
-    article.articlecollocation_set.all().delete()
-    # re-populate collocation
-    article.create_collocations()
-    return HttpResponseRedirect(reverse('article_detail', args=[article_id]))
-
-
-@require_POST
 def filter_articles_view(request):
     """View that shows filtered articles based on concepts"""
     concepts = request.POST.getlist('concepts')
