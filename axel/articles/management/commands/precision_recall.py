@@ -267,3 +267,51 @@ class Command(BaseCommand):
         print 'Precision: ', precision
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
+
+    def _punct_calculation(self):
+        print 'Calculating Contigency tables for after/before punctuation'
+        pos_tag_prev = [0, 0, 0, 0]
+        pos_tag_after = [0, 0, 0, 0]
+
+        for ngram in self.Model.objects.filter(tags__is_relevant=True):
+            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0]):
+                pos_tag_prev[0] += 1
+            else:
+                pos_tag_prev[2] += 1
+
+            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0]):
+                pos_tag_after[0] += 1
+            else:
+                pos_tag_after[2] += 1
+
+        for ngram in self.Model.objects.filter(tags__is_relevant=False):
+            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0]):
+                pos_tag_prev[1] += 1
+            else:
+                pos_tag_prev[3] += 1
+
+            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0]):
+                pos_tag_after[1] += 1
+            else:
+                pos_tag_after[3] += 1
+
+        print 'Contigency table BEFORE:'
+        print '       | Valid | Invalid | Total |'
+        print '+punct | {0:>5} | {1:>7} | {2:>5} |'.format(pos_tag_prev[0], pos_tag_prev[1],
+                                                           pos_tag_prev[0] + pos_tag_prev[1])
+        print '-punct | {0:>5} | {1:>7} | {2:>5} |'.format(pos_tag_prev[2], pos_tag_prev[3],
+                                                           pos_tag_prev[2] + pos_tag_prev[3])
+        print 'Totals | {0:>5} | {1:>7} | {2:>5} |'.format(pos_tag_prev[0] + pos_tag_prev[2],
+                                                           pos_tag_prev[1] + pos_tag_prev[3],
+                                                           sum(pos_tag_prev))
+        print
+        print 'Contigency table AFTER:'
+        print '       | Valid | Invalid | Total |'
+        print '+punct | {0:>5} | {1:>7} | {2:>5} |'.format(pos_tag_after[0], pos_tag_after[1],
+                                                           pos_tag_after[0] + pos_tag_after[1])
+        print '-punct | {0:>5} | {1:>7} | {2:>5} |'.format(pos_tag_after[2], pos_tag_after[3],
+                                                           pos_tag_after[2] + pos_tag_after[3])
+        print 'Totals | {0:>5} | {1:>7} | {2:>5} |'.format(pos_tag_after[0] + pos_tag_after[2],
+                                                           pos_tag_after[1] + pos_tag_after[3],
+                                                           sum(pos_tag_after))
+
