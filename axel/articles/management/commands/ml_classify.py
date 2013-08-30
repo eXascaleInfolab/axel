@@ -139,9 +139,11 @@ class Command(BaseCommand):
             pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
             pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
 
+            pos_tag_extra = set([' '.join(set(tags)) for tags in zip(*ngram.pos_tag)[0]])
+
             wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
             feature = [
-                'NNP' in set([' '.join(set(tags)) for tags in zip(*ngram.pos_tag)[0]]),
+                'NNP' in pos_tag_extra and len(pos_tag_extra) > 1,
                 ngram.ngram.endswith('ed'),
                 ngram.ngram.isupper(),
                 'dblp' in collection_ngram.source,
