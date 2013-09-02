@@ -4,11 +4,6 @@
 
     {# display collocations article list #}
     <h3>{{ article.title }}</h3>
-    <form method="POST" action="{% url "article_rescan" article.id %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-success"><i class="icon icon-white icon-refresh"></i>
-            rescan</button>
-    </form>
     <p class="lead">{{ article.abstract }}</p>
     <ul class="unstyled">
         {% for collocation in article.articlecollocation_set.all %}
