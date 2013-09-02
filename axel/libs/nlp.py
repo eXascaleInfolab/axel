@@ -38,6 +38,25 @@ class Stemmer:
         return ' '.join(result)
 
     @classmethod
+    def stem_lower(cls, text):
+        """Lowercase non-stemmet"""
+        # split on punctuation
+        result = []
+        for word in nltk.regexp_tokenize(text, cls.TOKENIZE_REGEXP):
+            if word.istitle():
+                word = word.lower()
+            elif '-' in word:
+                normalized_word = []
+                for int_word in word.split('-'):
+                    if int_word.istitle():
+                        normalized_word.append(int_word.lower())
+                    else:
+                        normalized_word.append(int_word)
+                word = '-'.join(normalized_word)
+            result.append(word)
+        return ' '.join(result)
+
+    @classmethod
     def stem_porter(cls, text):
         """Porter stemmer"""
         stemmer = PorterStemmer()
