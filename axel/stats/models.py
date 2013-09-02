@@ -94,7 +94,6 @@ class Collocation(models.Model):
         for ngram in CLUSTERS_DICT[self.CLUSTER_ID].objects.filter(ngram=self.ngram):
             for pos_tag, count in ngram.pos_tag:
                 pos_tags[' '.join(pos_tag)] += count
-        print self.ngram
         return max(pos_tags.items(), key=lambda x: x[1])[0]
 
     @property
