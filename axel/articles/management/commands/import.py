@@ -1,5 +1,4 @@
 """Import PDF files to the database"""
-import json
 from django.contrib.contenttypes.models import ContentType
 import os
 from optparse import make_option
@@ -8,8 +7,6 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.files import File
 from test_collection.models import TaggedCollection
 from axel.articles.models import Article, Venue, ArticleCollocation
-from axel.libs.nlp import _update_ngram_counts
-from axel.libs.utils import print_progress
 from axel.stats.models import SWCollocations
 
 
@@ -58,22 +55,8 @@ class Command(BaseCommand):
                     article.save()
                     article_ids.append(article.id)
 
-        print 'Starting updates...'
-        for article in print_progress(Article.objects.filter(id__in=article_ids)):
-            ngrams = sorted(article.articlecollocation_set.values_list('ngram','count'),
-                                                                key=lambda x:(x[1],x[0]))
-            if not ngrams:
-                continue
-            new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]],
-                json.loads(article.index))
-            new_ngrams = sorted(new_ngrams.items(),key=lambda x:(x[1],x[0]))
-            new_ngrams = [k for k in new_ngrams if k[1]>0]
-            if new_ngrams != ngrams:
-                obsolete_ngrams = set(ngrams).difference(new_ngrams)
-                article.articlecollocation_set.filter(ngram__in=zip(*obsolete_ngrams)[0])\
-                                                                                        .delete()
-                for ngram, score in set(new_ngrams).difference(ngrams):
-                    ArticleCollocation.objects.create(ngram=ngram, count=score, article=article)
+        print 'Starting collocation population...'
+        Article.create_collocations(cluster)
 
         print 'Starting merging... (dashed ngrams)'
         all_ngrams = set(ArticleCollocation.objects.values_list('ngram', flat=True).distinct())
