@@ -18,6 +18,7 @@ class Collocation(models.Model):
     # extra fields will store pre-computed scores
     _extra_fields = models.TextField(default='{}')
     _df_score = models.IntegerField(null=True, blank=True)
+    _max_pos_tag = models.CharField(null=True, max_length=100)
     _ms_ngram_score = models.DecimalField(default=0, decimal_places=6, max_digits=9)
 
     # required for TestCollection upload
@@ -83,6 +84,21 @@ class Collocation(models.Model):
 
     @property
     @db_cache_simple
+    def max_pos_tag(self):
+        """
+        Maximal pos tag for the collection
+        :rtype: string
+        """
+        from axel.articles.models import CLUSTERS_DICT
+        pos_tags = defaultdict(lambda: 0)
+        for ngram in CLUSTERS_DICT[self.CLUSTER_ID].objects.filter(ngram=self.ngram):
+            for pos_tag, count in ngram.pos_tag:
+                pos_tags[' '.join(pos_tag)] += count
+        print self.ngram
+        return max(pos_tags.items(), key=lambda x: x[1])[0]
+
+    @property
+    @db_cache_simple
     def df_score(self):
         """
         Document frequency
@@ -132,6 +148,7 @@ class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
     CACHED_FIELDS = ('context', 'acm_score')
     FILTERED_FIELDS = (('_pos_tag', 'Part of Speech', forms.CharField),)
+    CLUSTER_ID = 'CS_COLLOCS'
 
 
 class SWCollocations(Collocation):
@@ -139,6 +156,7 @@ class SWCollocations(Collocation):
     collocation for ScienceWISE
     everything is the same except table name
     """
+    CLUSTER_ID = 'SW_COLLOCS'
     CACHED_FIELDS = ('context', 'partial_word_score', 'partial_ngram_score',
                      'partial_ont_score')
 
