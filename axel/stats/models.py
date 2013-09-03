@@ -156,8 +156,7 @@ class SWCollocations(Collocation):
     everything is the same except table name
     """
     CLUSTER_ID = 'SW_COLLOCS'
-    CACHED_FIELDS = ('context', 'partial_word_score', 'partial_ngram_score',
-                     'partial_ont_score')
+    CACHED_FIELDS = ('context',)
 
     @property
     @db_cache('extra_fields')
@@ -166,27 +165,3 @@ class SWCollocations(Collocation):
         True if concept appears in ontology, False otherwise.
         """
         return self.ngram in scores.ontology
-
-    @property
-    @db_cache('extra_fields')
-    def partial_word_score(self):
-        """
-        Sum of the counts of words from a given collocation in the ontology
-        (how often a word appears as a part of a concept in the ontology).
-        """
-        return scores.get_word_concept_score(self.ngram)
-
-    @property
-    @db_cache('extra_fields')
-    def partial_ngram_score(self):
-        """
-        Sum of the counts of FULL NGRAM in the ontology
-        (How often a full ngram appears as a part of a concept in the ontology)
-        """
-        return scores.get_ngram_concept_score(self.ngram)
-
-    @property
-    @db_cache('extra_fields')
-    def partial_ont_score(self):
-        """How often does any concept from the ontology occur in the NGRAM"""
-        return scores.get_concept_ngram_score(self.ngram)
