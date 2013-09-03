@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
@@ -44,3 +44,5 @@ HAYSTACK_CONNECTIONS = {
         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
     },
 }
+
+ALLOWED_HOSTS = ['*']
