@@ -47,6 +47,11 @@ class Command(BaseCommand):
                     dest='redirects',
                     default=False,
                     help='whether to use redicrects property from wikipedia or not'),
+        make_option('--global-pos-tag',
+                    action='store_true',
+                    dest='global_pos_tag',
+                    default=False,
+                    help='whether to use collection-wide pos tag or not'),
         make_option('--cvnum', '-n',
                     action='store',
                     dest='cv_num',
@@ -71,6 +76,7 @@ class Command(BaseCommand):
             raise CommandError("need to specify cluster id")
         cv_num = options['cv_num']
         self.redirects = options['redirects']
+        self.global_pos_tag = options['global_pos_tag']
         self.Model = Model = CLUSTERS_DICT[cluster_id]
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
@@ -135,7 +141,10 @@ class Command(BaseCommand):
             collection_ngram = score_dict['collection_ngram']
 
             # POS TAG enumeration
-            max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+            if self.global_pos_tag:
+                max_pos_tag = collection_ngram.max_pos_tag
+            else:
+                max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
             pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
             pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
 
