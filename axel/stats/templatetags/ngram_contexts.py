@@ -11,4 +11,4 @@ register = template.Library()
 @tag(register, [Variable('ngram'), Variable('ngram_context')])
 def highlight_ngram_context(context, ngram, ngram_context):
     """Highlight ngram in the context"""
-    return mark_safe(ngram_context.replace(ngram, u'<span class="error">{0}</span>'.format(ngram)))
+    return mark_safe(ngram_context.lower().replace(ngram, u'<span class="error">{0}</span>'.format(ngram)))
