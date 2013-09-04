@@ -7,26 +7,6 @@
     : {{ object.article }}</a>
 <span class="badge">Total count: {{ object.total_count }}</span>
 <span class="badge">Count: {{ object.count }}</span>
-{% with partial_word_score=object.partial_word_score %}
-    {% if partial_word_score %}
-        <span class="badge badge-warning">ONT partial word: {{ partial_word_score }}</span>
-    {% endif %}
-{% endwith %}
-{% with partial_ngram_score=object.partial_ngram_score %}
-    {% if partial_ngram_score %}
-        <span class="badge badge-success">ONT partial n-gram: {{ partial_ngram_score }}</span>
-    {% endif %}
-{% endwith %}
-{% with often_consumed=object.often_consumed %}
-    {% if often_consumed %}
-    <span class="badge badge-important">Often consumed: {{ often_consumed }}</span>
-    {% endif %}
-{% endwith %}
-{% with acm_score=object.acm_score %}
-    {% if acm_score %}
-        <span class="badge badge-success">ACM score: {{ acm_score }}</span>
-    {% endif %}
-{% endwith %}
 <div class="alert alert-info">
     {% highlight_ngram_context object.ngram object.context %}
 </div>
