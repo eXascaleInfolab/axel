@@ -209,7 +209,7 @@ class Command(BaseCommand):
         precision = []
         recall = []
 
-        extra_source = open(settings.ABS_PATH('maxent_SIGIR_collection.csv')).read().split('\n')
+        extra_source = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
         results_dict = defaultdict(lambda: {'true_pos': set(), 'false_pos': set()})
         for line in extra_source:
             line = line.split(',')
