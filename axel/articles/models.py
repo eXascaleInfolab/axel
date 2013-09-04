@@ -8,7 +8,6 @@ from django.db.models import F, Sum
 from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 
-from haystack.query import SearchQuerySet
 from jsonfield import JSONField
 from test_collection.models import TaggedCollection
 
@@ -53,6 +52,7 @@ class Article(models.Model):
     stemmed_text = models.TextField(default='')
     text = models.TextField(default='')
     index = models.TextField(default='')
+    index_nonstemmed = JSONField()
     cluster_id = models.CharField(max_length=255)
 
     class Meta:
@@ -61,7 +61,7 @@ class Article(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return u"{0} {1}: {2}".format(self.venue, self.year, self.title)
+        return u"{0} {1}: {2}".format(self.venue, self.year, self.title.replace(',', ' '))
 
     @property
     def CollocationModel(self):
@@ -214,7 +214,7 @@ class Article(models.Model):
     def _create_collocations(self):
         """Create collocation for the article"""
         from axel.libs import nlp
-        if self.index and not self.articlecollocation_set.exists():
+        if self.index and not self.testcollocations_set.exists():
             index = json.loads(self.index)
             # found collocs = found existing + found new
             collocs = nlp.collocations(index)
@@ -222,7 +222,7 @@ class Article(models.Model):
             # Create other collocations
             for name, score in collocs.iteritems():
                 if score > 0:
-                    ArticleCollocation.objects.create(ngram=name, article=self, count=score)
+                    TestCollocations.objects.create(ngram=name, article=self, count=score)
 
     @classmethod
     def create_collocations(cls, cluster_id):
@@ -235,7 +235,7 @@ class Article(models.Model):
             # create all found collocations inside single article
             article._create_collocations()
         # then rescan all given already existing
-        all_collocs = set(CLUSTERS_DICT[cluster_id].objects.values_list('ngram', flat=True))
+        all_collocs = set(TestCollocations.objects.values_list('ngram', flat=True))
 
         print 'Existing population...'
         # add existing if do not exist yet
@@ -243,7 +243,7 @@ class Article(models.Model):
             index = json.loads(article.index)
             for colloc in all_collocs.intersection(index.keys()):
                 # get or create because we are not filtrating old ones
-                ArticleCollocation.objects.get_or_create(ngram=colloc,
+                TestCollocations.objects.get_or_create(ngram=colloc,
                                                          article=article,
                                                          defaults={'count': index[colloc]})
 
@@ -252,7 +252,7 @@ class Article(models.Model):
         from axel.libs.utils import print_progress
         from axel.libs.nlp import _update_ngram_counts
         for article in print_progress(cls.objects.filter(cluster_id=cluster_id)):
-            ngrams = sorted(article.articlecollocation_set.values_list('ngram', 'count'),
+            ngrams = sorted(article.testcollocations_set.values_list('ngram', 'count'),
                             key=lambda x: (x[1], x[0]))
             if not ngrams:
                 continue
@@ -262,10 +262,21 @@ class Article(models.Model):
             new_ngrams = [k for k in new_ngrams if k[1] > 0]
             if new_ngrams != ngrams:
                 obsolete_ngrams = set(ngrams).difference(new_ngrams)
-                article.articlecollocation_set.filter(ngram__in=zip(*obsolete_ngrams)[0]) \
+                article.testcollocations_set.filter(ngram__in=zip(*obsolete_ngrams)[0]) \
                     .delete()
                 for ngram, score in set(new_ngrams).difference(ngrams):
-                    ArticleCollocation.objects.create(ngram=ngram, count=score, article=article)
+                    TestCollocations.objects.create(ngram=ngram, count=score, article=article)
+
+
+class TestCollocations(models.Model):
+    """
+    Model contains collocation for each article and their respective counts,
+    CAN BE DELETED AND REGENERATED.
+    Exists for testing different collocations models, can be moved to ArticleCollocation afterwards.
+    """
+    ngram = models.CharField(max_length=255)
+    count = models.IntegerField()
+    article = models.ForeignKey(Article)
 
 
 class ArticleCollocationsManager(models.Manager):
@@ -276,7 +287,10 @@ class ArticleCollocationsManager(models.Manager):
 
 
 class ArticleCollocation(models.Model):
-    """Model contains collocation for each article and their count"""
+    """
+    Model contains ngram -- possible entity for the collection, decision choice
+    and extra attributes.
+    """
     ngram = models.CharField(max_length=255)
     count = models.IntegerField()
     # duplication to efficiently perform ordering
@@ -285,6 +299,9 @@ class ArticleCollocation(models.Model):
     tags = generic.GenericRelation(TaggedCollection, for_concrete_model=False)
 
     extra_fields = JSONField()
+
+    # Populated by subclasses
+    judged_data = None
 
     class Meta:
         """Meta info"""
@@ -302,8 +319,8 @@ class ArticleCollocation(models.Model):
         Used in article detail view.
         """
         try:
-            return self.tags.all()[0].is_relevant
-        except IndexError:
+            return self.judged_data[unicode(self)]
+        except KeyError:
             return -1
 
     @property
@@ -334,6 +351,18 @@ class ArticleCollocation(models.Model):
             contexts.append(context)
         return contexts
 
+    def all_contexts_pos(self, func=get_contexts):
+        """
+        Get all contexts for part-of-speech tagging (Do not exclude bigger n-grams)
+        :rtype: list
+        :returns: contexts if found, [ngram] otherwise
+        """
+        contexts = []
+        text = self.article.text
+        for context in func(text, self.ngram, []):
+            contexts.append(context)
+        return contexts
+
     @property
     @db_cache('extra_fields')
     def pos_tag(self):
@@ -342,7 +371,7 @@ class ArticleCollocation(models.Model):
         :return: Part-of-Speech tag
         :rtype: unicode
         """
-        return scores.pos_tag(self.ngram, self.all_contexts(func=get_contexts_ngrams))
+        return scores.pos_tag(self.ngram, self.all_contexts_pos(func=get_contexts_ngrams))
 
     @property
     @db_cache('extra_fields')
@@ -352,7 +381,7 @@ class ArticleCollocation(models.Model):
         :return: dict of Part-of-Speech tags with scores
         :rtype: dict
         """
-        return scores.pos_tag_pos(self.ngram, self.all_contexts(func=get_contexts_ngrams))
+        return scores.pos_tag_pos(self.ngram, self.all_contexts_pos(func=get_contexts_ngrams))
 
     @property
     @db_cache('extra_fields')
@@ -362,7 +391,7 @@ class ArticleCollocation(models.Model):
         :return: dict of Part-of-Speech tags with scores
         :rtype: dict
         """
-        return scores.pos_tag_pos(self.ngram, self.all_contexts(func=get_contexts_ngrams), tag_pos=1)
+        return scores.pos_tag_pos(self.ngram, self.all_contexts_pos(func=get_contexts_ngrams), tag_pos=1)
 
     @classmethod
     def scores(cls):
@@ -377,6 +406,7 @@ class CSArticleCollocations(ArticleCollocation):
     CLUSTER_ID = 'CS_COLLOCS'
     COLLECTION_MODEL = Collocations
     objects = ArticleCollocationsManager()
+    judged_data = dict([line.rsplit(',', 1) for line in open(settings.ABS_PATH('CSArticleCollocations.csv')).read().split('\n')])
 
     class Meta:
         proxy = True
@@ -386,6 +416,7 @@ class SWArticleCollocations(ArticleCollocation):
     CLUSTER_ID = 'SW_COLLOCS'
     COLLECTION_MODEL = SWCollocations
     objects = ArticleCollocationsManager()
+    judged_data = dict([line.rsplit(',', 1) for line in open(settings.ABS_PATH('SWArticleCollocations.csv')).read().split('\n')])
 
     class Meta:
         proxy = True
