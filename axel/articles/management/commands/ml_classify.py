@@ -87,6 +87,7 @@ class Command(BaseCommand):
             else:
                 article_dict = dict(populate_article_dict(Model, getattr(binding_scores, score_name), cutoff=0))
                 pickle.dump(article_dict, open(cached_file, 'wb'))
+                print 'File stored, continuing...'
             # Calculate total valid for recall
             total_valid = self._total_valid(article_dict)
 
