@@ -4,6 +4,7 @@ import re
 from axel.articles.models import Article
 from axel.libs.nlp import build_ngram_index
 import nltk
+from axel.libs.utils import print_progress
 
 NGRAM_REGEX = ur'(?:\w|-)'
 
@@ -279,7 +280,13 @@ def populate_article_dict(model, score_func, cutoff=1):
     :type model: Model
     """
     article_dict = defaultdict(dict)
-    for article in Article.objects.filter(cluster_id=model.CLUSTER_ID):
+    article_rel_dict = defaultdict(dict)
+    for key, is_rel in model.judged_data.iteritems():
+        ngram, article_id = key.split(',')
+        is_rel = int(is_rel)
+        article_rel_dict[article_id][ngram] = is_rel
+
+    for article in print_progress(Article.objects.filter(cluster_id=model.CLUSTER_ID)):
         text = article.stemmed_text
         # create correspondence dict
         corr_dict1 = defaultdict(set)
@@ -292,8 +299,9 @@ def populate_article_dict(model, score_func, cutoff=1):
                 corr_dict2[w1].add(w2)
         for ngram in sorted(model.objects.filter(article=article),
                             key=lambda x: len(x.ngram.split())):
-            is_rel = ngram.is_relevant
-            if is_rel == -1:
+            try:
+                is_rel = article_rel_dict[unicode(article)][ngram.ngram]
+            except KeyError:
                 continue
             ngram_abs_count = text.count(ngram.ngram)
             if ngram_abs_count <= cutoff:

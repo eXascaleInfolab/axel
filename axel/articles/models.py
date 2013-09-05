@@ -319,7 +319,7 @@ class ArticleCollocation(models.Model):
         Used in article detail view.
         """
         try:
-            return self.judged_data[unicode(self)]
+            return int(self.judged_data[unicode(self)])
         except KeyError:
             return -1
 
