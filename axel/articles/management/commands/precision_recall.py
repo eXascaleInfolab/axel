@@ -222,7 +222,7 @@ class Command(BaseCommand):
                 results_dict[line[3]]['true_pos'].add(line[0])
 
         for article in Article.objects.filter(cluster_id=self.cluster_id):
-            false_negs = set(self.Model.objects.filter(article=article, tags__is_relevant=True).values_list('ngram', flat=True))
+            false_negs = self.article_rel_dict[unicode(article)][1]
             pdf_id = str(article.pdf)[12:-4]
 
             true_pos = results_dict[pdf_id]['true_pos']
@@ -276,27 +276,28 @@ class Command(BaseCommand):
         pos_tag_prev = [0, 0, 0, 0]
         pos_tag_after = [0, 0, 0, 0]
 
-        for ngram in self.Model.objects.filter(tags__is_relevant=True):
-            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0]):
-                pos_tag_prev[0] += 1
-            else:
-                pos_tag_prev[2] += 1
+        for article in print_progress(Article.objects.filter(cluster_id=self.cluster_id)):
+            for ngram in self.Model.objects.filter(article=article):
+                if ngram.ngram in self.article_rel_dict[unicode(article)][1]:
+                    if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0]):
+                        pos_tag_prev[0] += 1
+                    else:
+                        pos_tag_prev[2] += 1
 
-            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0]):
-                pos_tag_after[0] += 1
-            else:
-                pos_tag_after[2] += 1
+                    if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0]):
+                        pos_tag_after[0] += 1
+                    else:
+                        pos_tag_after[2] += 1
+                elif ngram.ngram in self.article_rel_dict[unicode(article)][0]:
+                    if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0]):
+                        pos_tag_prev[1] += 1
+                    else:
+                        pos_tag_prev[3] += 1
 
-        for ngram in self.Model.objects.filter(tags__is_relevant=False):
-            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0]):
-                pos_tag_prev[1] += 1
-            else:
-                pos_tag_prev[3] += 1
-
-            if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0]):
-                pos_tag_after[1] += 1
-            else:
-                pos_tag_after[3] += 1
+                    if {'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0]):
+                        pos_tag_after[1] += 1
+                    else:
+                        pos_tag_after[3] += 1
 
         print 'Contigency table BEFORE:'
         print '       | Valid | Invalid | Total |'

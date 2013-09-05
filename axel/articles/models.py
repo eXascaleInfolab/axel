@@ -310,7 +310,7 @@ class ArticleCollocation(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return u"{0},{1},{2}".format(self.ngram, self.article, self.article_id)
+        return u"{0},{1}".format(self.ngram, self.article)
 
     @property
     def is_relevant(self):
