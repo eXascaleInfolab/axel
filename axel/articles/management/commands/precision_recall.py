@@ -37,6 +37,12 @@ class Command(BaseCommand):
         self.Model = CLUSTERS_DICT[cluster_id]
         self.redirects = options['redirects']
 
+        self.article_rel_dict = defaultdict(lambda: {0: set(), 1: set()})
+        for key, is_rel in self.Model.judged_data.iteritems():
+            ngram, article_id = key.split(',')
+            is_rel = int(is_rel)
+            self.article_rel_dict[article_id][is_rel].add(ngram)
+
         for arg in args:
             eval_method = getattr(self, '_' + arg + '_calculation')
             eval_method()
@@ -53,11 +59,9 @@ class Command(BaseCommand):
         for article in Article.objects.filter(cluster_id=self.cluster_id):
             print article
 
-            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram',
-                                                                        'tags__is_relevant')
-            correct_objects = set([ngram for ngram, rel in article_ngrams if rel])
-            incorrect_objects = set([ngram for ngram, rel in article_ngrams if rel is False])
-            article_ngrams = [ngram for ngram, _ in article_ngrams]
+            correct_objects = self.article_rel_dict[unicode(article)][1]
+            incorrect_objects = self.article_rel_dict[unicode(article)][0]
+            article_ngrams = list(self.Model.objects.filter(article=article).values_list('ngram', flat=True))
             links_graph = article.wikilinks_graph
 
             for i, ngram1 in enumerate(article_ngrams):
@@ -96,8 +100,8 @@ class Command(BaseCommand):
             graph = article.dbpedia_graph()
             results = []
 
-            correct_objects = set(self.Model.objects.filter(article=article, tags__is_relevant=True).values_list('ngram', flat=True))
-            incorrect_objects = set(self.Model.objects.filter(article=article, tags__is_relevant=False).values_list('ngram', flat=True))
+            correct_objects = self.article_rel_dict[unicode(article)][1]
+            incorrect_objects = self.article_rel_dict[unicode(article)][0]
             for component in nx.connected_components(graph):
                 component = [node for node in component if 'Category' not in node]
                 results.append(component)
@@ -135,11 +139,10 @@ class Command(BaseCommand):
         for article in Article.objects.filter(cluster_id=self.cluster_id):
             results = set(article.dbpedia_graph(redirects=self.redirects).nodes())
 
-            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram',
-                                                                        'tags__is_relevant')
-            correct_objects = set([ngram for ngram, rel in article_ngrams if rel])
-            incorrect_objects = set([ngram for ngram, rel in article_ngrams if rel is False])
-            all_dbpedia_ngrams = [ngram for ngram, _ in article_ngrams if ngram in dbpedia_ngrams]
+            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram', flat=True)
+            correct_objects = self.article_rel_dict[unicode(article)][1]
+            incorrect_objects = self.article_rel_dict[unicode(article)][0]
+            all_dbpedia_ngrams = [ngram for ngram in article_ngrams if ngram in dbpedia_ngrams]
 
             true_pos = [x for x in results if x in correct_objects]
             good_removed = [x for x in all_dbpedia_ngrams if x in correct_objects and x not in true_pos]
@@ -177,11 +180,11 @@ class Command(BaseCommand):
                 dblp_ngrams.add(colloc.ngram)
 
         for article in Article.objects.filter(cluster_id=self.cluster_id):
-            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram', 'tags__is_relevant')
-            results = [ngram for ngram, _ in article_ngrams if ngram in dblp_ngrams]
+            article_ngrams = self.Model.objects.filter(article=article).values_list('ngram', flat=True)
+            results = [ngram for ngram in article_ngrams if ngram in dblp_ngrams]
 
-            correct_objects = [ngram for ngram, rel in article_ngrams if rel]
-            incorrect_objects = [ngram for ngram, rel in article_ngrams if rel is False]
+            correct_objects = self.article_rel_dict[unicode(article)][1]
+            incorrect_objects = self.article_rel_dict[unicode(article)][0]
 
             true_pos = [x for x in results if x in correct_objects]
             false_pos = [x for x in results if x in incorrect_objects]
@@ -190,7 +193,7 @@ class Command(BaseCommand):
             print colored(false_pos, 'red')
             print
             local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-            local_recall = len(true_pos) / len([x for x, _ in article_ngrams if x in correct_objects])
+            local_recall = len(true_pos) / len([x for x in article_ngrams if x in correct_objects])
 
             precision.append(local_precision)
             recall.append(local_recall)
