@@ -149,8 +149,7 @@ class Command(BaseCommand):
             false_pos = [x for x in results if x in incorrect_objects]
             top_false_counter.update(false_pos)
             local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-            local_recall = len(true_pos) / len([x for x in article.articlecollocation_set
-            .values_list('ngram', flat=True) if x in correct_objects])
+            local_recall = len(true_pos) / len(correct_objects)
 
             precision.append(local_precision)
             recall.append(local_recall)
@@ -193,7 +192,7 @@ class Command(BaseCommand):
             print colored(false_pos, 'red')
             print
             local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-            local_recall = len(true_pos) / len([x for x in article_ngrams if x in correct_objects])
+            local_recall = len(true_pos) / len(correct_objects)
 
             precision.append(local_precision)
             recall.append(local_recall)
@@ -216,18 +215,17 @@ class Command(BaseCommand):
         results_dict = defaultdict(lambda: {'true_pos': set(), 'false_pos': set()})
         for line in extra_source:
             line = line.split(',')
-            if line[1] == '0':
-                results_dict[line[3]]['false_pos'].add(line[0])
+            if line[2] == '0':
+                results_dict[line[1]]['false_pos'].add(line[0])
             else:
-                results_dict[line[3]]['true_pos'].add(line[0])
+                results_dict[line[1]]['true_pos'].add(line[0])
 
         for article in Article.objects.filter(cluster_id=self.cluster_id):
             false_negs = self.article_rel_dict[unicode(article)][1]
-            pdf_id = str(article.pdf)[12:-4]
 
-            true_pos = results_dict[pdf_id]['true_pos']
-            false_pos = results_dict[pdf_id]['false_pos']
-            results_dict[pdf_id]['false_negs'] = false_negs.difference(true_pos)
+            true_pos = results_dict[unicode(article)]['true_pos']
+            false_pos = results_dict[unicode(article)]['false_pos']
+            results_dict[unicode(article)]['false_negs'] = false_negs.difference(true_pos)
             local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
             local_recall = len(true_pos) / (len(true_pos) + len(false_negs))
             precision.append(local_precision)
