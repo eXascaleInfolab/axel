@@ -21,8 +21,6 @@ class Collocation(models.Model):
     _max_pos_tag = models.CharField(null=True, max_length=100)
     _ms_ngram_score = models.DecimalField(default=0, decimal_places=6, max_digits=9)
 
-    # required for TestCollection upload
-    SYNC_FIELD = 'ngram'
     CLUSTER_ID = 'ABSTRACT'
     CACHED_FIELDS = ()
     FILTERED_FIELDS = ()
@@ -107,28 +105,6 @@ class Collocation(models.Model):
         return ArticleCollocation.objects.filter(ngram=self.ngram).count()
 
     @property
-    def often_word_local(self):
-        """How many times do words from the ngram occur in other ngrams from the same article"""
-        argument_list = []
-        for word in self.ngram.split():
-            argument_list.append(Q(**{'ngram__regex': r'\b'+word+r'\b'}))
-        query = reduce(operator.or_, argument_list)
-
-        article_ids = self._articlecollocations.filter(ngram=self.ngram).values_list(
-            'article', flat=True)
-        score = self._articlecollocations.filter(article__id__in=article_ids).filter(query)\
-                                            .count() - len(article_ids)
-        return score
-
-    @property
-    @db_cache('extra_fields')
-    def often_consumed_score(self):
-        """How often does an ngram gets consumed by a bigger one"""
-        score = self.__class__.objects.filter(ngram__contains=self.ngram).aggregate(
-            count=Sum('count'))['count']
-        return score // self.count - 1
-
-    @property
     def occur_distribution(self):
         """
         :rtype: str
@@ -165,3 +141,6 @@ class SWCollocations(Collocation):
         True if concept appears in ontology, False otherwise.
         """
         return self.ngram in scores.ontology
+
+
+STATS_CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (Collocations, SWCollocations)])
