@@ -227,9 +227,10 @@ def get_full_text(text):
 
 
 @print_timing
-def _split_sentences(text):
+def _split_ngrams(text):
     """
-    Splits text on sentences (collocated-parts) based on re
+    Splits text on ngrams (collocated-parts) based on re,
+    we split on any punctuation sign, because n-gram cannot span them.
     :type text: unicode
     :rtype: list
     """
@@ -245,7 +246,7 @@ def build_ngram_index(text, max_split=5):
     """
 
     # First step - sentence split.
-    text = _split_sentences(text)
+    text = _split_ngrams(text)
 
     # Second step - ngram generation
     all_ngrams = defaultdict(lambda: 0)
