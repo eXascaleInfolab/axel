@@ -27,9 +27,10 @@ class Command(BaseCommand):
             raise CommandError("need to specify cluster id")
         self.Model = CLUSTERS_DICT[cluster_id].objects
         self.StatsModel = STATS_CLUSTERS_DICT[cluster_id].objects
+        # synchronize ngrams first
+        self._add_delete_stats()
         self._update_total_counts()
         self._update_max_pos_tags()
-        self._add_delete_stats()
 
     def _update_total_counts(self):
         print 'Update total counts:'
