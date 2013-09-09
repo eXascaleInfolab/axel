@@ -296,7 +296,6 @@ class ArticleCollocation(models.Model):
     # duplication to efficiently perform ordering
     total_count = models.IntegerField()
     article = models.ForeignKey(Article)
-    tags = generic.GenericRelation(TaggedCollection, for_concrete_model=False)
 
     extra_fields = JSONField()
 
