@@ -720,38 +720,38 @@ trec data,SIGIR 2012: Mining query subtopics from search log data,0
 user behavior,SIGIR 2012: Mining query subtopics from search log data,1
 yanan qian,SIGIR 2012: Mining query subtopics from search log data,0
 yunhua hu microsoft research asia beijing,SIGIR 2012: Mining query subtopics from search log data,0
-_and_bisexual business,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-abstract many,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-animal society,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-average agreement,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-average gain,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-bennett microsoft research redmond,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-boosted tree,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-emory university atlanta,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-engagement effort,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-feature ablation analysis,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-fleiss kappa,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,1
-focus avgclickposquery,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-focus with,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-human annotation,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,1
-introduction a web,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-kappa intent,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-label baseline,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-logistic regression,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,1
-method table,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-metric to,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-microsoft research,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-museum society,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-music adult,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-recall human,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-social support,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-study limitation to,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-subject descriptor,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-task continuation,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-task continuation eugene agichtein,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-terminated continued,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
-user profile,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,1
-work prior,SIGIR 2012: Search interrupted: understanding and predicting search task continuation,0
+_and_bisexual business,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+abstract many,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+animal society,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+average agreement,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+average gain,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+bennett microsoft research redmond,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+boosted tree,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+emory university atlanta,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+engagement effort,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+feature ablation analysis,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+fleiss kappa,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,1
+focus avgclickposquery,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+focus with,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+human annotation,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,1
+introduction a web,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+kappa intent,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+label baseline,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+logistic regression,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,1
+method table,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+metric to,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+microsoft research,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+museum society,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+music adult,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+recall human,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+social support,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+study limitation to,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+subject descriptor,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+task continuation,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+task continuation eugene agichtein,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+terminated continued,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
+user profile,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,1
+work prior,SIGIR 2012: Search  interrupted: understanding and predicting search task continuation,0
 abstract conventional,SIGIR 2012: Multi-aspect query summarization by composite query,0
 aspect query aspect word query aspect word query aspect word global background word,SIGIR 2012: Multi-aspect query summarization by composite query,0
 aspect word,SIGIR 2012: Multi-aspect query summarization by composite query,0
@@ -1122,43 +1122,43 @@ support medium,SIGIR 2012: A subjunctive exploratory search interface to support
 the netherlands,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,0
 utrecht university,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,0
 vector space model,SIGIR 2012: A subjunctive exploratory search interface to support media studies researchers,1
-abstract aggregated,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-alpha focused,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-aol search,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-ashlee edward school,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-blended focused,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-blended interface,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-chapel hill,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-diane kelly,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-discussion with,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-engagement scale,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-exit questionnaire,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-exit questionnaire flow diagram,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-felt involvement,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-human factor,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-hypothesis research question hypothesis,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-interaction with,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-item cronbach,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-learning objective,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-library science university,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-low how,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-north carolina,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-perceived usability,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-question this,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-r bonferroni,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-retrieval general term performance,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-search effectiveness,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-serp click,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-subject descriptor,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-system user experience,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-task complexity tom,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-type complexity health science,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-u census,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-user experience,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-user experience questionnaire,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-vertical display,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,1
-vertical usage with,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
-yahoo search,SIGIR 2012: Task complexity vertical display and user interaction in aggregated search,0
+abstract aggregated,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+alpha focused,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+aol search,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+ashlee edward school,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+blended focused,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+blended interface,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+chapel hill,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+diane kelly,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+discussion with,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+engagement scale,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+exit questionnaire,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+exit questionnaire flow diagram,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+felt involvement,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+human factor,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+hypothesis research question hypothesis,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+interaction with,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+item cronbach,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+learning objective,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+library science university,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+low how,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+north carolina,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+perceived usability,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+question this,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+r bonferroni,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+retrieval general term performance,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+search effectiveness,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+serp click,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+subject descriptor,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+system user experience,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+task complexity tom,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+type complexity health science,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+u census,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+user experience,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+user experience questionnaire,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+vertical display,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,1
+vertical usage with,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
+yahoo search,SIGIR 2012: Task complexity  vertical display and user interaction in aggregated search,0
 alejandro jaimes,SIGIR 2012: Image ranking based on user browsing behavior,0
 art event series peculiar,SIGIR 2012: Image ranking based on user browsing behavior,0
 browserank permission,SIGIR 2012: Image ranking based on user browsing behavior,0
@@ -2306,29 +2306,29 @@ rxquad qrels,SIGIR 2012: Explicit relevance models in intent-oriented informatio
 subject descriptor,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,0
 theory keywords diversity,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,0
 xquad for,SIGIR 2012: Explicit relevance models in intent-oriented information retrieval diversification,0
-average precision,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,1
-complexity analysis,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,1
-computing technology,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-data set,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,1
-denote pi,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-evaluation measure a,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-expected reciprocal rank,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,1
-experimental setting for,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-general term algorithm,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-graded mq2007,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-graded td2003,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-jiafeng guo,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-mean average,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-method time,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-nir ailon,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-normalized discounted,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-step1 randomly,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-step2 randomly,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-subject descriptor,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-theory keywords,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-trec2003 topic distillation,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-xueqi cheng,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
-yanyan lan,SIGIR 2012: Top-k learning to rank: labeling ranking and evaluation,0
+average precision,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
+complexity analysis,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
+computing technology,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+data set,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
+denote pi,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+evaluation measure a,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+expected reciprocal rank,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
+experimental setting for,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+general term algorithm,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+graded mq2007,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+graded td2003,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+jiafeng guo,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+mean average,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+method time,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+nir ailon,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+normalized discounted,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+step1 randomly,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+step2 randomly,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+subject descriptor,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+theory keywords,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+trec2003 topic distillation,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+xueqi cheng,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+yanyan lan,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
 abstract many,SIGIR 2012: Robust ranking models via risk-sensitive optimization,0
 baseline ranking,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
 bennett microsoft,SIGIR 2012: Robust ranking models via risk-sensitive optimization,0
@@ -2448,51 +2448,51 @@ support vector machine,SIGIR 2012: Category hierarchy maintenance: a data-driven
 topic tree,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 total sum,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 work hierarchy generation,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
-abstract while web,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-ask search avg,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-avg max,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-baby how,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-baidu know,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-basketball greatest,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-car make,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-community question,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-emory university,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-ethic religion,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-eugene agichtein,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-fitness account,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-frequency distribution,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-gideon dror,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-higher education,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-homework help algebra,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-idan szpektor,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-introduction while web,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-la boulanger,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-landscape adolescent cooking,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-length distribution,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-mathematics renting,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-maximum likelihood,SIGIR 2012: When web search fails searchers become askers: understanding the transition,1
-menlo park,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-need help pls,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-query characteristic,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-query click,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-query question,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-query serp,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-query word distribution,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-real estate diet,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-result distribution,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-retrieval keywords,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-san jose,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-searchask ask,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-searchask ask search,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-sequence before question asking,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-service baby name garden,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-size distribution,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-style military basketball problem,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-subject descriptor,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-transgendered other,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-united state,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-webscope program3,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
-yoelle maarek,SIGIR 2012: When web search fails searchers become askers: understanding the transition,0
+abstract while web,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+ask search avg,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+avg max,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+baby how,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+baidu know,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+basketball greatest,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+car make,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+community question,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+emory university,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+ethic religion,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+eugene agichtein,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+fitness account,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+frequency distribution,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+gideon dror,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+higher education,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+homework help algebra,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+idan szpektor,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+introduction while web,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+la boulanger,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+landscape adolescent cooking,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+length distribution,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+mathematics renting,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+maximum likelihood,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,1
+menlo park,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+need help pls,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+query characteristic,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+query click,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+query question,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+query serp,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+query word distribution,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+real estate diet,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+result distribution,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+retrieval keywords,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+san jose,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+searchask ask,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+searchask ask search,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+sequence before question asking,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+service baby name garden,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+size distribution,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+style military basketball problem,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+subject descriptor,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+transgendered other,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+united state,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+webscope program3,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
+yoelle maarek,SIGIR 2012: When web search fails  searchers become askers: understanding the transition,0
 collection in,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
 domain adaptation necessary,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
 effective is domain adaptation,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
