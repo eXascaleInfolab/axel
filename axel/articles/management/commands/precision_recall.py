@@ -225,13 +225,12 @@ class Command(BaseCommand):
                 results_dict[line[1]]['true_pos'].add(line[0])
 
         for article in Article.objects.filter(cluster_id=self.cluster_id):
-            false_negs = self.article_rel_dict[unicode(article)][1]
+            correct_objects = self.article_rel_dict[unicode(article)][1]
 
             true_pos = results_dict[unicode(article)]['true_pos']
             false_pos = results_dict[unicode(article)]['false_pos']
-            results_dict[unicode(article)]['false_negs'] = false_negs.difference(true_pos)
             local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-            local_recall = len(true_pos) / (len(true_pos) + len(false_negs))
+            local_recall = len(true_pos) / len(correct_objects)
             precision.append(local_precision)
             recall.append(local_recall)
 
@@ -239,9 +238,6 @@ class Command(BaseCommand):
         # for article in Article.objects.filter(cluster_id=self.cluster_id):
         #     #print article
         #     text = article.text
-        #     article_ngrams = self.Model.objects.filter(article=article).values_list('ngram', 'tags__is_relevant')
-        #     correct_objects = [ngram for ngram, rel in article_ngrams if rel]
-        #     incorrect_objects = [ngram for ngram, rel in article_ngrams if rel is False]
         #
         #     sentences = [nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP)) for sent in nltk.sent_tokenize(text)]
         #     results = nltk.batch_ne_chunk(sentences)
@@ -320,7 +316,7 @@ class Command(BaseCommand):
 
         # generating training file
         train = []
-        sentences_tagged = []
+        sentences_tagged = defaultdict(list)
         print 'Generating training/test data...'
         # train data of the form [[((word1, POS1), tag1), ((word2, POS2), tag2), ... ], sentence2, ...]
         for article in Article.objects.filter(cluster_id=self.cluster_id)[:3]:
@@ -339,7 +335,7 @@ class Command(BaseCommand):
                     else:
                         sent_tree.append(sentence_tagged[i])
                         i += 1
-                sentences_tagged.append(sentence_tagged)
+                sentences_tagged[unicode(article)].append(sentence_tagged)
                 train.append(sent_tree)
 
         print 'Finished data generation'
@@ -355,13 +351,20 @@ class Command(BaseCommand):
             pickle.dump(tagger, open(TAGGER_PCL, 'wb'))
 
         print 'Calculating precision...'
-        for sentence in sentences_tagged:
-            result = tagger.parse(sentence)
+        for article, sentences in sentences_tagged.iteritems():
+            results = [tagger.parse(sentence) for sentence in sentences]
             ne_set = set()
-            for tree in result.subtrees():
-                if tree.node != 'S' and len(tree) > 1:
-                    print tree
-                    ne_set.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*tree)[0]).lower()))
+            for result in results:
+                for tree in result.subtrees():
+                    if tree.node != 'S' and len(tree) > 1:
+                        ne_set.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*tree)[0]).lower()))
+            correct_objects = results_dict[unicode(article)]['true_pos']
+            true_pos = [x for x in ne_set if x in correct_objects]
+            false_pos = [x for x in ne_set if x not in correct_objects]
+            local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
+            local_recall = len(true_pos) / len(correct_objects)
+            precision.append(local_precision)
+            recall.append(local_recall)
 
 
         precision = sum(precision) / len(precision)
