@@ -1,9 +1,13 @@
 """Match extracted collocation with DBPedia entities"""
 from __future__ import division
+import os
 from collections import Counter, defaultdict
 from optparse import make_option
 from termcolor import colored
 import nltk
+import pickle
+from nltk.chunk.named_entity import NEChunkParser
+from nltk import Tree
 
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
@@ -262,6 +266,103 @@ class Command(BaseCommand):
 
         #     precision.append(local_precision)
         #     recall.append(local_recall)
+
+        precision = sum(precision) / len(precision)
+        recall = sum(recall) / len(recall)
+        print 'Precision: ', precision
+        print 'Recall', recall
+        print 'F1 measure', 2 * (precision * recall) / (precision + recall)
+
+    def _maxent_custom_calculation(self):
+        TAGGER_PCL = settings.ABS_PATH('maxent_tagger.pcl')
+        print 'Calculating Precision/Recall using Custom trained MaxEnt'
+        precision = []
+        recall = []
+        _end = '_end_'
+
+        extra_source = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
+        results_dict = defaultdict(lambda: {'true_pos': set(), 'false_pos': set()})
+        for line in extra_source:
+            line = line.split(',')
+            if line[2] == '0':
+                results_dict[line[1]]['false_pos'].add(line[0])
+            else:
+                results_dict[line[1]]['true_pos'].add(line[0])
+
+        def make_trie(ngrams):
+            """
+            Make trie out of set of ngrams
+            """
+            root = {}
+            for ngram in ngrams:
+                current_dict = root
+                for word in ngram.split():
+                    current_dict = current_dict.setdefault(word, {})
+                current_dict = current_dict.setdefault(_end, _end)
+            return root
+
+        def in_trie(index, sentence_tagged, trie):
+            result = []
+            while True:
+                end = False
+                if _end in trie:
+                    end = True
+                # TODO: lemmatization here
+                trie = trie.get(sentence_tagged[index][0])
+                if trie:
+                    result.append(sentence_tagged[index])
+                    index += 1
+                else:
+                    if not end:
+                        result = []
+                    break
+            return result
+
+        # generating training file
+        train = []
+        sentences_tagged = []
+        print 'Generating training/test data...'
+        # train data of the form [[((word1, POS1), tag1), ((word2, POS2), tag2), ... ], sentence2, ...]
+        for article in Article.objects.filter(cluster_id=self.cluster_id)[:3]:
+            correct_ngrams = results_dict[unicode(article)]['true_pos']
+            correct_ngrams = make_trie(correct_ngrams)
+            for sentence in nltk.sent_tokenize(article.text):
+                sentence_tagged = nltk.pos_tag(nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP))
+                sent_tree = Tree('S', [])
+                # identify ngrams in the sentence
+                i = 0
+                while i < len(sentence_tagged):
+                    result = in_trie(i, sentence_tagged, correct_ngrams)
+                    if result:
+                        sent_tree.append(Tree('CON', result))
+                        i += len(result)
+                    else:
+                        sent_tree.append(sentence_tagged[i])
+                        i += 1
+                sentences_tagged.append(sentence_tagged)
+                train.append(sent_tree)
+
+        print 'Finished data generation'
+
+        if os.path.exists(TAGGER_PCL):
+            print 'Pickled tagger exists. Reading it...'
+            tagger = pickle.load(open(TAGGER_PCL, 'r'))
+        else:
+            print 'Training tagger...'
+            tagger = NEChunkParser(train)
+            print 'Finished training tagger'
+            print 'Pickling tagger for later use...'
+            pickle.dump(tagger, open(TAGGER_PCL, 'wb'))
+
+        print 'Calculating precision...'
+        for sentence in sentences_tagged:
+            result = tagger.parse(sentence)
+            ne_set = set()
+            for tree in result.subtrees():
+                if tree.node != 'S' and len(tree) > 1:
+                    print tree
+                    ne_set.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*tree)[0]).lower()))
+
 
         precision = sum(precision) / len(precision)
         recall = sum(recall) / len(recall)
