@@ -277,13 +277,12 @@ class Command(BaseCommand):
         _end = '_end_'
 
         extra_source = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
-        results_dict = defaultdict(lambda: {'true_pos': set(), 'false_pos': set()})
         for line in extra_source:
             line = line.split(',')
             if line[2] == '0':
-                results_dict[line[1]]['false_pos'].add(line[0])
+                self.article_rel_dict[line[1]][0].add(line[0])
             else:
-                results_dict[line[1]]['true_pos'].add(line[0])
+                self.article_rel_dict[line[1]][1].add(line[0])
 
         def make_trie(ngrams):
             """
@@ -303,10 +302,11 @@ class Command(BaseCommand):
                 end = False
                 if _end in trie:
                     end = True
-                # TODO: lemmatization here
-                trie = trie.get(sentence_tagged[index][0])
+                word = sentence_tagged[index][0]
+                norm_word = nlp.Stemmer.stem_wordnet(word)
+                trie = trie.get(norm_word)
                 if trie:
-                    result.append(sentence_tagged[index])
+                    result.append((sentence_tagged[index]))
                     index += 1
                 else:
                     if not end:
@@ -319,9 +319,10 @@ class Command(BaseCommand):
         sentences_tagged = defaultdict(list)
         print 'Generating training/test data...'
         # train data of the form [[((word1, POS1), tag1), ((word2, POS2), tag2), ... ], sentence2, ...]
-        for article in Article.objects.filter(cluster_id=self.cluster_id)[:3]:
-            correct_ngrams = results_dict[unicode(article)]['true_pos']
-            correct_ngrams = make_trie(correct_ngrams)
+        for article in Article.objects.filter(cluster_id=self.cluster_id):
+            correct_ngrams_set = self.article_rel_dict[unicode(article)][1]
+            identified_correct = set()
+            correct_ngrams = make_trie(correct_ngrams_set)
             for sentence in nltk.sent_tokenize(article.text):
                 sentence_tagged = nltk.pos_tag(nltk.regexp_tokenize(sentence, nlp.Stemmer.TOKENIZE_REGEXP))
                 sent_tree = Tree('S', [])
@@ -331,12 +332,18 @@ class Command(BaseCommand):
                     result = in_trie(i, sentence_tagged, correct_ngrams)
                     if result:
                         sent_tree.append(Tree('CON', result))
+                        identified_correct.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*result)[0])))
                         i += len(result)
                     else:
                         sent_tree.append(sentence_tagged[i])
                         i += 1
                 sentences_tagged[unicode(article)].append(sentence_tagged)
                 train.append(sent_tree)
+            diff = correct_ngrams_set.difference(identified_correct)
+            if diff:
+                print diff
+                print article
+                print
 
         print 'Finished data generation'
 
@@ -358,7 +365,7 @@ class Command(BaseCommand):
                 for tree in result.subtrees():
                     if tree.node != 'S' and len(tree) > 1:
                         ne_set.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*tree)[0]).lower()))
-            correct_objects = results_dict[unicode(article)]['true_pos']
+            correct_objects = self.article_rel_dict[unicode(article)][1]
             true_pos = [x for x in ne_set if x in correct_objects]
             false_pos = [x for x in ne_set if x not in correct_objects]
             local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
