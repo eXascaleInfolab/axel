@@ -3533,7 +3533,8 @@ baseline system,SIGIR 2012: An exploration of ranking heuristics in mobile local
 improve search,SIGIR 2012: An exploration of ranking heuristics in mobile local search,0
 expectation maximization,SIGIR 2012: An exploration of ranking heuristics in mobile local search,1
 higher score,SIGIR 2012: An exploration of ranking heuristics in mobile local search,0
-latent semantic indexing,SIGIR 2012: An exploration of ranking heuristics in mobile local search,1
+latent semantic indexing,SIGIR 2012: An exploration of ranking heuristics in mobile local search,0
+probabilistic latent semantic indexing,SIGIR 2012: An exploration of ranking heuristics in mobile local search,1
 every query,SIGIR 2012: An exploration of ranking heuristics in mobile local search,0
 help improve,SIGIR 2012: An exploration of ranking heuristics in mobile local search,0
 length normalization,SIGIR 2012: An exploration of ranking heuristics in mobile local search,1
@@ -6770,7 +6771,8 @@ helpfulness assessment,SIGIR 2012: What reviews are satisfactory: novel features
 product review,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
 content analysis,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
 effective feature,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
-original ranking,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
+original ranking,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
+original ranking list,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
 san jose,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
 empirical method,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
 domain expert,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
@@ -6813,8 +6815,10 @@ review helpfulness assessment,SIGIR 2012: What reviews are satisfactory: novel f
 product value,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
 helpfulness based review classification system,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
 least one volitive auxiliary,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
-simple ranking,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
-review analysis,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
+simple ranking,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
+simple ranking system,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
+review analysis,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
+online review analysis,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
 review classification,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,1
 tense based,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
 volition based,SIGIR 2012: What reviews are satisfactory: novel features for automatic helpfulness voting,0
@@ -8312,7 +8316,8 @@ probabilistic topic model,SIGIR 2012: Social-network analysis using topic models
 propose two,SIGIR 2012: Social-network analysis using topic models,0
 world wide web conference,SIGIR 2012: Social-network analysis using topic models,1
 author-topic model,SIGIR 2012: Social-network analysis using topic models,1
-latent semantic indexing,SIGIR 2012: Social-network analysis using topic models,1
+latent semantic indexing,SIGIR 2012: Social-network analysis using topic models,0
+probabilistic latent semantic indexing,SIGIR 2012: Social-network analysis using topic models,0
 search using,SIGIR 2012: Social-network analysis using topic models,0
 significantly lower,SIGIR 2012: Social-network analysis using topic models,0
 twitter account,SIGIR 2012: Social-network analysis using topic models,1
@@ -8668,6 +8673,8 @@ query suggestion,SIGIR 2012: Time-sensitive query auto-completion,1
 future work,SIGIR 2012: Time-sensitive query auto-completion,0
 training data,SIGIR 2012: Time-sensitive query auto-completion,1
 information need,SIGIR 2012: Time-sensitive query auto-completion,1
+temporal information need,SIGIR 2012: Time-sensitive query auto-completion,1
+new information need,SIGIR 2012: Time-sensitive query auto-completion,0
 user behavior,SIGIR 2012: Time-sensitive query auto-completion,1
 least one,SIGIR 2012: Time-sensitive query auto-completion,0
 information search,SIGIR 2012: Time-sensitive query auto-completion,1
@@ -8681,6 +8688,7 @@ widely used,SIGIR 2012: Time-sensitive query auto-completion,0
 data mining,SIGIR 2012: Time-sensitive query auto-completion,1
 time interval,SIGIR 2012: Time-sensitive query auto-completion,1
 generative model,SIGIR 2012: Time-sensitive query auto-completion,1
+generative model learned,SIGIR 2012: Time-sensitive query auto-completion,0
 mixture model,SIGIR 2012: Time-sensitive query auto-completion,1
 next section,SIGIR 2012: Time-sensitive query auto-completion,0
 search query,SIGIR 2012: Time-sensitive query auto-completion,1
@@ -8724,12 +8732,15 @@ user type,SIGIR 2012: Time-sensitive query auto-completion,0
 product name,SIGIR 2012: Time-sensitive query auto-completion,0
 query likelihood,SIGIR 2012: Time-sensitive query auto-completion,1
 QAC ranking,SIGIR 2012: Time-sensitive query auto-completion,1
-smoothing method,SIGIR 2012: Time-sensitive query auto-completion,1
+smoothing method,SIGIR 2012: Time-sensitive query auto-completion,0
+exponential smoothing method,SIGIR 2012: Time-sensitive query auto-completion,1
+double exponential smoothing method,SIGIR 2012: Time-sensitive query auto-completion,1
 method based,SIGIR 2012: Time-sensitive query auto-completion,0
 validation set,SIGIR 2012: Time-sensitive query auto-completion,1
 reciprocal rank,SIGIR 2012: Time-sensitive query auto-completion,1
 small set,SIGIR 2012: Time-sensitive query auto-completion,0
 search effectiveness,SIGIR 2012: Time-sensitive query auto-completion,1
+improve search effectiveness,SIGIR 2012: Time-sensitive query auto-completion,0
 query popularity,SIGIR 2012: Time-sensitive query auto-completion,1
 june 2011,SIGIR 2012: Time-sensitive query auto-completion,0
 search box,SIGIR 2012: Time-sensitive query auto-completion,1
@@ -8757,13 +8768,14 @@ future query,SIGIR 2012: Time-sensitive query auto-completion,1
 top-ranked document,SIGIR 2012: Time-sensitive query auto-completion,1
 semantic similarity,SIGIR 2012: Time-sensitive query auto-completion,1
 twitter data,SIGIR 2012: Time-sensitive query auto-completion,1
+using twitter data,SIGIR 2012: Time-sensitive query auto-completion,0
 new word,SIGIR 2012: Time-sensitive query auto-completion,0
 previous query,SIGIR 2012: Time-sensitive query auto-completion,0
 learning model,SIGIR 2012: Time-sensitive query auto-completion,1
 temporal selection,SIGIR 2012: Time-sensitive query auto-completion,1
 solely based,SIGIR 2012: Time-sensitive query auto-completion,0
 ranked based,SIGIR 2012: Time-sensitive query auto-completion,0
-temporal information,SIGIR 2012: Time-sensitive query auto-completion,1
+temporal information,SIGIR 2012: Time-sensitive query auto-completion,0
 selection process,SIGIR 2012: Time-sensitive query auto-completion,1
 new information,SIGIR 2012: Time-sensitive query auto-completion,0
 performs significantly,SIGIR 2012: Time-sensitive query auto-completion,0
@@ -9892,7 +9904,8 @@ meta data,SIGIR 2012: Collaborative personalized tweet recommendation,1
 user action,SIGIR 2012: Collaborative personalized tweet recommendation,0
 knowledge discovery,SIGIR 2012: Collaborative personalized tweet recommendation,1
 based method,SIGIR 2012: Collaborative personalized tweet recommendation,0
-recommendation model,SIGIR 2012: Collaborative personalized tweet recommendation,1
+recommendation model,SIGIR 2012: Collaborative personalized tweet recommendation,0
+context-aware recommendation model,SIGIR 2012: Collaborative personalized tweet recommendation,1
 content-based method,SIGIR 2012: Collaborative personalized tweet recommendation,1
 prior probability,SIGIR 2012: Collaborative personalized tweet recommendation,1
 evaluation approach,SIGIR 2012: Collaborative personalized tweet recommendation,1
@@ -9989,7 +10002,8 @@ two different,SIGIR 2012: Exploring social influence for recommendation: a gener
 small number,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,0
 significant improvement,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,0
 learning algorithm,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,1
-probability distribution,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,1
+probability distribution,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,0
+joint probability distribution,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,1
 best performance,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,0
 user interest,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,1
 baseline method,SIGIR 2012: Exploring social influence for recommendation: a generative model approach,1
@@ -10429,7 +10443,8 @@ bounding box,SIGIR 2012: Where is who: large-scale photo retrieval by facial att
 significantly outperform,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,0
 block-based indexing,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,1
 image database,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,1
-ranking problem,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,1
+ranking problem,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,0
+image ranking problem,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,1
 first term,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,0
 search using,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,0
 search intention,SIGIR 2012: Where is who: large-scale photo retrieval by facial attributes and canvas layout,1
@@ -10647,6 +10662,8 @@ data collection,SIGIR 2012: TwiNER: named entity recognition in targeted twitter
 spelling correction,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,1
 high quality,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,0
 segmentation algorithm,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,1
+tweet segmentation algorithm,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,1
+tweet segmentation algorithm described,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,0
 commonly used,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,0
 different domain,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,0
 different value,SIGIR 2012: TwiNER: named entity recognition in targeted twitter stream,0
@@ -11624,7 +11641,8 @@ new question,SIGIR 2012: Dual role model for question recommendation in communit
 data sparsity,SIGIR 2012: Dual role model for question recommendation in community question answering,1
 posterior probability,SIGIR 2012: Dual role model for question recommendation in community question answering,1
 different perspective,SIGIR 2012: Dual role model for question recommendation in community question answering,0
-latent semantic indexing,SIGIR 2012: Dual role model for question recommendation in community question answering,1
+latent semantic indexing,SIGIR 2012: Dual role model for question recommendation in community question answering,0
+probabilistic latent semantic indexing,SIGIR 2012: Dual role model for question recommendation in community question answering,1
 different characteristic,SIGIR 2012: Dual role model for question recommendation in community question answering,0
 tuning parameter,SIGIR 2012: Dual role model for question recommendation in community question answering,1
 important issue,SIGIR 2012: Dual role model for question recommendation in community question answering,0
@@ -11920,6 +11938,7 @@ sprouted category,SIGIR 2012: Category hierarchy maintenance: a data-driven appr
 domain expert,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,1
 different set,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 hierarchy generation,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,1
+hierarchy generation process,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,1
 minor category,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 selection process,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,1
 structural similarity,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,1
@@ -11938,7 +11957,8 @@ described earlier,SIGIR 2012: Category hierarchy maintenance: a data-driven appr
 three operation,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 three hierarchy,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 generated based,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
-classification technique,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,1
+classification technique,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
+text classification technique,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,1
 two component,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 newly available document,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
 one category,SIGIR 2012: Category hierarchy maintenance: a data-driven approach,0
@@ -12201,7 +12221,8 @@ text REtrieval conference,SIGIR 2012: Content-based retrieval for heterogeneous 
 classification task,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,1
 binary relevance,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,1
 document classification,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,1
-retrieval method,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,1
+retrieval method,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+content-based retrieval method,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,1
 top ranked,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
 highest score,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
 heterogeneous domain,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,1
@@ -12373,7 +12394,8 @@ three datasets,SIGIR 2012: Mixture model with multiple centralized retrieval alg
 sigmoid function,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
 document returned,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
 enough information,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
-retrieval method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+retrieval method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+centralized retrieval method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
 document score,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
 wikipedia dataset,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
 query based,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
@@ -12401,7 +12423,8 @@ training dataset,SIGIR 2012: Mixture model with multiple centralized retrieval a
 paper proposes,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
 final score,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
 least square,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
-fusion method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+fusion method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+data fusion method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
 following optimization problem,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
 document level,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
 distributed information retrieval,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
@@ -12699,7 +12722,8 @@ much higher,SIGIR 2012: Personalized diversification of search results,0
 information filtering,SIGIR 2012: Personalized diversification of search results,1
 feature extracted,SIGIR 2012: Personalized diversification of search results,0
 statistically significant improvement,SIGIR 2012: Personalized diversification of search results,0
-evaluation approach,SIGIR 2012: Personalized diversification of search results,1
+evaluation approach,SIGIR 2012: Personalized diversification of search results,0
+offline evaluation approach,SIGIR 2012: Personalized diversification of search results,1
 user engagement,SIGIR 2012: Personalized diversification of search results,1
 first two,SIGIR 2012: Personalized diversification of search results,0
 result indicate,SIGIR 2012: Personalized diversification of search results,0
@@ -12727,6 +12751,7 @@ two stage,SIGIR 2012: Personalized diversification of search results,0
 best value,SIGIR 2012: Personalized diversification of search results,0
 independence assumption,SIGIR 2012: Personalized diversification of search results,1
 query generation,SIGIR 2012: Personalized diversification of search results,1
+query generation process,SIGIR 2012: Personalized diversification of search results,1
 subtopic retrieval,SIGIR 2012: Personalized diversification of search results,1
 topic relevance,SIGIR 2012: Personalized diversification of search results,1
 shall see,SIGIR 2012: Personalized diversification of search results,0
@@ -12738,7 +12763,8 @@ diversification model,SIGIR 2012: Personalized diversification of search results
 two component,SIGIR 2012: Personalized diversification of search results,0
 technique based,SIGIR 2012: Personalized diversification of search results,0
 TREC assessor,SIGIR 2012: Personalized diversification of search results,1
-diversity model,SIGIR 2012: Personalized diversification of search results,1
+diversity model,SIGIR 2012: Personalized diversification of search results,0
+personalized diversity model,SIGIR 2012: Personalized diversification of search results,1
 made publicly available,SIGIR 2012: Personalized diversification of search results,0
 crowdsourcing service,SIGIR 2012: Personalized diversification of search results,1
 assuming conditional independence,SIGIR 2012: Personalized diversification of search results,0
@@ -12862,6 +12888,7 @@ search engine result page,SIGIR 2012: AspecTiles: tile-based visualization of di
 particular query,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 home page,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 search engine user,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
+web search engine user,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 every query,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 TREC 2009,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 experimental design,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
@@ -13048,14 +13075,17 @@ one hand,SIGIR 2012: Combining implicit and explicit topic representations for r
 experimental setting,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 TREC topic,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 diversity task,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
-retrieval experiment,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
+information retrieval experiment,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
+retrieval experiment,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 calculated using,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 diversification approach,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 highest score,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 top ranked,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 diversification algorithm,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
-text collection,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
+text collection,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+anchor text collection,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 empirical result,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
+empirical result show,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 semantic relatedness,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 suggested query,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 portfolio theory,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
@@ -13241,7 +13271,8 @@ first level,SIGIR 2012: Using preference judgments for novel document retrieval,
 possible reason,SIGIR 2012: Using preference judgments for novel document retrieval,0
 user tend,SIGIR 2012: Using preference judgments for novel document retrieval,0
 high level,SIGIR 2012: Using preference judgments for novel document retrieval,0
-retrieval task,SIGIR 2012: Using preference judgments for novel document retrieval,1
+retrieval task,SIGIR 2012: Using preference judgments for novel document retrieval,0
+subtopic retrieval task,SIGIR 2012: Using preference judgments for novel document retrieval,1
 weighted average,SIGIR 2012: Using preference judgments for novel document retrieval,1
 SIGIR forum,SIGIR 2012: Using preference judgments for novel document retrieval,1
 novel document,SIGIR 2012: Using preference judgments for novel document retrieval,1
@@ -13310,7 +13341,8 @@ data mining,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourc
 human annotator,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,1
 previous section,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
 significant difference,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
-user interaction,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,1
+user interaction,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+user interaction log,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,1
 large scale,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,1
 document frequency,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,1
 relevance assessment,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,1
