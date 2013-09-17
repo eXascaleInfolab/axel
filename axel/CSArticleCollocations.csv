@@ -13074,7 +13074,8 @@ TREC 2010,SIGIR 2012: Combining implicit and explicit topic representations for 
 different perspective,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 effective feature,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 various type,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-latent semantic indexing,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
+latent semantic indexing,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+probabilistic latent semantic indexing,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 top-ranked document,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 novel document,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 subtopics related,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
@@ -13224,7 +13225,8 @@ short query,SIGIR 2012: Using preference judgments for novel document retrieval,
 document relevance,SIGIR 2012: Using preference judgments for novel document retrieval,1
 diversity task,SIGIR 2012: Using preference judgments for novel document retrieval,1
 show result,SIGIR 2012: Using preference judgments for novel document retrieval,0
-binary relevance,SIGIR 2012: Using preference judgments for novel document retrieval,1
+binary relevance,SIGIR 2012: Using preference judgments for novel document retrieval,0
+binary relevance judgment,SIGIR 2012: Using preference judgments for novel document retrieval,1
 ambiguous query,SIGIR 2012: Using preference judgments for novel document retrieval,1
 first study,SIGIR 2012: Using preference judgments for novel document retrieval,0
 user prefer,SIGIR 2012: Using preference judgments for novel document retrieval,0
@@ -13604,7 +13606,8 @@ retrieval system,SIGIR 2012: On per-topic variance in IR evaluation,1
 query expansion,SIGIR 2012: On per-topic variance in IR evaluation,1
 average precision,SIGIR 2012: On per-topic variance in IR evaluation,1
 two different,SIGIR 2012: On per-topic variance in IR evaluation,0
-mixture model,SIGIR 2012: On per-topic variance in IR evaluation,1
+mixture model,SIGIR 2012: On per-topic variance in IR evaluation,0
+gaussian mixture model,SIGIR 2012: On per-topic variance in IR evaluation,1
 retrieval effectiveness,SIGIR 2012: On per-topic variance in IR evaluation,1
 knowledge management,SIGIR 2012: On per-topic variance in IR evaluation,1
 retrieved document,SIGIR 2012: On per-topic variance in IR evaluation,0
@@ -13781,7 +13784,8 @@ document corpus,SIGIR 2012: An uncertainty-aware query selection model for evalu
 query subset,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 subsequent query,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 human assessor,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
-retrieval experiment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
+retrieval experiment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+information retrieval experiment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 different approach,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 maximum likelihood,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 calculated using,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
@@ -13892,7 +13896,8 @@ international conference,SIGIR 2012: Improving retrieval of short texts through 
 search log,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 large number,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 term frequency,SIGIR 2012: Improving retrieval of short texts through document expansion,1
-document collection,SIGIR 2012: Improving retrieval of short texts through document expansion,1
+document collection,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+short document collection,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 result set,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 proposed method,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 statistically significant,SIGIR 2012: Improving retrieval of short texts through document expansion,1
@@ -13930,7 +13935,8 @@ latent dirichlet allocation,SIGIR 2012: Improving retrieval of short texts throu
 experiment show,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 document length,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 language modeling,SIGIR 2012: Improving retrieval of short texts through document expansion,1
-document retrieval,SIGIR 2012: Improving retrieval of short texts through document expansion,1
+document retrieval,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+short document retrieval,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 IR performance,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 language modeling approach,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 american society,SIGIR 2012: Improving retrieval of short texts through document expansion,0
@@ -14137,7 +14143,8 @@ incoming query,SIGIR 2012: Extending BM25 with multiple query operators,1
 pseudo-relevance feedback,SIGIR 2012: Extending BM25 with multiple query operators,1
 following two,SIGIR 2012: Extending BM25 with multiple query operators,0
 research barcelona,SIGIR 2012: Extending BM25 with multiple query operators,0
-noun phrase query,SIGIR 2012: Extending BM25 with multiple query operators,1
+noun phrase query,SIGIR 2012: Extending BM25 with multiple query operators,0
+noun phrase query segmentation,SIGIR 2012: Extending BM25 with multiple query operators,1
 BM25 baseline,SIGIR 2012: Extending BM25 with multiple query operators,1
 user tend,SIGIR 2012: Extending BM25 with multiple query operators,0
 machine learning approach,SIGIR 2012: Extending BM25 with multiple query operators,1
@@ -14211,6 +14218,7 @@ query expansion,SIGIR 2012: Rhetorical relations for information retrieval,1
 result list,SIGIR 2012: Rhetorical relations for information retrieval,0
 average precision,SIGIR 2012: Rhetorical relations for information retrieval,1
 classification accuracy,SIGIR 2012: Rhetorical relations for information retrieval,1
+sentiment classification accuracy,SIGIR 2012: Rhetorical relations for information retrieval,1
 mean average precision,SIGIR 2012: Rhetorical relations for information retrieval,1
 retrieval effectiveness,SIGIR 2012: Rhetorical relations for information retrieval,1
 query set,SIGIR 2012: Rhetorical relations for information retrieval,1
@@ -14400,7 +14408,8 @@ individual query,SIGIR 2012: Modeling higher-order term dependencies in informat
 query hypergraph,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 proximity measure,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 term proximity,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
-performance metric,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+performance metric,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+retrieval performance metric,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 bruce croft,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 significantly improves,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 query likelihood,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
@@ -14411,7 +14420,8 @@ see equation,SIGIR 2012: Modeling higher-order term dependencies in information 
 web track,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 TREC collection,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 information retrieval evaluation,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
-structured query,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+structured query,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+structured query language,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 smoothing method,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 statistically significant difference,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 document relevance,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
@@ -14445,13 +14455,15 @@ markov random field,SIGIR 2012: Modeling higher-order term dependencies in infor
 empirical evaluation,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 wikipedia title,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 using query,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-topic description,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+topic description,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+TREC topic description,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 pattern recognition,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
-query language,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+query language,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 passage retrieval,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 sequential dependence model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 retrieval framework,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
-performance evaluation,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+retrieval performance evaluation,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+performance evaluation,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 two collection,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 new concept,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 bag-of-words model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
@@ -14618,10 +14630,11 @@ large-scale analysis,SIGIR 2012: Time-based calibration of effectiveness measure
 different amount,SIGIR 2012: Time-based calibration of effectiveness measures,0
 decay function,SIGIR 2012: Time-based calibration of effectiveness measures,1
 cumulative gain,SIGIR 2012: Time-based calibration of effectiveness measures,1
-duplicate detection,SIGIR 2012: Time-based calibration of effectiveness measures,1
+duplicate detection,SIGIR 2012: Time-based calibration of effectiveness measures,0
+duplicate detection algorithm,SIGIR 2012: Time-based calibration of effectiveness measures,1
 significance level,SIGIR 2012: Time-based calibration of effectiveness measures,1
 expected utility,SIGIR 2012: Time-based calibration of effectiveness measures,1
-detection algorithm,SIGIR 2012: Time-based calibration of effectiveness measures,1
+detection algorithm,SIGIR 2012: Time-based calibration of effectiveness measures,0
 arithmetic mean,SIGIR 2012: Time-based calibration of effectiveness measures,1
 eye tracking,SIGIR 2012: Time-based calibration of effectiveness measures,1
 TREC 2005,SIGIR 2012: Time-based calibration of effectiveness measures,0
@@ -14720,7 +14733,8 @@ gold standard,SIGIR 2012: Confidence-aware graph regularization with heterogeneo
 class label,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 retrieval score,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 longer query,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
-web query,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+web query,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+web query classification,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
 user feedback,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 human judge,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 additional feature,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
@@ -14735,7 +14749,8 @@ take advantage,SIGIR 2012: Confidence-aware graph regularization with heterogene
 click graph,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 user session,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 experimental setting,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
-binary classification,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+binary classification,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+binary classification task,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
 conditional random field,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 text categorization,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
 heterogeneous pairwise feature,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
@@ -15001,7 +15016,8 @@ overall accuracy,SIGIR 2012: Improving tweet stream classification by detecting 
 word sequence,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
 general framework,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
 sliding window,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
-short text,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+short text,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+short text classification,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
 new model,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
 worst case,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
 macro average,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
@@ -15010,7 +15026,8 @@ weighting function,SIGIR 2012: Improving tweet stream classification by detectin
 different characteristic,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
 effective feature,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
 new word,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
-text search,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+text search,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+text search index,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
 temporal selection,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
 statistical property,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
 new information,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
@@ -15168,7 +15185,8 @@ existing research,SIGIR 2012: Predicting quality flaws in user-generated content
 primary source,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 class imbalance,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 learning approach,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
-text quality,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
+text quality,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+text quality flaw,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 training corpus,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 different language,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 388 cleanup tag,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
