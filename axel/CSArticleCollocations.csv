@@ -9038,7 +9038,8 @@ experimental setup,SIGIR 2012: Learning to predict response times for online que
 see figure,SIGIR 2012: Learning to predict response times for online query scheduling,0
 parameter setting,SIGIR 2012: Learning to predict response times for online query scheduling,1
 cross validation,SIGIR 2012: Learning to predict response times for online query scheduling,1
-index size,SIGIR 2012: Learning to predict response times for online query scheduling,1
+index size,SIGIR 2012: Learning to predict response times for online query scheduling,0
+inverted index size,SIGIR 2012: Learning to predict response times for online query scheduling,1
 three different,SIGIR 2012: Learning to predict response times for online query scheduling,0
 proposed framework,SIGIR 2012: Learning to predict response times for online query scheduling,0
 top document,SIGIR 2012: Learning to predict response times for online query scheduling,0
@@ -9077,7 +9078,8 @@ different number,SIGIR 2012: Learning to predict response times for online query
 inverted file,SIGIR 2012: Learning to predict response times for online query scheduling,1
 joint probability,SIGIR 2012: Learning to predict response times for online query scheduling,1
 learned model,SIGIR 2012: Learning to predict response times for online query scheduling,1
-document corpus,SIGIR 2012: Learning to predict response times for online query scheduling,1
+document corpus,SIGIR 2012: Learning to predict response times for online query scheduling,0
+large document corpus,SIGIR 2012: Learning to predict response times for online query scheduling,1
 query evaluation,SIGIR 2012: Learning to predict response times for online query scheduling,1
 subsequent query,SIGIR 2012: Learning to predict response times for online query scheduling,0
 statistically significant difference,SIGIR 2012: Learning to predict response times for online query scheduling,1
@@ -10912,7 +10914,8 @@ computer science,SIGIR 2012: Structural relationships for large-scale learning o
 related work,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,0
 proposed method,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,0
 ranking model,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,1
-retrieval system,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,1
+retrieval system,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,0
+passage retrieval system,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,1
 leaf node,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,1
 result show,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,0
 feature vector,SIGIR 2012: Structural relationships for large-scale learning of answer re-ranking,1
@@ -11244,7 +11247,7 @@ information search,SIGIR 2012: Top-k learning to rank: labeling  ranking and eva
 related work,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
 labeled data,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
 ranking model,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
-retrieval system,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
+retrieval system,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
 widely used,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
 average precision,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
 implicit feedback,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
@@ -11286,7 +11289,8 @@ information quality,SIGIR 2012: Top-k learning to rank: labeling  ranking and ev
 top-k ground-truth,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
 top result,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
 performance comparison,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
-system evaluation,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
+system evaluation,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
+retrieval system evaluation,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
 two category,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
 two datasets,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,0
 computational complexity,SIGIR 2012: Top-k learning to rank: labeling  ranking and evaluation,1
@@ -11456,7 +11460,8 @@ click entropy,SIGIR 2012: Robust ranking models via risk-sensitive optimization,
 reciprocal rank,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
 validation set,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
 resource selection,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
-quality measure,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
+retrieval quality measure,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
+quality measure,SIGIR 2012: Robust ranking models via risk-sensitive optimization,0
 averaged across,SIGIR 2012: Robust ranking models via risk-sensitive optimization,0
 user satisfaction,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
 gradient boosting,SIGIR 2012: Robust ranking models via risk-sensitive optimization,1
@@ -12750,7 +12755,7 @@ conditional independence,SIGIR 2012: Personalized diversification of search resu
 two stage,SIGIR 2012: Personalized diversification of search results,0
 best value,SIGIR 2012: Personalized diversification of search results,0
 independence assumption,SIGIR 2012: Personalized diversification of search results,1
-query generation,SIGIR 2012: Personalized diversification of search results,1
+query generation,SIGIR 2012: Personalized diversification of search results,0
 query generation process,SIGIR 2012: Personalized diversification of search results,1
 subtopic retrieval,SIGIR 2012: Personalized diversification of search results,1
 topic relevance,SIGIR 2012: Personalized diversification of search results,1
@@ -12887,7 +12892,7 @@ user performance,SIGIR 2012: AspecTiles: tile-based visualization of diversified
 search engine result page,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 particular query,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 home page,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
-search engine user,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
+search engine user,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 web search engine user,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 every query,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 TREC 2009,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
@@ -13505,7 +13510,8 @@ document retrieval,SIGIR 2012: An IR-based evaluation framework for web search q
 one query,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 IR system,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
 000 query,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
-system evaluation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
+system evaluation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+IR system evaluation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
 document containing,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 random sample,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
 top result,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
@@ -13565,7 +13571,8 @@ every query,SIGIR 2012: An IR-based evaluation framework for web search query se
 help improve,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 markov random field model,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
 wikipedia title,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
-general web search,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
+general web search,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+general web search query,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 new version,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 highest value,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 computed based,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
