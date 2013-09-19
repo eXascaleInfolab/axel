@@ -56,6 +56,8 @@ class Command(BaseCommand):
             false_pos_new = [x for x in zip(*test_collocs)[0] if x in incorrect_objects]
             local_old_prec = len(true_pos_old) / (len(true_pos_old) + len(false_pos_old))
             local_new_prec = len(true_pos_new) / (len(true_pos_new) + len(false_pos_new))
+            print 'Obsolote correct:'
+            print set(true_pos_old).difference(true_pos_new)
             old_prec.append(local_old_prec)
             new_prec.append(local_new_prec)
             old_rec_local = len(true_pos_old) / len(correct_objects)
