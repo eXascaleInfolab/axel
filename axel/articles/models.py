@@ -226,11 +226,14 @@ class Article(models.Model):
                     TestCollocations.objects.create(ngram=name, article=self, count=score)
 
     @classmethod
-    def create_collocations(cls, cluster_id):
+    def create_collocations(cls, cluster_id, method='global_collocations'):
         """
         Populates collocation for the specified article collection
         :param cluster_id: cluster id to specify article collection
         """
+        print 'Deleting existing population'
+        TestCollocations.objects.all().delete()
+
         print 'Initial population...'
         for article in cls.objects.filter(cluster_id=cluster_id):
             # create all found collocations inside single article
@@ -238,35 +241,74 @@ class Article(models.Model):
         # then rescan all given already existing
         all_collocs = set(TestCollocations.objects.values_list('ngram', flat=True))
 
-        print 'Existing population...'
-        # add existing if do not exist yet
-        for article in cls.objects.filter(cluster_id=cluster_id):
-            index = json.loads(article.index)
-            for colloc in all_collocs.intersection(index.keys()):
-                # get or create because we are not filtrating old ones
-                TestCollocations.objects.get_or_create(ngram=colloc,
-                                                       article=article,
-                                                       defaults={'count': index[colloc]})
+        def local_collocations():
+            pass
 
-        # we could screw up counts completely, need to update them
-        print 'Starting updates...'
-        from axel.libs.utils import print_progress
-        from axel.libs.nlp import _update_ngram_counts
-        for article in print_progress(cls.objects.filter(cluster_id=cluster_id)):
-            ngrams = sorted(article.testcollocations_set.values_list('ngram', 'count'),
-                            key=lambda x: (x[1], x[0]))
-            if not ngrams:
-                continue
-            index = json.loads(article.index)
-            new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]], index)
-            new_ngrams = sorted(new_ngrams.items(), key=lambda x: (x[1], x[0]))
-            new_ngrams = [k for k in new_ngrams if k[1] > 0]
-            if new_ngrams != ngrams:
-                obsolete_ngrams = set(ngrams).difference(new_ngrams)
-                article.testcollocations_set.filter(ngram__in=zip(*obsolete_ngrams)[0]) \
-                    .delete()
-                for ngram, score in set(new_ngrams).difference(ngrams):
-                    TestCollocations.objects.create(ngram=ngram, count=score, article=article)
+        def global_collocations():
+            print 'Global re-population...'
+            # add existing if do not exist yet
+            for article in cls.objects.filter(cluster_id=cluster_id):
+                index = json.loads(article.index)
+                for colloc in all_collocs.intersection(index.keys()):
+                    # get or create because we are not filtrating old ones
+                    TestCollocations.objects.get_or_create(ngram=colloc,
+                                                           article=article,
+                                                           defaults={'count': index[colloc]})
+                # we could screw up counts completely, need to update them
+            print 'Starting updates...'
+            from axel.libs.utils import print_progress
+            from axel.libs.nlp import _update_ngram_counts
+
+            for article in print_progress(cls.objects.filter(cluster_id=cluster_id)):
+                ngrams = sorted(article.testcollocations_set.values_list('ngram', 'count'),
+                                key=lambda x: (x[1], x[0]))
+                if not ngrams:
+                    continue
+                index = json.loads(article.index)
+                new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]], index)
+                new_ngrams = sorted(new_ngrams.items(), key=lambda x: (x[1], x[0]))
+                new_ngrams = [k for k in new_ngrams if k[1] > 0]
+                if new_ngrams != ngrams:
+                    obsolete_ngrams = set(ngrams).difference(new_ngrams)
+                    article.testcollocations_set.filter(ngram__in=zip(*obsolete_ngrams)[0]) \
+                        .delete()
+                    for ngram, score in set(new_ngrams).difference(ngrams):
+                        TestCollocations.objects.create(ngram=ngram, count=score, article=article)
+
+        def global_collocations_rejoin():
+            print 'Global re-population...'
+            # add existing if do not exist yet
+            for article in cls.objects.filter(cluster_id=cluster_id):
+                index = json.loads(article.index)
+                for colloc in all_collocs.intersection(index.keys()):
+                    # get or create because we are not filtrating old ones
+                    TestCollocations.objects.get_or_create(ngram=colloc,
+                                                           article=article,
+                                                           defaults={'count': index[colloc]})
+                # we could screw up counts completely, need to update them
+            print 'Starting updates...'
+            from axel.libs.utils import print_progress
+            from axel.libs.nlp import _update_ngram_counts
+
+            for article in print_progress(cls.objects.filter(cluster_id=cluster_id)):
+                ngrams = sorted(article.testcollocations_set.values_list('ngram', 'count'),
+                                key=lambda x: (x[1], x[0]))
+                if not ngrams:
+                    continue
+                index = json.loads(article.index)
+                new_ngrams = nlp._generate_possible_ngrams([tuple(c.split()) for c in zip(*ngrams)[0]],
+                                                           index)
+                new_ngrams = _update_ngram_counts(new_ngrams, index)
+                new_ngrams = sorted(new_ngrams.items(), key=lambda x: (x[1], x[0]))
+                new_ngrams = [k for k in new_ngrams if k[1] > 0]
+                if new_ngrams != ngrams:
+                    obsolete_ngrams = set(ngrams).difference(new_ngrams)
+                    article.testcollocations_set.filter(ngram__in=zip(*obsolete_ngrams)[0]) \
+                        .delete()
+                    for ngram, score in set(new_ngrams).difference(ngrams):
+                        TestCollocations.objects.create(ngram=ngram, count=score, article=article)
+
+        locals()[method]()
 
 
 class TestCollocations(models.Model):
