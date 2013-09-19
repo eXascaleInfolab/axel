@@ -12,6 +12,7 @@ from jsonfield import JSONField
 from test_collection.models import TaggedCollection
 
 from axel.articles.utils.db import db_cache
+from axel.libs import nlp
 from axel.libs.utils import get_contexts, get_contexts_ngrams
 from axel.stats.models import SWCollocations, Collocations
 import axel.stats.scores as scores
@@ -244,8 +245,8 @@ class Article(models.Model):
             for colloc in all_collocs.intersection(index.keys()):
                 # get or create because we are not filtrating old ones
                 TestCollocations.objects.get_or_create(ngram=colloc,
-                                                         article=article,
-                                                         defaults={'count': index[colloc]})
+                                                       article=article,
+                                                       defaults={'count': index[colloc]})
 
         # we could screw up counts completely, need to update them
         print 'Starting updates...'
@@ -256,8 +257,8 @@ class Article(models.Model):
                             key=lambda x: (x[1], x[0]))
             if not ngrams:
                 continue
-            new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]],
-                json.loads(article.index))
+            index = json.loads(article.index)
+            new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]], index)
             new_ngrams = sorted(new_ngrams.items(), key=lambda x: (x[1], x[0]))
             new_ngrams = [k for k in new_ngrams if k[1] > 0]
             if new_ngrams != ngrams:
@@ -296,6 +297,7 @@ class ArticleCollocation(models.Model):
     # duplication to efficiently perform ordering
     total_count = models.IntegerField()
     article = models.ForeignKey(Article)
+    tags = generic.GenericRelation(TaggedCollection, for_concrete_model=False)
 
     extra_fields = JSONField()
 
