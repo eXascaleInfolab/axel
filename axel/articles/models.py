@@ -212,21 +212,32 @@ class Article(models.Model):
             graph = json_graph.load(open(graph_object))
             return graph
 
-    def _create_collocations(self):
+    def _create_collocations(self, lemmas):
         """Create collocation for the article"""
         from axel.libs import nlp
-        if self.index and not self.testcollocations_set.exists():
-            index = json.loads(self.index)
+        if self.index:
+            if lemmas:
+                index = json.loads(self.index)
+            else:
+                index = self.index_nonstemmed
             # found collocs = found existing + found new
             collocs = nlp.collocations(index)
 
             # Create other collocations
             for name, score in collocs.iteritems():
                 if score > 0:
-                    TestCollocations.objects.create(ngram=name, article=self, count=score)
+                    if not lemmas:
+                        name = nlp.Stemmer.stem_wordnet(name)
+                    colloc, created = TestCollocations.objects.get_or_create(ngram=name,
+                                                            article=self, defaults={'count': score})
+                    if not created:
+                        colloc.count += score
+                        colloc.save()
+        else:
+            print 'No n-gram index found'
 
     @classmethod
-    def create_collocations(cls, cluster_id, method='global_collocations'):
+    def create_collocations(cls, cluster_id, method='global_collocations', lemmas=True):
         """
         Populates collocation for the specified article collection
         :param cluster_id: cluster id to specify article collection
@@ -237,7 +248,7 @@ class Article(models.Model):
         print 'Initial population...'
         for article in cls.objects.filter(cluster_id=cluster_id):
             # create all found collocations inside single article
-            article._create_collocations()
+            article._create_collocations(lemmas)
         # then rescan all given already existing
         all_collocs = set(TestCollocations.objects.values_list('ngram', flat=True))
 
