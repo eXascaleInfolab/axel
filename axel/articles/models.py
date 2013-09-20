@@ -432,8 +432,8 @@ class ArticleCollocation(models.Model):
     def pos_tag_prev(self):
         """
         Retrieves part-of-speech tag for the word before ngram
-        :return: dict of Part-of-Speech tags with scores
-        :rtype: dict
+        :return: list of Part-of-Speech tags with scores
+        :rtype: list
         """
         return scores.pos_tag_pos(self.ngram, self.all_contexts_pos(func=get_contexts_ngrams))
 
@@ -442,8 +442,8 @@ class ArticleCollocation(models.Model):
     def pos_tag_after(self):
         """
         Retrieves part-of-speech tag for the word before ngram
-        :return: dict of Part-of-Speech tags with scores
-        :rtype: dict
+        :return: list of Part-of-Speech tags with scores
+        :rtype: list
         """
         return scores.pos_tag_pos(self.ngram, self.all_contexts_pos(func=get_contexts_ngrams), tag_pos=1)
 
