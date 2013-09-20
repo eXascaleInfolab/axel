@@ -157,8 +157,6 @@ class Command(BaseCommand):
 
             wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
             feature = [
-                'NNP' in pos_tag_extra and len(pos_tag_extra) > 1,
-                ngram.ngram.endswith('ed'),
                 ngram.ngram.isupper(),
                 'dblp' in collection_ngram.source,
                 component_size_dict[article.id][ngram.ngram],
@@ -211,8 +209,6 @@ class Command(BaseCommand):
         # pl.show()
 
         feature_names = [
-            'PROPER',
-            'ED-ending',
             'is_upper',
             'dblp',
             'comp_size',
