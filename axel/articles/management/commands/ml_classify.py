@@ -144,8 +144,12 @@ class Command(BaseCommand):
             # POS TAG enumeration
             if self.global_pos_tag:
                 max_pos_tag = collection_ngram.max_pos_tag
+                pos_tag_prev = collection_ngram.pos_tag_prev
+                pos_tag_after = collection_ngram.pos_tag_after
             else:
                 max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+                pos_tag_prev = ngram.pos_tag_prev
+                pos_tag_after = ngram.pos_tag_after
             pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
             pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
 
@@ -162,8 +166,8 @@ class Command(BaseCommand):
                 #collection_ngram.is_ontological,
                 'dbpedia' in collection_ngram.source,
                 'wiki_redirect' in collection_ngram.source,
-                bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_prev)[0])),
-                bool({'.', ',', ':', ';'}.intersection(zip(*ngram.pos_tag_after)[0])),
+                bool({'.', ',', ':', ';'}.intersection(zip(*pos_tag_prev)[0])),
+                bool({'.', ',', ':', ';'}.intersection(zip(*pos_tag_after)[0])),
                 len(ngram.ngram.split())
             ]
 
@@ -256,6 +260,7 @@ class Command(BaseCommand):
         print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num, score_func=f1_score)
+        # TODO: update recall with full collection labels
         print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num)
