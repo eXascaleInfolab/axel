@@ -19,6 +19,8 @@ class Collocation(models.Model):
     _extra_fields = models.TextField(default='{}')
     _df_score = models.IntegerField(null=True, blank=True)
     _max_pos_tag = models.CharField(null=True, max_length=100)
+    _pos_tag_prev = models.CharField(null=True, max_length=100)
+    _pos_tag_after = models.CharField(null=True, max_length=100)
     _ms_ngram_score = models.DecimalField(default=0, decimal_places=6, max_digits=9)
 
     CLUSTER_ID = 'ABSTRACT'
@@ -93,6 +95,26 @@ class Collocation(models.Model):
             for pos_tag, count in ngram.pos_tag:
                 pos_tags[' '.join(pos_tag)] += count
         return max(pos_tags.items(), key=lambda x: x[1])[0]
+
+    @property
+    @db_cache_simple
+    def pos_tag_prev(self):
+        from axel.articles.models import CLUSTERS_DICT
+        tags = defaultdict(lambda: 0)
+        for ngram in CLUSTERS_DICT[self.CLUSTER_ID].objects.filter(ngram=self.ngram):
+            for tag, count in ngram.pos_tag_prev:
+                tags[tag] += count
+        return tags.items()
+
+    @property
+    @db_cache_simple
+    def pos_tag_after(self):
+        from axel.articles.models import CLUSTERS_DICT
+        tags = defaultdict(lambda: 0)
+        for ngram in CLUSTERS_DICT[self.CLUSTER_ID].objects.filter(ngram=self.ngram):
+            for tag, count in ngram.pos_tag_after:
+                tags[tag] += count
+        return tags.items()
 
     @property
     @db_cache_simple
