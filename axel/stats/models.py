@@ -73,7 +73,7 @@ class Collocation(models.Model):
         query = u'http://en.wikipedia.org/w/api.php?action=parse&page={0}&redirects&format=json'
         result = json.loads(requests.get(query.format(self.ngram.replace(' ', '_'))).text)
         try:
-            return nlp.Stemmer.stem_wordnet(strip_tags(result['parse']['text']))
+            return nlp.Stemmer.stem_wordnet(strip_tags(result['parse']['text']['*']))
         except KeyError:
             return ''
 

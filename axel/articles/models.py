@@ -11,9 +11,9 @@ from django.dispatch import receiver
 from jsonfield import JSONField
 from test_collection.models import TaggedCollection
 
-from axel.articles.utils.db import db_cache
+from .utils.db import db_cache
 from axel.libs import nlp
-from axel.libs.utils import get_contexts, get_contexts_ngrams
+from axel.libs.utils import get_contexts, get_contexts_ngrams, print_progress
 from axel.stats.models import SWCollocations, Collocations
 import axel.stats.scores as scores
 
@@ -55,6 +55,9 @@ class Article(models.Model):
     index = models.TextField(default='')
     index_nonstemmed = JSONField()
     cluster_id = models.CharField(max_length=255)
+    # n-gram index of wikipedia pages from the biggest connected components
+    # Populated from the classmethod: populate_wiki_index
+    wiki_text_index = JSONField(null=True)
 
     class Meta:
         """Meta info"""
@@ -267,8 +270,6 @@ class Article(models.Model):
                                                            defaults={'count': index[colloc]})
                 # we could screw up counts completely, need to update them
             print 'Starting updates...'
-            from axel.libs.utils import print_progress
-            from axel.libs.nlp import _update_ngram_counts
 
             for article in print_progress(cls.objects.filter(cluster_id=cluster_id)):
                 ngrams = sorted(article.testcollocations_set.values_list('ngram', 'count'),
@@ -276,7 +277,7 @@ class Article(models.Model):
                 if not ngrams:
                     continue
                 index = json.loads(article.index)
-                new_ngrams = _update_ngram_counts([c.split() for c in zip(*ngrams)[0]], index)
+                new_ngrams = nlp._update_ngram_counts([c.split() for c in zip(*ngrams)[0]], index)
                 new_ngrams = sorted(new_ngrams.items(), key=lambda x: (x[1], x[0]))
                 new_ngrams = [k for k in new_ngrams if k[1] > 0]
                 if new_ngrams != ngrams:
@@ -320,6 +321,23 @@ class Article(models.Model):
                         TestCollocations.objects.create(ngram=ngram, count=score, article=article)
 
         locals()[method]()
+
+    @classmethod
+    def populate_wiki_index(cls, cluster_id):
+        import networkx as nx
+        from axel.stats.models import STATS_CLUSTERS_DICT
+        for article in print_progress(cls.objects.filter(cluster_id=cluster_id)):
+            text = ''
+            dbpedia_graph = article.dbpedia_graph(redirects=True)
+            # by default components are ordered descending by size
+            max_comp = nx.connected_components(dbpedia_graph)[0]
+            nodes = [node for node in max_comp if 'Category' not in node]
+            statsModel = STATS_CLUSTERS_DICT[cluster_id]
+            ngrams = statsModel.objects.filter(ngram__in=nodes)
+            for ngram in ngrams:
+                text += ngram.wikipedia_text + '\n'
+            article.wiki_text_index = nlp.build_ngram_index(nlp.Stemmer.stem_wordnet(text))
+            article.save()
 
 
 class TestCollocations(models.Model):
