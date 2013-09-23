@@ -391,8 +391,9 @@ class Command(BaseCommand):
                     if tree.node != 'S' and len(tree) > 1:
                         ne_set.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*tree)[0]).lower()))
             correct_objects = self.article_rel_dict[unicode(article)][1]
+            incorrect_objects = self.article_rel_dict[unicode(article)][0]
             true_pos = [x for x in ne_set if x in correct_objects]
-            false_pos = [x for x in ne_set if x not in correct_objects]
+            false_pos = [x for x in ne_set if x in incorrect_objects]
             local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
             local_recall = len(true_pos) / len(correct_objects)
             precision.append(local_precision)
