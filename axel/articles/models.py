@@ -384,6 +384,14 @@ class ArticleCollocation(models.Model):
         """String representation"""
         return u"{0},{1}".format(self.ngram, self.article)
 
+    @classmethod
+    def quick_stats(cls):
+        """print collection statistics"""
+        print '{0}, Total:'.format(cls.__name__), cls.objects.all().count()
+        print 'Total different:', cls.COLLECTION_MODEL.objects.all().count()
+        print 'Judged count:', len(cls.judged_data), 'Valid:', cls.judged_data.values().count('1'),\
+            'Invalid:', cls.judged_data.values().count('0')
+
     @property
     def is_relevant(self):
         """
