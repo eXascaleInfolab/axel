@@ -1,0 +1,809 @@
+cluster-based language model,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+experimental methodology,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+text retrieval conference,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+search target,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+search datasets,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+deep web,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+true centralized,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+hybrid model,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+posterior distribution,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+document allocation,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+search dzung,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+latent group,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+regression matrix,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+objective gradient,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+optimization function,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+relevance vector,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+query q,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+search environment,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+data management,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+linear smoothing,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+loss error,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+source size,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+wikipedia collection,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+learning method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+relevance according,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+regression method,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+optimization problem,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+discriminative model,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+ranking sample,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+query statistic,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,0
+latent topic model,SIGIR 2012: Mixture model with multiple centralized retrieval algorithms for result merging in federated search,1
+bounded monotone,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+classification confidence-we,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+e-commerce system,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+product image,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+supervised classification,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+web knowledge,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+regularized dirichlet distribution,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+latent class,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+labeled training set,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+training label,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+posterior distribution,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+global error function,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+unigram reg-lex,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+feature sparsity,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+linear rate,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+precision-recall plot,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+product category,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+search vertical,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+language model,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+classification evidence,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+dirichlet parameter,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+lexical neighbor,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+iterative regularization,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+labeled query,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+logarithm function,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+labeled object,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+local error,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+labeled training data,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+hierarchical category,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+social sharing,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+iterative optimization process,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+binary similarity,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+search click,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+unlabeled query,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+information concept,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+online classification,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+regularization algorithm,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+labeled training,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+regularized dirichlet parameter,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+click measure,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+product page,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+mutual similarity,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+iterative regularization algorithm,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+labeled training query,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+global error,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+ir application,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+result breakdown,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+information propagation,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+local error function,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+ir classification,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+error converges,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+product click,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+regularization model,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,1
+dynamic selection,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+unlabeled object,SIGIR 2012: Confidence-aware graph regularization with heterogeneous pairwise features,0
+random effect,SIGIR 2012: On per-topic variance in IR evaluation,0
+document sample,SIGIR 2012: On per-topic variance in IR evaluation,0
+topic result,SIGIR 2012: On per-topic variance in IR evaluation,0
+bayesian information,SIGIR 2012: On per-topic variance in IR evaluation,0
+query version,SIGIR 2012: On per-topic variance in IR evaluation,0
+weighting model,SIGIR 2012: On per-topic variance in IR evaluation,1
+gaussian noise,SIGIR 2012: On per-topic variance in IR evaluation,0
+topic sample,SIGIR 2012: On per-topic variance in IR evaluation,0
+likelihood ratio,SIGIR 2012: On per-topic variance in IR evaluation,1
+ir evaluation data,SIGIR 2012: On per-topic variance in IR evaluation,0
+random error,SIGIR 2012: On per-topic variance in IR evaluation,0
+stochastic decision,SIGIR 2012: On per-topic variance in IR evaluation,0
+linear mixed-effects,SIGIR 2012: On per-topic variance in IR evaluation,0
+original set,SIGIR 2012: On per-topic variance in IR evaluation,0
+smoothing average precision,SIGIR 2012: On per-topic variance in IR evaluation,0
+data frame,SIGIR 2012: On per-topic variance in IR evaluation,0
+ir metric,SIGIR 2012: On per-topic variance in IR evaluation,0
+query hard,SIGIR 2012: On per-topic variance in IR evaluation,0
+user behavior,SIGIR 2012: On per-topic variance in IR evaluation,0
+significance question,SIGIR 2012: On per-topic variance in IR evaluation,0
+population equivalent,SIGIR 2012: On per-topic variance in IR evaluation,0
+trec collection,SIGIR 2012: On per-topic variance in IR evaluation,1
+statistical precision,SIGIR 2012: On per-topic variance in IR evaluation,1
+information school,SIGIR 2012: On per-topic variance in IR evaluation,0
+smoothing effect,SIGIR 2012: On per-topic variance in IR evaluation,0
+significance testing,SIGIR 2012: On per-topic variance in IR evaluation,1
+learning accuracy,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+training document,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+selection method,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+classification performance,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+data stream,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+response quickness,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+longest common,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+tweet data,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+stationary word,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+training tweet,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+class label set,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+search range,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+stochastic language,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+topic classification accuracy,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+classification method,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+ieee trans,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+learning time,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+local likelihood,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+probabilistic classification model,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+search interval,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,0
+smoothing technique,SIGIR 2012: Improving tweet stream classification by detecting changes in word probability,1
+odp category,SIGIR 2012: Personalized diversification of search results,0
+ad-hoc search,SIGIR 2012: Personalized diversification of search results,1
+odp classification,SIGIR 2012: Personalized diversification of search results,0
+training collection,SIGIR 2012: Personalized diversification of search results,1
+query size,SIGIR 2012: Personalized diversification of search results,0
+evaluation topic,SIGIR 2012: Personalized diversification of search results,0
+baseline retrieval function,SIGIR 2012: Personalized diversification of search results,0
+document generation,SIGIR 2012: Personalized diversification of search results,0
+diversification framework,SIGIR 2012: Personalized diversification of search results,1
+personalized diversity,SIGIR 2012: Personalized diversification of search results,1
+classification error,SIGIR 2012: Personalized diversification of search results,0
+personalized estimation,SIGIR 2012: Personalized diversification of search results,0
+recommendation diversity,SIGIR 2012: Personalized diversification of search results,1
+evaluation list,SIGIR 2012: Personalized diversification of search results,0
+diversification strategy,SIGIR 2012: Personalized diversification of search results,1
+web personalization,SIGIR 2012: Personalized diversification of search results,1
+baseline search system,SIGIR 2012: Personalized diversification of search results,0
+query uncertainty,SIGIR 2012: Personalized diversification of search results,1
+query relevance,SIGIR 2012: Personalized diversification of search results,0
+bm25 model,SIGIR 2012: Personalized diversification of search results,1
+user preference model,SIGIR 2012: Personalized diversification of search results,1
+aspect space,SIGIR 2012: Personalized diversification of search results,0
+user representation,SIGIR 2012: Personalized diversification of search results,0
+explicit search result diversification,SIGIR 2012: Personalized diversification of search results,0
+baseline search,SIGIR 2012: Personalized diversification of search results,0
+topic generation,SIGIR 2012: Personalized diversification of search results,0
+random variable,SIGIR 2012: Personalized diversification of search results,0
+original formulation,SIGIR 2012: Personalized diversification of search results,0
+social profile,SIGIR 2012: Personalized diversification of search results,0
+topic query,SIGIR 2012: Personalized diversification of search results,0
+relevance likelihood,SIGIR 2012: Personalized diversification of search results,0
+social tagging,SIGIR 2012: Personalized diversification of search results,0
+research vision,SIGIR 2012: Personalized diversification of search results,0
+personalized retrieval system,SIGIR 2012: Personalized diversification of search results,1
+personalized aspect,SIGIR 2012: Personalized diversification of search results,0
+evaluation interface,SIGIR 2012: Personalized diversification of search results,0
+document profile,SIGIR 2012: Personalized diversification of search results,0
+ir diversity,SIGIR 2012: Personalized diversification of search results,0
+trec assessor,SIGIR 2012: Personalized diversification of search results,0
+document prior,SIGIR 2012: Personalized diversification of search results,0
+search output,SIGIR 2012: Personalized diversification of search results,0
+search baseline,SIGIR 2012: Personalized diversification of search results,0
+classification approach,SIGIR 2012: Personalized diversification of search results,0
+web retrieval engine,SIGIR 2012: Personalized diversification of search results,1
+web search result diversification,SIGIR 2012: Personalized diversification of search results,1
+intent-oriented diversification,SIGIR 2012: Personalized diversification of search results,1
+search api4,SIGIR 2012: Personalized diversification of search results,0
+diversification component,SIGIR 2012: Personalized diversification of search results,0
+odp classifier,SIGIR 2012: Personalized diversification of search results,0
+diversification metric,SIGIR 2012: Personalized diversification of search results,1
+personalized diversification,SIGIR 2012: Personalized diversification of search results,1
+utility estimation,SIGIR 2012: Personalized diversification of search results,1
+diversification estimate,SIGIR 2012: Personalized diversification of search results,0
+document distribution,SIGIR 2012: Personalized diversification of search results,0
+offline data,SIGIR 2012: Personalized diversification of search results,0
+fusion problem,SIGIR 2012: Personalized diversification of search results,0
+original result set,SIGIR 2012: Personalized diversification of search results,0
+smoothing factor,SIGIR 2012: Personalized diversification of search results,0
+diversity performance,SIGIR 2012: Personalized diversification of search results,0
+personalized setup,SIGIR 2012: Personalized diversification of search results,0
+personalized search model,SIGIR 2012: Personalized diversification of search results,1
+odp subtopics,SIGIR 2012: Personalized diversification of search results,0
+user frequency,SIGIR 2012: Personalized diversification of search results,0
+diversity dimension,SIGIR 2012: Personalized diversification of search results,0
+user assessment,SIGIR 2012: Personalized diversification of search results,0
+personalized query aspect,SIGIR 2012: Personalized diversification of search results,0
+personalized search system,SIGIR 2012: Personalized diversification of search results,0
+selective removal,SIGIR 2012: Personalized diversification of search results,0
+topic diversification,SIGIR 2012: Personalized diversification of search results,0
+classification information,SIGIR 2012: Personalized diversification of search results,0
+odp concept,SIGIR 2012: Personalized diversification of search results,0
+intent-oriented approach,SIGIR 2012: Personalized diversification of search results,0
+web search personalization,SIGIR 2012: Personalized diversification of search results,1
+diversified selection,SIGIR 2012: Personalized diversification of search results,0
+majority decision,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+image label,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+test collection quality,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+label quality,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+human resource,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+clueweb09 collection,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,1
+private network,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+state-of-the-art hit,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+hit question,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+expert agreement,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+search engine evaluation,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+mit press,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+language data,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+relevance evaluation,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+computer game,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+deep immersion,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+relevance category,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+textual document,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+optimal experience,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+social standing,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+maximum likelihood,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+social reputation,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+relevance vote,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+hit design,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+textual item,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+information interface,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+user judgement,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+image data,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+trec consensus,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+trec 2011,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+random order,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+classification quality,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+test significance,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+image classification performance,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+research data,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+social prestige,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+weighting vote,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+visual medium,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+relevant game,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+global consensus,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+held-out data,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+spam submission,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+data pre-processing,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+game round,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+information integration,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+sliding keyword,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+search evaluation,SIGIR 2012: Quality through flow and immersion: gamifying crowdsourced relevance assessments,0
+conditional distribution,SIGIR 2012: Extending BM25 with multiple query operators,0
+text retrieval conference,SIGIR 2012: Extending BM25 with multiple query operators,0
+conditional term,SIGIR 2012: Extending BM25 with multiple query operators,0
+document estimation,SIGIR 2012: Extending BM25 with multiple query operators,0
+difficult concept,SIGIR 2012: Extending BM25 with multiple query operators,0
+logistic model,SIGIR 2012: Extending BM25 with multiple query operators,0
+logistic family,SIGIR 2012: Extending BM25 with multiple query operators,0
+term proximity,SIGIR 2012: Extending BM25 with multiple query operators,0
+probabilistic retrieval framework,SIGIR 2012: Extending BM25 with multiple query operators,0
+feature independence,SIGIR 2012: Extending BM25 with multiple query operators,0
+bm25 plate,SIGIR 2012: Extending BM25 with multiple query operators,0
+retrieval effect,SIGIR 2012: Extending BM25 with multiple query operators,0
+learned ranking,SIGIR 2012: Extending BM25 with multiple query operators,0
+trec collection,SIGIR 2012: Extending BM25 with multiple query operators,0
+generative language model,SIGIR 2012: Extending BM25 with multiple query operators,0
+web data mining,SIGIR 2012: Extending BM25 with multiple query operators,0
+query intent prediction,SIGIR 2012: Extending BM25 with multiple query operators,0
+probabilistic information,SIGIR 2012: Extending BM25 with multiple query operators,0
+query length,SIGIR 2012: Extending BM25 with multiple query operators,0
+estimating relevance probability,SIGIR 2012: Extending BM25 with multiple query operators,0
+markov random field retrieval model,SIGIR 2012: Extending BM25 with multiple query operators,0
+query interpretation,SIGIR 2012: Extending BM25 with multiple query operators,0
+web search relevance,SIGIR 2012: Extending BM25 with multiple query operators,0
+trec gov2 collection,SIGIR 2012: Extending BM25 with multiple query operators,0
+query san,SIGIR 2012: Extending BM25 with multiple query operators,0
+semantic information,SIGIR 2012: Extending BM25 with multiple query operators,0
+query segment,SIGIR 2012: Extending BM25 with multiple query operators,0
+relevance increase,SIGIR 2012: Extending BM25 with multiple query operators,0
+noun phrase,SIGIR 2012: Extending BM25 with multiple query operators,0
+query term-dependence,SIGIR 2012: Extending BM25 with multiple query operators,0
+learned function,SIGIR 2012: Extending BM25 with multiple query operators,0
+bm25 score,SIGIR 2012: Extending BM25 with multiple query operators,0
+query q,SIGIR 2012: Extending BM25 with multiple query operators,0
+aggregated distance,SIGIR 2012: Extending BM25 with multiple query operators,0
+positional aspect,SIGIR 2012: Extending BM25 with multiple query operators,0
+language modeling,SIGIR 2012: Extending BM25 with multiple query operators,0
+query young,SIGIR 2012: Extending BM25 with multiple query operators,0
+web retrieval,SIGIR 2012: Extending BM25 with multiple query operators,0
+probabilistic retrieval model,SIGIR 2012: Extending BM25 with multiple query operators,0
+proximity etc,SIGIR 2012: Extending BM25 with multiple query operators,0
+mixture distribution,SIGIR 2012: Extending BM25 with multiple query operators,0
+query indian,SIGIR 2012: Extending BM25 with multiple query operators,0
+proximity operator,SIGIR 2012: Extending BM25 with multiple query operators,0
+query appear,SIGIR 2012: Extending BM25 with multiple query operators,0
+relevance framework,SIGIR 2012: Extending BM25 with multiple query operators,0
+retrieval setting,SIGIR 2012: Extending BM25 with multiple query operators,0
+information retrieval ranking,SIGIR 2012: Extending BM25 with multiple query operators,0
+text collection,SIGIR 2012: Extending BM25 with multiple query operators,0
+query level,SIGIR 2012: Extending BM25 with multiple query operators,0
+information storage system,SIGIR 2012: Extending BM25 with multiple query operators,0
+positional language model,SIGIR 2012: Extending BM25 with multiple query operators,0
+empirical method,SIGIR 2012: Extending BM25 with multiple query operators,0
+retrieval approach,SIGIR 2012: Extending BM25 with multiple query operators,0
+arithmetic trick,SIGIR 2012: Extending BM25 with multiple query operators,0
+term annotation,SIGIR 2012: Extending BM25 with multiple query operators,0
+probabilistic relevance,SIGIR 2012: Extending BM25 with multiple query operators,0
+web proxy,SIGIR 2012: Extending BM25 with multiple query operators,0
+retrieval refrain,SIGIR 2012: Extending BM25 with multiple query operators,0
+markov logic,SIGIR 2012: Extending BM25 with multiple query operators,0
+ranking bias,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+text retrieval conference,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+unique query,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+geographic search,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+search location,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+subset function,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+search method,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+population size,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+transductive inference,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+search context,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+web page classification,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+document classification task,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+web system,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+document retrieval,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+category vector,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+structural correspondence,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+active query selection,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+binary label,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+latent semantic analysis,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+dual knowledge,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+ranking result,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+search device,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+transductive intent,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+nonnegative matrix,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+query aim,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+random order,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+search engine result,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+user review,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+domain dependency,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+category classification,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+retrieval system,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+query processing,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+training data,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+text vector,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+ad-hoc information,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+latent space,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
+information classification,SIGIR 2012: Rhetorical relations for information retrieval,0
+web forum,SIGIR 2012: Rhetorical relations for information retrieval,0
+conditional density,SIGIR 2012: Rhetorical relations for information retrieval,0
+probabilistic retrieval,SIGIR 2012: Rhetorical relations for information retrieval,0
+computer linguistics,SIGIR 2012: Rhetorical relations for information retrieval,0
+posterior density,SIGIR 2012: Rhetorical relations for information retrieval,0
+lexical statistic,SIGIR 2012: Rhetorical relations for information retrieval,0
+probabilistic inference,SIGIR 2012: Rhetorical relations for information retrieval,0
+classification performance,SIGIR 2012: Rhetorical relations for information retrieval,0
+experimental evaluation,SIGIR 2012: Rhetorical relations for information retrieval,0
+mixture parameter,SIGIR 2012: Rhetorical relations for information retrieval,0
+text interpretation,SIGIR 2012: Rhetorical relations for information retrieval,0
+probabilistic ir model,SIGIR 2012: Rhetorical relations for information retrieval,0
+dirichlet smoothing parameter,SIGIR 2012: Rhetorical relations for information retrieval,0
+information management,SIGIR 2012: Rhetorical relations for information retrieval,0
+probability density,SIGIR 2012: Rhetorical relations for information retrieval,0
+conditional money,SIGIR 2012: Rhetorical relations for information retrieval,0
+reference resolution,SIGIR 2012: Rhetorical relations for information retrieval,0
+graded relevance measure,SIGIR 2012: Rhetorical relations for information retrieval,0
+trec setting,SIGIR 2012: Rhetorical relations for information retrieval,0
+user forum thread,SIGIR 2012: Rhetorical relations for information retrieval,0
+test case,SIGIR 2012: Rhetorical relations for information retrieval,0
+natural science,SIGIR 2012: Rhetorical relations for information retrieval,0
+document compression,SIGIR 2012: Rhetorical relations for information retrieval,0
+text fragment,SIGIR 2012: Rhetorical relations for information retrieval,0
+web query score,SIGIR 2012: Rhetorical relations for information retrieval,0
+laplace method,SIGIR 2012: Rhetorical relations for information retrieval,0
+spam ranking,SIGIR 2012: Rhetorical relations for information retrieval,0
+information concept,SIGIR 2012: Rhetorical relations for information retrieval,0
+content selection,SIGIR 2012: Rhetorical relations for information retrieval,0
+probabilistic ir,SIGIR 2012: Rhetorical relations for information retrieval,0
+original retrieval,SIGIR 2012: Rhetorical relations for information retrieval,0
+text processing,SIGIR 2012: Rhetorical relations for information retrieval,0
+retrieval collection,SIGIR 2012: Rhetorical relations for information retrieval,0
+document distribution,SIGIR 2012: Rhetorical relations for information retrieval,0
+machine classification,SIGIR 2012: Rhetorical relations for information retrieval,0
+discourse dependency,SIGIR 2012: Rhetorical relations for information retrieval,0
+relation term,SIGIR 2012: Rhetorical relations for information retrieval,0
+information access,SIGIR 2012: Rhetorical relations for information retrieval,0
+retrieval precision,SIGIR 2012: Rhetorical relations for information retrieval,0
+web datasets,SIGIR 2012: Rhetorical relations for information retrieval,0
+posterior inference,SIGIR 2012: Rhetorical relations for information retrieval,0
+empirical method,SIGIR 2012: Rhetorical relations for information retrieval,0
+baseline retrieval model,SIGIR 2012: Rhetorical relations for information retrieval,0
+marginal density,SIGIR 2012: Rhetorical relations for information retrieval,0
+parameter estimation,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+query bigram,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+term structure,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+latent concept expansion,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+state-of-the-art model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+natural language,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+pairwise term dependency,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+trec collection,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+google n-grams,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+concept frequency,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+query structure,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+global function,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+document passage,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+language modeling estimate,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+cluster-based retrieval,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+pairwise term,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+similarity space,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+proximity concept,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+scoring passage,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+complex dependency,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+bag-of-words query,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+query likelihood model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+feature weight,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+concept set,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+web retrieval,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+web corpus,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+proximity framework,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+text passage,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+query quality predictor,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+positional language model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+information need,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+block-based web search,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+proximity match,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+population average time,SIGIR 2012: Time-based calibration of effectiveness measures,0
+interactive retrieval,SIGIR 2012: Time-based calibration of effectiveness measures,0
+constant rate,SIGIR 2012: Time-based calibration of effectiveness measures,0
+ir evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+population average,SIGIR 2012: Time-based calibration of effectiveness measures,0
+web search evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+decision model,SIGIR 2012: Time-based calibration of effectiveness measures,0
+search engine evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+user strategy,SIGIR 2012: Time-based calibration of effectiveness measures,0
+relevance probability,SIGIR 2012: Time-based calibration of effectiveness measures,0
+document page,SIGIR 2012: Time-based calibration of effectiveness measures,0
+information retrieval system,SIGIR 2012: Time-based calibration of effectiveness measures,0
+tuning search engine,SIGIR 2012: Time-based calibration of effectiveness measures,0
+user interaction,SIGIR 2012: Time-based calibration of effectiveness measures,0
+online search,SIGIR 2012: Time-based calibration of effectiveness measures,0
+trec collection,SIGIR 2012: Time-based calibration of effectiveness measures,0
+user evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+user average,SIGIR 2012: Time-based calibration of effectiveness measures,0
+user view,SIGIR 2012: Time-based calibration of effectiveness measures,0
+linear rate,SIGIR 2012: Time-based calibration of effectiveness measures,0
+true positive rate,SIGIR 2012: Time-based calibration of effectiveness measures,0
+dual purpose,SIGIR 2012: Time-based calibration of effectiveness measures,0
+expected browsing utility,SIGIR 2012: Time-based calibration of effectiveness measures,0
+human term,SIGIR 2012: Time-based calibration of effectiveness measures,0
+running subject,SIGIR 2012: Time-based calibration of effectiveness measures,0
+msn search engine,SIGIR 2012: Time-based calibration of effectiveness measures,0
+precision list,SIGIR 2012: Time-based calibration of effectiveness measures,0
+user decision,SIGIR 2012: Time-based calibration of effectiveness measures,0
+interaction log,SIGIR 2012: Time-based calibration of effectiveness measures,0
+mean time,SIGIR 2012: Time-based calibration of effectiveness measures,0
+textual item,SIGIR 2012: Time-based calibration of effectiveness measures,0
+searcher simulation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+evaluation program,SIGIR 2012: Time-based calibration of effectiveness measures,0
+graded gain,SIGIR 2012: Time-based calibration of effectiveness measures,0
+search engine result,SIGIR 2012: Time-based calibration of effectiveness measures,0
+interactive retrieval behavior,SIGIR 2012: Time-based calibration of effectiveness measures,0
+navigational need,SIGIR 2012: Time-based calibration of effectiveness measures,0
+constant term,SIGIR 2012: Time-based calibration of effectiveness measures,0
+retrieval precision,SIGIR 2012: Time-based calibration of effectiveness measures,0
+user data,SIGIR 2012: Time-based calibration of effectiveness measures,0
+linear function,SIGIR 2012: Time-based calibration of effectiveness measures,0
+graded relevance judgment,SIGIR 2012: Time-based calibration of effectiveness measures,0
+maximum average,SIGIR 2012: Time-based calibration of effectiveness measures,0
+tuning ranking,SIGIR 2012: Time-based calibration of effectiveness measures,0
+ir system,SIGIR 2012: Time-based calibration of effectiveness measures,0
+search evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+graph-based method,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+web search system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+estimation quality,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+visual interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+text retrieval conference,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+information access,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+faceted topic,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+browsing interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+web diversity,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+data relation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+relevance estimate,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+relevance estimation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+information seeking,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+query level,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+web search result diversification,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+original query suggestion,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+diversified search result,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+search result diversification algorithm,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+user evaluation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+user operation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+web space,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+decision support system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+diversification system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+search intent,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+search result presentation interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+trec 2011 microblog,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+generative process,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+exponential rate,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expanded language model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expansion model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+computational constraint,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+temporal factor,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expanded model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+translation model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+trec collection,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+baseline relevance feedback,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+ir model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+query likelihood model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+compressed distribution,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+cluster-based retrieval,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+joint conference,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expanded document,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+dirichlet smoothing parameter,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+original model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+feedback result,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+ir systems-term frequency,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expanded document model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+term probability,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+writing relevance,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+lexical neighborhood,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+lexical representation,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+relevance modeling,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+feature type,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+query text,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+lexical property,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+statistical source expansion,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+retrieval status,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+document language model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expansion source,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+maximum likelihood,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expansion data,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+document prior,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+traditional ir,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+text representation,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+ir performance,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+cluster-based ir,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+temporal prior,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+ir collection,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+smoothing technique,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+experimental retrieval,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+query answering system,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+temporal influence,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+temporal ir,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+smoothing document language model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+bm25 ranking,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expansion document,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+document expansion data,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+pseudo-query processing,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expansion mile,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+writing query,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expanded query model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+lda model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+cluster-based query expansion,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+query suitability,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+error elimination,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+penalty function,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+selective sampling,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+class-specific value,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+total elimination,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+true negative,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+classification effectiveness,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+utility-based ranking,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+class-specific contingency,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+cell estimation,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+optimization method,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+random factor,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+random curve,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+classification context,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+learning task,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+laplace smoothing,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+ranking strategy,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+binary case,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+training document,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+computational learning,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+class-specific utility,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+smoothing technique,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+classification error,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+textual document,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+smoothing contingency,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+score threshold,SIGIR 2012: Reactive index replication for distributed search engines,0
+document popularity,SIGIR 2012: Reactive index replication for distributed search engines,0
+knowledge score,SIGIR 2012: Reactive index replication for distributed search engines,0
+cache cache hit rate,SIGIR 2012: Reactive index replication for distributed search engines,0
+index selection,SIGIR 2012: Reactive index replication for distributed search engines,0
+query arrives,SIGIR 2012: Reactive index replication for distributed search engines,0
+ranking function term,SIGIR 2012: Reactive index replication for distributed search engines,0
+cache drop,SIGIR 2012: Reactive index replication for distributed search engines,0
+search site engine,SIGIR 2012: Reactive index replication for distributed search engines,0
+ttl value,SIGIR 2012: Reactive index replication for distributed search engines,0
+forward query,SIGIR 2012: Reactive index replication for distributed search engines,0
+search engine site search engine,SIGIR 2012: Reactive index replication for distributed search engines,0
+running query,SIGIR 2012: Reactive index replication for distributed search engines,0
+relevant search,SIGIR 2012: Reactive index replication for distributed search engines,0
+query execution,SIGIR 2012: Reactive index replication for distributed search engines,0
+information storage system,SIGIR 2012: Reactive index replication for distributed search engines,0
+document retrieval,SIGIR 2012: Reactive index replication for distributed search engines,0
+top-k execution,SIGIR 2012: Reactive index replication for distributed search engines,0
+index generation,SIGIR 2012: Reactive index replication for distributed search engines,0
+web cache,SIGIR 2012: Reactive index replication for distributed search engines,0
+query nevertheless,SIGIR 2012: Reactive index replication for distributed search engines,0
+local query processing,SIGIR 2012: Reactive index replication for distributed search engines,0
+data type,SIGIR 2012: Reactive index replication for distributed search engines,0
+query locality,SIGIR 2012: Reactive index replication for distributed search engines,0
+selection algorithm,SIGIR 2012: Reactive index replication for distributed search engines,0
+partial information,SIGIR 2012: Reactive index replication for distributed search engines,0
+distributed query processing,SIGIR 2012: Reactive index replication for distributed search engines,0
+query q,SIGIR 2012: Reactive index replication for distributed search engines,0
+posting entry,SIGIR 2012: Reactive index replication for distributed search engines,0
+web object,SIGIR 2012: Reactive index replication for distributed search engines,0
+heuristic solution,SIGIR 2012: Reactive index replication for distributed search engines,0
+focus replication,SIGIR 2012: Reactive index replication for distributed search engines,0
+term query,SIGIR 2012: Reactive index replication for distributed search engines,0
+query increase,SIGIR 2012: Reactive index replication for distributed search engines,0
+ttl interval,SIGIR 2012: Reactive index replication for distributed search engines,0
+sorted heap,SIGIR 2012: Reactive index replication for distributed search engines,0
+processing performance,SIGIR 2012: Reactive index replication for distributed search engines,0
+space management,SIGIR 2012: Reactive index replication for distributed search engines,0
+local knowledge,SIGIR 2012: Reactive index replication for distributed search engines,0
+query stream,SIGIR 2012: Reactive index replication for distributed search engines,0
+query replication,SIGIR 2012: Reactive index replication for distributed search engines,0
+top-k processing,SIGIR 2012: Reactive index replication for distributed search engines,0
+partial knowledge,SIGIR 2012: Reactive index replication for distributed search engines,0
+compression rate,SIGIR 2012: Reactive index replication for distributed search engines,0
+optimal query,SIGIR 2012: Reactive index replication for distributed search engines,0
+data clustering,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+query click,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+rank sum,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+web engine,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+clueweb09 collection,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+diversification pipeline,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+t-step walk,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+topic retrieval,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+web datasets,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+query ambiguity,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+retrieval process,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+query likelihood score,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+random setting,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+significance testing,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+msn query,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+random walk framework,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+query information,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+random walk algorithm,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+click-through log,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+term distribution,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+faceted retrieval,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+subtopic network,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+latent semantic analysis,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+subtopic modeling,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+trec 2011 web track,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+clustering structure,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+open directory project,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+web search result diversification,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+keyword generation,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+web n-grams,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+web source,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+trec 2011,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+diversification performance,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+social bookmarking,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+web retrieval,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+structural support vector machine,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+anchor information,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+text passage,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+random walk stage,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+query similarity model,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+query aspect diversification,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+similarity model,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+reformulated queries1,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+diversified search result,SIGIR 2012: Using preference judgments for novel document retrieval,0
+user judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
+diversity ranking,SIGIR 2012: Using preference judgments for novel document retrieval,0
+evaluation evaluation,SIGIR 2012: Using preference judgments for novel document retrieval,0
+keyword query,SIGIR 2012: Using preference judgments for novel document retrieval,0
+effectiveness evaluation,SIGIR 2012: Using preference judgments for novel document retrieval,0
+original relevance judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
+information loss,SIGIR 2012: Using preference judgments for novel document retrieval,0
+diversity retrieval,SIGIR 2012: Using preference judgments for novel document retrieval,0
+union member,SIGIR 2012: Using preference judgments for novel document retrieval,0
+aggregated search result,SIGIR 2012: Using preference judgments for novel document retrieval,0
+pairwise judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
+preference assessor,SIGIR 2012: Using preference judgments for novel document retrieval,0
+discounted cumulative,SIGIR 2012: Using preference judgments for novel document retrieval,0
+unique setting,SIGIR 2012: Using preference judgments for novel document retrieval,0
+graded relevance judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
+web interface,SIGIR 2012: Using preference judgments for novel document retrieval,0
+binary judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
+preference set,SIGIR 2012: Using preference judgments for novel document retrieval,0
+amazon mechanical turk,SIGIR 2012: Using preference judgments for novel document retrieval,0
+subtopic model,SIGIR 2012: Using preference judgments for novel document retrieval,0
+data security,SIGIR 2012: Using preference judgments for novel document retrieval,0
+relevance evaluation,SIGIR 2012: Using preference judgments for novel document retrieval,0
+original assessor,SIGIR 2012: Using preference judgments for novel document retrieval,0
+human intelligence,SIGIR 2012: Using preference judgments for novel document retrieval,0
+ambiguous web query,SIGIR 2012: Using preference judgments for novel document retrieval,0
+conditional preference,SIGIR 2012: Using preference judgments for novel document retrieval,0
+baseline preference,SIGIR 2012: Using preference judgments for novel document retrieval,0
+query text,SIGIR 2012: Using preference judgments for novel document retrieval,0
+relevance preference,SIGIR 2012: Using preference judgments for novel document retrieval,0
+candidate query,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+adaptive query,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+random method,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+online search engine,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+relevance probability,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+classification method,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+training detail,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+trec 2007,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+loss kendall-τ , SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems , 0
+constrained model,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+ranking retrieval,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+iterative method,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+iterative query selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+random algorithm,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+random query selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+optimization function,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+spatial autocorrelation,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+web data,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+random system,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+binary vector,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+optimization process,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+trec judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+iterative query prioritization,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+query performance,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+query track,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+web search,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+web test collection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+document selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+partial relevance judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+pseudo-relevance judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+adaptive algorithm,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+absolute relevance,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+ir metric,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+prediction power,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+supervised prediction,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+query need,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+machine output,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+reference segment,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+semantic unit,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+ir engine,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+web search query segmentation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+trec collection,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+generative language model,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+query segment,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+retrieval engine,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+segmented according,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+ir metric,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+binary representation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+structural analysis,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+inter-annotator disagreement,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+reference human segmentation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+query q,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+natural interpretation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+document pool,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+ir performance,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+query accuracy,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+unique url,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+segmented query,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+reference segmentation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+query version,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+query singular value,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+graded relevance judgment,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+meta information,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia database,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+reference count,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+probability estimation,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+classification effectiveness,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+decision forest,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+mutual dependency,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+web community,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+hybrid model,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+page type,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+content need,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia context,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+exploratory factor,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+word model,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wall street,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+reference distribution,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+meta source,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+data quality,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+meta page,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia author,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+maximum precision,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+original research,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia setting,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+prediction approach,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+feature complexity,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+collaborative authoring,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+edit history,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+classification decision,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+discussion page,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+classification approach,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+question rate,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+information interface,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+user-generated web,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+classification strategy,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+point analysis,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia editor,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+probability function,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia quality,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+random article,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+article quality,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+sentence rate,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+article size,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+vocabulary size,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+administration category,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+meta feature,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+knowledge source,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia bot,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
