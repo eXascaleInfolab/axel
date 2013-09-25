@@ -222,7 +222,7 @@ class Command(BaseCommand):
         #     text = article.text
         #
         #     sentences = [nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP)) for sent in nltk.sent_tokenize(text)]
-        #     results = nltk.batch_ne_chunk(sentences)
+        #     results = nltk.batch_ne_chunk(sentences, binary=True)
         #     """:type: nltk.tree.Tree"""
         #
         #     ne_set = set()
@@ -246,7 +246,7 @@ class Command(BaseCommand):
         #     recall.append(local_recall)
 
         precision = maxent_values.count('1') / len(maxent_values)
-        recall =  maxent_values.count('1') / self.Model.judged_data.values().count('1')
+        recall = maxent_values.count('1') / self.Model.judged_data.values().count('1')
         print 'Precision: ', precision
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
