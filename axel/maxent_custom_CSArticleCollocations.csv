@@ -485,7 +485,7 @@ relevance estimate,SIGIR 2012: AspecTiles: tile-based visualization of diversifi
 relevance estimation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 information seeking,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 query level,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-web search result diversification,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+web search result diversification,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 original query suggestion,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 diversified search result,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 search result diversification algorithm,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
@@ -556,21 +556,21 @@ lda model,SIGIR 2012: Improving retrieval of short texts through document expans
 cluster-based query expansion,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 query suitability,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 error elimination,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
-penalty function,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
-selective sampling,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+penalty function,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,1
+selective sampling,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,1
 class-specific value,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 total elimination,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 true negative,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 classification effectiveness,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
-utility-based ranking,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+utility-based ranking,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,1
 class-specific contingency,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 cell estimation,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
-optimization method,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+optimization method,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,1
 random factor,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 random curve,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 classification context,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 learning task,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
-laplace smoothing,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+laplace smoothing,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,1
 ranking strategy,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 binary case,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 training document,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
@@ -578,7 +578,7 @@ computational learning,SIGIR 2012: A utility-theoretic ranking method for semi-a
 class-specific utility,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 smoothing technique,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 classification error,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
-textual document,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
+textual document,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,1
 smoothing contingency,SIGIR 2012: A utility-theoretic ranking method for semi-automated text classification,0
 score threshold,SIGIR 2012: Reactive index replication for distributed search engines,0
 document popularity,SIGIR 2012: Reactive index replication for distributed search engines,0
@@ -603,7 +603,7 @@ web cache,SIGIR 2012: Reactive index replication for distributed search engines,
 query nevertheless,SIGIR 2012: Reactive index replication for distributed search engines,0
 local query processing,SIGIR 2012: Reactive index replication for distributed search engines,0
 data type,SIGIR 2012: Reactive index replication for distributed search engines,0
-query locality,SIGIR 2012: Reactive index replication for distributed search engines,0
+query locality,SIGIR 2012: Reactive index replication for distributed search engines,1
 selection algorithm,SIGIR 2012: Reactive index replication for distributed search engines,0
 partial information,SIGIR 2012: Reactive index replication for distributed search engines,0
 distributed query processing,SIGIR 2012: Reactive index replication for distributed search engines,0
@@ -629,7 +629,7 @@ data clustering,SIGIR 2012: Combining implicit and explicit topic representation
 query click,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 rank sum,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 web engine,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-clueweb09 collection,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+clueweb09 collection,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 diversification pipeline,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 t-step walk,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 topic retrieval,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
@@ -638,21 +638,21 @@ query ambiguity,SIGIR 2012: Combining implicit and explicit topic representation
 retrieval process,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 query likelihood score,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 random setting,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-significance testing,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+significance testing,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 msn query,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 random walk framework,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 query information,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-random walk algorithm,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+random walk algorithm,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 click-through log,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 term distribution,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-faceted retrieval,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+faceted retrieval,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 subtopic network,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 latent semantic analysis,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-subtopic modeling,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+subtopic modeling,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 trec 2011 web track,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 clustering structure,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-open directory project,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-web search result diversification,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+open directory project,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
+web search result diversification,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 keyword generation,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 web n-grams,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 web source,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
@@ -660,12 +660,12 @@ trec 2011,SIGIR 2012: Combining implicit and explicit topic representations for 
 diversification performance,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 social bookmarking,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 web retrieval,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-structural support vector machine,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+structural support vector machine,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 anchor information,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 text passage,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 random walk stage,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-query similarity model,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
-query aspect diversification,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
+query similarity model,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
+query aspect diversification,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,1
 similarity model,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 reformulated queries1,SIGIR 2012: Combining implicit and explicit topic representations for result diversification,0
 diversified search result,SIGIR 2012: Using preference judgments for novel document retrieval,0
