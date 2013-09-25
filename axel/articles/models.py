@@ -487,10 +487,6 @@ class CSArticleCollocations(ArticleCollocation):
     COLLECTION_MODEL = Collocations
     objects = ArticleCollocationsManager()
     judged_data = dict([line.rsplit(',', 1) for line in open(settings.ABS_PATH('CSArticleCollocations.csv')).read().split('\n')])
-    maxent_judged_data = dict([line.rsplit(',', 1) for line in open(settings.ABS_PATH('maxent_CSArticleCollocations.csv')).read().split('\n')])
-    judged_data.update(maxent_judged_data)
-    maxent_judged_data = dict([line.rsplit(',', 1) for line in open(settings.ABS_PATH('maxent_custom_CSArticleCollocations.csv')).read().split('\n')])
-    judged_data.update(maxent_judged_data)
 
     class Meta:
         proxy = True

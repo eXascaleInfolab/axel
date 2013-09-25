@@ -212,27 +212,9 @@ class Command(BaseCommand):
 
     def _maxent_calculation(self):
         print 'Calculating Precision/Recall using MaxEntropy NE recognition'
-        precision = []
-        recall = []
 
-        extra_source = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
-        results_dict = defaultdict(lambda: {'true_pos': set(), 'false_pos': set()})
-        for line in extra_source:
-            line = line.split(',')
-            if line[2] == '0':
-                results_dict[line[1]]['false_pos'].add(line[0])
-            else:
-                results_dict[line[1]]['true_pos'].add(line[0])
-
-        for article in Article.objects.filter(cluster_id=self.cluster_id):
-            correct_objects = self.article_rel_dict[unicode(article)][1]
-
-            true_pos = results_dict[unicode(article)]['true_pos']
-            false_pos = results_dict[unicode(article)]['false_pos']
-            local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-            local_recall = len(true_pos) / len(correct_objects)
-            precision.append(local_precision)
-            recall.append(local_recall)
+        maxent_data = set(open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n'))
+        maxent_values = [value for key, value in self.Model.judged_data.items() if key in maxent_data]
 
         # We already have judgments, no need to extract
         # for article in Article.objects.filter(cluster_id=self.cluster_id):
@@ -263,8 +245,8 @@ class Command(BaseCommand):
         #     precision.append(local_precision)
         #     recall.append(local_recall)
 
-        precision = sum(precision) / len(precision)
-        recall = sum(recall) / len(recall)
+        precision = maxent_values.count('1') / len(maxent_values)
+        recall =  maxent_values.count('1') / self.Model.judged_data.values().count('1')
         print 'Precision: ', precision
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
