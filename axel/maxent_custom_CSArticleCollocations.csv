@@ -678,17 +678,17 @@ original relevance judgment,SIGIR 2012: Using preference judgments for novel doc
 information loss,SIGIR 2012: Using preference judgments for novel document retrieval,0
 diversity retrieval,SIGIR 2012: Using preference judgments for novel document retrieval,0
 union member,SIGIR 2012: Using preference judgments for novel document retrieval,0
-aggregated search result,SIGIR 2012: Using preference judgments for novel document retrieval,0
+aggregated search result,SIGIR 2012: Using preference judgments for novel document retrieval,1
 pairwise judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
 preference assessor,SIGIR 2012: Using preference judgments for novel document retrieval,0
 discounted cumulative,SIGIR 2012: Using preference judgments for novel document retrieval,0
 unique setting,SIGIR 2012: Using preference judgments for novel document retrieval,0
-graded relevance judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
+graded relevance judgment,SIGIR 2012: Using preference judgments for novel document retrieval,1
 web interface,SIGIR 2012: Using preference judgments for novel document retrieval,0
 binary judgment,SIGIR 2012: Using preference judgments for novel document retrieval,0
 preference set,SIGIR 2012: Using preference judgments for novel document retrieval,0
-amazon mechanical turk,SIGIR 2012: Using preference judgments for novel document retrieval,0
-subtopic model,SIGIR 2012: Using preference judgments for novel document retrieval,0
+amazon mechanical turk,SIGIR 2012: Using preference judgments for novel document retrieval,1
+subtopic model,SIGIR 2012: Using preference judgments for novel document retrieval,1
 data security,SIGIR 2012: Using preference judgments for novel document retrieval,0
 relevance evaluation,SIGIR 2012: Using preference judgments for novel document retrieval,0
 original assessor,SIGIR 2012: Using preference judgments for novel document retrieval,0
@@ -701,7 +701,7 @@ relevance preference,SIGIR 2012: Using preference judgments for novel document r
 candidate query,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 adaptive query,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 random method,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
-online search engine,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+online search engine,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 relevance probability,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 classification method,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 training detail,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
@@ -710,24 +710,24 @@ loss kendall-τ , SIGIR 2012: An uncertainty-aware query selection model for eva
 constrained model,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 ranking retrieval,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 iterative method,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
-iterative query selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+iterative query selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 random algorithm,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
-random query selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+random query selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 optimization function,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
-spatial autocorrelation,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+spatial autocorrelation,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 web data,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 random system,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 binary vector,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 optimization process,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 trec judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
-iterative query prioritization,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+iterative query prioritization,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 query performance,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 query track,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 web search,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 web test collection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 document selection,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
-partial relevance judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
-pseudo-relevance judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
+partial relevance judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
+pseudo-relevance judgment,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,1
 adaptive algorithm,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 absolute relevance,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
 ir metric,SIGIR 2012: An uncertainty-aware query selection model for evaluation of IR systems,0
@@ -739,15 +739,15 @@ reference segment,SIGIR 2012: An IR-based evaluation framework for web search qu
 semantic unit,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 ir engine,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 web search query segmentation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
-trec collection,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
-generative language model,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+trec collection,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
+generative language model,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
 query segment,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 retrieval engine,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 segmented according,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 ir metric,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 binary representation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 structural analysis,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
-inter-annotator disagreement,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+inter-annotator disagreement,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
 reference human segmentation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 query q,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 natural interpretation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
@@ -759,7 +759,7 @@ segmented query,SIGIR 2012: An IR-based evaluation framework for web search quer
 reference segmentation,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 query version,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
 query singular value,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
-graded relevance judgment,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,0
+graded relevance judgment,SIGIR 2012: An IR-based evaluation framework for web search query segmentation,1
 meta information,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 wikipedia database,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 reference count,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
@@ -785,17 +785,17 @@ original research,SIGIR 2012: Predicting quality flaws in user-generated content
 wikipedia setting,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 prediction approach,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 feature complexity,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
-collaborative authoring,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
-edit history,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+collaborative authoring,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
+edit history,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 classification decision,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
-discussion page,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+discussion page,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 classification approach,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 question rate,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 information interface,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
-user-generated web,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+user-generated web,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 classification strategy,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 point analysis,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
-wikipedia editor,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia editor,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 probability function,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 wikipedia quality,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 random article,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
@@ -803,7 +803,7 @@ article quality,SIGIR 2012: Predicting quality flaws in user-generated content: 
 sentence rate,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 article size,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 vocabulary size,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
-administration category,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+administration category,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
 meta feature,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
 knowledge source,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
-wikipedia bot,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,0
+wikipedia bot,SIGIR 2012: Predicting quality flaws in user-generated content: the case of wikipedia,1
