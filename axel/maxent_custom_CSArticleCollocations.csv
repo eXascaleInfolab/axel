@@ -347,14 +347,14 @@ training data,SIGIR 2012: Content-based retrieval for heterogeneous domains: dom
 text vector,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
 ad-hoc information,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,0
 latent space,SIGIR 2012: Content-based retrieval for heterogeneous domains: domain adaptation by relative aggregation points,1
-information classification,SIGIR 2012: Rhetorical relations for information retrieval,0
+information classification,SIGIR 2012: Rhetorical relations for information retrieval,1
 web forum,SIGIR 2012: Rhetorical relations for information retrieval,0
-conditional density,SIGIR 2012: Rhetorical relations for information retrieval,0
-probabilistic retrieval,SIGIR 2012: Rhetorical relations for information retrieval,0
+conditional density,SIGIR 2012: Rhetorical relations for information retrieval,1
+probabilistic retrieval,SIGIR 2012: Rhetorical relations for information retrieval,1
 computer linguistics,SIGIR 2012: Rhetorical relations for information retrieval,0
-posterior density,SIGIR 2012: Rhetorical relations for information retrieval,0
-lexical statistic,SIGIR 2012: Rhetorical relations for information retrieval,0
-probabilistic inference,SIGIR 2012: Rhetorical relations for information retrieval,0
+posterior density,SIGIR 2012: Rhetorical relations for information retrieval,1
+lexical statistic,SIGIR 2012: Rhetorical relations for information retrieval,1
+probabilistic inference,SIGIR 2012: Rhetorical relations for information retrieval,1
 classification performance,SIGIR 2012: Rhetorical relations for information retrieval,0
 experimental evaluation,SIGIR 2012: Rhetorical relations for information retrieval,0
 mixture parameter,SIGIR 2012: Rhetorical relations for information retrieval,0
@@ -364,8 +364,8 @@ dirichlet smoothing parameter,SIGIR 2012: Rhetorical relations for information r
 information management,SIGIR 2012: Rhetorical relations for information retrieval,0
 probability density,SIGIR 2012: Rhetorical relations for information retrieval,0
 conditional money,SIGIR 2012: Rhetorical relations for information retrieval,0
-reference resolution,SIGIR 2012: Rhetorical relations for information retrieval,0
-graded relevance measure,SIGIR 2012: Rhetorical relations for information retrieval,0
+reference resolution,SIGIR 2012: Rhetorical relations for information retrieval,1
+graded relevance measure,SIGIR 2012: Rhetorical relations for information retrieval,1
 trec setting,SIGIR 2012: Rhetorical relations for information retrieval,0
 user forum thread,SIGIR 2012: Rhetorical relations for information retrieval,0
 test case,SIGIR 2012: Rhetorical relations for information retrieval,0
@@ -373,7 +373,7 @@ natural science,SIGIR 2012: Rhetorical relations for information retrieval,0
 document compression,SIGIR 2012: Rhetorical relations for information retrieval,0
 text fragment,SIGIR 2012: Rhetorical relations for information retrieval,0
 web query score,SIGIR 2012: Rhetorical relations for information retrieval,0
-laplace method,SIGIR 2012: Rhetorical relations for information retrieval,0
+laplace method,SIGIR 2012: Rhetorical relations for information retrieval,1
 spam ranking,SIGIR 2012: Rhetorical relations for information retrieval,0
 information concept,SIGIR 2012: Rhetorical relations for information retrieval,0
 content selection,SIGIR 2012: Rhetorical relations for information retrieval,0
@@ -395,25 +395,25 @@ marginal density,SIGIR 2012: Rhetorical relations for information retrieval,0
 parameter estimation,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 query bigram,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 term structure,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-latent concept expansion,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+latent concept expansion,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 state-of-the-art model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 natural language,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 pairwise term dependency,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-trec collection,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-google n-grams,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+trec collection,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+google n-grams,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 concept frequency,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 query structure,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 global function,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 document passage,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 language modeling estimate,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-cluster-based retrieval,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+cluster-based retrieval,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 pairwise term,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-similarity space,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+similarity space,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 proximity concept,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 scoring passage,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 complex dependency,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 bag-of-words query,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-query likelihood model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+query likelihood model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 feature weight,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 concept set,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 web retrieval,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
@@ -421,26 +421,26 @@ web corpus,SIGIR 2012: Modeling higher-order term dependencies in information re
 proximity framework,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 text passage,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 query quality predictor,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-positional language model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-information need,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
+positional language model,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
+information need,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,1
 block-based web search,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
 proximity match,SIGIR 2012: Modeling higher-order term dependencies in information retrieval using query hypergraphs,0
-population average time,SIGIR 2012: Time-based calibration of effectiveness measures,0
+population average time,SIGIR 2012: Time-based calibration of effectiveness measures,1
 interactive retrieval,SIGIR 2012: Time-based calibration of effectiveness measures,0
 constant rate,SIGIR 2012: Time-based calibration of effectiveness measures,0
-ir evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+ir evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,1
 population average,SIGIR 2012: Time-based calibration of effectiveness measures,0
-web search evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+web search evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,1
 decision model,SIGIR 2012: Time-based calibration of effectiveness measures,0
-search engine evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
+search engine evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,1
 user strategy,SIGIR 2012: Time-based calibration of effectiveness measures,0
 relevance probability,SIGIR 2012: Time-based calibration of effectiveness measures,0
 document page,SIGIR 2012: Time-based calibration of effectiveness measures,0
-information retrieval system,SIGIR 2012: Time-based calibration of effectiveness measures,0
+information retrieval system,SIGIR 2012: Time-based calibration of effectiveness measures,1
 tuning search engine,SIGIR 2012: Time-based calibration of effectiveness measures,0
 user interaction,SIGIR 2012: Time-based calibration of effectiveness measures,0
 online search,SIGIR 2012: Time-based calibration of effectiveness measures,0
-trec collection,SIGIR 2012: Time-based calibration of effectiveness measures,0
+trec collection,SIGIR 2012: Time-based calibration of effectiveness measures,1
 user evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
 user average,SIGIR 2012: Time-based calibration of effectiveness measures,0
 user view,SIGIR 2012: Time-based calibration of effectiveness measures,0
@@ -466,19 +466,19 @@ constant term,SIGIR 2012: Time-based calibration of effectiveness measures,0
 retrieval precision,SIGIR 2012: Time-based calibration of effectiveness measures,0
 user data,SIGIR 2012: Time-based calibration of effectiveness measures,0
 linear function,SIGIR 2012: Time-based calibration of effectiveness measures,0
-graded relevance judgment,SIGIR 2012: Time-based calibration of effectiveness measures,0
+graded relevance judgment,SIGIR 2012: Time-based calibration of effectiveness measures,1
 maximum average,SIGIR 2012: Time-based calibration of effectiveness measures,0
 tuning ranking,SIGIR 2012: Time-based calibration of effectiveness measures,0
 ir system,SIGIR 2012: Time-based calibration of effectiveness measures,0
 search evaluation,SIGIR 2012: Time-based calibration of effectiveness measures,0
 graph-based method,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-web search system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+web search system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 estimation quality,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-visual interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+visual interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 text retrieval conference,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 information access,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 faceted topic,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-browsing interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+browsing interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 web diversity,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 data relation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 relevance estimate,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
@@ -488,39 +488,39 @@ query level,SIGIR 2012: AspecTiles: tile-based visualization of diversified web 
 web search result diversification,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 original query suggestion,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 diversified search result,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-search result diversification algorithm,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+search result diversification algorithm,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 user evaluation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 user operation,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 web space,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-decision support system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-diversification system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
-search intent,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
+decision support system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
+diversification system,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
+search intent,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,1
 search result presentation interface,SIGIR 2012: AspecTiles: tile-based visualization of diversified web search results,0
 trec 2011 microblog,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 generative process,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 exponential rate,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-expanded language model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expanded language model,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 expansion model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 computational constraint,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 temporal factor,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 expanded model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 translation model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-trec collection,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+trec collection,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 baseline relevance feedback,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 ir model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-query likelihood model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+query likelihood model,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 compressed distribution,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-cluster-based retrieval,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+cluster-based retrieval,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 joint conference,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 expanded document,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 dirichlet smoothing parameter,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 original model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 feedback result,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 ir systems-term frequency,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-expanded document model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+expanded document model,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 term probability,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 writing relevance,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-lexical neighborhood,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+lexical neighborhood,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 lexical representation,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 relevance modeling,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 feature type,SIGIR 2012: Improving retrieval of short texts through document expansion,0
@@ -528,7 +528,7 @@ query text,SIGIR 2012: Improving retrieval of short texts through document expan
 lexical property,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 statistical source expansion,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 retrieval status,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-document language model,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+document language model,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 expansion source,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 maximum likelihood,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 expansion data,SIGIR 2012: Improving retrieval of short texts through document expansion,0
@@ -536,7 +536,7 @@ document prior,SIGIR 2012: Improving retrieval of short texts through document e
 traditional ir,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 text representation,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 ir performance,SIGIR 2012: Improving retrieval of short texts through document expansion,0
-cluster-based ir,SIGIR 2012: Improving retrieval of short texts through document expansion,0
+cluster-based ir,SIGIR 2012: Improving retrieval of short texts through document expansion,1
 temporal prior,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 ir collection,SIGIR 2012: Improving retrieval of short texts through document expansion,0
 smoothing technique,SIGIR 2012: Improving retrieval of short texts through document expansion,0
