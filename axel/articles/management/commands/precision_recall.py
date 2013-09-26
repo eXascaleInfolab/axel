@@ -217,9 +217,13 @@ class Command(BaseCommand):
         maxent_values = [value for key, value in self.Model.judged_data.items() if key in maxent_data]
 
         # We already have judgments, no need to extract
+        # precision = []
+        # recall = []
         # for article in Article.objects.filter(cluster_id=self.cluster_id):
         #     #print article
         #     text = article.text
+        #     correct_objects = self.article_rel_dict[unicode(article)][1]
+        #     incorrect_objects = self.article_rel_dict[unicode(article)][0]
         #
         #     sentences = [nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP)) for sent in nltk.sent_tokenize(text)]
         #     results = nltk.batch_ne_chunk(sentences, binary=True)
@@ -237,13 +241,15 @@ class Command(BaseCommand):
         #         continue
         #
         #     local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-        #     local_recall = len(true_pos) / len([x for x, _ in article_ngrams if x in correct_objects])
+        #     local_recall = len(true_pos) / len(correct_objects)
         #
         #     precision.append(local_precision)
         #     recall.append(local_recall)
-
+        #
         #     precision.append(local_precision)
         #     recall.append(local_recall)
+        #     print 'Precision:', sum(precision) / len(precision)
+        #     print 'Recall:', sum(recall) / len(recall)
 
         precision = maxent_values.count('1') / len(maxent_values)
         recall = maxent_values.count('1') / self.Model.judged_data.values().count('1')
