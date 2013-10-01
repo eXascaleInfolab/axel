@@ -6,14 +6,16 @@ from collections import defaultdict
 from sklearn import cross_validation
 from sklearn.metrics import *
 from sklearn.tree import DecisionTreeClassifier
+from axel.stats.models import STATS_CLUSTERS_DICT
 from axel.stats.scores import compress_pos_tag
 from optparse import make_option
 import numpy as np
 import networkx as nx
+from termcolor import colored
 
 from django.core.management.base import BaseCommand, CommandError
 
-from axel.articles.models import CLUSTERS_DICT
+from axel.articles.models import CLUSTERS_DICT, Article
 from axel.stats.scores.binding_scores import populate_article_dict
 from axel.stats.scores import binding_scores
 
@@ -78,6 +80,8 @@ class Command(BaseCommand):
         self.redirects = options['redirects']
         self.global_pos_tag = options['global_pos_tag']
         self.Model = Model = CLUSTERS_DICT[cluster_id]
+        Model.quick_stats()
+        self.StatsModel = STATS_CLUSTERS_DICT[cluster_id]
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
             cached_file = cluster_id + '_article_dict.pcl'
@@ -108,11 +112,27 @@ class Command(BaseCommand):
         collection = []
         collection_labels = []
         component_size_dict = {}
+        dblp_component_dict = defaultdict(lambda: set())
 
         # Calculate max pos tag count and build pos_tag_list
         start_pos_tag_list = []
         end_pos_tag_list = []
         pos_tag_list = []
+
+        # Populate component size dict
+        for article in Article.objects.filter(cluster_id=self.cluster_id):
+            temp_dict = defaultdict(lambda: 0)
+            dbpedia_graph = article.dbpedia_graph(redirects=self.redirects)
+            for component in nx.connected_components(dbpedia_graph):
+                nodes = [node for node in component if 'Category' not in node]
+                stats_ngrams = self.StatsModel.objects.filter(ngram__in=nodes)
+                is_dblp_inside = bool([True for ngram in stats_ngrams if 'dblp' in ngram.source])
+                if is_dblp_inside:
+                    dblp_component_dict[article.id].update(nodes)
+                comp_len = len(nodes)
+                for node in component:
+                    temp_dict[node] = comp_len
+            component_size_dict[article.id] = temp_dict
 
         for ngram in self.Model.objects.all():
             max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
@@ -130,14 +150,6 @@ class Command(BaseCommand):
 
         # 2. Iterate through all ngrams, add scores - POS tag (to number), DBLP, DBPEDIA, IS_REL
         for article, score_dict in scored_ngrams:
-            temp_dict = defaultdict(lambda: 0)
-            if article.id not in component_size_dict:
-                dbpedia_graph = article.dbpedia_graph(redirects=self.redirects)
-                for component in nx.connected_components(dbpedia_graph):
-                    comp_len = len([node for node in component if 'Category' not in node])
-                    for node in component:
-                        temp_dict[node] = comp_len
-                component_size_dict[article.id] = temp_dict
             ngram = score_dict['ngram']
             collection_ngram = score_dict['collection_ngram']
 
@@ -157,6 +169,8 @@ class Command(BaseCommand):
 
             wiki_edges_count = len(article.wikilinks_graph.edges([ngram.ngram]))
             feature = [
+                ngram.ngram in article.wiki_text_index,
+                ngram.ngram in dblp_component_dict[article.id],
                 ngram.ngram.isupper(),
                 'dblp' in collection_ngram.source,
                 component_size_dict[article.id][ngram.ngram],
@@ -209,6 +223,8 @@ class Command(BaseCommand):
         # pl.show()
 
         feature_names = [
+            'is_wiki_text',
+            'dblp_inside',
             'is_upper',
             'dblp',
             'comp_size',
@@ -258,6 +274,8 @@ class Command(BaseCommand):
                                                   cv=cv_num, score_func=f1_score)
         # TODO: update recall with full collection labels
         print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        print "F1 full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
+
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num)
         print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))

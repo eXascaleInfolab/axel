@@ -389,7 +389,7 @@ class ArticleCollocation(models.Model):
         """print collection statistics"""
         print '{0}, Total:'.format(cls.__name__), cls.objects.all().count()
         print 'Total different collocations:', cls.COLLECTION_MODEL.objects.all().count()
-        print 'Judged count:', len(cls.judged_data), 'Valid:', cls.judged_data.values().count('1'),\
+        print 'Judged count (including maxent):', len(cls.judged_data), 'Valid:', cls.judged_data.values().count('1'),\
             'Invalid:', cls.judged_data.values().count('0')
         colloc_data = set()
         for article in Article.objects.filter(cluster_id=cls.CLUSTER_ID):
