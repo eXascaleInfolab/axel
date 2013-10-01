@@ -57,7 +57,7 @@ class Command(BaseCommand):
             local_old_prec = len(true_pos_old) / (len(true_pos_old) + len(false_pos_old))
             local_new_prec = len(true_pos_new) / (len(true_pos_new) + len(false_pos_new))
             print 'Obsolote correct:'
-            print set(true_pos_old).difference(true_pos_new)
+            print colored(set(true_pos_old).difference(true_pos_new), 'green')
             old_prec.append(local_old_prec)
             new_prec.append(local_new_prec)
             old_rec_local = len(true_pos_old) / len(correct_objects)
@@ -67,13 +67,13 @@ class Command(BaseCommand):
             # END: calculate precision-recall
 
             obsolete_collocs = set(zip(*cur_collocs)[0]).difference(zip(*test_collocs)[0])
-            print colored('Obsolete collocations:', 'red')
-            print colored(obsolete_collocs, 'red')
+            print 'Obsolete collocations:'
+            print obsolete_collocs
             if not dry:
                 model.objects.filter(article=article, ngram__in=obsolete_collocs).delete()
             new_collocs = set(zip(*test_collocs)[0]).difference(zip(*cur_collocs)[0])
-            print colored('New collocations:', 'green')
-            print colored(new_collocs, 'green')
+            print 'New collocations:'
+            print new_collocs
             if not dry:
                 for ngram, count in test_collocs:
                     if ngram in new_collocs:
