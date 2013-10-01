@@ -388,9 +388,18 @@ class ArticleCollocation(models.Model):
     def quick_stats(cls):
         """print collection statistics"""
         print '{0}, Total:'.format(cls.__name__), cls.objects.all().count()
-        print 'Total different:', cls.COLLECTION_MODEL.objects.all().count()
+        print 'Total different collocations:', cls.COLLECTION_MODEL.objects.all().count()
         print 'Judged count:', len(cls.judged_data), 'Valid:', cls.judged_data.values().count('1'),\
             'Invalid:', cls.judged_data.values().count('0')
+        colloc_data = set()
+        for article in Article.objects.filter(cluster_id=cls.CLUSTER_ID):
+            for ngram in cls.objects.filter(article=article):
+                colloc_data.add(u"{0},{1}".format(ngram.ngram, article))
+
+        maxent_data = set(cls.judged_data.keys()) - colloc_data
+        print 'MaxEnt Data Total:', len(maxent_data)
+        print 'MaxEnt Data Different:', len(set([c.split(',')[0] for c in maxent_data]))
+        print 'MaxEnt Total Valid:', len([c for c in maxent_data if cls.judged_data[c] == '1'])
 
     @property
     def is_relevant(self):
