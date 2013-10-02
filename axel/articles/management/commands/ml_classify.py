@@ -53,7 +53,12 @@ class Command(BaseCommand):
                     action='store_true',
                     dest='global_pos_tag',
                     default=False,
-                    help='whether to use collection-wide pos tag or not'),
+                    help='whether to use collection-wide pos tags or not'),
+        make_option('--uncompressed-pos',
+                    action='store_true',
+                    dest='uncompressed',
+                    default=False,
+                    help='whether to use compressed pos tags or not'),
         make_option('--cvnum', '-n',
                     action='store',
                     dest='cv_num',
@@ -79,6 +84,7 @@ class Command(BaseCommand):
         cv_num = options['cv_num']
         self.redirects = options['redirects']
         self.global_pos_tag = options['global_pos_tag']
+        self.uncompressed = options['uncompressed']
         self.Model = Model = CLUSTERS_DICT[cluster_id]
         Model.quick_stats()
         self.StatsModel = STATS_CLUSTERS_DICT[cluster_id]
@@ -134,8 +140,12 @@ class Command(BaseCommand):
                     temp_dict[node] = comp_len
             component_size_dict[article.id] = temp_dict
 
-        for ngram in self.Model.objects.all():
-            max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+        if self.global_pos_tag:
+            queryset = self.StatsModel.objects.all()
+        else:
+            queryset = self.Model.objects.all()
+        for ngram in queryset:
+            max_pos_tag = ngram.max_pos_tag
             pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
             pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
             if pos_tag_start not in start_pos_tag_list:
@@ -159,7 +169,7 @@ class Command(BaseCommand):
                 pos_tag_prev = collection_ngram.pos_tag_prev
                 pos_tag_after = collection_ngram.pos_tag_after
             else:
-                max_pos_tag = ' '.join(max(ngram.pos_tag, key=lambda x: x[1])[0])
+                max_pos_tag = ngram.max_pos_tag
                 pos_tag_prev = ngram.pos_tag_prev
                 pos_tag_after = ngram.pos_tag_after
             pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
@@ -183,17 +193,19 @@ class Command(BaseCommand):
                 len(ngram.ngram.split())
             ]
 
-            # extend with compressed part of speech
-            extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0
-                                for i in range(max_pos_tag_start_len)]
-            feature.extend(extended_feature)
-            extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0
-                                for i in range(max_pos_tag_end_len)]
-            feature.extend(extended_feature)
-
-            # Normal part of speech
-            # extended_feature = [1 if i == pos_tag_list.index(pos_tag) else 0 for i in range(max_pos_tag)]
-            # feature.extend(extended_feature)
+            if not self.uncompressed:
+                # extend with compressed part of speech
+                extended_feature = [1 if i == start_pos_tag_list.index(pos_tag_start) else 0
+                                    for i in range(max_pos_tag_start_len)]
+                feature.extend(extended_feature)
+                extended_feature = [1 if i == end_pos_tag_list.index(pos_tag_end) else 0
+                                    for i in range(max_pos_tag_end_len)]
+                feature.extend(extended_feature)
+            else:
+                # Normal part of speech
+                extended_feature = [1 if i == pos_tag_list.index(max_pos_tag) else 0 for i in
+                                    range(max_pos_tag_len)]
+                feature.extend(extended_feature)
 
             collection.append(feature)
             collection_labels.append(score_dict['is_rel'])
@@ -236,9 +248,11 @@ class Command(BaseCommand):
             'punkt_after',
             'word_len'
         ]
-        feature_names.extend(start_pos_tag_list)
-        feature_names.extend(end_pos_tag_list)
-        # feature_names.extend(pos_tag_list)
+        if not self.uncompressed:
+            feature_names.extend(start_pos_tag_list)
+            feature_names.extend(end_pos_tag_list)
+        else:
+            feature_names.extend(pos_tag_list)
 
         from sklearn.ensemble import ExtraTreesClassifier
         clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=100)
@@ -254,8 +268,8 @@ class Command(BaseCommand):
         from sklearn import tree
         dot_data = StringIO.StringIO()
         tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
-        graph = pydot.graph_from_dot_data(dot_data.getvalue())
-        graph.write_pdf("decision.pdf")
+        #graph = pydot.graph_from_dot_data(dot_data.getvalue())
+        #graph.write_pdf("decision.pdf")
         #
         # for i, vector in enumerate(collection):
         #     value = clf.predict(vector)[0]
