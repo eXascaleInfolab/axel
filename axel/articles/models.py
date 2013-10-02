@@ -68,7 +68,7 @@ class Article(models.Model):
         if self.cluster_id == 'CS_COLLOCS':
             return u"{0} {1}: {2}".format(self.venue, self.year, self.title.replace(',', ' '))
         elif self.cluster_id == 'SW_COLLOCS':
-            return u"{0}".format(self.pdf.name[-1][:-4])
+            return u"{0}".format(os.path.split(self.pdf.name)[-1][:-4])
 
     @property
     def CollocationModel(self):
