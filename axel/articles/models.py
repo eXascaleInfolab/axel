@@ -65,7 +65,10 @@ class Article(models.Model):
 
     def __unicode__(self):
         """String representation"""
-        return u"{0} {1}: {2}".format(self.venue, self.year, self.title.replace(',', ' '))
+        if self.cluster_id == 'CS_COLLOCS':
+            return u"{0} {1}: {2}".format(self.venue, self.year, self.title.replace(',', ' '))
+        elif self.cluster_id == 'SW_COLLOCS':
+            return u"{0}".format(self.pdf.name[-1][:-4])
 
     @property
     def CollocationModel(self):
@@ -461,6 +464,14 @@ class ArticleCollocation(models.Model):
         :rtype: unicode
         """
         return scores.pos_tag(self.ngram, self.all_contexts_pos(func=get_contexts_ngrams))
+
+    @property
+    def max_pos_tag(self):
+        """
+        Maximal pos tag for the collection
+        :rtype: string
+        """
+        return ' '.join(max(self.pos_tag, key=lambda x: x[1])[0])
 
     @property
     @db_cache('extra_fields')
