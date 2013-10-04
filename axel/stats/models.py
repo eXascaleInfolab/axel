@@ -134,7 +134,7 @@ class Collocation(models.Model):
         """
         counts = defaultdict(lambda: 0)
         for count in self._articlecollocations.filter(ngram=self.ngram).values_list('count',
-                                flat=True):
+                                                                                    flat=True):
             counts[count] += 1
 
         histogram_data = str(sorted(counts.items())).replace('(', '[').replace(')', ']')
