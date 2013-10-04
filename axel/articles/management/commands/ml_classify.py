@@ -86,7 +86,7 @@ class Command(BaseCommand):
         self.global_pos_tag = options['global_pos_tag']
         self.uncompressed = options['uncompressed']
         self.Model = Model = CLUSTERS_DICT[cluster_id]
-        Model.quick_stats()
+        #Model.quick_stats()
         self.StatsModel = STATS_CLUSTERS_DICT[cluster_id]
         for score_name in args:
             print 'Building initial binding scores for {0}...'.format(score_name)
@@ -133,6 +133,8 @@ class Command(BaseCommand):
                 nodes = [node for node in component if 'Category' not in node]
                 stats_ngrams = self.StatsModel.objects.filter(ngram__in=nodes)
                 is_dblp_inside = bool([True for ngram in stats_ngrams if 'dblp' in ngram.source])
+                # ScienceWISE
+                #is_dblp_inside = bool([True for ngram in stats_ngrams if ngram.is_ontological])
                 if is_dblp_inside:
                     dblp_component_dict[article.id].update(nodes)
                 comp_len = len(nodes)
@@ -190,7 +192,8 @@ class Command(BaseCommand):
                 'wiki_redirect' in collection_ngram.source,
                 bool({'.', ',', ':', ';'}.intersection(zip(*pos_tag_prev)[0])),
                 bool({'.', ',', ':', ';'}.intersection(zip(*pos_tag_after)[0])),
-                len(ngram.ngram.split())
+                len(ngram.ngram.split()),
+                score_dict['participation_count']
             ]
 
             if not self.uncompressed:
@@ -209,30 +212,6 @@ class Command(BaseCommand):
 
             collection.append(feature)
             collection_labels.append(score_dict['is_rel'])
-            # DS.appendLinked(feature, [int(score_dict['is_rel'])])
-        #clf = svm.SVC(kernel='linear')
-        # print DS.calculateStatistics()
-        # from pybrain.supervised.trainers import BackpropTrainer
-        # from pybrain import TanhLayer
-        # from pybrain.tools.shortcuts import buildNetwork
-        # net = buildNetwork(29, 5, 1, bias=True, hiddenclass=TanhLayer)
-        # trainer = BackpropTrainer(net, DS)
-        # trainer.trainEpochs(5)
-        # print trainer.testOnData(verbose=True)
-
-        # from sklearn.feature_selection import RFECV
-        # from sklearn.metrics import zero_one_loss
-        # svc = svm.SVC(kernel="linear")
-        # rfecv = RFECV(estimator=svc, step=1, cv=2, loss_func=zero_one_loss)
-        # rfecv.fit(collection, collection_labels)
-        # print("Optimal number of features : %d" % rfecv.n_features_)
-        # print rfecv.ranking_
-        # import pylab as pl
-        # pl.figure()
-        # pl.xlabel("Number of features selected")
-        # pl.ylabel("Cross validation score (N of misclassifications)")
-        # pl.plot(range(1, len(rfecv.cv_scores_) + 1), rfecv.cv_scores_)
-        # pl.show()
 
         feature_names = [
             'is_wiki_text',
@@ -246,7 +225,8 @@ class Command(BaseCommand):
             'is_redirect',
             'punkt_prev',
             'punkt_after',
-            'word_len'
+            'word_len',
+            'part_count'
         ]
         if not self.uncompressed:
             feature_names.extend(start_pos_tag_list)
@@ -281,14 +261,15 @@ class Command(BaseCommand):
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num, score_func=precision_score)
         print("Precision: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        print "Precision full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num, score_func=recall_score)
         print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        print "Recall full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num, score_func=f1_score)
         # TODO: update recall with full collection labels
         print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-        print "F1 full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
 
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num)
