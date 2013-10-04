@@ -157,7 +157,6 @@ class SWCollocations(Collocation):
     CACHED_FIELDS = ('context',)
 
     @property
-    @db_cache('extra_fields')
     def is_ontological(self):
         """
         True if concept appears in ontology, False otherwise.
