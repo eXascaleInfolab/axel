@@ -46,16 +46,21 @@ class Command(BaseCommand):
             print article, article.pdf
             test_collocs = list(TestCollocations.objects.filter(article=article).values_list('ngram', 'count'))
             cur_collocs = list(model.objects.filter(article=article).values_list('ngram', 'count'))
+            test_collocs_keys = zip(*test_collocs)[0] if test_collocs else []
 
             # START: calculate precision-recall
             correct_objects = self.article_rel_dict[unicode(article)][1]
             incorrect_objects = self.article_rel_dict[unicode(article)][0]
             true_pos_old = [x for x in zip(*cur_collocs)[0] if x in correct_objects]
-            true_pos_new = [x for x in zip(*test_collocs)[0] if x in correct_objects]
+            true_pos_new = [x for x in test_collocs_keys if x in correct_objects]
             false_pos_old = [x for x in zip(*cur_collocs)[0] if x in incorrect_objects]
-            false_pos_new = [x for x in zip(*test_collocs)[0] if x in incorrect_objects]
+            false_pos_new = [x for x in test_collocs_keys if x in incorrect_objects]
             local_old_prec = len(true_pos_old) / (len(true_pos_old) + len(false_pos_old))
-            local_new_prec = len(true_pos_new) / (len(true_pos_new) + len(false_pos_new))
+            # Avoid division by zero
+            if len(true_pos_new) == 0:
+                local_new_prec = 0.
+            else:
+                local_new_prec = len(true_pos_new) / (len(true_pos_new) + len(false_pos_new))
             print 'Obsolote correct:'
             print colored(set(true_pos_old).difference(true_pos_new), 'green')
             old_prec.append(local_old_prec)
@@ -66,12 +71,12 @@ class Command(BaseCommand):
             new_rec.append(new_rec_local)
             # END: calculate precision-recall
 
-            obsolete_collocs = set(zip(*cur_collocs)[0]).difference(zip(*test_collocs)[0])
+            obsolete_collocs = set(zip(*cur_collocs)[0]).difference(test_collocs_keys)
             print 'Obsolete collocations:'
             print obsolete_collocs
             if not dry:
                 model.objects.filter(article=article, ngram__in=obsolete_collocs).delete()
-            new_collocs = set(zip(*test_collocs)[0]).difference(zip(*cur_collocs)[0])
+            new_collocs = set(test_collocs_keys).difference(zip(*cur_collocs)[0])
             print 'New collocations:'
             print new_collocs
             if not dry:
