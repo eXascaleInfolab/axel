@@ -188,7 +188,7 @@ class Command(BaseCommand):
                 component_size_dict[article.id][ngram.ngram],
                 wiki_edges_count,
                 #collection_ngram.is_ontological,
-                'dbpedia' in collection_ngram.source,
+                #'dbpedia' in collection_ngram.source,
                 'wiki_redirect' in collection_ngram.source,
                 bool({'.', ',', ':', ';'}.intersection(zip(*pos_tag_prev)[0])),
                 bool({'.', ',', ':', ';'}.intersection(zip(*pos_tag_after)[0])),
@@ -221,7 +221,7 @@ class Command(BaseCommand):
             'comp_size',
             'wikilinks',
             #'ScienceWISE',
-            'is_wiki',
+            #'is_wiki',
             'is_redirect',
             'punkt_prev',
             'punkt_after',
@@ -235,19 +235,19 @@ class Command(BaseCommand):
             feature_names.extend(pos_tag_list)
 
         from sklearn.ensemble import ExtraTreesClassifier
-        clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=100)
-        new_collection = clf.fit(collection, collection_labels).transform(collection)
-        print sorted(zip(list(clf.feature_importances_), feature_names), key=lambda x: x[0],
+        e_clf = ExtraTreesClassifier(random_state=0, compute_importances=True, n_estimators=100)
+        new_collection = e_clf.fit(collection, collection_labels).transform(collection)
+        print sorted(zip(list(e_clf.feature_importances_), feature_names), key=lambda x: x[0],
                      reverse=True)[:new_collection.shape[1]]
         print new_collection.shape
         clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
         #for tag, values in pos_tag_counts.iteritems():
         #    print tag, values[1]/values[0]
-        clf.fit(new_collection, collection_labels)
-        import StringIO, pydot
-        from sklearn import tree
-        dot_data = StringIO.StringIO()
-        tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
+        # clf.fit(new_collection, collection_labels)
+        #import StringIO, pydot
+        #from sklearn import tree
+        #dot_data = StringIO.StringIO()
+        #tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
         #graph = pydot.graph_from_dot_data(dot_data.getvalue())
         #graph.write_pdf("decision.pdf")
         #

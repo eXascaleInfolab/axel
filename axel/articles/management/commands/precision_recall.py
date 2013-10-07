@@ -210,53 +210,6 @@ class Command(BaseCommand):
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
 
-    def _maxent_calculation(self):
-        print 'Calculating Precision/Recall using MaxEntropy NE recognition'
-
-        maxent_data = set(open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n'))
-        maxent_values = [value for key, value in self.Model.judged_data.items() if key in maxent_data]
-
-        # We already have judgments, no need to extract
-        # precision = []
-        # recall = []
-        # for article in Article.objects.filter(cluster_id=self.cluster_id):
-        #     #print article
-        #     text = article.text
-        #     correct_objects = self.article_rel_dict[unicode(article)][1]
-        #     incorrect_objects = self.article_rel_dict[unicode(article)][0]
-        #
-        #     sentences = [nltk.pos_tag(nltk.regexp_tokenize(sent, nlp.Stemmer.TOKENIZE_REGEXP)) for sent in nltk.sent_tokenize(text)]
-        #     results = nltk.batch_ne_chunk(sentences, binary=True)
-        #     """:type: nltk.tree.Tree"""
-        #
-        #     ne_set = set()
-        #     for result in results:
-        #         for tree in result.subtrees():
-        #             if tree.node != 'S' and len(tree) > 1:
-        #                 ne_set.add(nlp.Stemmer.stem_wordnet(' '.join(zip(*tree)[0]).lower()))
-        #     true_pos = [x for x in ne_set if x in correct_objects]
-        #     false_pos = [x for x in ne_set if x in incorrect_objects]
-        #
-        #     if len(true_pos) + len(false_pos) == 0:
-        #         continue
-        #
-        #     local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-        #     local_recall = len(true_pos) / len(correct_objects)
-        #
-        #     precision.append(local_precision)
-        #     recall.append(local_recall)
-        #
-        #     precision.append(local_precision)
-        #     recall.append(local_recall)
-        #     print 'Precision:', sum(precision) / len(precision)
-        #     print 'Recall:', sum(recall) / len(recall)
-
-        precision = maxent_values.count('1') / len(maxent_values)
-        recall = maxent_values.count('1') / self.Model.judged_data.values().count('1')
-        print 'Precision: ', precision
-        print 'Recall', recall
-        print 'F1 measure', 2 * (precision * recall) / (precision + recall)
-
     def _crf_stanford_calculation(self):
         print 'Calculating Precision/Recall using Stanford NER (Conditional Random Fields)'
         precision = []
@@ -285,8 +238,10 @@ class Command(BaseCommand):
     def _maxent_custom_calculation(self):
         TAGGER_PCL = settings.ABS_PATH('maxent_tagger.pcl')
         print 'Calculating Precision/Recall using Custom trained MaxEnt'
-        precision = []
-        recall = []
+        true_pos_total = 0
+        false_pos_total = 0
+        correct_total = 0
+        total_objects = 0
         _end = '_end_'
 
         extra_source = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
@@ -382,14 +337,13 @@ class Command(BaseCommand):
             incorrect_objects = self.article_rel_dict[unicode(article)][0]
             true_pos = [x for x in ne_set if x in correct_objects]
             false_pos = [x for x in ne_set if x in incorrect_objects]
-            local_precision = len(true_pos) / (len(true_pos) + len(false_pos))
-            local_recall = len(true_pos) / len(correct_objects)
-            precision.append(local_precision)
-            recall.append(local_recall)
+            true_pos_total += len(true_pos)
+            false_pos_total += len(false_pos)
+            correct_total += len(correct_objects)
+            total_objects += len(ne_set)
 
-
-        precision = sum(precision) / len(precision)
-        recall = sum(recall) / len(recall)
+        precision = true_pos_total / (true_pos_total + false_pos_total)
+        recall = true_pos_total / correct_total
         print 'Precision: ', precision
         print 'Recall', recall
         print 'F1 measure', 2 * (precision * recall) / (precision + recall)
