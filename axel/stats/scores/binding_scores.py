@@ -299,6 +299,10 @@ def populate_article_dict(model, score_func, cutoff=1):
                 corr_dict2[w1].add(w2)
         for ngram in sorted(model.objects.filter(article=article),
                             key=lambda x: len(x.ngram.split())):
+            part_count = 0
+            for p_ngram in all_ngrams:
+                if p_ngram != ngram.ngram and ngram.ngram in p_ngram:
+                    part_count += 1
             try:
                 is_rel = article_rel_dict[unicode(article)][ngram.ngram]
             except KeyError:
@@ -316,7 +320,8 @@ def populate_article_dict(model, score_func, cutoff=1):
                                                   'ddict1': ddict1, 'ddict2': ddict2,
                                                   'collection_ngram': collection_ngram,
                                                   'ngram': ngram,
-                                                  'len': support_len}
+                                                  'len': support_len,
+                                                  'participation_count': part_count}
 
     return article_dict
 
