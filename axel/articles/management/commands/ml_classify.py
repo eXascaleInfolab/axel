@@ -270,6 +270,7 @@ class Command(BaseCommand):
                                                   cv=cv_num, score_func=f1_score)
         # TODO: update recall with full collection labels
         print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+        print "F1 full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
 
         scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
                                                   cv=cv_num)
