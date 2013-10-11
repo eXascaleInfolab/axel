@@ -146,7 +146,6 @@ INSTALLED_APPS = (
     #'raven.contrib.django',
     'axel.articles',
     'axel.stats',
-    'axel.ngrams',
     'axel.libs',
     )
 
