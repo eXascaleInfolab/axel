@@ -11,4 +11,5 @@ venv/
 /*/settings/secret.py
 /*/static/
 /*/media/
+/*/*/migrations/
 /dev.db
