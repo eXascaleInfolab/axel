@@ -240,7 +240,7 @@ class Command(BaseCommand):
         print sorted(zip(list(e_clf.feature_importances_), feature_names), key=lambda x: x[0],
                      reverse=True)[:new_collection.shape[1]]
         print new_collection.shape
-        clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100)
+        clf = DecisionTreeClassifier(max_depth=5, min_samples_split=200)
         #for tag, values in pos_tag_counts.iteritems():
         #    print tag, values[1]/values[0]
         # clf.fit(new_collection, collection_labels)
