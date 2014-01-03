@@ -235,7 +235,7 @@ class Command(BaseCommand):
             recall.append(local_recall)
         # TODO: everything
 
-    def _maxent_custom_calculation(self):
+    def _maxent_calculation(self):
         TAGGER_PCL = settings.ABS_PATH('maxent_tagger.pcl')
         print 'Calculating Precision/Recall using Custom trained MaxEnt'
         true_pos_total = 0
@@ -244,13 +244,13 @@ class Command(BaseCommand):
         total_objects = 0
         _end = '_end_'
 
-        extra_source = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
-        for line in extra_source:
-            line = line.split(',')
-            if line[2] == '0':
-                self.article_rel_dict[line[1]][0].add(line[0])
+        maxent_data = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
+        for line in maxent_data:
+            ngram, article = line.split(',')
+            if self.Model.judged_data[line] == '0':
+                self.article_rel_dict[article][0].add(ngram)
             else:
-                self.article_rel_dict[line[1]][1].add(line[0])
+                self.article_rel_dict[article][1].add(ngram)
 
         def make_trie(ngrams):
             """
