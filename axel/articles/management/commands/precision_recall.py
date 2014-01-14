@@ -237,7 +237,8 @@ class Command(BaseCommand):
 
     def _maxent_calculation(self):
         TAGGER_PCL = settings.ABS_PATH('maxent_tagger.pcl')
-        print 'Calculating Precision/Recall using Custom trained MaxEnt'
+        print 'Calculating Precision/Recall using Custom trained MaxEnt, 80/20 dataset split,' \
+              ' ordered by id from DB.'
         true_pos_total = 0
         false_pos_total = 0
         correct_total = 0
@@ -284,10 +285,13 @@ class Command(BaseCommand):
 
         # generating training file
         train = []
-        sentences_tagged = defaultdict(list)
+        test_sentences_tagged = defaultdict(list)
         print 'Generating training/test data...'
+        queryset = Article.objects.filter(cluster_id=self.cluster_id).order_by('id')
+        queryset_len = len(queryset)
+
         # train data of the form [[((word1, POS1), tag1), ((word2, POS2), tag2), ... ], sentence2, ...]
-        for article in Article.objects.filter(cluster_id=self.cluster_id):
+        for article_index, article in enumerate(queryset):
             correct_ngrams_set = self.article_rel_dict[unicode(article)][1]
             identified_correct = set()
             correct_ngrams = make_trie(correct_ngrams_set)
@@ -305,10 +309,14 @@ class Command(BaseCommand):
                     else:
                         sent_tree.append(sentence_tagged[i])
                         i += 1
-                sentences_tagged[unicode(article)].append(sentence_tagged)
-                train.append(sent_tree)
+                if article_index/queryset_len <= 0.8:
+                    train.append(sent_tree)
+                else:
+                    test_sentences_tagged[unicode(article)].append(sentence_tagged)
             diff = correct_ngrams_set.difference(identified_correct)
             if diff:
+                # TODO: list of correct n-gram that we did not find for some reason
+                # ideally should be empty
                 print diff
                 print article
                 print
@@ -319,14 +327,14 @@ class Command(BaseCommand):
             print 'Pickled tagger exists. Reading it...'
             tagger = pickle.load(open(TAGGER_PCL, 'r'))
         else:
-            print 'Training tagger...'
+            print 'Training tagger on 80% of data...'
             tagger = NEChunkParser(train)
             print 'Finished training tagger'
             print 'Pickling tagger for later use...'
             pickle.dump(tagger, open(TAGGER_PCL, 'wb'))
 
         print 'Calculating precision...'
-        for article, sentences in sentences_tagged.iteritems():
+        for article, sentences in test_sentences_tagged.iteritems():
             results = [tagger.parse(sentence) for sentence in sentences]
             ne_set = set()
             for result in results:
