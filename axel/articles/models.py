@@ -226,7 +226,6 @@ class Article(models.Model):
                 index = json.loads(self.index)
             else:
                 index = self.index_nonstemmed
-            # found collocs = found existing + found new
             collocs = nlp.collocations(index)
 
             # Create other collocations
@@ -281,6 +280,7 @@ class Article(models.Model):
                     continue
                 index = json.loads(article.index)
                 new_ngrams = nlp._update_ngram_counts([c.split() for c in zip(*ngrams)[0]], index)
+                # sort by count, then alphabetically
                 new_ngrams = sorted(new_ngrams.items(), key=lambda x: (x[1], x[0]))
                 new_ngrams = [k for k in new_ngrams if k[1] > 0]
                 if new_ngrams != ngrams:
