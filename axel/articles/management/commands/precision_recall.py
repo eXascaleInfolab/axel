@@ -242,16 +242,11 @@ class Command(BaseCommand):
         true_pos_total = 0
         false_pos_total = 0
         correct_total = 0
-        total_objects = 0
         _end = '_end_'
 
-        maxent_data = open(settings.ABS_PATH('maxent_' + self.Model.__name__ + '.csv')).read().split('\n')
-        for line in maxent_data:
+        for line, is_valid in self.Model.judged_data.iteritems():
             ngram, article = line.split(',')
-            if self.Model.judged_data[line] == '0':
-                self.article_rel_dict[article][0].add(ngram)
-            else:
-                self.article_rel_dict[article][1].add(ngram)
+            self.article_rel_dict[article][int(is_valid)].add(ngram)
 
         def make_trie(ngrams):
             """
@@ -292,6 +287,9 @@ class Command(BaseCommand):
 
         # train data of the form [[((word1, POS1), tag1), ((word2, POS2), tag2), ... ], sentence2, ...]
         for article_index, article in enumerate(queryset):
+            # skip train generation if tagger exists
+            if os.path.exists(TAGGER_PCL) and article_index/queryset_len <= 0.8:
+                continue
             correct_ngrams_set = self.article_rel_dict[unicode(article)][1]
             identified_correct = set()
             correct_ngrams = make_trie(correct_ngrams_set)
@@ -348,7 +346,9 @@ class Command(BaseCommand):
             true_pos_total += len(true_pos)
             false_pos_total += len(false_pos)
             correct_total += len(correct_objects)
-            total_objects += len(ne_set)
+
+            unjudged_objects = [x for x in ne_set if x not in incorrect_objects and x not in correct_objects]
+            print 'WARN: Unjudged objects:', unjudged_objects
 
         precision = true_pos_total / (true_pos_total + false_pos_total)
         recall = true_pos_total / correct_total
