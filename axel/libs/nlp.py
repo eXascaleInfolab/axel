@@ -98,7 +98,7 @@ _STOPWORDS.update(nltk.corpus.stopwords.words('english'))
 
 
 @print_timing
-def collocations(index):
+def collocations(index, cutoff=2):
     """
     Extract collocations from n-gram index
     :type index: dict
@@ -113,7 +113,7 @@ def collocations(index):
 
     # do filtration by frequency > 2
     bigram_index = dict([(tuple(k.split()), v) for k, v in index.iteritems()
-                         if len(k.split()) == 2 and v > 2])
+                         if len(k.split()) == 2 and v > cutoff])
 
     # Get abstract finder because we already have index
     finder = AbstractCollocationFinder(None, bigram_index)
