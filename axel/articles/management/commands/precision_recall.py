@@ -333,6 +333,7 @@ class Command(BaseCommand):
 
         print 'Calculating precision...'
         for article, sentences in test_sentences_tagged.iteritems():
+            print article
             results = [tagger.parse(sentence) for sentence in sentences]
             ne_set = set()
             for result in results:
