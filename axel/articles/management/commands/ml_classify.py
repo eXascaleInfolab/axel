@@ -65,7 +65,6 @@ class Command(BaseCommand):
                     default=10,
                     help='number of cross validation folds, defaults to 10'),
     )
-    args = '<score1> <score2> ...'
     help = 'Train SVM classified with a set of features'
 
     def _total_valid(self, article_dict):
@@ -87,27 +86,26 @@ class Command(BaseCommand):
         self.Model = Model = CLUSTERS_DICT[cluster_id]
         #Model.quick_stats()
         self.StatsModel = STATS_CLUSTERS_DICT[cluster_id]
-        for score_name in args:
-            print 'Building initial binding scores for {0}...'.format(score_name)
-            cached_file = cluster_id + '_article_dict.pcl'
-            if os.path.exists(cached_file):
-                print 'File found, loading...'
-                article_dict = pickle.load(open(cached_file))
-            else:
-                article_dict = dict(populate_article_dict_ML(Model, cutoff=0))
-                pickle.dump(article_dict, open(cached_file, 'wb'))
-                print 'File stored, continuing...'
-            # Calculate total valid for recall
-            total_valid = self._total_valid(article_dict)
+        print 'Building initial binding scores...'
+        cached_file = cluster_id + '_article_dict.pcl'
+        if os.path.exists(cached_file):
+            print 'File found, loading...'
+            article_dict = pickle.load(open(cached_file))
+        else:
+            article_dict = dict(populate_article_dict_ML(Model, cutoff=0))
+            pickle.dump(article_dict, open(cached_file, 'wb'))
+            print 'File stored, continuing...'
+        # Calculate total valid for recall
+        total_valid = self._total_valid(article_dict)
 
-            scored_ngrams = []
-            print 'Reformatting the results...'
-            for article, values in article_dict.iteritems():
-                for scores in values.itervalues():
-                    scored_ngrams.append((article, scores))
+        scored_ngrams = []
+        print 'Reformatting the results...'
+        for article, values in article_dict.iteritems():
+            for scores in values.itervalues():
+                scored_ngrams.append((article, scores))
 
-            print 'Fitting classifier...'
-            self.fit_ml_algo(scored_ngrams, cv_num)
+        print 'Fitting classifier...'
+        self.fit_ml_algo(scored_ngrams, cv_num)
 
     def fit_ml_algo(self, scored_ngrams, cv_num):
         """
@@ -241,8 +239,7 @@ class Command(BaseCommand):
         print new_collection.shape
 
         datas = []
-        for depth, min_split in ((5, 50), (5, 100), (5, 200), (7, 50), (7, 100), (7, 200),
-                                 (10, 50), (10, 100), (10, 200),):
+        for depth, min_split in ((5, 50), (5, 100), (5, 200), (4, 50), (4, 100), (4, 200)):
             print 'Parameters: depth {0}, split {1}'.format(depth, min_split)
             clf = DecisionTreeClassifier(max_depth=depth, min_samples_split=min_split)
             #for tag, values in pos_tag_counts.iteritems():
@@ -290,5 +287,9 @@ class Command(BaseCommand):
         print 'Best result:'
         print max_data
         print
+        clf = DecisionTreeClassifier(max_depth=max_data['depth'],
+                                     min_samples_split=max_data['min_split'])
+        clf.fit(new_collection, collection_labels)
+        pickle.dump(clf, open('ngram_clf.pcl', 'w'))
         return max_data
 
