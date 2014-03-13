@@ -326,6 +326,42 @@ def populate_article_dict(model, score_func, cutoff=1):
     return article_dict
 
 
+def populate_article_dict_ML(model, cutoff=1):
+    """
+    :type model: Model
+    """
+    article_dict = defaultdict(dict)
+    article_rel_dict = defaultdict(dict)
+    for key, is_rel in model.judged_data.iteritems():
+        ngram, article_id = key.split(',')
+        is_rel = int(is_rel)
+        article_rel_dict[article_id][ngram] = is_rel
+
+    for article in print_progress(Article.objects.filter(cluster_id=model.CLUSTER_ID)):
+        text = article.stemmed_text
+        # create correspondence dict
+        all_ngrams = list(model.objects.filter(article=article).values_list('ngram', flat=True))
+        for ngram in sorted(model.objects.filter(article=article),
+                            key=lambda x: len(x.ngram.split())):
+            part_count = 0
+            for p_ngram in all_ngrams:
+                if p_ngram != ngram.ngram and ngram.ngram in p_ngram:
+                    part_count += 1
+            try:
+                is_rel = article_rel_dict[unicode(article)][ngram.ngram]
+            except KeyError:
+                continue
+            ngram_abs_count = text.count(ngram.ngram)
+            if ngram_abs_count <= cutoff:
+                continue
+            collection_ngram = model.COLLECTION_MODEL.objects.get(ngram=ngram.ngram)
+            article_dict[article][ngram.ngram] = {'is_rel': is_rel, 'ngram': ngram,
+                                                  'collection_ngram': collection_ngram,
+                                                  'participation_count': part_count}
+
+    return article_dict
+
+
 def caclculate_MAP(article_dict):
     avg_prec_list = []
 

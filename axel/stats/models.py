@@ -3,10 +3,8 @@ import json
 
 from collections import defaultdict
 from django.db import models
-from django.db.models import Q, Sum
 from django import forms
 
-import operator
 from axel.articles.utils.db import db_cache_simple, db_cache
 import axel.stats.scores as scores
 
@@ -143,7 +141,7 @@ class Collocation(models.Model):
 
 class Collocations(Collocation):
     """Aggregated collocation statistics model for Computer Science"""
-    CACHED_FIELDS = ('context', 'acm_score')
+    CACHED_FIELDS = ('context',)
     FILTERED_FIELDS = (('_pos_tag', 'Part of Speech', forms.CharField),)
     CLUSTER_ID = 'CS_COLLOCS'
 
