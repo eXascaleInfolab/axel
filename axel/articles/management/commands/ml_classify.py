@@ -239,7 +239,7 @@ class Command(BaseCommand):
         print new_collection.shape
 
         datas = []
-        for depth, min_split in ((5, 50), (5, 100), (5, 200), (4, 50), (4, 100), (4, 200)):
+        for depth, min_split in ((5, 50), (5, 100), (5, 200), (3, 50), (3, 100), (3, 200)):
             print 'Parameters: depth {0}, split {1}'.format(depth, min_split)
             clf = DecisionTreeClassifier(max_depth=depth, min_samples_split=min_split)
             #for tag, values in pos_tag_counts.iteritems():
