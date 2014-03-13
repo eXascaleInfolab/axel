@@ -77,9 +77,9 @@ class PDFCleaner:
         # otherwise etree can't parse it
         contents = contents.replace('encoding="UTF-8"', '')
 
-        #extract body which is article text
-        body = etree.fromstring(contents).find('.//{http://www.w3.org/1999/xhtml}body')
-        contents = etree.tostring(body, encoding=unicode)
+        #extract body which is article text, TODO: commented since we switched to PDFx
+        # body = etree.fromstring(contents).find('.//{http://www.w3.org/1999/xhtml}body')
+        # contents = etree.tostring(body, encoding=unicode)
         contents = strip_tags(contents).strip().split('\n')
         contents = [line for line in contents if line]
 
@@ -96,8 +96,8 @@ class PDFCleaner:
         # remove abstract from rest of the pdf
         contents = contents[abs_end_index:]
         for i in range(len(contents)):
-            if len(contents[i].split())<=2:
-                contents[i]+='\n'
+            if len(contents[i].split()) <= 2:
+                contents[i] += '\n'
         result_dict['text'] = ' '.join(contents)
 
         # remove title from text, because it it a strong collocation

@@ -1,10 +1,13 @@
 """Forms for the articles application"""
+import os
+import subprocess
+
 from django import forms
-from haystack import connections
 from axel.libs import nlp
 
 import tempfile
 from axel.libs.nlp import Stemmer
+from axel.libs.parse_pdfx_xml import parse_pdfx_xml
 
 
 def handle_uploaded_file(f):
@@ -31,9 +34,12 @@ class PDFUploadForm(forms.Form):
         """Extract collocations using the self.cleaned_data dictionary"""
         full_name = handle_uploaded_file(self.cleaned_data['article_pdf'])
         stem_func = getattr(Stemmer, self.cleaned_data['stem_func'])
-        with open(full_name) as pdf_obj:
-            extracted_data = connections['default'].get_backend().extract_file_contents(pdf_obj)
-        full_text = nlp.get_full_text(extracted_data['contents'])['text']
+
+        if not os.path.exists(full_name + "x.xml"):
+            subprocess.call(["pdfx", full_name])
+        extracted_data = parse_pdfx_xml(full_name + "x.xml")
+
+        full_text = nlp.get_full_text(extracted_data)['text']
         collocs = nlp.collocations(nlp.build_ngram_index(stem_func(full_text))).items()
         # order colocations
         collocs.sort(key=lambda col: col[1], reverse=True)
