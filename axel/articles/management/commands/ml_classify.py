@@ -16,8 +16,7 @@ from termcolor import colored
 from django.core.management.base import BaseCommand, CommandError
 
 from axel.articles.models import CLUSTERS_DICT, Article
-from axel.stats.scores.binding_scores import populate_article_dict
-from axel.stats.scores import binding_scores
+from axel.stats.scores.binding_scores import populate_article_dict_ML
 
 
 RULES_DICT_START = [(u'STOP_WORD', re.compile(r'(NONE|DT|CC|MD|RP|JJR|JJS|\:)')),
@@ -95,7 +94,7 @@ class Command(BaseCommand):
                 print 'File found, loading...'
                 article_dict = pickle.load(open(cached_file))
             else:
-                article_dict = dict(populate_article_dict(Model, getattr(binding_scores, score_name), cutoff=0))
+                article_dict = dict(populate_article_dict_ML(Model, cutoff=0))
                 pickle.dump(article_dict, open(cached_file, 'wb'))
                 print 'File stored, continuing...'
             # Calculate total valid for recall
@@ -240,39 +239,56 @@ class Command(BaseCommand):
         print sorted(zip(list(e_clf.feature_importances_), feature_names), key=lambda x: x[0],
                      reverse=True)[:new_collection.shape[1]]
         print new_collection.shape
-        clf = DecisionTreeClassifier(max_depth=5, min_samples_split=200)
-        #for tag, values in pos_tag_counts.iteritems():
-        #    print tag, values[1]/values[0]
-        # clf.fit(new_collection, collection_labels)
-        #import StringIO, pydot
-        #from sklearn import tree
-        #dot_data = StringIO.StringIO()
-        #tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
-        #graph = pydot.graph_from_dot_data(dot_data.getvalue())
-        #graph.write_pdf("decision.pdf")
-        #
-        # for i, vector in enumerate(collection):
-        #     value = clf.predict(vector)[0]
-        #     if value != collection_labels[i] and value:
-        #         print scored_ngrams[i][1]['ngram'], vector, value, collection_labels[i]
 
-        # K-fold cross-validation
-        print 'Performing cross validation'
-        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                                  cv=cv_num, score_func=precision_score)
-        print("Precision: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-        print "Precision full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
-        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                                  cv=cv_num, score_func=recall_score)
-        print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-        print "Recall full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
-        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                                  cv=cv_num, score_func=f1_score)
-        # TODO: update recall with full collection labels
-        print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
-        print "F1 full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
+        datas = []
+        for depth, min_split in ((5, 50), (5, 100), (5, 200), (7, 50), (7, 100), (7, 200),
+                                 (10, 50), (10, 100), (10, 200),):
+            print 'Parameters: depth {0}, split {1}'.format(depth, min_split)
+            clf = DecisionTreeClassifier(max_depth=depth, min_samples_split=min_split)
+            #for tag, values in pos_tag_counts.iteritems():
+            #    print tag, values[1]/values[0]
+            # clf.fit(new_collection, collection_labels)
+            #import StringIO, pydot
+            #from sklearn import tree
+            #dot_data = StringIO.StringIO()
+            #tree.export_graphviz(clf, out_file=dot_data, feature_names=feature_names)
+            #graph = pydot.graph_from_dot_data(dot_data.getvalue())
+            #graph.write_pdf("decision.pdf")
+            #
+            # for i, vector in enumerate(collection):
+            #     value = clf.predict(vector)[0]
+            #     if value != collection_labels[i] and value:
+            #         print scored_ngrams[i][1]['ngram'], vector, value, collection_labels[i]
 
-        scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
-                                                  cv=cv_num)
-        print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+            # K-fold cross-validation
+            print 'Performing cross validation'
+            scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                      cv=cv_num, score_func=precision_score)
+            print("Precision: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+            #print "Precision full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
+            scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                      cv=cv_num, score_func=recall_score)
+            print("Recall: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+            #print "Recall full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
+            scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                      cv=cv_num, score_func=f1_score)
+            # TODO: update recall with full collection labels
+            print("F1: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+            #print "F1 full scores (for t-test:): ", '\n'.join([str(score) for score in scores])
+
+            data = {'f1': scores.mean(), 'min_split': min_split, 'depth': depth}
+
+            scores = cross_validation.cross_val_score(clf, new_collection, np.array(collection_labels),
+                                                      cv=cv_num)
+            print("Accuracy: %0.4f (+/- %0.4f)" % (scores.mean(), scores.std() / 2))
+            datas.append(data)
+
+        max_data = {'f1': 0}
+        for data in datas:
+            if max_data['f1'] < data['f1']:
+                max_data = data
+        print 'Best result:'
+        print max_data
+        print
+        return max_data
 
