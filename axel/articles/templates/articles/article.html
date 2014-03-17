@@ -6,7 +6,7 @@
     <h3>{{ article.title }}</h3>
     <p class="lead">{{ article.abstract }}</p>
     <ul class="unstyled">
-        {% for collocation in article.articlecollocation_set.all %}
+        {% for collocation in article.articlecollocations %}
             <li>
                 {{ collocation.ngram }}
                 {% with is_rel=collocation.is_relevant %}

@@ -342,6 +342,9 @@ class Article(models.Model):
             article.wiki_text_index = nlp.build_ngram_index(nlp.Stemmer.stem_wordnet(text))
             article.save()
 
+    def articlecollocations(self):
+        return self.CollocationModel.objects.filter(article=self)
+
 
 class TestCollocations(models.Model):
     """

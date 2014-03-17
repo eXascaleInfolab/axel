@@ -1,7 +1,7 @@
 Django==1.6
 South==0.7.6
 distribute>=0.6
-django-debug-toolbar==0.9.4
+django-debug-toolbar>=0.9
 django-indexer==0.3.0
 django-paging==0.2.4
 django-sentry==1.13.5
