@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
@@ -30,7 +30,7 @@ try:
     INSTALLED_APPS += ('debug_toolbar', )
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
-        'SHOW_TOOLBAR_CALLBACK': lambda *args, **kwargs: True,
+        'SHOW_TOOLBAR_CALLBACK': 'axel.libs.show_toolbar',
         'SQL_COUNT_THRESHOLD': 100,
     }
 except ImportError:
