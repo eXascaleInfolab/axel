@@ -137,7 +137,6 @@ INSTALLED_APPS = (
 
     # Uncomment to enable South for database migrations:
     'south',
-    'haystack',
     'activelink',
     'test_collection',
 
