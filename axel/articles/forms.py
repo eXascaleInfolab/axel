@@ -36,14 +36,26 @@ class PDFUploadForm(forms.Form):
         stem_func = getattr(Stemmer, self.cleaned_data['stem_func'])
 
         if not os.path.exists(full_name + "x.xml"):
-            subprocess.call(["pdfx", full_name])
+            subprocess.call(["/Users/dragoon/Libraries/pdfx/pdfx", full_name])
         extracted_data = parse_pdfx_xml(full_name + "x.xml")
 
         full_text = nlp.get_full_text(extracted_data)['text']
-        collocs = nlp.collocations(nlp.build_ngram_index(stem_func(full_text))).items()
-        # order colocations
-        collocs.sort(key=lambda col: col[1], reverse=True)
+        collocs = PDFUploadForm.generate_temp_article(full_text)
         return collocs
+
+    @staticmethod
+    def generate_temp_article(text):
+        from axel.articles.models import Article, Venue, TestCollocations
+        import json
+        venue = Venue.objects.get(acronym='SIGIR')
+        stemmed_text = nlp.Stemmer.stem_wordnet(text)
+        index = json.dumps(nlp.build_ngram_index(stemmed_text))
+        article = Article(text=text, cluster_id='CS_COLLOCS', venue=venue, year=2013,
+                          stemmed_text=stemmed_text, index=index)
+        # TODO: extract title and abstract
+        article.save_base(raw=True)
+        article._create_collocations(True)
+        return TestCollocations.objects.filter(article=article).values_list('ngram', 'count')
 
 
 class ConceptAutocompleteForm(forms.Form):
