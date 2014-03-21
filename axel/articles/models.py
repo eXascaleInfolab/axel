@@ -588,10 +588,12 @@ def update_global_collocations(sender, instance, created, **kwargs):
             colloc.count = F('count') + instance.count
             colloc.save()
     else:
-        # Recalculate count otherwise
+        # Recalculate collection count otherwise
         colloc = instance.COLLECTION_MODEL.objects.get(ngram=instance.ngram)
         colloc.count = sender.objects.filter(ngram=instance.ngram).aggregate(count=Sum('count'))['count']
         colloc.save()
+    # update total count locally
+    instance.total_count = colloc.count
 
 
 #@receiver(post_save, sender=Article)
