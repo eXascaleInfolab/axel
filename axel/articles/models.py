@@ -550,7 +550,7 @@ def clean_collocations(sender, instance, **kwargs):
     Reduce collocation count on delete for ArticleCollocation
     :type instance: ArticleCollocation
     """
-    colloc = instance.article.CollocationModel.objects.get(ngram=instance.ngram)
+    colloc = instance.article.CollocationModel.COLLECTION_MODEL.objects.get(ngram=instance.ngram)
     colloc.count -= instance.count
     colloc.save()
 
