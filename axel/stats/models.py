@@ -165,7 +165,6 @@ class SWCollocations(Collocation):
         return self.ngram in scores.ontology
 
 
-@receiver(post_save, sender=Collocation)
 def set_source_field(sender, instance, created, **kwargs):
     """
     Increment collocation count on create for ArticleCollocation
@@ -176,5 +175,8 @@ def set_source_field(sender, instance, created, **kwargs):
     if created:
         instance.extra_fields = {'source': perform_match(instance)}
         instance.save_base(raw=True)
+
+post_save.connect(set_source_field, sender=Collocations)
+post_save.connect(set_source_field, sender=SWCollocations)
 
 STATS_CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (Collocations, SWCollocations)])
