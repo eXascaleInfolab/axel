@@ -565,7 +565,6 @@ def clean_pdf(sender, instance, **kwargs):
         os.unlink(instance.pdf.path)
 
 
-@receiver(post_save, sender=ArticleCollocation)
 def update_global_collocations(sender, instance, created, **kwargs):
     """
     Increment collocation count on create for ArticleCollocation
@@ -574,7 +573,7 @@ def update_global_collocations(sender, instance, created, **kwargs):
     if kwargs.get('raw'):
         return
     colloc, created_local = instance.COLLECTION_MODEL.objects.get_or_create(
-                                        ngram=instance.ngram, defaults={'count': instance.count})
+        ngram=instance.ngram, defaults={'count': instance.count})
     if not created_local:
         if created:
             colloc.count = F('count') + instance.count
@@ -586,6 +585,8 @@ def update_global_collocations(sender, instance, created, **kwargs):
     instance.total_count = colloc.count
     instance.save_base(raw=True)
 
+post_save.connect(update_global_collocations, sender=CSArticleCollocations)
+post_save.connect(update_global_collocations, sender=SWArticleCollocations)
 
 #@receiver(post_save, sender=Article)
 #def create_acronyms(sender, instance, created, **kwargs):
