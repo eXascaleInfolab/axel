@@ -4,8 +4,11 @@ import json
 from collections import defaultdict
 from django.db import models
 from django import forms
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from axel.articles.utils.db import db_cache_simple, db_cache
+from axel.libs.external_match import perform_match
 import axel.stats.scores as scores
 
 
@@ -161,5 +164,17 @@ class SWCollocations(Collocation):
         """
         return self.ngram in scores.ontology
 
+
+@receiver(post_save, sender=Collocation)
+def set_source_field(sender, instance, created, **kwargs):
+    """
+    Increment collocation count on create for ArticleCollocation
+    :type instance: ArticleCollocation
+    """
+    if kwargs.get('raw'):
+        return
+    if created:
+        instance.extra_fields = {'source': perform_match(instance)}
+        instance.save_base(raw=True)
 
 STATS_CLUSTERS_DICT = dict([(model.CLUSTER_ID, model) for model in (Collocations, SWCollocations)])

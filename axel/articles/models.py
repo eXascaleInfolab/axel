@@ -155,15 +155,6 @@ class Article(models.Model):
             json_graph.dump(graph, open(graph_object, 'w'))
         else:
             graph = json_graph.load(open(graph_object))
-        # BELOW CODE RETURNS 2 max connected components
-        # results = []
-        # for component in nx.connected_components(graph):
-        #     component = [node for node in component if 'Category' not in node]
-        #     results.append(component)
-        #
-        # # select 2 max clusters
-        # results.sort(key=lambda x: len(x), reverse=True)
-        # return [item for sublist in results[:1] for item in sublist]
         return graph
 
     @property
