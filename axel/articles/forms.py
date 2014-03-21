@@ -54,6 +54,7 @@ class PDFUploadForm(forms.Form):
                 labels.append((ngram, klass))
         finally:
             article.delete()
+        labels.sort(key=lambda x: x[1], reverse=True)
         return labels
 
     @staticmethod
