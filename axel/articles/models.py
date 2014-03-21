@@ -561,7 +561,8 @@ def clean_pdf(sender, instance, **kwargs):
     Remove PDF on deletion
     :type instance: Article
     """
-    os.unlink(instance.pdf.path)
+    if os.path.exists(instance.pdf.path):
+        os.unlink(instance.pdf.path)
 
 
 @receiver(post_save, sender=ArticleCollocation)
