@@ -581,19 +581,18 @@ def update_global_collocations(sender, instance, created, **kwargs):
     """
     if kwargs.get('raw'):
         return
-    if created:
-        colloc, created_local = instance.article.CollocationModel.objects.get_or_create(
-            ngram=instance.ngram, defaults={'count': instance.count})
-        if not created_local:
+    colloc, created_local = instance.COLLECTION_MODEL.objects.get_or_create(
+                                        ngram=instance.ngram, defaults={'count': instance.count})
+    if not created_local:
+        if created:
             colloc.count = F('count') + instance.count
-            colloc.save()
-    else:
-        # Recalculate collection count otherwise
-        colloc = instance.COLLECTION_MODEL.objects.get(ngram=instance.ngram)
-        colloc.count = sender.objects.filter(ngram=instance.ngram).aggregate(count=Sum('count'))['count']
+        else:
+            # Recalculate collection count otherwise
+            colloc.count = sender.objects.filter(ngram=instance.ngram).aggregate(count=Sum('count'))['count']
         colloc.save()
     # update total count locally
     instance.total_count = colloc.count
+    instance.save_base(raw=True)
 
 
 #@receiver(post_save, sender=Article)
