@@ -33,13 +33,13 @@ class PDFUploadForm(forms.Form):
     CLF = pickle.load(open('ngram_clf.pcl'))
 
     article_pdf = forms.FileField(label="Article PDF")
-    stem_func = forms.ChoiceField(choices=STEM_CHOICES, label="Stemming function")
+    #stem_func = forms.ChoiceField(choices=STEM_CHOICES, label="Stemming function")
 
     def get_collocations(self):
         """Extract collocations using the self.cleaned_data dictionary"""
         from axel.stats.models import Collocations
         full_name = handle_uploaded_file(self.cleaned_data['article_pdf'])
-        stem_func = getattr(Stemmer, self.cleaned_data['stem_func'])
+        #stem_func = getattr(Stemmer, self.cleaned_data['stem_func'])
 
         if not os.path.exists(full_name + "x.xml"):
             subprocess.call(["/Users/dragoon/Libraries/pdfx/pdfx", full_name])

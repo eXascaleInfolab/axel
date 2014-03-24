@@ -72,5 +72,5 @@ def filter_articles_view(request):
     """View that shows filtered articles based on concepts"""
     concepts = request.POST.getlist('concepts')
     articles = Article.objects.filter(articlecollocation__ngram__in=concepts).distinct()
-    return render_to_response('partial/list.html', {'articles': articles},
+    return render_to_response('articles/article_list.html', {'articles': articles},
                         context_instance=RequestContext(request))

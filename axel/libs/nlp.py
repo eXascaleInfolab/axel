@@ -39,7 +39,7 @@ class Stemmer:
 
     @classmethod
     def stem_lower(cls, text):
-        """Lowercase non-stemmet"""
+        """Lowercase non-stemmed"""
         # split on punctuation
         result = []
         for word in nltk.regexp_tokenize(text, cls.TOKENIZE_REGEXP):
