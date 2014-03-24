@@ -2,7 +2,7 @@
 
 {% block content %}
     <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url "pdf_collocations" %}">
-        <legend>PDF co-locations</legend>
+        <legend>PDF named entity recognition</legend>
         {% csrf_token %}
         {% for field in form %}
             <div class="control-group {% if field.errors %}error{% endif %}">
