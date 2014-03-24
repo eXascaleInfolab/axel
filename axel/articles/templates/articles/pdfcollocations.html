@@ -28,11 +28,11 @@
     {% if collocations %}
         <h3>Collocation list</h3>
         <ul class="unstyled">
-        {% for collocation, is_rel in collocations %}
+        {% for collocation, score in collocations %}
             <li>
                 {{ collocation }}
-                <span class="badge {% if is_rel %}badge-success{% else %}badge-important{% endif %}">
-                {{ is_rel }}
+                <span class="badge {% if score > 0.5 %}badge-success{% else %}badge-important{% endif %}">
+                {{ score }}
                 </span>
             </li>
         {% endfor %}

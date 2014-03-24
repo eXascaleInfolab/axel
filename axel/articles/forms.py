@@ -51,8 +51,8 @@ class PDFUploadForm(forms.Form):
         try:
             features = PDFUploadForm.build_features(article)
             for ngram, feature in features:
-                klass = self.CLF.predict(feature)[0]
-                labels.append((ngram, klass))
+                klass0 = self.CLF.predict_proba(feature)[0][1]
+                labels.append((ngram, klass0))
         finally:
             article.delete()
             Collocations.objects.filter(count=0).delete()
