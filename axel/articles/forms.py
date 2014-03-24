@@ -37,6 +37,7 @@ class PDFUploadForm(forms.Form):
 
     def get_collocations(self):
         """Extract collocations using the self.cleaned_data dictionary"""
+        from axel.stats.models import Collocations
         full_name = handle_uploaded_file(self.cleaned_data['article_pdf'])
         stem_func = getattr(Stemmer, self.cleaned_data['stem_func'])
 
@@ -54,6 +55,7 @@ class PDFUploadForm(forms.Form):
                 labels.append((ngram, klass))
         finally:
             article.delete()
+            Collocations.objects.filter(count=0).delete()
         labels.sort(key=lambda x: x[1], reverse=True)
         return labels
 
@@ -81,13 +83,13 @@ class PDFUploadForm(forms.Form):
             pos_tag_start = str(compress_pos_tag(max_pos_tag, RULES_DICT_START))
             pos_tag_end = str(compress_pos_tag(max_pos_tag, RULES_DICT_END))
             feature = [
-                int('NN_STARTS' == pos_tag_start),
-                'dblp' in collection_ngram.source,
                 int(colloc.ngram in dblp_component_set),
+                'dblp' in collection_ngram.source,
                 component_size_dict[colloc.ngram],
+                int('NN_STARTS' == pos_tag_start),
+                int('JJ_STARTS' == pos_tag_start),
                 int('NN_ENDS' == pos_tag_end),
                 int('VB_ENDS' == pos_tag_end),
-                int('JJ_STARTS' == pos_tag_start),
             ]
             features.append((colloc.ngram, feature))
         return features
