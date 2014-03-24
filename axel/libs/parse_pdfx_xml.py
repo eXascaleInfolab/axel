@@ -5,6 +5,7 @@
     Will output logical region markers e.g. "::TITLE::" for each
     of the 10 regions considered: title, abstact, h1, h2, h3,
     introduction, conclusion, normal body text, caption, bibliography."""
+import re
 
 __author__ = 'Alex Constantin, Roman Prokofyev'
 __version__ = '1.0'
@@ -250,6 +251,8 @@ def parse_pdfx_xml(xml_file_path):
             for bib in pdfx_bib_items:
                 out += bib + u" .\n\n"
 
+        # removing hyphenation
+        out = re.sub(r'\b- \b', '', out)
         return out
 
     else:
