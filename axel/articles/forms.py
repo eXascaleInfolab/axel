@@ -7,6 +7,7 @@ import networkx as nx
 import pickle
 
 from django import forms
+from django.conf import settings
 from axel.articles.management.commands.ml_classify import RULES_DICT_START, RULES_DICT_END
 
 from axel.libs import nlp
@@ -42,7 +43,7 @@ class PDFUploadForm(forms.Form):
         #stem_func = getattr(Stemmer, self.cleaned_data['stem_func'])
 
         if not os.path.exists(full_name + "x.xml"):
-            subprocess.call(["/Users/dragoon/Libraries/pdfx/pdfx", full_name])
+            subprocess.call([settings.PDFX_PATH, full_name])
         extracted_data = parse_pdfx_xml(full_name + "x.xml")
 
         full_text = nlp.get_full_text(extracted_data)['text']

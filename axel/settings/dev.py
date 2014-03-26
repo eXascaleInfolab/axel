@@ -37,3 +37,4 @@ except ImportError:
     pass
 
 ALLOWED_HOSTS = ['*']
+PDFX_PATH = '/Users/dragoon/Libraries/pdfx/pdfx'
