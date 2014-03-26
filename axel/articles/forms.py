@@ -19,7 +19,7 @@ def handle_uploaded_file(f):
     Put uploaded file to the tmp folder
     :returns: full saved file path
     """
-    temp_name = tempfile.gettempdir() + f.name
+    temp_name = os.path.join(tempfile.gettempdir(), f.name)
     with open(temp_name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
