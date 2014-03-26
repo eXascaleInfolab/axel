@@ -32,6 +32,7 @@
             <ul class="nav navbar-nav">
                 <li class="{% ifactive "main" %}active{% endifactive %}">
                     <a href="/">Home</a></li>
+                {% comment %}
                 <li class="{% ifactive "pdf_collocations" %}active{% endifactive %}">
                     <a href="{% url "pdf_collocations" %}">Collocations</a></li>
                 <li class="{% ifstartswith "articles" %}active{% endifstartswith %}">
@@ -40,6 +41,7 @@
                     <a href="{% url "stats" %}">Statistics</a></li>
                 <li class="{% ifstartswith "testcollection_main" %}active{% endifstartswith %}">
                     <a href="{% url "testcollection_main" %}">Test collection</a></li>
+               {% endcomment %}
             </ul>
         </div>
         <!--/.nav-collapse -->
