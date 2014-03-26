@@ -31,7 +31,7 @@
         {% for collocation, score in collocations %}
             <li>
                 {{ collocation }}
-                <span class="badge {% if score > 0.5 %}badge-success{% else %}badge-important{% endif %}">
+                <span class="label {% if score > 0.5 %}label-success{% else %}label-danger{% endif %}">
                 {{ score }}
                 </span>
             </li>
