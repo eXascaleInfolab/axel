@@ -17,5 +17,5 @@ urlpatterns = patterns('',
     #(r'^stats/', include('axel.stats.urls')),
     #(r'^testc/', include('test_collection.urls')),
     #url(r'^$', ConceptualSearchView.as_view(), name='main')
-    url(r'^$', PDFCollocationsView.as_view(), name='main'),
+    url(r'^$', PDFCollocationsView.as_view(), name='pdf_collocations'),
 )
