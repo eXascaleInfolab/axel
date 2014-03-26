@@ -1,0 +1,37 @@
+upstream app_server {
+    # fail_timeout=0 means we always retry an upstream even if it failed
+    # to return a good HTTP response (in case the Unicorn master nukes a
+    # single worker for timing out).
+
+    # for UNIX domain socket setups:
+    server unix:/tmp/axel-gunicorn.sock fail_timeout=0;
+
+    # for TCP setups, point these to your backend servers
+    # server 192.168.0.7:8080 fail_timeout=0;
+    # server 192.168.0.8:8080 fail_timeout=0;
+    # server 192.168.0.9:8080 fail_timeout=0;
+}
+
+server {
+    listen 80;
+    server_name iner.exascale.info;
+
+    access_log /var/log/nginx/iner-access.log;
+    error_log /var/log/nginx/iner-error.log;
+    keepalive_timeout 5;
+
+    location /static/ {
+        alias /home/roman/axel/axel/static/;
+        expires 30d;
+        access_log off;
+    }
+
+    location /
+    {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+
+        proxy_pass   http://app_server;
+    }
+}

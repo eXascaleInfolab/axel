@@ -1,0 +1,9 @@
+[Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/axel-gunicorn.sock
+ListenStream=0.0.0.0:8001
+
+[Install]
+WantedBy=sockets.target
