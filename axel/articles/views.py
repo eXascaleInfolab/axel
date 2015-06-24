@@ -21,7 +21,7 @@ class PDFCollocationsView(FormView):
         Do valid form post-processing, extract collocations
         :type form: PDFUploadForm
         """
-        collocs = form.get_collocations()
+        collocs = form.get_collocations_alchemy()
         return self.render_to_response(self.get_context_data(form=form, collocations=collocs))
 
 

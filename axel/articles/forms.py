@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 import networkx as nx
 import pickle
+import requests
 
 from django import forms
 from django.conf import settings
@@ -58,6 +59,25 @@ class PDFUploadForm(forms.Form):
             article.delete()
             Collocations.objects.filter(count=0).delete()
         labels.sort(key=lambda x: x[1], reverse=True)
+        return labels
+
+    def get_collocations_alchemy(self):
+        """Extract collocations using the self.cleaned_data dictionary"""
+        full_name = handle_uploaded_file(self.cleaned_data['article_pdf'])
+
+        if not os.path.exists(full_name + "x.xml"):
+            subprocess.call([settings.PDFX_PATH, full_name])
+        extracted_data = parse_pdfx_xml(full_name + "x.xml")
+
+        full_text = nlp.get_full_text(extracted_data)['text']
+        payload = {'apikey': 'd0604109bbeb676474b243bc623a0fc1a172437f', 'outputMode': 'json',
+                   'maxRetrieve': '100', 'text': full_text}
+        response = requests.post('http://access.alchemyapi.com/calls/text/TextGetRankedNamedEntities',
+                                 data=payload)
+        result = response.json()
+        labels = []
+        for entity in result['entities']:
+            labels.append((entity['text'] + ' (' + entity['type'] + ')', entity['relevance']))
         return labels
 
     @staticmethod

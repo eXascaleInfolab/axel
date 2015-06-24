@@ -1,5 +1,5 @@
 suds
-Django==1.6
+Django>=1.6
 South==0.7.6
 distribute>=0.6
 django-debug-toolbar>=0.9
