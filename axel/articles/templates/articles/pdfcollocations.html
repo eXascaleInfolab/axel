@@ -29,12 +29,9 @@
         <h3>Collocation list</h3>
         <ul class="unstyled">
         {% for collocation, score in collocations %}
-            <li>
+            <h4 style="display: inline-block"><span class="label {% if score > 0.5 %}label-success{% else %}label-danger{% endif %}">
                 {{ collocation }}
-                <span class="label {% if score > 0.5 %}label-success{% else %}label-danger{% endif %}">
-                {{ score }}
-                </span>
-            </li>
+            </span>&nbsp;</h4>
         {% endfor %}
         </ul>
     {% endif %}

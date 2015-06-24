@@ -232,7 +232,7 @@ def parse_pdfx_xml(xml_file_path):
         #===================================================================
         # FIG/TABLE CAPTIONS
         #===================================================================
-        pdfx_captions = get(pdfx_root, ".//caption")
+        pdfx_captions = [] #get(pdfx_root, ".//caption")
         #      print "\npdfx_captions:", pdfx_captions
 
         if len(pdfx_captions):
@@ -243,7 +243,7 @@ def parse_pdfx_xml(xml_file_path):
         #=========================================================================
         # BIB ITEMS
         #=========================================================================
-        pdfx_bib_items = get(pdfx_root, ".//ref-list/ref")
+        pdfx_bib_items = [] #get(pdfx_root, ".//ref-list/ref")
         #      #print "\npdfx_bib_items:", pdfx_bib_items
 
         if len(pdfx_bib_items):
